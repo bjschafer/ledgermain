@@ -17,7 +17,7 @@
  *   `schools.ts` already patches silently swaps which changes apply.
  *
  * These are guards, not fixtures: all six sets are disjoint today, and the
- * point is that they stay that way as content waves land.
+ * point is that they stay that way as content is added.
  */
 import { describe, expect, test } from "bun:test";
 
@@ -63,9 +63,9 @@ describe("feat effects", () => {
   });
 
   test("the two extracted tables share no slug", () => {
-    // The community sweep excluded every system-pack slug by construction;
-    // this is what makes their relative order in resolveFeatEffect a
-    // formality rather than a precedence rule anyone has to remember.
+    // The community classification excluded every system-pack slug by
+    // construction; this is what makes their relative order in resolveFeatEffect
+    // a formality rather than a precedence rule anyone has to remember.
     expectDisjoint(
       "FEAT_EFFECTS_EXTRACTED",
       FEAT_EFFECTS_EXTRACTED,

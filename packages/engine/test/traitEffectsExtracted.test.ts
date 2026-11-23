@@ -12,7 +12,7 @@ import { mergedTraits, resolveTraitDef } from "../src/traits.js";
 
 const ref = loadRefData();
 
-/** The same normalization the sweep's batch files used: tags out, whitespace squashed. */
+/** The same normalization the extraction used: tags out, whitespace squashed. */
 function strippedDescription(html: string): string {
   return html
     .replace(/<[^>]+>/g, " ")

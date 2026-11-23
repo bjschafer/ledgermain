@@ -1,15 +1,15 @@
 /**
- * Antipaladin's slice of the pipeline (2026-08-09). Per the per-class file
+ * Antipaladin's slice of the pipeline. Per the per-class file
  * convention (documented in `index.ts`), this file owns BOTH of antipaladin's
  * pipeline artifacts — `ANTIPALADIN_ARCHETYPE_EFFECTS_EXTRACTED` (the
  * machine-extracted `Change`-shaped effects table) and
- * `ANTIPALADIN_ARCHETYPE_FEATURE_CLASSIFICATION` (the full per-feature audit,
- * 9 archetypes, 45 features, every description read individually) — so a
- * future wave working on a different class never has a reason to touch this
- * file; only `index.ts` (the aggregator, a later integration step not done
- * here) needs one new import + spread per class.
+ * `ANTIPALADIN_ARCHETYPE_FEATURE_CLASSIFICATION` (the full per-feature
+ * classification, 9 archetypes, 45 features, every description read
+ * individually) — so work on a different class never has a reason to touch
+ * this file; only `index.ts` (the aggregator) needs one new import + spread
+ * per class.
  *
- * ── Antipaladin-specific mechanical facts this pass relies on ─────────────
+ * ── Antipaladin-specific mechanical facts this classification relies on ───
  *
  * 1. **Smite Good, Touch of Corruption, Cruelties, and Fiendish Boon** — the
  *    four base features antipaladin archetypes most often replace — are all
@@ -70,7 +70,7 @@
  *    clause that DOES clear the bar, or the formula composes with a sibling
  *    entry (Will of the Crypt's delta) — partial honesty, flagged in
  *    `detail`/the classification note.
- *  - "low": not used in this pass.
+ *  - "low": not used here.
  */
 
 import {
@@ -433,11 +433,12 @@ export const ANTIPALADIN_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
  * human read the rulebook and checked this" with "an extraction pass
  * inferred this from prose." 9 of antipaladin's 45 features cleared the
  * `numeric` bar (see `ANTIPALADIN_ARCHETYPE_FEATURE_CLASSIFICATION` above
- * for the full per-feature audit) — six of the nine belong to Knight of the
- * Sepulcher, whose undead-adjacent kit is unusually rich in unconditional
- * immunities, save-category bonuses, and flat DR; the rest of the class's
- * kit leans on smite/touch-of-corruption riders and enemy-facing auras,
- * none of which clear the bar (see the header doc comment's class notes).
+ * for the full per-feature classification) — six of the nine belong to
+ * Knight of the Sepulcher, whose undead-adjacent kit is unusually rich in
+ * unconditional immunities, save-category bonuses, and flat DR; the rest of
+ * the class's kit leans on smite/touch-of-corruption riders and enemy-facing
+ * auras, none of which clear the bar (see the header doc comment's class
+ * notes).
  */
 export const ANTIPALADIN_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
   Record<string, ExtractedArchetypeFeatureEffect>

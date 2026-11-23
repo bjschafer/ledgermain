@@ -9,14 +9,11 @@
  * MECHANICS; `RefData.monkKiPowers` (see the "vendored catalog overlay"
  * section below) supplies PROSE only.
  *
- * Scope: FULL vendored parity as of the extension — all 44 vendored ki powers,
- * the Pathfinder Unchained core book's own 39 plus every splatbook addition
- * the pinned data carries (Martial Arts Handbook, Wilderness Origins, Blood of
- * the Beast). The original cut scoped to Pathfinder Unchained core only,
- * excluding "Qinggong Power"/"Improvised Weapon Proficiency" as
- * cross-splatbook additions; a later pass folds those back in (plus Branch
- * Runner/Freedom of Movement/Ki Meditation) for full-catalog parity, same
- * posture as `witch-hexes.ts`'s own extension.
+ * Scope: FULL vendored parity — all 44 vendored ki powers: the Pathfinder
+ * Unchained core book's own 39 plus every splatbook addition the pinned data
+ * carries (Martial Arts Handbook, Wilderness Origins, Blood of the Beast),
+ * including Qinggong Power, Improvised Weapon Proficiency, Branch Runner,
+ * Freedom of Movement, and Ki Meditation.
  *
  * PF1 RAW: "At 4th level, and every two levels thereafter, a monk gains a ki
  * power" — 9 total picks by 20th level (see `model/monkKiPowers.ts` for the
@@ -533,13 +530,13 @@ export const MONK_KI_POWER_IDS: readonly string[] = KI_POWER_LIST.map((p) => p.i
  * prose" pattern `rage-powers.ts`'s `mergedRagePowerCatalog` documents in
  * full.
  *
- * Collision audit (all 44 hand-authored entries, run against the pinned Pf
+ * Collision check (all 44 hand-authored entries, run against the pinned Pf
  * Data 1e slice): every one matched a vendored entry by normalized name — no
  * drift, no alias needed, no orphan. No name collides within the vendored
  * catalog itself either.
  */
 
-/** Empty — see the collision-audit comment above; kept for the same reason `rage-powers.ts`'s alias map is kept empty. */
+/** Empty — see the collision check above; kept for the same reason `rage-powers.ts`'s alias map is kept empty. */
 const MONK_KI_POWER_NAME_ALIASES: Record<string, string> = {};
 
 function normalizeKiPowerName(name: string): string {
@@ -608,7 +605,7 @@ export function resolveMonkKiPower(id: string, refData: RefData): MonkKiPowerDef
  * collides (by normalized name, alias-mapped) against a hand-authored entry
  * REPLACED by that hand-authored def (keeping its id and real mechanics, but
  * carrying the vendored entry's prose/sources along for display); no
- * hand-authored-only entries exist to append per the collision audit above.
+ * hand-authored-only entries exist to append per the collision check above.
  * `!entry.displayOnly` marks which rows carry real mechanics, for the
  * picker's "M" badge.
  */

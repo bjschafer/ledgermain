@@ -11,8 +11,8 @@
  * keying is what tells the two apart here: a table key names a check bonus
  * in its own words, never a level bonus, so `note.target === "cl"` alone
  * can't be used as a promotion filter the way `SAVE_NOTE_TARGETS`/
- * `MANEUVER_NOTE_TARGETS` are for their axes — it's only a first pass, same
- * as those two.
+ * `MANEUVER_NOTE_TARGETS` are for their axes — it's only a partial filter,
+ * same as those two.
  *
  * Entries are only promoted when the whole bonus is UNSCOPED — reaches every
  * caster-level check of that kind, not just checks against one named

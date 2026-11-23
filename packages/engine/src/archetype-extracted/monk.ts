@@ -1,18 +1,18 @@
 /**
  * Monk's slice of the pipeline. Per the per-class file convention (documented
  * in `index.ts`), this file owns BOTH of monk's pipeline artifacts —
- * `MONK_ARCHETYPE_FEATURE_CLASSIFICATION` (the full per-feature audit) and
- * `MONK_ARCHETYPE_EFFECTS_EXTRACTED` (the machine-extracted `Change`-shaped
- * effects table) — so a future wave working on a different class never has a
- * reason to touch this file; only `index.ts` (the aggregator) needs one new
- * import + one new spread per class.
+ * `MONK_ARCHETYPE_FEATURE_CLASSIFICATION` (the full per-feature
+ * classification) and `MONK_ARCHETYPE_EFFECTS_EXTRACTED` (the
+ * machine-extracted `Change`-shaped effects table) — so work on a different
+ * class never has a reason to touch this file; only `index.ts` (the
+ * aggregator) needs one new import + one new spread per class.
  *
  * ── MONK_ARCHETYPE_FEATURE_CLASSIFICATION ─────────────────────────────────
  *
- * Classification audit: EVERY feature of EVERY vendored monk archetype (56
+ * Classification: EVERY feature of EVERY vendored monk archetype (56
  * archetypes, 328 features), individually hand-read and bucketed as
- * `numeric` / `situational` / `subsystem` / `blocked` (see the fighter
- * pilot's rubric for the full bucket definitions). 28 numeric, 36
+ * `numeric` / `situational` / `subsystem` / `blocked` (see `./fighter.ts`'s
+ * rubric for the full bucket definitions). 28 numeric, 36
  * situational, 259 subsystem, 5 blocked.
  *
  * A handful of archetype ids are byte-identical (or near-identical) twins of
@@ -48,7 +48,7 @@
  *  - A qualified save bonus ("+2 vs. fear/poison/etc.") is `numeric` via
  *    `allSavingThrows` + `Change.saveCategories` only when every named
  *    condition (or at least one) has a real `SAVE_CATEGORIES` entry
- *    (save-categories.ts's closed vocabulary, which now includes an
+ *    (save-categories.ts's closed vocabulary, which includes an
  *    evil/good/lawful/chaotic alignment axis); otherwise `situational`.
  *  - A pure immunity grant is `numeric` via `immEffect.<slug>` only when the
  *    slug is in defenses.ts's closed `EFFECT_IMMUNITY_LABELS` vocabulary
@@ -123,10 +123,11 @@
  *
  * ── MONK_ARCHETYPE_EFFECTS_EXTRACTED ───────────────────────────────────────
  *
- * 20 numeric entries (19 newly extracted here, plus Nornkith's pre-existing
- * hand-verified `nimble-reflexes:3`, which stays in `archetype-effects.ts`
- * rather than being duplicated here). See each entry's own comment for its
- * source sentence and any dropped riders.
+ * 27 numeric entries, all newly extracted here; Nornkith's pre-existing
+ * hand-verified `nimble-reflexes:3` stays in `archetype-effects.ts` rather
+ * than being duplicated here (its Nimble Guardian twin is extracted below).
+ * See each entry's own comment for its source sentence and any dropped
+ * riders.
  */
 
 import {
@@ -375,7 +376,7 @@ export const MONK_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Pain Points",
     level: 3,
     bucket: "numeric",
-    note: "the +1 Stunning Fist/Quivering Palm DC half is flat and unconditional, now expressible via abilityDC.stunningFist/abilityDC.quiveringPalm (ability-dcs.ts); the +1 crit-confirm half stays unwired — critConfirm has no APPLIED target in this engine (compute.ts never consumes it). Vendored description text under this archetypeId is a byte-identical (modulo curly-quote encoding) stamp of martial-artist:pain-points:3's — see this file's header doc comment on cross-tag twins; verdict mirrors that entry's.",
+    note: "the +1 Stunning Fist/Quivering Palm DC half is flat and unconditional, expressible via abilityDC.stunningFist/abilityDC.quiveringPalm (ability-dcs.ts); the +1 crit-confirm half stays unwired — critConfirm has no APPLIED target in this engine (compute.ts never consumes it). Vendored description text under this archetypeId is a byte-identical (modulo curly-quote encoding) stamp of martial-artist:pain-points:3's — see this file's header doc comment on cross-tag twins; verdict mirrors that entry's.",
   },
   "monk:master-of-many-styles:exploit-weakness:4": {
     archetypeId: "monk:master-of-many-styles",
@@ -431,7 +432,7 @@ export const MONK_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Claws",
     level: 1,
     bucket: "subsystem",
-    note: "replaces unarmed strike with the shifter's claws natural attack — the monk's unarmed-strike-die progression is a hardcoded tables.ts table with no per-archetype override mechanism (per this wave's own scoping note), same posture as every other archetype altering that progression",
+    note: "replaces unarmed strike with the shifter's claws natural attack — the monk's unarmed-strike-die progression is a hardcoded tables.ts table with no per-archetype override mechanism, same posture as every other archetype altering that progression",
   },
   "monk:monk-of-the-empty-hand:rebuking-strike:1": {
     archetypeId: "monk:monk-of-the-empty-hand",
@@ -1180,7 +1181,7 @@ export const MONK_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Pain Points",
     level: 3,
     bucket: "numeric",
-    note: "the +1 Stunning Fist/Quivering Palm DC half is flat and unconditional, now expressible via abilityDC.stunningFist/abilityDC.quiveringPalm (ability-dcs.ts); the +1 crit-confirm half stays unwired — critConfirm has no APPLIED target in this engine (compute.ts never consumes it)",
+    note: "the +1 Stunning Fist/Quivering Palm DC half is flat and unconditional, expressible via abilityDC.stunningFist/abilityDC.quiveringPalm (ability-dcs.ts); the +1 crit-confirm half stays unwired — critConfirm has no APPLIED target in this engine (compute.ts never consumes it)",
   },
   "monk:martial-artist:physical-resistance:7": {
     archetypeId: "monk:martial-artist",
@@ -2438,9 +2439,10 @@ export const MONK_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
 };
 
 /**
- * Machine-extracted mechanical effects. 19 of the 268 features this pass
- * classified cleared the `numeric` bar — this class's archetype kit still
- * leans heavily on ki-spend activated abilities, choice-menus, and
+ * Machine-extracted mechanical effects. 27 of the 28 `numeric` features are
+ * extracted here (Nornkith's `nimble-reflexes:3` stays in the hand-verified
+ * table) — this class's archetype kit still leans heavily on ki-spend
+ * activated abilities, choice-menus, and
  * ability-basis swaps, but several duplicate-archetype twins (Ironskin Monk /
  * Nimble Guardian mirroring already-hand-verified Maneuver Master / Nornkith
  * content under separate vendored ids) and a handful of flat, level-gated
@@ -2963,7 +2965,7 @@ export const MONK_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
   },
 
   // Karmic Monk's "Balanced Mind" names all four alignment subtypes/
-  // descriptors at once (chaos, evil, good, law), each now a SAVE_CATEGORIES
+  // descriptors at once (chaos, evil, good, law), each a SAVE_CATEGORIES
   // key, and no type stated, so untyped.
   "monk:karmic-monk:balanced-mind:3": {
     changes: [

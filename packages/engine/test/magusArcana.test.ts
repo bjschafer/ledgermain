@@ -79,7 +79,7 @@ describe("MAGUS_ARCANA table", () => {
     expect(MAGUS_ARCANA.poolStrike?.name).toBe("Pool Strike");
   });
 
-  it("covers every vendored arcana (64 — full parity, issue #74 Phase 5)", () => {
+  it("covers every vendored arcana (64 — full parity)", () => {
     expect(MAGUS_ARCANA_IDS.length).toBe(64);
   });
 

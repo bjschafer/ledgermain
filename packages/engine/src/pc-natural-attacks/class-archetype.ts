@@ -20,7 +20,7 @@
  *   `archetypeFeatures` pack id, gated by the resolver on the archetype
  *   being chosen and its class level.
  *
- * Verified against aonprd.com/d20pfsrd.com during authoring; every entry's
+ * Verified against aonprd.com/d20pfsrd.com; every entry's
  * source line is cited in its own comment. Most published PC-body natural
  * attacks stay unwired — either they're an ACTIVATED grant with no live buff
  * this engine can gate on (a rounds/day or times/day resource pool with no

@@ -43,7 +43,7 @@ describe("RefData.sorcererBloodlines", () => {
     expect(aberrant.description).toContain("Acidic Ray");
   });
 
-  it("no longer inlines a Wildblooded Mutation sub-heading into the parent's description", () => {
+  it("does not inline a Wildblooded Mutation sub-heading into the parent's description", () => {
     const aberrant = ref.sorcererBloodlines.aberrant!;
     expect(aberrant.description).not.toContain("Wildblooded Mutation");
     expect(aberrant.description).not.toContain("Warp Touch");

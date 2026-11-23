@@ -190,11 +190,11 @@ describe("hasNoModeledEffect", () => {
     ).toBe(false);
   });
 
-  it("real vendored data: no vendored buff is a silent no-op anymore", () => {
-    // Every vendored buff carries changes, context notes, or instance state
-    // (the supplement tables closed the last reminder-only holdouts). A new
-    // upstream buff arriving empty should fail here and get a supplement
-    // entry, not quietly ship as a toggle that does nothing.
+  it("real vendored data: no vendored buff is a silent no-op", () => {
+    // Every vendored buff carries changes, context notes, or instance state;
+    // the supplement tables fill in reminder-only holdouts. A new upstream
+    // buff arriving empty should fail here and get a supplement entry, not
+    // quietly ship as a toggle that does nothing.
     const ref = loadRefData();
     const flagged = Object.values(ref.buffs)
       .filter((b) =>
@@ -233,15 +233,10 @@ function makeDoc(activeBuffs: CharacterDoc["live"]["activeBuffs"] = []): Charact
   };
 }
 
-// the "activated performance/song buff" mechanism the pipeline waves found
-// missing (see `packages/engine/src/archetype-extracted/ bard.ts`'s wave-2 doc
-// comment) turned out to already exist generically — `deriveResourcePools`'s
-// `linkedBuffIds` (Rage, Inspire Courage, Aura of Protection) plus
-// `ResourcesPanel`'s toggle button, built the same day in a later commit than
-// that wave's classification pass. `toggleLinkedBuff` is the pure decision
-// logic behind that toggle button, pulled out of the component (per
-// CLAUDE.md's "logic in model/, thin component wiring") instead of living only
-// in JSX where a DOM test would be the only way to exercise it.
+// `toggleLinkedBuff` is the pure decision logic behind `ResourcesPanel`'s
+// linked-buff toggle (`deriveResourcePools`'s `linkedBuffIds`: Rage, Inspire
+// Courage, Aura of Protection), pulled out of the component so it can be
+// exercised without a DOM test and the component stays thin wiring.
 describe("toggleLinkedBuff", () => {
   const ref = loadRefData();
   const inspireCourage = Object.values(ref.buffs).find((b) => b.name === "Inspire Courage")!;

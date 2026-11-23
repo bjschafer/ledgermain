@@ -205,7 +205,7 @@ describe("resolveInlineRolls against a live @resources pool (same path RollDataP
     expect(resolveInlineRolls(text, rollDataFor(doc(0)))).toBe("(3 remaining uses)");
   });
 
-  it("Adaptable Luck's own vendored contextNotes now render the live count instead of dropping the parenthetical", () => {
+  it("Adaptable Luck's own vendored contextNotes render the live count instead of dropping the parenthetical", () => {
     const note = refData.racialTraits[adaptableLuck]!.contextNotes[0]!.text;
     expect(note).toContain("[[@resources.adaptableLuck.value]]");
     const resolved = resolveInlineRolls(note, rollDataFor(doc(1)));

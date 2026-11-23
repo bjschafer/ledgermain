@@ -10,48 +10,41 @@
  * Scope: all 70 vendored bard archetypes, 347 features. Bucket rubric is
  * identical to `fighter.ts`'s (numeric / situational / subsystem / blocked —
  * see that file's doc comment for the full definitions), with two bard-
- * specific rules this wave establishes (per the task's process notes, itself
- * derived from the round-2 hand-authored table's Archaeologist finding):
+ * specific rules:
  *
- * 1. **Bardic Performance modifications are always `subsystem`.** At the time
- *    this wave was written, the engine modeled bardic performance only as a
- *    rounds/day resource pool (`resources.ts`), with no generic "activated
- *    performance buff" mechanism — base bard's own Inspire Courage,
- *    Countersong, Fascinate, Versatile Performance, Well-Versed, Lore Master,
- *    and Jack of All Trades class features all carry EMPTY vendored `changes`
- *    in `class-features.json` (still true — that part never changes). **Update
- *    (triage):** a later same-day commit (`d8dec4b`, after this wave) wired
- *    `ClassFeature.grantsBuffs` up generically — `deriveResourcePools`'s
- *    `linkedBuffIds` + the tracker's `LinkedBuffToggle` (`apps/web`) now DOES
- *    let a player toggle base bard's Inspire Courage on/off (merged onto the
+ * 1. **Bardic Performance modifications are always `subsystem`.** Base bard's
+ *    own Inspire Courage, Countersong, Fascinate, Versatile Performance,
+ *    Well-Versed, Lore Master, and Jack of All Trades class features all carry
+ *    EMPTY vendored `changes` in `class-features.json`. The engine models
+ *    bardic performance as a rounds/day resource pool (`resources.ts`);
+ *    `ClassFeature.grantsBuffs` is wired generically (`deriveResourcePools`'s
+ *    `linkedBuffIds` + the tracker's `LinkedBuffToggle` in `apps/web`), so a
+ *    player can toggle base bard's Inspire Courage on/off (merged onto the
  *    Bardic Performance pool, exactly like Rage; see
  *    `packages/engine/test/resources.test.ts` and
  *    `apps/web/test/buffs.test.ts`'s `toggleLinkedBuff` coverage), applying
- *    its real, level-scaled vendored buff. This does NOT change any bucket
- *    below: the toggle only activates an EXISTING vendored `Buff` reached via
- *    `grantsBuffs`, and none of these archetype features grant, reflavor, or
- *    modify a performance via a vendored buff of their own — there is still no
- *    mechanism to hang a NEW or MODIFIED performance on without hand-
- *    authoring a bespoke buff per archetype (the "don't invent one" line). The
- *    other twelve core CRB performance types (Countersong, Distraction,
- *    Fascinate, Inspire Competence, Suggestion, Inspire Greatness, Inspire
- *    Heroics, Dirge of Doom, Frightening Tune, Soothing Performance, Mass
- *    Suggestion, Deadly Performance) carry the same shape of toggle,
- *    hand-authored onto the Bardic Performance pool's `tableOptions` in
- *    `bardic-performances.ts` rather than reached via `grantsBuffs`; Inspire
- *    Greatness and Inspire Heroics apply real numeric Changes when toggled,
- *    the rest are note-tier reminders. None of this reaches the archetype
- *    features classified below: a feature that itself grants a new
- *    performance, reflavors an existing one, or modifies performance action
- *    economy still has no buff of its own to hang a Change on, so the "don't
- *    invent one" rule stands for everything in this file. Any
- *    archetype feature that grants a NEW performance, reflavors an existing
- *    one, or changes performance action economy/rounds-cost — whether or not
- *    it's structurally paired via `pairedBaseFeatureUuid` to one of the ten
- *    performance-type base features (Inspire Competence, Suggestion, Mass
- *    Suggestion, Dirge of Doom, Frightening Tune, Inspire Greatness, Inspire
- *    Heroics, Jack of All Trades, Soothing Performance, Deadly Performance) —
- *    is bucketed `subsystem`, full stop, even when its own prose describes a
+ *    its real, level-scaled vendored buff. The other twelve core CRB
+ *    performance types (Countersong, Distraction, Fascinate, Inspire
+ *    Competence, Suggestion, Inspire Greatness, Inspire Heroics, Dirge of
+ *    Doom, Frightening Tune, Soothing Performance, Mass Suggestion, Deadly
+ *    Performance) carry the same shape of toggle, hand-authored onto the
+ *    Bardic Performance pool's `tableOptions` in `bardic-performances.ts`
+ *    rather than reached via `grantsBuffs`; Inspire Greatness and Inspire
+ *    Heroics apply real numeric Changes when toggled, the rest are note-tier
+ *    reminders. None of this reaches the archetype features classified below:
+ *    the toggle only activates an EXISTING vendored `Buff` reached via
+ *    `grantsBuffs` or a hand-authored `tableOptions` entry, and no archetype
+ *    feature here grants, reflavors, or modifies a performance via a vendored
+ *    buff of its own — there is still no mechanism to hang a NEW or MODIFIED
+ *    performance on without hand-authoring a bespoke buff per archetype (the
+ *    "don't invent one" rule). Any archetype feature that grants a NEW
+ *    performance, reflavors an existing one, or changes performance action
+ *    economy/rounds-cost — whether or not it's structurally paired via
+ *    `pairedBaseFeatureUuid` to one of the ten performance-type base
+ *    features (Inspire Competence, Suggestion, Mass Suggestion, Dirge of
+ *    Doom, Frightening Tune, Inspire Greatness, Inspire Heroics, Jack of All
+ *    Trades, Soothing Performance, Deadly Performance) — is bucketed
+ *    `subsystem`, full stop, even when its own prose describes a
  *    clean, precisely-scaling number (e.g. Filidh's Echoes of Nature's Song,
  *    Busker's Quick Hands — both real numbers, both explicitly activated via
  *    "bardic performance"/"stunt" mechanics with no vendored buff of their own
@@ -66,7 +59,7 @@
  * 2. **Bardic Knowledge is the one base bard feature with real vendored
  *    numbers** (`max(1, floor(@class.unlevel/2))` on `skill.knowledge`,
  *    confirmed in `class-features.json`) — unlike every other base feature
- *    an archetype might claim to replace. Grepping every vendored bard
+ *    an archetype might claim to replace. A check of every vendored bard
  *    archetype feature's `pairedBaseFeatureUuid` against Bardic Knowledge's
  *    own uuid turns up exactly one match — Thundercaller's Bound to the Land,
  *    whose swap `activeArchetypeSwaps` honors correctly (classified `numeric`
@@ -93,7 +86,7 @@
  *    `type: "untyped"` (untyped bonuses sum per this engine's typed-stacking
  *    rules, `stacking.ts`), a second untyped Knowledge bonus is a real RAW
  *    stack, not a double-count bug, so those ARE extracted as `numeric`.
- *    9 features landed `blocked` this wave, all via rule 2 (Court Bard's
+ *    9 features are `blocked`, all via rule 2 (Court Bard's
  *    Heraldic Expertise, Detective's Eye for Detail, Geisha's Geisha
  *    Knowledge, Magician's Magical Talent, Negotiator's Hard Bargainer,
  *    Phrenologist's Phrenological Knowledge, Sea Singer's World Traveler,
@@ -101,14 +94,12 @@
  *    several of these have a non-Knowledge portion (Perception/Sense Motive,
  *    Spellcraft/UMD, a player-chosen Perform type) that would be safe to
  *    extract in isolation (same "model only the modelable half" posture as
- *    the hand-verified table's Hawkeye entry), but this wave blocks the
- *    whole feature rather than partial-extracting every one, to keep 70
- *    archetypes' worth of judgment calls consistent and reviewable; a future
- *    pass could split these the way this file's Impervious Messenger/
- *    Solacer entries do.
+ *    the hand-verified table's Hawkeye entry), but the whole feature is
+ *    blocked rather than partial-extracted, to keep 70 archetypes' worth of
+ *    judgment calls consistent and reviewable; these could be split the way
+ *    this file's Impervious Messenger/Solacer entries do.
  *
- * Two suspected vendored-data quality issues surfaced (not fixed here, per
- * the task's "report suspects, don't fix" instruction):
+ * Vendored-data quality issues (recorded, not fixed):
  *  - `bard:archivist:probable-path:10`'s description is a VERBATIM,
  *    unedited copy of the base Versatile Performance ability text — not an
  *    actual 10th-level Archivist ability at all. Likely a CSV row
@@ -148,12 +139,9 @@
  *    contamination from an unrelated rogue archetype rather than genuine
  *    Fey Prankster text.
  *
- * Methodology note (disclosed, same posture as `fighter.ts`): EVERY feature
- * of every vendored bard archetype was individually read against its full
- * prose (not just regex-scanned) — bard's smaller `situational`/`subsystem`
- * split doesn't rely on a heuristic pass the way fighter's did, because the
- * two bard-specific rules above (bardic-performance / bardic-knowledge-
- * overlap) resolve the large majority of features mechanically and
+ * Every feature of every vendored bard archetype was individually read
+ * against its full prose (not just regex-scanned) — the two bard-specific
+ * rules above resolve the large majority of features mechanically and
  * consistently once applied; the remainder were read case-by-case.
  */
 
@@ -172,7 +160,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Animal Friend",
     level: 1,
     bucket: "situational",
-    note: "real +4 Handle Animal bonus but scoped to one chosen animal kind and to influence checks only, too narrowly scoped to extract; its replacement of fascinate is now tracked as a removesTags entry in bardic-performance-variants/shardA.ts, dropping fascinate from this archetype's toggle list.",
+    note: "real +4 Handle Animal bonus but scoped to one chosen animal kind and to influence checks only, too narrowly scoped to extract; its replacement of fascinate is tracked as a removesTags entry in bardic-performance-variants/shardA.ts, dropping fascinate from this archetype's toggle list.",
   },
   "bard:animal-speaker:attract-rats:6": {
     archetypeId: "bard:animal-speaker",
@@ -200,7 +188,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Summon Nature's Ally",
     level: 1,
     bucket: "subsystem",
-    note: "spell-list/spells-known addition, no Change-shaped number; its replacement of mass suggestion is now tracked as a removesTags entry in bardic-performance-variants/shardA.ts, dropping mass suggestion from this archetype's toggle list.",
+    note: "spell-list/spells-known addition, no Change-shaped number; its replacement of mass suggestion is tracked as a removesTags entry in bardic-performance-variants/shardA.ts, dropping mass suggestion from this archetype's toggle list.",
   },
   "bard:animal-speaker:versatile-performance:2": {
     archetypeId: "bard:animal-speaker",
@@ -354,7 +342,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Naturalist",
     level: 1,
     bucket: "situational",
-    note: "replaces Inspire Courage (bardVariantRemovesInspireCourage in bardic-performance-variants/shardA.ts now drops the linked buff) and surfaces as a note-tier toggle there too, but the insight AC/attack/save bonus itself still isn't extracted as a Change since it's scoped to one specifically-identified monster kind the static sheet can't track.",
+    note: "replaces Inspire Courage (bardVariantRemovesInspireCourage in bardic-performance-variants/shardA.ts drops the linked buff) and surfaces as a note-tier toggle there too, but the insight AC/attack/save bonus itself still isn't extracted as a Change since it's scoped to one specifically-identified monster kind the static sheet can't track.",
   },
   "bard:archivist:pedantic-lecture:18": {
     archetypeId: "bard:archivist",
@@ -382,35 +370,35 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Devilbane Refrain",
     level: 8,
     bucket: "subsystem",
-    note: "VENDORED TEXT GAP (confirmed via aonprd.com/d20pfsrd.com): this ability replaces dirge of doom AND frightening tune, not just dirge of doom as the pairedBaseFeatureUuid bookkeeping implied, and neither removal appears in the vendored description. Now tracked via removesTags plus a note-tier variant performance toggle in bardic-performance-variants/shardA.ts (ally weapons treated as silver, bane vs. evil outsiders at 14th, still no self-facing Change).",
+    note: "VENDORED TEXT GAP (confirmed via aonprd.com/d20pfsrd.com): this ability replaces dirge of doom AND frightening tune, not just dirge of doom as the pairedBaseFeatureUuid bookkeeping implied, and neither removal appears in the vendored description. Tracked via removesTags plus a note-tier variant performance toggle in bardic-performance-variants/shardA.ts (ally weapons treated as silver, bane vs. evil outsiders at 14th, still no self-facing Change).",
   },
   "bard:argent-voice:limning-verse:1": {
     archetypeId: "bard:argent-voice",
     name: "Limning Verse",
     level: 1,
     bucket: "subsystem",
-    note: "VENDORED TEXT GAP (confirmed via aonprd.com/d20pfsrd.com): this ability replaces fascinate, missing from the vendored description entirely. Now tracked via removesTags plus a note-tier variant performance toggle in bardic-performance-variants/shardA.ts (faerie-fire-on-evil-outsiders detection, still no self-facing Change).",
+    note: "VENDORED TEXT GAP (confirmed via aonprd.com/d20pfsrd.com): this ability replaces fascinate, missing from the vendored description entirely. Tracked via removesTags plus a note-tier variant performance toggle in bardic-performance-variants/shardA.ts (faerie-fire-on-evil-outsiders detection, still no self-facing Change).",
   },
   "bard:argent-voice:shattering-crescendo:6": {
     archetypeId: "bard:argent-voice",
     name: "Shattering Crescendo",
     level: 6,
     bucket: "subsystem",
-    note: "VENDORED TEXT GAP (confirmed via aonprd.com/d20pfsrd.com): this ability replaces suggestion AND mass suggestion, not just suggestion as the pairedBaseFeatureUuid bookkeeping implied, and neither removal appears in the vendored description. Now tracked via removesTags plus a note-tier variant performance toggle in bardic-performance-variants/shardA.ts (dispel magic vs. evil/enchantment effects, still no self-facing Change).",
+    note: "VENDORED TEXT GAP (confirmed via aonprd.com/d20pfsrd.com): this ability replaces suggestion AND mass suggestion, not just suggestion as the pairedBaseFeatureUuid bookkeeping implied, and neither removal appears in the vendored description. Tracked via removesTags plus a note-tier variant performance toggle in bardic-performance-variants/shardA.ts (dispel magic vs. evil/enchantment effects, still no self-facing Change).",
   },
   "bard:arrowsong-minstrel:arcane-archery:1": {
     archetypeId: "bard:arrowsong-minstrel",
     name: "Arcane Archery",
     level: 1,
     bucket: "subsystem",
-    note: "VENDORED TEXT GAP (confirmed via aonprd.com/d20pfsrd.com): this ability actually replaces bardic knowledge, dirge of doom, distraction, fascinate, inspire competence, lore master, AND soothing performance, none of which appear in the vendored description. The five base-performance removals are now tracked via removesTags in bardic-performance-variants/shardA.ts; Arcane Archery itself just grants spells and a BAB-for-prereqs rule, so it still has no Change-shaped number or toggle of its own.",
+    note: "VENDORED TEXT GAP (confirmed via aonprd.com/d20pfsrd.com): this ability actually replaces bardic knowledge, dirge of doom, distraction, fascinate, inspire competence, lore master, AND soothing performance, none of which appear in the vendored description. The five base-performance removals are tracked via removesTags in bardic-performance-variants/shardA.ts; Arcane Archery itself just grants spells and a BAB-for-prereqs rule, so it still has no Change-shaped number or toggle of its own.",
   },
   "bard:arrowsong-minstrel:arrowsong-strike:6": {
     archetypeId: "bard:arrowsong-minstrel",
     name: "Arrowsong Strike",
     level: 6,
     bucket: "subsystem",
-    note: "VENDORED TEXT GAP (confirmed via aonprd.com/d20pfsrd.com): this ability replaces suggestion AND mass suggestion, not just suggestion as the pairedBaseFeatureUuid bookkeeping implied, and neither removal appears in the vendored description. Now tracked via removesTags in bardic-performance-variants/shardA.ts; the spellstrike ability itself isn't a bardic performance (no rounds-of-performance cost), so it still has no Change-shaped number or toggle of its own.",
+    note: "VENDORED TEXT GAP (confirmed via aonprd.com/d20pfsrd.com): this ability replaces suggestion AND mass suggestion, not just suggestion as the pairedBaseFeatureUuid bookkeeping implied, and neither removal appears in the vendored description. Tracked via removesTags in bardic-performance-variants/shardA.ts; the spellstrike ability itself isn't a bardic performance (no rounds-of-performance cost), so it still has no Change-shaped number or toggle of its own.",
   },
   "bard:arrowsong-minstrel:diminished-spellcasting:1": {
     archetypeId: "bard:arrowsong-minstrel",
@@ -585,7 +573,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Shining Star",
     level: 8,
     bucket: "subsystem",
-    note: "removesTags now tracks that this replaces dirge of doom (bardic-performance-variants/shardA.ts); Shining Star itself is a passive enhancer of the base Fascinate performance (harder save, ignores shaken), not a standalone activated performance, so it still has no Change or note-tier entry of its own.",
+    note: "removesTags tracks that this replaces dirge of doom (bardic-performance-variants/shardA.ts); Shining Star itself is a passive enhancer of the base Fascinate performance (harder save, ignores shaken), not a standalone activated performance, so it still has no Change or note-tier entry of its own.",
   },
   "bard:chelish-diva:costume-proficiency-heavy:11": {
     archetypeId: "bard:chelish-diva",
@@ -641,7 +629,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Mantra of Tabris",
     level: 15,
     bucket: "subsystem",
-    note: "VENDORED TEXT GAP (confirmed via aonprd.com/d20pfsrd.com, printed elsewhere as 'Mantra of the Angel'): this ability replaces inspire heroics, missing from the vendored description entirely. Now tracked via removesTags plus a note-tier variant performance toggle in bardic-performance-variants/shardA.ts (reactive Knowledge (planes)-check-as-AC/save substitution vs. outsiders, still no self-facing Change since the roll is variable).",
+    note: "VENDORED TEXT GAP (confirmed via aonprd.com/d20pfsrd.com, printed elsewhere as 'Mantra of the Angel'): this ability replaces inspire heroics, missing from the vendored description entirely. Tracked via removesTags plus a note-tier variant performance toggle in bardic-performance-variants/shardA.ts (reactive Knowledge (planes)-check-as-AC/save substitution vs. outsiders, still no self-facing Change since the roll is variable).",
   },
   "bard:chronicler-of-worlds:planar-lore:1": {
     archetypeId: "bard:chronicler-of-worlds",
@@ -655,7 +643,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Quintessence Infusion",
     level: 9,
     bucket: "subsystem",
-    note: "VENDORED TEXT GAP (confirmed via aonprd.com/d20pfsrd.com): this ability replaces inspire greatness, missing from the vendored description entirely. Now tracked via removesTags plus a note-tier variant performance toggle in bardic-performance-variants/shardA.ts (ally-only planar infusions while off the Material Plane, still no self-facing Change).",
+    note: "VENDORED TEXT GAP (confirmed via aonprd.com/d20pfsrd.com): this ability replaces inspire greatness, missing from the vendored description entirely. Tracked via removesTags plus a note-tier variant performance toggle in bardic-performance-variants/shardA.ts (ally-only planar infusions while off the Material Plane, still no self-facing Change).",
   },
   "bard:chronicler-of-worlds:scrivener-s-versatility:2": {
     archetypeId: "bard:chronicler-of-worlds",
@@ -697,7 +685,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Satire",
     level: 1,
     bucket: "subsystem",
-    note: "replaces Inspire Courage (bardVariantRemovesInspireCourage in bardic-performance-variants/shardA.ts now drops the linked buff); Satire itself surfaces as a note-tier toggle there too (an attack/damage/fear-and-charm-save penalty on enemies), still no self-facing Change since the penalty applies to enemies, not you.",
+    note: "replaces Inspire Courage (bardVariantRemovesInspireCourage in bardic-performance-variants/shardA.ts drops the linked buff); Satire itself surfaces as a note-tier toggle there too (an attack/damage/fear-and-charm-save penalty on enemies), still no self-facing Change since the penalty applies to enemies, not you.",
   },
   "bard:court-bard:scandal:14": {
     archetypeId: "bard:court-bard",
@@ -1068,7 +1056,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Retreat to Lair",
     level: 15,
     bucket: "subsystem",
-    note: "still not modeled as a performance toggle (spends 5 daily uses of bardic performance rounds as a one-shot teleport, a resource conversion rather than a standalone toggle), but bardic-performance-variants/shardB.ts now records that it removes base Inspire Heroics (verified against aonprd.com, the vendored text omits its own 'replaces' sentence)",
+    note: "still not modeled as a performance toggle (spends 5 daily uses of bardic performance rounds as a one-shot teleport, a resource conversion rather than a standalone toggle), but bardic-performance-variants/shardB.ts records that it removes base Inspire Heroics (verified against aonprd.com, the vendored text omits its own 'replaces' sentence)",
   },
   "bard:dragon-herald:weapon-and-armor-proficiency:1": {
     archetypeId: "bard:dragon-herald",
@@ -1103,7 +1091,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Harmonizing Familiar",
     level: 8,
     bucket: "subsystem",
-    note: "still not modeled as its own performance toggle (it enhances whichever base performance the duettist and familiar perform together, rather than granting a standalone type), but bardic-performance-variants/shardB.ts now records that it removes base Dirge of Doom",
+    note: "still not modeled as its own performance toggle (it enhances whichever base performance the duettist and familiar perform together, rather than granting a standalone type), but bardic-performance-variants/shardB.ts records that it removes base Dirge of Doom",
   },
   "bard:duettist:performing-familiar:4": {
     archetypeId: "bard:duettist",
@@ -1117,7 +1105,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Symphonic Familiar",
     level: 14,
     bucket: "subsystem",
-    note: "still not modeled as its own performance toggle (lets duettist and familiar perform two different base performances at once, rather than granting a standalone type), but bardic-performance-variants/shardB.ts now records that it removes base Frightening Tune",
+    note: "still not modeled as its own performance toggle (lets duettist and familiar perform two different base performances at once, rather than granting a standalone type), but bardic-performance-variants/shardB.ts records that it removes base Frightening Tune",
   },
   "bard:duettist:versatile-familiar:2": {
     archetypeId: "bard:duettist",
@@ -1187,7 +1175,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Summon Fey Allies",
     level: 3,
     bucket: "subsystem",
-    note: "still not modeled as a performance toggle (a feat plus summon-spell-list grant, not itself activated via bardic performance), but bardic-performance-variants/shardB.ts now records that it removes base Inspire Competence (verified against d20pfsrd.com: 'This replaces inspire competence')",
+    note: "still not modeled as a performance toggle (a feat plus summon-spell-list grant, not itself activated via bardic performance), but bardic-performance-variants/shardB.ts records that it removes base Inspire Competence (verified against d20pfsrd.com: 'This replaces inspire competence')",
   },
   "bard:fey-prankster:dirty-trickster:2": {
     archetypeId: "bard:fey-prankster",
@@ -1327,7 +1315,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Fan the Flames",
     level: 8,
     bucket: "subsystem",
-    note: "still not modeled as a performance toggle (adds spells to the bard spell list, not itself activated via bardic performance), but bardic-performance-variants/shardB.ts now records that it removes base Dirge of Doom (vendored text already states this)",
+    note: "still not modeled as a performance toggle (adds spells to the bard spell list, not itself activated via bardic performance), but bardic-performance-variants/shardB.ts records that it removes base Dirge of Doom (vendored text already states this)",
   },
   "bard:flame-dancer:fire-break:6": {
     archetypeId: "bard:flame-dancer",
@@ -1390,7 +1378,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Oracular Performance",
     level: 1,
     bucket: "subsystem",
-    note: "still not modeled as its own performance toggle (it shifts other performances' existing bonus/penalty by 1, rather than granting a standalone type), but bardic-performance-variants/shardB.ts now records that it removes base Countersong and Distraction (vendored text already states this)",
+    note: "still not modeled as its own performance toggle (it shifts other performances' existing bonus/penalty by 1, rather than granting a standalone type), but bardic-performance-variants/shardB.ts records that it removes base Countersong and Distraction (vendored text already states this)",
   },
   "bard:fortune-teller:transparent-fate:8": {
     archetypeId: "bard:fortune-teller",
@@ -1446,28 +1434,28 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Master of Manipulation",
     level: 8,
     bucket: "subsystem",
-    note: "Now modeled as a note-tier variant performance toggle on the Bardic Performance pool (bardic-performance-variants/shardC.ts, dirge of doom is dropped): an enemy-facing truth-compulsion effect with no self-facing number.",
+    note: "Modeled as a note-tier variant performance toggle on the Bardic Performance pool (bardic-performance-variants/shardC.ts, dirge of doom is dropped): an enemy-facing truth-compulsion effect with no self-facing number.",
   },
   "bard:hoaxer:bad-deal:1": {
     archetypeId: "bard:hoaxer",
     name: "Bad Deal",
     level: 1,
     bucket: "subsystem",
-    note: "Now modeled as a note-tier variant performance toggle (bardic-performance-variants/shardC.ts): drops inspire courage, inspire competence, and inspire greatness, with the hexed-object mechanic and its DC spelled out in the toggle's context note.",
+    note: "Modeled as a note-tier variant performance toggle (bardic-performance-variants/shardC.ts): drops inspire courage, inspire competence, and inspire greatness, with the hexed-object mechanic and its DC spelled out in the toggle's context note.",
   },
   "bard:hoaxer:buyer-beware:1": {
     archetypeId: "bard:hoaxer",
     name: "Buyer Beware",
     level: 1,
     bucket: "subsystem",
-    note: "Now modeled as a note-tier variant performance toggle (bardic-performance-variants/shardC.ts): drops countersong, with the beguiling-gift DC spelled out in the toggle's context note.",
+    note: "Modeled as a note-tier variant performance toggle (bardic-performance-variants/shardC.ts): drops countersong, with the beguiling-gift DC spelled out in the toggle's context note.",
   },
   "bard:hoaxer:curse-breaker:12": {
     archetypeId: "bard:hoaxer",
     name: "Curse Breaker",
     level: 12,
     bucket: "subsystem",
-    note: "Now modeled as a note-tier variant performance toggle on the Bardic Performance pool (bardic-performance-variants/shardC.ts): the break-enchantment-in-place-of-soothing-performance mechanic is spelled out in words.",
+    note: "Modeled as a note-tier variant performance toggle on the Bardic Performance pool (bardic-performance-variants/shardC.ts): the break-enchantment-in-place-of-soothing-performance mechanic is spelled out in words.",
   },
   "bard:hoaxer:curse-crafter:5": {
     archetypeId: "bard:hoaxer",
@@ -1488,7 +1476,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Personal Guarantee",
     level: 1,
     bucket: "subsystem",
-    note: "Now modeled as a note-tier variant performance toggle (bardic-performance-variants/shardC.ts): drops distraction, with the hex-delay mechanic spelled out in the toggle's context note.",
+    note: "Modeled as a note-tier variant performance toggle (bardic-performance-variants/shardC.ts): drops distraction, with the hex-delay mechanic spelled out in the toggle's context note.",
   },
   "bard:hoaxer:versed-in-curses:2": {
     archetypeId: "bard:hoaxer",
@@ -1516,14 +1504,14 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Song of Subterfuge",
     level: 6,
     bucket: "subsystem",
-    note: "Now modeled as a note-tier variant performance toggle on the Bardic Performance pool (bardic-performance-variants/shardC.ts): drops both suggestion and mass suggestion (RAW replaces both, not just one), self-facing Perform-check substitution with no static number.",
+    note: "Modeled as a note-tier variant performance toggle on the Bardic Performance pool (bardic-performance-variants/shardC.ts): drops both suggestion and mass suggestion (RAW replaces both, not just one), self-facing Perform-check substitution with no static number.",
   },
   "bard:impervious-messenger:unbroken-stride:8": {
     archetypeId: "bard:impervious-messenger",
     name: "Unbroken Stride",
     level: 8,
     bucket: "subsystem",
-    note: "Now modeled with real Changes on the Bardic Performance pool (bardic-performance-variants/shardC.ts): drops both dirge of doom and frightening tune (RAW replaces both), grants an insight bonus on Acrobatics/Climb/Fly/Ride equal to half bard level plus an enhancement bonus to land speed; woodland stride and 12th-level freedom of movement stay context notes.",
+    note: "Modeled with real Changes on the Bardic Performance pool (bardic-performance-variants/shardC.ts): drops both dirge of doom and frightening tune (RAW replaces both), grants an insight bonus on Acrobatics/Climb/Fly/Ride equal to half bard level plus an enhancement bonus to land speed; woodland stride and 12th-level freedom of movement stay context notes.",
   },
   "bard:juggler:combat-juggling:2": {
     archetypeId: "bard:juggler",
@@ -1614,7 +1602,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Fey-Wounding Song",
     level: 12,
     bucket: "subsystem",
-    note: "Now modeled as a note-tier variant performance toggle on the Bardic Performance pool (bardic-performance-variants/shardC.ts): drops soothing performance, with the mass-inflict-serious-wounds-vs-fey mechanic spelled out in words.",
+    note: "Modeled as a note-tier variant performance toggle on the Bardic Performance pool (bardic-performance-variants/shardC.ts): drops soothing performance, with the mass-inflict-serious-wounds-vs-fey mechanic spelled out in words.",
   },
   "bard:luring-piper:luring-presentation:1": {
     archetypeId: "bard:luring-piper",
@@ -1642,7 +1630,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Dweomercraft",
     level: 1,
     bucket: "subsystem",
-    note: "Now modeled as a note-tier variant performance toggle (bardic-performance-variants/shardC.ts): drops inspire courage; stays note-tier (not a real Change) because RAW says 'allies of the magician' only, with no clause extending it to the magician himself.",
+    note: "Modeled as a note-tier variant performance toggle (bardic-performance-variants/shardC.ts): drops inspire courage; stays note-tier (not a real Change) because RAW says 'allies of the magician' only, with no clause extending it to the magician himself.",
   },
   "bard:magician:expanded-repertoire:2": {
     archetypeId: "bard:magician",
@@ -1663,7 +1651,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Improved Counterspell",
     level: 1,
     bucket: "subsystem",
-    note: "The countersong removal is now reflected in the archetype's merged toggle list (bardic-performance-variants/shardC.ts), though the bonus feat itself still carries no Change-shaped number and grants no toggle of its own.",
+    note: "The countersong removal is reflected in the archetype's merged toggle list (bardic-performance-variants/shardC.ts), though the bonus feat itself still carries no Change-shaped number and grants no toggle of its own.",
   },
   "bard:magician:magical-talent:1": {
     archetypeId: "bard:magician",
@@ -1677,14 +1665,14 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Metamagic Mastery",
     level: 14,
     bucket: "subsystem",
-    note: "Now modeled as a note-tier variant performance toggle on the Bardic Performance pool (bardic-performance-variants/shardC.ts), drops frightening tune. Flag: the vendored description text for this feature is a verbatim, mislabeled copy of Frightening Tune's own ability text, not real Metamagic Mastery text (which applies a metamagic feat to a spell about to be cast without increasing casting time) -- confirmed against aonprd.com/d20pfsrd; the modeled toggle uses the real ability's text, not the corrupted vendored copy.",
+    note: "Modeled as a note-tier variant performance toggle on the Bardic Performance pool (bardic-performance-variants/shardC.ts), drops frightening tune. Flag: the vendored description text for this feature is a verbatim, mislabeled copy of Frightening Tune's own ability text, not real Metamagic Mastery text (which applies a metamagic feat to a spell about to be cast without increasing casting time) -- confirmed against aonprd.com/d20pfsrd; the modeled toggle uses the real ability's text, not the corrupted vendored copy.",
   },
   "bard:magician:spell-suppression:8": {
     archetypeId: "bard:magician",
     name: "Spell Suppression",
     level: 8,
     bucket: "subsystem",
-    note: "Now modeled as a note-tier variant performance toggle on the Bardic Performance pool (bardic-performance-variants/shardC.ts): drops dirge of doom, with the counterspell-while-performing mechanic spelled out in words.",
+    note: "Modeled as a note-tier variant performance toggle on the Bardic Performance pool (bardic-performance-variants/shardC.ts): drops dirge of doom, with the counterspell-while-performing mechanic spelled out in words.",
   },
   "bard:magician:wand-mastery:10": {
     archetypeId: "bard:magician",
@@ -1705,7 +1693,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Exaggerated Pose",
     level: 3,
     bucket: "subsystem",
-    note: "Now modeled as a note-tier variant performance toggle (bardic-performance-variants/shardC.ts): drops inspire competence; stays note-tier because the buffed skill is a live choice made when the performance starts (and swappable as a swift action), which this engine's Change schema can't bind to a fixed target.",
+    note: "Modeled as a note-tier variant performance toggle (bardic-performance-variants/shardC.ts): drops inspire competence; stays note-tier because the buffed skill is a live choice made when the performance starts (and swappable as a swift action), which this engine's Change schema can't bind to a fixed target.",
   },
   "bard:masked-performer:masked-talent:5": {
     archetypeId: "bard:masked-performer",
@@ -1719,14 +1707,14 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Multiplicity of Masks",
     level: 18,
     bucket: "subsystem",
-    note: "Now modeled as a note-tier variant performance toggle on the Bardic Performance pool (bardic-performance-variants/shardC.ts): drops mass suggestion, with the ally-disguise mechanic and disbelieve DC spelled out in words.",
+    note: "Modeled as a note-tier variant performance toggle on the Bardic Performance pool (bardic-performance-variants/shardC.ts): drops mass suggestion, with the ally-disguise mechanic and disbelieve DC spelled out in words.",
   },
   "bard:masked-performer:seamless-guise:1": {
     archetypeId: "bard:masked-performer",
     name: "Seamless Guise",
     level: 1,
     bucket: "subsystem",
-    note: "Now modeled with real Changes on the Bardic Performance pool (bardic-performance-variants/shardC.ts): drops countersong, grants a flat +10 untyped bonus on Disguise and Perform (act) checks (RAW states no bonus type, so modeled as untyped per this engine's convention for unnamed bonuses).",
+    note: "Modeled with real Changes on the Bardic Performance pool (bardic-performance-variants/shardC.ts): drops countersong, grants a flat +10 untyped bonus on Disguise and Perform (act) checks (RAW states no bonus type, so modeled as untyped per this engine's convention for unnamed bonuses).",
   },
   "bard:masked-performer:social-grace:2": {
     archetypeId: "bard:masked-performer",
@@ -1740,14 +1728,14 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Stage Combat",
     level: 6,
     bucket: "subsystem",
-    note: "Now modeled as a note-tier variant performance toggle (bardic-performance-variants/shardC.ts): drops suggestion; stays note-tier because the granted combat feat is a live choice made when the performance starts, which this engine's Change schema can't bind to a fixed target.",
+    note: "Modeled as a note-tier variant performance toggle (bardic-performance-variants/shardC.ts): drops suggestion; stays note-tier because the granted combat feat is a live choice made when the performance starts, which this engine's Change schema can't bind to a fixed target.",
   },
   "bard:mute-musician:ceaseless-performance:15": {
     archetypeId: "bard:mute-musician",
     name: "Ceaseless Performance",
     level: 15,
     bucket: "subsystem",
-    note: "The inspire heroics removal (RAW: 'this ability replaces inspire heroics') is now reflected in the archetype's merged toggle list (bardic-performance-variants/shardC.ts), though Ceaseless Performance itself is an action-economy modifier, not a performance, so it grants no toggle of its own.",
+    note: "The inspire heroics removal (RAW: 'this ability replaces inspire heroics') is reflected in the archetype's merged toggle list (bardic-performance-variants/shardC.ts), though Ceaseless Performance itself is an action-economy modifier, not a performance, so it grants no toggle of its own.",
   },
   "bard:mute-musician:dulled-horror:2": {
     archetypeId: "bard:mute-musician",
@@ -1782,7 +1770,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Maddening Harmonics",
     level: 14,
     bucket: "subsystem",
-    note: "Now modeled as a note-tier variant performance toggle on the Bardic Performance pool (bardic-performance-variants/shardC.ts): drops frightening tune, with the confusion-aura save DC spelled out in words.",
+    note: "Modeled as a note-tier variant performance toggle on the Bardic Performance pool (bardic-performance-variants/shardC.ts): drops frightening tune, with the confusion-aura save DC spelled out in words.",
   },
   "bard:mute-musician:mute:1": {
     archetypeId: "bard:mute-musician",
@@ -1796,14 +1784,14 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Song of the Conjunction",
     level: 18,
     bucket: "subsystem",
-    note: "Now modeled as a note-tier variant performance toggle on the Bardic Performance pool (bardic-performance-variants/shardC.ts): drops mass suggestion, with the gate-as-travel effect spelled out in words.",
+    note: "Modeled as a note-tier variant performance toggle on the Bardic Performance pool (bardic-performance-variants/shardC.ts): drops mass suggestion, with the gate-as-travel effect spelled out in words.",
   },
   "bard:mute-musician:symphony-of-silence:3": {
     archetypeId: "bard:mute-musician",
     name: "Symphony of Silence",
     level: 3,
     bucket: "subsystem",
-    note: "Now modeled as a note-tier variant performance toggle on the Bardic Performance pool (bardic-performance-variants/shardC.ts): drops inspire competence. Stays note-tier despite naming the bard as a beneficiary: this engine has no scoped-save Change target for a bonus that applies only against sonic/language-dependent effects (the same gap already noted for Piper's Attention and Dulled Horror).",
+    note: "Modeled as a note-tier variant performance toggle on the Bardic Performance pool (bardic-performance-variants/shardC.ts): drops inspire competence. Stays note-tier despite naming the bard as a beneficiary: this engine has no scoped-save Change target for a bonus that applies only against sonic/language-dependent effects (the same gap already noted for Piper's Attention and Dulled Horror).",
   },
   "bard:negotiator:advanced-talents:10": {
     archetypeId: "bard:negotiator",
@@ -1817,14 +1805,14 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Binding Contract",
     level: 9,
     bucket: "subsystem",
-    note: "Now modeled as a note-tier variant performance toggle on the Bardic Performance pool (bardic-performance-variants/shardC.ts): drops inspire greatness, with the lesser-geas/geas-quest DC and Hit Dice limit spelled out in words.",
+    note: "Modeled as a note-tier variant performance toggle on the Bardic Performance pool (bardic-performance-variants/shardC.ts): drops inspire greatness, with the lesser-geas/geas-quest DC and Hit Dice limit spelled out in words.",
   },
   "bard:negotiator:fast-talk:1": {
     archetypeId: "bard:negotiator",
     name: "Fast Talk",
     level: 1,
     bucket: "subsystem",
-    note: "Now modeled as a note-tier variant performance toggle (bardic-performance-variants/shardC.ts): drops inspire courage, with the listener save-penalty and Appraise-check schedule spelled out in the toggle's context note.",
+    note: "Modeled as a note-tier variant performance toggle (bardic-performance-variants/shardC.ts): drops inspire courage, with the listener save-penalty and Appraise-check schedule spelled out in the toggle's context note.",
   },
   "bard:negotiator:hard-bargainer:1": {
     archetypeId: "bard:negotiator",
@@ -1852,14 +1840,14 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Fingers of Fascination",
     level: 1,
     bucket: "subsystem",
-    note: "Evaluated for the archetype-aware toggle mechanism and intentionally left unmodeled: it alters the fascinate performance in place (adds a phrenology skill-unlock study option) rather than replacing or adding a performance type, so bardic-performance-variants/shardC.ts leaves fascinate untouched for this archetype.",
+    note: "alters the fascinate performance in place (adds a phrenology skill-unlock study option) rather than replacing or adding a performance type, so bardic-performance-variants/shardC.ts leaves fascinate untouched for this archetype — no toggle of its own.",
   },
   "bard:phrenologist:in-your-head:3": {
     archetypeId: "bard:phrenologist",
     name: "In Your Head",
     level: 3,
     bucket: "subsystem",
-    note: "Now modeled as a note-tier variant performance toggle on the Bardic Performance pool (bardic-performance-variants/shardC.ts): drops inspire competence, with the witness-spell mechanic and its DC spelled out in words.",
+    note: "Modeled as a note-tier variant performance toggle on the Bardic Performance pool (bardic-performance-variants/shardC.ts): drops inspire competence, with the witness-spell mechanic and its DC spelled out in words.",
   },
   "bard:phrenologist:phrenological-knowledge:1": {
     archetypeId: "bard:phrenologist",
@@ -1880,7 +1868,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Skull Sonata",
     level: 1,
     bucket: "subsystem",
-    note: "Now modeled as a note-tier variant performance toggle (bardic-performance-variants/shardC.ts): drops inspire courage, with the enemy sonic-damage bonus spelled out in the toggle's context note.",
+    note: "Modeled as a note-tier variant performance toggle (bardic-performance-variants/shardC.ts): drops inspire courage, with the enemy sonic-damage bonus spelled out in the toggle's context note.",
   },
   "bard:phrenologist:skull-versed:2": {
     archetypeId: "bard:phrenologist",
@@ -1901,14 +1889,14 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Leshy Speaker",
     level: 9,
     bucket: "subsystem",
-    note: "Now modeled as a note-tier variant performance toggle on the Bardic Performance pool (bardic-performance-variants/shardC.ts): drops inspire greatness, with the commune-with-nature trigger spelled out in words.",
+    note: "Modeled as a note-tier variant performance toggle on the Bardic Performance pool (bardic-performance-variants/shardC.ts): drops inspire greatness, with the commune-with-nature trigger spelled out in words.",
   },
   "bard:plant-speaker:mystical-allegory:5": {
     archetypeId: "bard:plant-speaker",
     name: "Mystical Allegory",
     level: 5,
     bucket: "subsystem",
-    note: "Now modeled as a note-tier variant performance toggle added to the Bardic Performance pool (bardic-performance-variants/shardC.ts): no base performance is removed (RAW replaces lore master, which isn't tracked here), but the augury/divination/legend-lore schedule is spelled out in words.",
+    note: "Modeled as a note-tier variant performance toggle added to the Bardic Performance pool (bardic-performance-variants/shardC.ts): no base performance is removed (RAW replaces lore master, which isn't tracked here), but the augury/divination/legend-lore schedule is spelled out in words.",
   },
   "bard:plant-speaker:plant-speech:1": {
     archetypeId: "bard:plant-speaker",
@@ -1922,21 +1910,21 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Mass Punchline",
     level: 18,
     bucket: "subsystem",
-    note: "Now modeled as a note-tier variant performance toggle on the Bardic Performance pool (bardic-performance-variants/shardC.ts): drops mass suggestion, with the mass-hideous-laughter mechanic spelled out in words.",
+    note: "Modeled as a note-tier variant performance toggle on the Bardic Performance pool (bardic-performance-variants/shardC.ts): drops mass suggestion, with the mass-hideous-laughter mechanic spelled out in words.",
   },
   "bard:prankster:mock:1": {
     archetypeId: "bard:prankster",
     name: "Mock",
     level: 1,
     bucket: "subsystem",
-    note: "Now modeled as a note-tier variant performance toggle (bardic-performance-variants/shardC.ts): drops fascinate, with the enemy save DC and attack/skill-check penalty spelled out in the toggle's context note.",
+    note: "Modeled as a note-tier variant performance toggle (bardic-performance-variants/shardC.ts): drops fascinate, with the enemy save DC and attack/skill-check penalty spelled out in the toggle's context note.",
   },
   "bard:prankster:punchline:6": {
     archetypeId: "bard:prankster",
     name: "Punchline",
     level: 6,
     bucket: "subsystem",
-    note: "Now modeled as a note-tier variant performance toggle on the Bardic Performance pool (bardic-performance-variants/shardC.ts): drops suggestion, with the hideous-laughter save DC spelled out in words.",
+    note: "Modeled as a note-tier variant performance toggle on the Bardic Performance pool (bardic-performance-variants/shardC.ts): drops suggestion, with the hideous-laughter save DC spelled out in words.",
   },
   "bard:prankster:swap:2": {
     archetypeId: "bard:prankster",
@@ -2097,7 +2085,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Trap Sense",
     level: 3,
     bucket: "situational",
-    note: "the paired Inspire Competence tag this replaces is now actually dropped from the toggle pool (bardic-performance-variants/shardD.ts's sandman entry), on top of this feature's own unrelated Reflex/AC-vs-traps bonus.",
+    note: "the paired Inspire Competence tag this replaces is actually dropped from the toggle pool (bardic-performance-variants/shardD.ts's sandman entry), on top of this feature's own unrelated Reflex/AC-vs-traps bonus.",
   },
   "bard:savage-skald:battle-song:18": {
     archetypeId: "bard:savage-skald",
@@ -2153,7 +2141,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Sea Legs",
     level: 2,
     bucket: "numeric",
-    note: "the flat +2 CMD vs. grapple/overrun/trip is unconditional from 2nd level and now expressible via Change.maneuverCategories, wired in BARD_ARCHETYPE_EFFECTS_EXTRACTED. The save bonus vs. air/water effects and prone-causing effects has no matching SAVE_CATEGORIES entry and stays prose.",
+    note: "the flat +2 CMD vs. grapple/overrun/trip is unconditional from 2nd level and expressible via Change.maneuverCategories, wired in BARD_ARCHETYPE_EFFECTS_EXTRACTED. The save bonus vs. air/water effects and prone-causing effects has no matching SAVE_CATEGORIES entry and stays prose.",
   },
   "bard:sea-singer:sea-shanty:1": {
     archetypeId: "bard:sea-singer",
@@ -2209,7 +2197,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Bardic performance",
     level: 1,
     bucket: "subsystem",
-    note: "the three silver-instrument performances this grants (Break Curse, Holy Vibration, Mass Break Curse) are now modeled as note-tier archetype performance toggles (bardic-performance-variants/shardD.ts); see their own entries.",
+    note: "the three silver-instrument performances this grants (Break Curse, Holy Vibration, Mass Break Curse) are modeled as note-tier archetype performance toggles (bardic-performance-variants/shardD.ts); see their own entries.",
   },
   "bard:silver-balladeer:break-curse-su:6": {
     archetypeId: "bard:silver-balladeer",
@@ -2939,7 +2927,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
  *    the extraction models only PART of a feature's benefits (the other part
  *    being scoped/conditional and dropped, same "model only the modelable
  *    half" posture as the hand-verified table's Hawkeye entry).
- *  - "low": not used this wave.
+ *  - "low": not used here.
  */
 export const BARD_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
   Record<string, ExtractedArchetypeFeatureEffect>

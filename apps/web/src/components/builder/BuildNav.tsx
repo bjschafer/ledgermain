@@ -10,10 +10,10 @@ import { prefersReducedMotion } from "../../state/motion.js";
 import type { BuilderProps } from "./types.js";
 
 /**
- * Section-jump navigation for Build mode (UX audit: "Build-tab navigation +
- * attention badges"). A single `<nav>` whose CSS shape changes at the 940px
- * breakpoint — a sticky vertical rail on wide viewports, a sticky horizontal
- * chip row under that on narrow ones (see styles.css's "Build nav" section).
+ * Section-jump navigation for Build mode. A single `<nav>` whose CSS shape
+ * changes at the 940px breakpoint — a sticky vertical rail on wide viewports,
+ * a sticky horizontal chip row under that on narrow ones (see styles.css's
+ * "Build nav" section).
  *
  * Anchors are `id="section-<id>"` wrapper `div`s that `App.tsx`'s Workbench
  * places around each of the 12 build panels. Active-section tracking uses an

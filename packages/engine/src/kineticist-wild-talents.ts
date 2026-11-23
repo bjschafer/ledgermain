@@ -90,8 +90,8 @@
  * resource row the same way `ElementalDefensePanel` does — rather than
  * through a `Change`, since "heal on activation" isn't a passive number.
  *
- * Flagged near-misses stay display-only, so a future pass doesn't
- * re-litigate them: `earth:earthWalk`, whose overflow bonus lands on
+ * Flagged near-misses stay display-only, each blocked by a missing engine
+ * target: `earth:earthWalk`, whose overflow bonus lands on
  * CMD-vs-two-maneuvers and balance-scoped Acrobatics — maneuver- and
  * task-scoped targets this engine doesn't have, the same class of gap as the
  * save-category near-misses in `oracle-revelations.ts`. `earth:earthClimb`
@@ -113,7 +113,7 @@
  * `mergedKineticistWildTalentCatalog` — still exists for completeness (a
  * vendored entry whose name doesn't normalize-match a hand-authored one falls
  * back to vendored-only display), but every infusion/utility talent this
- * table's 7 elements + universal pool cover is now hand-verified.
+ * table's 7 elements + universal pool cover is hand-verified.
  */
 
 import type { Change, ContextNote, KineticWildTalent, RefData, SourceRef } from "@pf1/schema";
@@ -2752,7 +2752,7 @@ export const KINETICIST_UNIVERSAL_TALENT_IDS: readonly string[] = [
  * comment for why); composite blasts merge separately, through
  * `kineticist-elements.ts`'s `mergedCompositeBlastCatalog`.
  *
- * Collision audit (all 236 hand-authored entries, run against the pinned Pf
+ * Collision check (all 236 hand-authored entries, run against the pinned Pf
  * Data 1e slice): 216 matched a vendored entry by normalized name directly;
  * 20 needed an alias (the hand table's "X, Greater" naming vs. the source's
  * "Greater X" — see `KINETICIST_WILD_TALENT_NAME_ALIASES`). The remaining 7
@@ -2904,7 +2904,7 @@ export function resolveKineticistWildTalent(
  * normalized name, alias-mapped) against a hand-authored entry REPLACED by
  * that hand-authored def (keeping its own `id()` and real mechanics, but
  * carrying the vendored entry's prose/sources along for display); no
- * hand-authored-only entries exist to append per the collision audit above.
+ * hand-authored-only entries exist to append per the collision check above.
  * A caller wanting a "modeled" badge distinguishes a real entry from a
  * vendored-only one by checking whether `KINETICIST_WILD_TALENTS[entry.id]`
  * exists (a vendored-only row's `id` is the RAW dataset key, never a

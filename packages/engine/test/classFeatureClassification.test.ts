@@ -1,5 +1,5 @@
 /**
- * Structural guards for the vendored-class-feature classification audit
+ * Structural guards for the vendored-class-feature classification
  * (`src/class-feature-classification/`): every verdict must still describe a
  * real vendored entry (a refdata bump that rekeys or renames fails loudly,
  * same posture as the racial-trait classification guards), shards must not

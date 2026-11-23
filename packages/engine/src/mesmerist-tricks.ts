@@ -1,7 +1,7 @@
 /**
- * Clean-room PF1 mesmerist Trick table (Occult Adventures), hand- authored
+ * Clean-room PF1 mesmerist Trick table (Occult Adventures), hand-authored
  * from the published rules (verified against aonprd.com's Mesmerist Tricks
- * index and each entry's own page/source citation, 2026-07-08).
+ * index and each entry's own page/source citation).
  *
  * Cadence (PF1 OA RAW, "Tricks": verified against aonprd.com's live
  * Mesmerist class page — "At 1st level, and every 2 levels thereafter, a
@@ -17,14 +17,11 @@
  * `resources.ts`); this table is only the MENU of which trick a given
  * implant applies, not the pool itself.
  *
- * Scope: FULL vendored parity as of the extension — all 44 vendored tricks (30
- * regular + 14 masterful), pooled across every splatbook the pinned data
- * carries (Occult Adventures, Occult Origins, Occult Realms, Heroes of
- * Golarion, Blood of the Beast). The original cut scoped to OCCULT ADVENTURES
- * CORE ONLY (17 regular + 9 masterful, matching the task brief's own worked
- * example list — "Astounding Avoidance, Compel Alacrity, False Flanker,...");
- * a later pass folds in the remaining 18 splatbook tricks for full-catalog parity, same
- * posture as `witch-hexes.ts`'s own extension.
+ * Scope: FULL vendored parity — all 44 vendored tricks (30 regular + 14
+ * masterful), pooled across every splatbook the pinned data carries (Occult
+ * Adventures, Occult Origins, Occult Realms, Heroes of Golarion, Blood of the
+ * Beast): the 17 regular + 9 masterful Occult Adventures core tricks plus the
+ * 18 splatbook additions.
  *
  * Modelling posture (mirrors witch-hexes.ts's honesty bar): every trick here
  * is a TARGET-SCOPED implant/trigger ability — implanted on a chosen creature
@@ -32,8 +29,7 @@
  * (usually a free action on a stated condition) via `actionNote`'s "trigger"
  * half — never a standing Change on the mesmerist's own sheet. So EVERY entry
  * here is `displayOnly: true` with `changes: []`; `actionNote` carries the
- * implant/trigger action economy the task brief calls for, and `summary`
- * carries the effect.
+ * implant/trigger action economy, and `summary` carries the effect.
  */
 
 import type { Change, MesmeristTrick, RefData, SourceRef } from "@pf1/schema";
@@ -423,7 +419,7 @@ export function tricksForTier(tier: MesmeristTrickTier): MesmeristTrickDef[] {
  * picker) and for resolving a picked id back to a definition, mirroring
  * `rage-powers.ts`'s `mergedRagePowerCatalog`/`resolveRagePower` exactly.
  *
- * Collision audit: all 44 hand-authored entries matched a vendored entry by
+ * Collision check: all 44 hand-authored entries matched a vendored entry by
  * normalized name — zero misses, zero aliases needed. Notably "Life Revier"
  * (the `life_revier` id) is NOT a transcription typo — it's the vendored
  * source's own spelling and AoN's own page title for the trick, verified

@@ -148,7 +148,7 @@ describe("VIGILANTE_SOCIAL_TALENTS / VIGILANTE_TALENTS tables", () => {
     expect(talent?.changes).toEqual([{ formula: "4", target: "skill.esc", type: "competence" }]);
   });
 
-  it("Rooftop Infiltrator carries a genuine climbSpeed Change (issue #74 sweep)", () => {
+  it("Rooftop Infiltrator carries a genuine climbSpeed Change", () => {
     const talent = VIGILANTE_TALENTS.rooftopInfiltrator;
     expect(talent?.changes).toEqual([
       { formula: "floor(@attributes.speed.land.total / 2)", target: "climbSpeed", type: "untyped" },
@@ -273,7 +273,7 @@ describe("vigilante talents (collectGrantedFeatures / resolveClassFeatures displ
   });
 });
 
-describe("vigilante talent changes flow through collect.ts (the loop added with the #74 sweep)", () => {
+describe("vigilante talent changes flow through collect.ts (the loop that applies vigilante talent changes)", () => {
   // Rooftop Infiltrator: "gains a climb speed equal to half his base speed"
   // (aonprd.com Vigilante Talents). Human base land 30 -> climb 15.
   it("Rooftop Infiltrator grants a live climb speed of half base land speed via build picks alone", () => {

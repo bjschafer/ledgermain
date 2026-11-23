@@ -10,9 +10,9 @@
  * engine's hardcoded spells-per-day table (`baseSpellsPerDay` in `tables.ts`)
  * with ability bonus spells in its prepared-spells panel.
  *
- * Each pool also exposes `linkedBuffIds` (issue: wire the previously-dead
- * `ClassFeature.grantsBuffs` field) — buffs the pool's power can activate,
- * resolved against `refData.buffs`. Deliberately does NOT drain the pool's
+ * Each pool also exposes `linkedBuffIds` (the `ClassFeature.grantsBuffs`
+ * field) — buffs the pool's power can activate, resolved against
+ * `refData.buffs`. Deliberately does NOT drain the pool's
  * uses when a linked buff is toggled: a barbarian's player counts their own
  * rage rounds, and coupling "buff active" to "1 use spent" would be wrong
  * more often than right (a round of rage maintained ≠ a "use" in the pool's
@@ -504,8 +504,8 @@ export function deriveResourcePools(
     // all (only a bare "Use" activation) — kept hand-authored. Everything
     // else prefers the generic vendored-action-derived detail (Channel
     // Energy's dice/DC, Lay on Hands' healing dice, Acid Dart's ranged-touch
-    // acid damage, ...), which also lifts the old cleric-only gate that left
-    // a paladin's own Channel Positive Energy without any dice line.
+    // acid damage, ...), which is what gives a paladin's own Channel
+    // Positive Energy a dice line too.
     // Antipaladin's Smite Good (tag `smiteGood`) is the same "bare Use, no
     // vendored action data" shape as Smite Evil — mirrored here rather than
     // falling through to `actionBasedDetail` (which would return undefined).
@@ -663,9 +663,9 @@ export function deriveResourcePools(
       feature.tag === "kiPool" &&
       (classTag === "monk" || classTag === "monkUnchained" || classTag === "ninja")
     ) {
-      // Pool-spend toggle tables are empty until a later content wave lands
-      // (see ki-spends.ts) — an empty result stays `undefined` rather than
-      // `[]` so the tracker never renders an empty toggle section.
+      // Ki Pool spend toggles come from ki-spends.ts — an empty result stays
+      // `undefined` rather than `[]` so the tracker never renders an empty
+      // toggle section.
       tableOptions = emptyToUndefined(
         kiSpendToggleOptions(
           classTag,
@@ -969,8 +969,8 @@ const COMPENDIUM_UUID_RE = /^Compendium\.pf1\.[^.]+\.Item\.([^.]+)$/;
  * slice; a handful — Rage, Inspire Courage, Aura of Protection, and hunter's
  * Animal Focus among them — resolve to a real vendored buff.
  *
- * An audit of nine features whose `grantsBuffs` UUIDs do NOT resolve to a
- * buff (7 unique UUIDs, `Spellbooks (ARC/MAG/WIZ)` sharing one): the data
+ * Nine features whose `grantsBuffs` UUIDs do NOT resolve to a buff (7 unique
+ * UUIDs, `Spellbooks (ARC/MAG/WIZ)` sharing one): the data
  * pipeline's `grantsBuffs` field
  * (`transform/classes.ts`) is populated from Foundry's generic
  * `links.supplements` — NOT a buffs-only relation — so it also picks up linked
@@ -1119,8 +1119,8 @@ function pickPrimaryAction(actions: FeatureAction[]): FeatureAction | undefined 
 /**
  * Derive a resource-pool `detail` summary from a class feature's vendored
  * `actions[]` — clean-room formatting over the Foundry actionType/damage/save
- * shape (data, not code; see CLAUDE.md licensing). `undefined` when the
- * feature has no actions, or its primary action has neither damage nor a
+ * shape (data, not code). `undefined` when the feature has no actions, or its
+ * primary action has neither damage nor a
  * save worth showing (e.g. Smite Evil's bare "Use" activation). `dcOverride`
  * passes through to {@link formatSaveLabel} (see `deriveResourcePools`'s doc
  * comment on `abilityDCs`).
@@ -1200,10 +1200,10 @@ function arcaneReservoirRestValue(classLevel: number, featBonus: number, poolMax
  * contributes its `maxDelta` once per occurrence, matching the feats' own
  * "stacks" wording.
  *
- * `FeatPoolEffect.featureTag` may be a single tag or an array of tags
- * (multi-target follow-up — e.g. Extra Lay On Hands' bonus targets BOTH
- * `layOnHands` and `touchOfCorruption`, since RAW it boosts whichever of the
- * two class features the character actually has — a paladin's Lay on Hands, or
+ * `FeatPoolEffect.featureTag` may be a single tag or an array of tags (e.g.
+ * Extra Lay On Hands' bonus targets BOTH `layOnHands` and
+ * `touchOfCorruption`, since RAW it boosts whichever of the two class
+ * features the character actually has — a paladin's Lay on Hands, or
  * an antipaladin's Touch of Corruption). The bonus is recorded under every
  * listed tag; the caller below only ever looks up the ONE tag matching a real
  * granted feature, so recording it under all candidate tags is harmless for

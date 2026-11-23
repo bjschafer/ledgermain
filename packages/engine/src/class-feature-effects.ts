@@ -42,7 +42,7 @@
  * against `RefData.classes[*].features` before being added, not just against
  * the description text.
  *
- * Deliberately NOT promoted, and why (the vendored gap sweep surfaced ~80
+ * Deliberately NOT promoted, and why (a vendored gap scan surfaced ~80
  * candidates; most fail one of these):
  * - Ally/mount-only, not a bonus to the character carrying the feature:
  *   cavalier/samurai Banner and Greater Banner, paladin Aura of

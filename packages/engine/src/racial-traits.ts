@@ -664,15 +664,15 @@ export const FLEXIBLE_ABILITY_SUPPRESS_TARGET = "flexibleAbility";
 /**
  * Verified mapping from a race's STANDARD trait name (as it appears in the
  * vendored catalog's `RacialTrait.replacedTraitNames`) to the `Race.changes`
- * targets that standard trait contributes — audited by hand against
+ * targets that standard trait contributes — verified by hand against
  * `races.json`'s change lists exactly like the core-race `suppressTargets`
- * audit above. `collect.ts` uses this to drop a replaced standard trait's
+ * mapping above. `collect.ts` uses this to drop a replaced standard trait's
  * structured bonus while a vendored alternate that names it is active, so
  * e.g. an Aasimar taking Deathless Spirit stops showing Celestial
  * Resistance's acid/cold/electricity 5 alongside it.
  *
- * Deliberately unmapped names, recorded here so the next audit doesn't
- * re-litigate them:
+ * Deliberately unmapped names, recorded here so they aren't reconsidered
+ * without new evidence:
  *   - "Base Statistics" is safe to map ONLY for a race where every entry
  *     naming it carries a real replacement ability array — suppressing the
  *     standard ability changes with nothing landing would zero the
@@ -695,7 +695,7 @@ export const FLEXIBLE_ABILITY_SUPPRESS_TARGET = "flexibleAbility";
  *     `dex` -2) don't even match its own prose ("+2 Str, +2 Dex, -2 Cha") —
  *     a vendored data inconsistency, not a clean swap, so it's left alone
  *     rather than risk compounding it. One Changeling wrinkle of the same
- *     kind, recorded for the next audit: the Winter-Born (Snow May) BUNDLE's
+ *     kind: the Winter-Born (Snow May) BUNDLE's
  *     prose says "+2 Int, +2 Cha, -2 Con" while its "Ability Modifiers
  *     (Changeling - Snow May)" sibling (the entry that actually applies)
  *     ships +2 Int/+2 Wis/-2 Con — unresolved against the printed book, and
@@ -749,7 +749,7 @@ export const FLEXIBLE_ABILITY_SUPPRESS_TARGET = "flexibleAbility";
  *     modeled as a `Race.contextNotes` line (+4 CMD vs. bull rush/trip;
  *     +4 Stealth in forests), not a `Race.changes` entry — this suppression
  *     mechanism only reaches `changes` targets, so it can't touch either.
- *     Also contextNotes-only, audited the same way: Gillman "Enchantment
+ *     Also contextNotes-only, verified the same way: Gillman "Enchantment
  *     Resistance", Grippli "Camouflage", Strix "Nocturnal" and "Suspicious",
  *     Wayang "Shadow Resistance", Nagaji "Resistant", Syrinx "Nocturnal" and
  *     "Pride", Svirfneblin "Hatred", Aquatic Elf "Elven Magic", and
@@ -1078,14 +1078,14 @@ export function vendoredTraitSuppressTargets(
  * analogue of {@link VENDORED_STANDARD_TRAIT_TARGETS} above, covering the
  * standard traits that carry no `Race.changes` entry at all (a situational
  * reminder rather than a flat number), so a vendored alternate that replaces
- * one has something to retire. Audited by hand against `races.json`'s
+ * one has something to retire. Verified by hand against `races.json`'s
  * `contextNotes` arrays the same way as the structured map: every entry below
  * cites the exact vendored text and the alternate(s) whose own
  * `replacedTraitNames` (verified against `racial-traits.json`) name it.
  *
  *   - Duergar "Stability" and Dwarf "Stability": both `{cmd, "+4 Racial vs
  *     Bull Rush and Trip while on ground"}` — the identical note text (a
- *     Duergar's own write-up borrows the dwarf's wholesale), now promoted to
+ *     Duergar's own write-up borrows the dwarf's wholesale), promoted to
  *     a real `maneuverCategories` bonus by `race-maneuver-notes.ts`, so
  *     unlike every other entry in this map it retires a NUMBER, not just a
  *     reminder. Duergar's copy is replaced (alongside the already-structured
@@ -1149,8 +1149,7 @@ export function vendoredTraitSuppressTargets(
  *     Negative Energy and Death effects"}`. Replaced by "Yamaraj's Baliff" and
  *     "Olethros's Agent".
  *
- * A full sweep of every other `replacedTraitNames` entry across the vendored
- * catalog turned up nothing else contextNotes-only and unmapped: the bulk are
+ * Every other `replacedTraitNames` entry across the vendored catalog is
  * either prose traits already recorded unmapped in the module doc comment
  * above, or one of the seven core races' (Elf/Dwarf/Gnome/Halfling) dozens of
  * regional-variant/heritage bundles — those four races are handled entirely

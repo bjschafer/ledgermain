@@ -11,10 +11,9 @@ import {
 
 /**
  * Coverage for the vendored-catalog overlay — mirrors
- * `witchHexCatalog.test.ts` exactly. The table reached full vendored parity in
- * a later follow-up (44 -> 65 entries); all 65 matched a vendored entry by
- * name, `advancedTalents` ("Advanced Talents") via the alias to the vendored
- * "Advanced Talent" (singular).
+ * `witchHexCatalog.test.ts` exactly. The table has full vendored parity: all
+ * 65 entries matched a vendored entry by name, `advancedTalents` ("Advanced
+ * Talents") via the alias to the vendored "Advanced Talent" (singular).
  */
 const ref = loadRefData();
 
@@ -48,7 +47,7 @@ describe("mergedNinjaTrickCatalog", () => {
   });
 
   it("no vendored-only tricks remain — the fallback path only exists for a future data bump", () => {
-    // Full hand-table parity as of a later follow-up.
+    // Full hand-table parity.
     for (const entry of merged) {
       expect(NINJA_TRICKS[entry.id], entry.id).toBeDefined();
     }
@@ -70,8 +69,8 @@ describe("resolveNinjaTrick", () => {
     // Confirms the fallback path still resolves a real (display-only)
     // definition for a future data bump this hand table hasn't caught up
     // to yet — even though `arcaneBackfire` (this trick's hand-authored id)
-    // now carries the real mechanics, matched into the picker catalog by
-    // name rather than by id.
+    // carries the real mechanics, matched into the picker catalog by name
+    // rather than by id.
     const trick = resolveNinjaTrick("arcane_backfire", ref);
     expect(trick?.displayOnly).toBe(true);
     expect(trick?.name).toBe("Arcane Backfire");

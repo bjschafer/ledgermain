@@ -1,6 +1,6 @@
 /**
- * Clean-room PF1 occultist implement-school table (Occult Adventures, DESIGN
- * §6): hand-authored, mirroring `psychic-disciplines.ts`'s posture exactly —
+ * Clean-room PF1 occultist implement-school table (Occult Adventures):
+ * hand-authored, mirroring `psychic-disciplines.ts`'s posture exactly —
  * IMPLEMENTS' data provenance is the same "vendored but not linked from the
  * class def" case documented there. The vendored Foundry pack DOES ship 8
  * `*-resonant-school.*.yaml` standalone entries (one per school), but each
@@ -198,7 +198,7 @@ export interface OccultistSchoolDef {
    * pool, miss-chance %, spell-damage, or a CL bonus scoped to a
    * conjuration-only spell-duration subset this engine's single caster-level
    * stat can't express; see this file's header for the per-school detail).
-   * Marks the entry as triaged for the mech-coverage auditor, which
+   * Marks the entry as triaged for `scripts/mech-coverage.ts`, which
    * otherwise has no way to see that the ruling was deliberate.
    */
   displayOnly?: boolean;
@@ -825,7 +825,7 @@ export const OCCULTIST_PHYSICAL_ABILITIES: readonly AbilityId[] = ["str", "dex",
  * prose attached) and a vendored-only stub branch (`vendoredOnly: true`, name
  * + prose only).
  *
- * Collision audit: all 8 hand-authored core schools matched a vendored entry
+ * Collision check: all 8 hand-authored core schools matched a vendored entry
  * by normalized name — zero misses, zero aliases needed. The 4 vendored-only
  * entries are the "Psychic Anthology" Panoply variant schools (Mage's
  * Paraphernalia, Performer's Accoutrements, Saint's Holy Regalia, Trappings

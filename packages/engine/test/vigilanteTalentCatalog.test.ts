@@ -16,10 +16,10 @@ import {
 /**
  * Coverage for the vendored-catalog overlay — mirrors
  * `ragePowerCatalog.test.ts` and `witchHexCatalog.test.ts`, for BOTH
- * independent vigilante talent pools. Full hand-table parity as of the later catalog pass
- * follow-up: all 46 hand-authored social talents match a vendored entry by
- * name, except `seamlessShapechanger` ("Seamless Shapechanger"), which needed
- * an alias to match the vendored "Seemless Shapechanger" (source typo); all 81
+ * independent vigilante talent pools. Full hand-table parity: all 46
+ * hand-authored social talents match a vendored entry by name, except
+ * `seamlessShapechanger` ("Seamless Shapechanger"), which needed an alias to
+ * match the vendored "Seemless Shapechanger" (source typo); all 81
  * hand-authored vigilante talents match, except `evasion` ("Evasion"), which
  * needed an alias to match the vendored "Evasive".
  */

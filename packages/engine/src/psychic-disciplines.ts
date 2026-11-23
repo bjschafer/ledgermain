@@ -2,29 +2,28 @@
  * Clean-room PF1 psychic discipline table (Occult Adventures):
  * hand-authored, mirroring `oracle-mysteries.ts`'s posture exactly — a
  * discipline's BONUS SPELLS and PHRENIC POOL ABILITY are the only parts of
- * "Psychic Discipline" that are structured/tabular upstream; DISCIPLINE
- * POWERS (each discipline's 1st/5th/13th-level abilities) and PHRENIC
- * AMPLIFICATIONS (the psychic's own menu of choosable spell-modifying
- * powers, picked at 1st, 3rd, and every 4 levels thereafter) are
- * prose-heavy, genuinely choice-bearing content — out of scope, same as
- * Oracle Revelations / Arcanist Exploits.
+ * "Psychic Discipline" that are structured/tabular upstream. DISCIPLINE
+ * POWERS (each discipline's 1st/5th/13th-level abilities) are prose-heavy,
+ * genuinely choice-bearing content, hand-authored below in `powers`;
+ * PHRENIC AMPLIFICATIONS (the psychic's own menu of choosable
+ * spell-modifying powers, picked at 1st, 3rd, and every 4 levels thereafter)
+ * live in `phrenic-amplifications.ts`.
  *
  * Scope: all 23 published psychic disciplines, both the 12 core Occult
  * Adventures ones (Abomination, Dream, Enlightenment, Faith, Ferocity,
  * Haunted, Lore, Pageantry, Pain, Rebirth, Self-Perfection, Tranquility) and
  * the 11 later-splatbook ones the vendored Foundry pack also carries
  * (Bleaching, Hag-Called, Mindtech, Psychedelia, Rapport, Rivethun, Shadow,
- * Sorrow, Superiority, Symbiosis, Warp) — unlike `oracle-mysteries.ts`, whose
- * later-splatbook mysteries stay out of scope, every discipline needed its
- * own hand-authored row regardless of book, since none of the 23 are linked
- * from the class def (see provenance note below).
+ * Sorrow, Superiority, Symbiosis, Warp). Every discipline needed its own
+ * hand-authored row regardless of book, since none of the 23 are linked from
+ * the class def (see provenance note below).
  *
  * Data provenance — the same unusual case as oracle mysteries: the vendored
  * pack DOES carry real structured content for this, just not linked from the
  * Psychic class def (the class only links the generic "Psychic Discipline"
  * stub feature, id `BOUqxGDega0y1JOX` — the 26 per-discipline YAMLs came
  * through the transform as standalone entries not referenced by any
- * `ClassFeatureGrant`, hence hand-authoring here instead of a normal
+ * `ClassFeatureGrant`, hence a hand-authored table here instead of a normal
  * `RefData.classFeatures` derivation):
  *   - `phrenicPoolAbility` is read VERBATIM from each discipline's vendored
  *     "<b>Phrenic Pool Ability:</b> Wisdom|Charisma" prose line. NOTE: the
@@ -55,27 +54,27 @@
  *     spellcasting.ts`) rather than reusing `mysterySpellsKnown`'s. Unlike
  *     mysteries, disciplines grant no class skills.
  *
- * `powers` (previously deferred): each discipline's "Discipline Powers"
- * sub-feature, hand-authored from aonprd.com's individual discipline pages
- * (`PsychicDisciplinesDisplay.aspx?ItemName=<Name>`, verified 2026-07-08 for
- * the 12 core disciplines and 2026-08-07 for the 11 splatbook ones) — NOT
- * vendored anywhere (the cached `*-discipline.*.yaml` carries only the
- * Phrenic Pool Ability/Bonus Spells prose already mined above, confirmed by
- * direct inspection: no Discipline Powers text at all). PF1 RAW grants these
- * automatically at 1st, 5th, and 13th psychic level to whichever discipline is
- * chosen (not a budgeted pick — same "automatic once you qualify" shape as a
- * sorcerer bloodline power); some disciplines name two powers at 1st level
- * (both un-numbered on the same page, e.g. Dream's Dream Leech + Oneiromancy).
+ * `powers`: each discipline's "Discipline Powers" sub-feature, hand-authored
+ * from aonprd.com's individual discipline pages
+ * (`PsychicDisciplinesDisplay.aspx?ItemName=<Name>`, verified against the live
+ * pages) — NOT vendored anywhere (the cached `*-discipline.*.yaml` carries
+ * only the Phrenic Pool Ability/Bonus Spells prose already mined above,
+ * confirmed by direct inspection: no Discipline Powers text at all). PF1 RAW
+ * grants these automatically at 1st, 5th, and 13th psychic level to whichever
+ * discipline is chosen (not a budgeted pick — same "automatic once you
+ * qualify" shape as a sorcerer bloodline power); some disciplines name two
+ * powers at 1st level (both un-numbered on the same page, e.g. Dream's Dream
+ * Leech + Oneiromancy).
  * Modelling posture mirrors `ORACLE_REVELATIONS`'/`WITCH_HEXES`' honesty bar:
  * almost every power here is a swift-action/limited-use/passive-substitution
  * ability with no flat always-on number this engine's `Change` pipeline could
  * safely apply unconditionally — those stay note-tier `GrantedFeature`s
  * (`archetypes.ts`'s `collectGrantedFeatures`, `origin.kind: "discipline"`)
  * with a summary only, same posture as a shaman's spirit ability. A handful
- * (promotion audit, verified 2026-07-29 for the core 12 and 2026-08-07 for
- * the 11 splatbook disciplines) genuinely are unconditional and always-on
- * once gained, so they additionally carry a real `changes` array collected
- * the same way `bloodline.powers`/`bloodragerBloodline.powers` are (see
+ * (verified against the vendored prose and aonprd.com) genuinely are
+ * unconditional and always-on once gained, so they additionally carry a real
+ * `changes` array collected the same way
+ * `bloodline.powers`/`bloodragerBloodline.powers` are (see
  * `collect.ts`'s psychic discipline power loop): Faith's Resilience of the
  * Faithful (resistance bonus on all saves), Rebirth's Past-Life Memories
  * (flat Knowledge bonus), Ferocity's Enhanced Senses (scent — its
@@ -1166,7 +1165,7 @@ export const PSYCHIC_DISCIPLINE_TAGS: readonly string[] = DISCIPLINE_LIST.map((d
  *     this branch honestly (no fabricated pool ability, no empty bonus-spell
  *     list presented as if it were complete).
  *
- * Collision audit: all 23 hand-authored tags matched a vendored entry by
+ * Collision check: all 23 hand-authored tags matched a vendored entry by
  * normalized name — zero misses, zero aliases needed, so no discipline is
  * `vendoredOnly: true` today. The branch stays in place for the (currently
  * hypothetical) case where the vendored pack ever adds a 24th discipline

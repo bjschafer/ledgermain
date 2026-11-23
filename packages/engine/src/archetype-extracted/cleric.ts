@@ -1,12 +1,12 @@
 /**
- * Cleric's slice of the pipeline (2026-08-08). Every vendored cleric
+ * Cleric's slice of the pipeline. Every vendored cleric
  * archetype feature (137 features, id prefix `cleric:`) was read in full and
  * bucketed as `numeric` / `situational` / `subsystem` / `blocked`, following
- * the same methodology the magus/fighter/barbarian passes already validated.
+ * the methodology in `magus.ts`/`fighter.ts`/`barbarian.ts`.
  * Per the per-class file convention (`index.ts`'s doc comment), this file
  * owns BOTH of cleric's pipeline artifacts.
  *
- * ── Cleric-specific mechanical facts this pass relies on ──────────────────
+ * ── Cleric-specific mechanical facts this classification relies on ────────
  *
  * 1. **Domains and domain powers are their own vendored subsystem.** Any
  *    feature that restricts, swaps, adds, or reweights a domain (forcing a
@@ -40,11 +40,12 @@
  *    feature's own note for whether it's covered there.
  * 4. **Bardic Performance grafts are `subsystem`.** Evangelist's Sermonic
  *    Performance grants bard performances (Countersong, Fascinate, Inspire
- *    Courage/Greatness/Heroics) wholesale. `bard.ts`'s own extraction pass
- *    already established that bardic performance modifications are always
- *    `subsystem` (no generic activated-performance buff mechanism exists in
- *    this engine); the same posture applies here since these are the
- *    identical vendored abilities, just granted to a cleric.
+ *    Courage/Greatness/Heroics) wholesale. `bard.ts`'s rule: a bardic
+ *    performance modification is always `subsystem`, because the engine's
+ *    toggle mechanism only activates an existing vendored buff and a graft
+ *    has no buff of its own to hang a Change on. The same posture applies
+ *    here since these are the identical vendored abilities, just granted to
+ *    a cleric.
  * 5. **Ally-only bonuses are never extracted**, per the established ruling
  *    (`class-feature-effects.ts`'s "Deliberately NOT promoted" list): a
  *    feature whose number only ever lands on an ally, a summoned/bonded
@@ -52,7 +53,7 @@
  *    `subsystem`, regardless of how clean the formula is. A mixed feature
  *    that grants an ally bonus AND an unconditional self bonus in the same
  *    sentence would be split (self half extracted, ally half noted) — no
- *    cleric archetype feature in this audit needed that split; every
+ *    cleric archetype feature needed that split; every
  *    ally-facing number found here is either purely ally-scoped or bundled
  *    with an activation that already disqualifies it on its own.
  * 6. **Two ids are already hand-verified** in `archetype-effects.ts`:
@@ -71,7 +72,7 @@
  *    or the extraction keeps only one clause of a multi-clause sentence
  *    (dropping a second, unmodelable half) and that drop takes a small
  *    interpretive step.
- *  - "low": not used in this pass — anything that would rate `low` is
+ *  - "low": not used here — anything that would rate `low` is
  *    bucketed `blocked` instead.
  */
 
@@ -386,7 +387,7 @@ export const CLERIC_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Devoted Domain",
     level: 1,
     bucket: "subsystem",
-    note: "restructures domains into a devoted domain plus Deific Obedience boons — domain subsystem, boons deferred (class note 1)",
+    note: "restructures domains into a devoted domain plus Deific Obedience boons — domain subsystem, boons unmodeled (class note 1)",
   },
   "cleric:divine-paragon:divine-brand:1": {
     archetypeId: "cleric:divine-paragon",
@@ -409,7 +410,7 @@ export const CLERIC_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Divine Hexes",
     level: 3,
     bucket: "subsystem",
-    note: "grants access to the witch hex list — hex subsystem, deferred the same as witch archetypes",
+    note: "grants access to the witch hex list — hex subsystem, unmodeled the same as witch archetypes",
   },
 
   // ── cleric:divine-strategist ──
@@ -1135,7 +1136,7 @@ export const CLERIC_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
  * Cleric's Breadth of Knowledge and Crusader's Bonus Feat — are already
  * hand-verified and intentionally NOT duplicated here, see this file's
  * header comment note 6). Cleric's kit leans heavily on domains (an entirely
- * deferred subsystem), an activated Channel Energy whose dice/uses
+ * unmodeled subsystem), an activated Channel Energy whose dice/uses
  * progression is hardcoded elsewhere, and grafted bardic performances — all
  * of which are `subsystem`/`situational` by this file's own class notes.
  *
@@ -1186,7 +1187,7 @@ export const CLERIC_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
   // action-economy grant, the ally initiative bonus (ally-only, per this
   // file's class note 5), and the 20th-level "automatically a natural 20"
   // clause (an absolute effect, not a modifier — same posture as Kensai's
-  // Iaijutsu Master in the magus pilot) are dropped.
+  // Iaijutsu Master in `magus.ts`) are dropped.
   "cleric:divine-strategist:master-tactician:1": {
     changes: [c("floor(@class.unlevel / 2)", "init")],
     detail: (level) =>
@@ -1259,8 +1260,8 @@ export const CLERIC_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
   // Mendevian Priest's "Teamwork Feat" grants a flat, unconditional
   // bonus-feat count from a restricted list: one at 4th level, one more
   // (running total 2) at 8th — no further scaling stated. The restricted
-  // list itself isn't modeled, only the count, same posture as the magus
-  // pilot's Iron-Ring-Striker Bonus Feat entry.
+  // list itself isn't modeled, only the count, same posture as the
+  // Iron-Ring-Striker Bonus Feat entry in `magus.ts`.
   "cleric:mendevian-priest:teamwork-feat:4": {
     changes: [c("if(gte(@class.unlevel, 8), 2, if(gte(@class.unlevel, 4), 1, 0))", "bonusFeats")],
     detail: (level) => `${level >= 8 ? 2 : level >= 4 ? 1 : 0} bonus feat(s) (restricted list)`,

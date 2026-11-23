@@ -192,8 +192,9 @@ export function collectGrantedFeatures(doc: CharacterDoc, refData: RefData): Gra
  * Training's `mDexA`/`acpA`, Diamond Soul's `spellResist` — stop contributing
  * the moment the swap actually takes effect; see `collect/class-features.ts`'s
  * `collectGrantedClassFeatures`. Without this function, `collectModifiers`
- * iterates `classDef.features` with no awareness of `doc.build.archetypes`, so
- * a swapped-out feature's changes would keep applying).
+ * would iterate `classDef.features` with no awareness of
+ * `doc.build.archetypes`, so a swapped-out feature's changes would keep
+ * applying).
  */
 export function activeArchetypeSwaps(doc: CharacterDoc, refData: RefData): Map<string, string> {
   const replacedByUuid = new Map<string, string>();
@@ -397,7 +398,7 @@ const ADDITIONAL_SWAP_TARGETS: ReadonlyMap<string, readonly string[]> = new Map(
   // and greater spell combat" but the vendored pairing links only to Improved
   // Spell Combat. Both base features carry `changes: []` (prose-only
   // class-abilities entries), so this is purely a classFeatures display fix —
-  // Greater Spell Combat now correctly shows struck through too, instead of
+  // Greater Spell Combat shows struck through too, instead of
   // appearing (wrongly) still available to a myrmidarch.
   [
     "magus:myrmidarch:armor-training:8",
@@ -490,8 +491,8 @@ export function barbarianDamageReductionReplaced(doc: CharacterDoc, refData: Ref
  * True when the character's antipaladin Damage Reduction (Aura of Depravity,
  * 17th level — `defenses.ts`'s hardcoded `antipaladinDamageReduction` table,
  * not a vendored `Change`; see that function's doc comment) has been replaced
- * by an active archetype at the character's current antipaladin level. Found
- * via an audit of the vendored antipaladin archetype slice (B): Insinuator's
+ * by an active archetype at the character's current antipaladin level.
+ * Verified against the vendored antipaladin archetype slice: Insinuator's
  * "Aura of Indomitability" (17th level) carries a `pairedBaseFeatureUuid`
  * pointing at Aura of Depravity's uuid — a clean 1:1 swap, same shape as
  * `barbarianDamageReductionReplaced`'s common case (no ambiguous unpaired
@@ -526,9 +527,9 @@ export function antipaladinDamageReductionReplaced(doc: CharacterDoc, refData: R
  * Training/Damage Reduction, where every real archetype pairing genuinely
  * does replace the mechanic). Suppressing the picker for those non-replacing
  * archetypes would incorrectly zero out an unrelated fighter's weapon
- * training entirely. This set was hand-built from the same prose-reading
- * pass that produced the extracted entries above — see each id's
- * classification entry for the reasoning.
+ * training entirely. This set comes from the same prose reading as the
+ * extracted entries above — see each id's classification entry for the
+ * reasoning.
  *
  * `fighter:brawler` is here because its Close Combatant feature genuinely
  * takes over the feature slot, not because of the generic swap check — even

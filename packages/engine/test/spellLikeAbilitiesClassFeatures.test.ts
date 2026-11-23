@@ -249,7 +249,7 @@ describe("Souldrinker, Enervation (2nd): tiered per-day formula scaling by class
 });
 
 describe("Stargazer Sidereal Arcana: deliberately left unwired (auto-listed choice, no pick-tracking)", () => {
-  // Regression guard for the near-miss this wave caught: all twelve arcana
+  // Regression guard for a near-miss: all twelve arcana
   // (Arcana: The Rider at 4th) are vendored as automatic grants on every
   // stargazer, so wiring either would have handed every stargazer a free
   // phantom steed / cultural adaptation regardless of which arcanum they

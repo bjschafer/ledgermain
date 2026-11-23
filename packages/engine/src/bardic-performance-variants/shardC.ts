@@ -12,8 +12,7 @@
  *     spent (a single-target activation mode for any performance she
  *     already knows, plus flat DC/bonus increments on several of them) —
  *     not a replacement or addition of one specific performance type, so it
- *     doesn't fit this table's per-tag shape. See the file-level flag in the
- *     wave's report for detail.
+ *     doesn't fit this table's per-tag shape.
  *   - Provocateur's three candidate features (Calumny, Damning Performance,
  *     Provocateur) are all either a passive skill substitution with no
  *     bardic-performance cost, an add-on effect layered onto an
@@ -319,7 +318,7 @@ export const SHARD_C_VARIANTS: ArchetypePerformanceVariant[] = [
         // This engine has no scoped-save target ("vs sonic/language
         // dependent effects only"), the same gap that leaves Luring Piper's
         // Piper's Attention and Mute Musician's own Dulled Horror as
-        // situational elsewhere in this wave, so this stays note-tier even
+        // situational elsewhere in this shard, so this stays note-tier even
         // though it names the bard as a beneficiary.
         changes: [],
         contextNotes: [

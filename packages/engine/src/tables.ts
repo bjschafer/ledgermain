@@ -543,8 +543,8 @@ const PALADIN_RANGER_SPELLS_PER_DAY: readonly (readonly (number | null)[])[] = [
  * clean-room table from the published rules, open game content; cross-checked
  * against d20pfsrd.com and aonprd.com, both matching exactly. Note: this
  * confirms bards do NOT get a 0-level column in the official "Spells per Day"
- * table, unlike a first-pass assumption that `cantrips: true` implied one —
- * verified directly against the published table header and rows.)
+ * table, even though `cantrips: true` might suggest one — verified directly
+ * against the published table header and rows.)
  */
 const BARD_SPELLS_PER_DAY: readonly (readonly (number | null)[])[] = [
   /* L1  */ [null, 1, null, null, null, null, null, null, null, null],
@@ -1453,8 +1453,8 @@ export function barbarianDamageReduction(barbarianLevel: number): BarbarianDrDet
 /**
  * Fighter's Weapon Training, clean-room from the published PF1 rules (the
  * class feature's `changes[]` is empty upstream, same posture as
- * `barbarianDamageReduction` — the "Fighter weapon training group choices",
- * now built).
+ * barbarianDamageReduction` — the "Fighter weapon training group choices"
+ * are modeled below).
  *
  * "Starting at 5th level, a fighter can select one group of weapons... he
  * gains a +1 bonus on attack and damage rolls. Every four levels thereafter
@@ -1701,10 +1701,8 @@ export function mindBurnDetailLabel(kineticistLevel: number, currentBurn: number
  *
  * `cap = floor(kineticistLevel / 3)` (verified against aonprd.com and
  * cross-checked against the Psychokinetcist's identically-scaled Mental
- * Overflow, `archetype-effects.ts`'s `Math.floor(level / 3)`, 2026-07-25):
- * +1 at 3rd, +2 at 6th, +3 at 9th, ..., +6 at 18th-20th. A previous version
- * of this function read `1 + floor(level / 3)`, one point too high at every
- * level (+2 at 3rd instead of +1) — fixed here.
+ * Overflow, `archetype-effects.ts`'s `Math.floor(level / 3)`):
+ * +1 at 3rd, +2 at 6th, +3 at 9th, ..., +6 at 18th-20th.
  */
 export interface KineticOverflowBonus {
   /** `floor(kineticistLevel / 3)`. */
@@ -1734,7 +1732,7 @@ export function kineticOverflowLabel(kineticistLevel: number, currentBurn: numbe
 
 /**
  * Elemental Overflow's 6th/11th/16th-level upgrades, clean-room from the
- * published rules (verified aonprd.com, 2026-07-25):
+ * published rules (verified against aonprd.com):
  *   - 6th: "whenever she has at least 3 points of burn, the kineticist gains
  *     a +2 size bonus to two physical ability scores of her choice. She also
  *     receives a chance to ignore the effects of a critical hit or sneak

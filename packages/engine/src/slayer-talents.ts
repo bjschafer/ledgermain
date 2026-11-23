@@ -1,6 +1,6 @@
 /**
- * Clean-room PF1 slayer talent table (Advanced Class Guide + splatbooks, the
- * hand-table follow-up): hand-authored from the published rules (verified
+ * Clean-room PF1 slayer talent table (Advanced Class Guide + splatbooks):
+ * hand-authored from the published rules (verified
  * against `legacy.aonprd.com`'s book-scoped ACG Slayer class page for the core
  * "Slayer Talents"/"Advanced Talents"/"Studied Target" class features, and
  * `aonprd.com`'s compiled "Talents - Slayer" index for the splatbook-sourced
@@ -14,24 +14,23 @@
  * (unlike `rage-powers.ts`/`witch-hexes.ts`, which scope down to a curated
  * "core" subset of a much larger published catalog, the vendored slayer
  * talent list is small enough — 43 entries after junk filtering — to cover
- * completely in one pass).
+ * completely).
  *
  * IDs deliberately reuse the vendored snake_case slug (`aligned_sneak_attack`,
  * `poison_use`,...) rather than inventing new camelCase ids the way
  * `rage-powers.ts`/`witch-hexes.ts` do — UNLIKE those two files, this one
- * already shipped a live, vendored-only picker (`SlayerTalentPicker`) that
+ * has a live, vendored-only picker (`SlayerTalentPicker`) that
  * stores picks in `doc.build.slayerTalents` keyed by the vendored id. Reusing
  * the same ids means `resolveSlayerTalent`'s hand-table-first lookup resolves
- * an ALREADY-STORED pick from before this overlay existed without any
- * migration, and the id-vs-name double-match (see the overlay section below)
+ * an ALREADY-STORED pick without any migration, and the id-vs-name
+ * double-match (see the overlay section below)
  * is redundant-by-construction rather than load-bearing — kept anyway for
  * consistency with the sibling files and as a safety net if a future
  * `refdata-update` ever reshuffles the vendored slugs.
  *
  * `category`/`nameSuffix` are copied verbatim from the vendored entry (not
- * re-derived) since the hand-authored table was built by reading the same
- * source data — `category` still drives `isAdvancedSlayerTalent` exactly as
- * before.
+ * re-derived) since the hand-authored table reflects the same source data —
+ * `category` still drives `isAdvancedSlayerTalent` exactly as before.
  *
  * Modelling posture (mirrors `witch-hexes.ts`/`rage-powers.ts`'s honesty
  * bar): the overwhelming majority of slayer talents are sneak-attack riders,
@@ -45,7 +44,7 @@
  *     Ally, Swallow Reversal,...): the slayer's own "Studied Target" class
  *     feature (a scaling bonus vs. a chosen foe, ACG p. 51) is not itself
  *     modeled as a toggle/buff anywhere in this engine — confirmed via the
- *     Nature Fang druid archetype's own extraction audit
+ *     Nature Fang druid archetype's own extraction note
  *     (`archetype-extracted/druid.ts`'s `druid:nature-fang:studied-target:1`
  *     entry, bucketed `subsystem`, "no Change-shaped number to extract"). A
  *     rider on an unmodeled base mechanic has nothing to ride on, so it stays
@@ -597,14 +596,14 @@ export const SLAYER_TALENT_IDS: readonly string[] = TALENT_LIST.map((t) => t.id)
  * Matching is by NORMALIZED NAME (same convention as every sibling overlay),
  * though in practice every hand-authored id here IS the vendored id already
  * (see file doc comment), so `resolveSlayerTalent`'s id-first lookup and this
- * name match agree for all 43 entries — verified during authoring, not
- * merely assumed. `SLAYER_TALENT_NAME_ALIASES` is empty for the same reason
+ * name match agree for all 43 entries — verified against the vendored data,
+ * not merely assumed. `SLAYER_TALENT_NAME_ALIASES` is empty for the same reason
  * `RAGE_POWER_NAME_ALIASES`/`HEX_NAME_ALIASES` start empty: kept as a place
- * for a FUTURE hand-authored addition (a new splatbook talent) to record any
+ * for a future hand-authored addition (a new splatbook talent) to record any
  * drift, should one ever occur.
  */
 
-/** Alias map for a hand-authored id whose vendored-catalog counterpart uses a different name — see the collision-audit comment above. Empty today (no drift found); kept for a future addition. */
+/** Alias map for a hand-authored id whose vendored-catalog counterpart uses a different name — see the collision check above. Empty (no drift found); kept for a future addition. */
 const SLAYER_TALENT_NAME_ALIASES: Record<string, string> = {};
 
 function normalizeTalentName(name: string): string {

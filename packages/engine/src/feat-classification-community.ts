@@ -1,29 +1,29 @@
 /**
  * Classification of every feat in the vendored pack NOT covered by
- * feat-classification.ts's frozen 390-entry system-pack audit: the ~3,170
+ * feat-classification.ts's 390-entry system-pack classification: the ~3,170
  * feats merged from the community pf1-content module. Same bucket rubric as
- * that file (see its header); kept separate so the original audit stays
- * stable and this sweep's own methodology stays honestly distinguishable.
+ * that file (see its header); kept separate because the two packs are
+ * classified at different granularity (per-feat prose vs. compact table).
  *
- * Methodology (disclosed, like the original's): every feat's vendored
- * description was read and bucketed individually. Every numeric /
- * choice-numeric / pool entry's draft was then machine-verified (the
- * provenance quote must be a verbatim contiguous substring of the vendored
- * description, and every target / bonus type / formula / pool tag is checked
- * against the engine's actual vocabulary) and hand-reviewed before being
- * wired into FEAT_EFFECTS_EXTRACTED_COMMUNITY (feat-effects-extracted-
- * community.ts) or FEAT_POOL_EFFECTS (feat-effects.ts). Mythic-tagged feats
- * are bucketed "subsystem" wholesale: mythic tiers and mythic power are not
- * modeled anywhere in this engine. The lone exception is Weapon Finesse
- * (Mythic), whose benefit reads off Weapon Finesse rather than off any mythic
- * resource and so applies in full to a character who has it.
+ * Methodology: every feat's vendored description is read and bucketed
+ * individually. Every numeric / choice-numeric / pool entry is
+ * machine-verified (the provenance quote must be a verbatim contiguous
+ * substring of the vendored description, and every target / bonus type /
+ * formula / pool tag is checked against the engine's actual vocabulary) and
+ * hand-reviewed, then wired into FEAT_EFFECTS_EXTRACTED_COMMUNITY
+ * (feat-effects-extracted-community.ts) or FEAT_POOL_EFFECTS
+ * (feat-effects.ts). Mythic-tagged feats are bucketed "subsystem" wholesale:
+ * mythic tiers and mythic power are not modeled anywhere in this engine. The
+ * lone exception is Weapon Finesse (Mythic), whose benefit reads off Weapon
+ * Finesse rather than off any mythic resource and so applies in full to a
+ * character who has it.
  *
- * Compact by design, unlike the original audit's per-feat prose: at ~3,170
- * entries a note per feat would swamp the file, and for the two bulk buckets
- * (situational/subsystem) the reasoning is always one of the same few
+ * Compact by design, unlike feat-classification.ts's per-feat prose: at
+ * ~3,170 entries a note per feat would swamp the file, and for the two bulk
+ * buckets (situational/subsystem) the reasoning is always one of the same few
  * sentences from the shared rubric. FEAT_CLASSIFICATION_COMMUNITY_NOTES
  * keeps real reasoning exactly where it matters: every mover, every blocked
- * entry, and anything flagged during review.
+ * entry, and anything flagged for review.
  */
 
 import type { FeatClassificationBucket } from "./feat-classification.js";

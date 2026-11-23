@@ -6,7 +6,7 @@
  * borrow-the-master's-numbers approach). Clean-room from the published PF1
  * rules (Occult Adventures "Spiritualist" class, the "Phantom" class feature,
  * and the "Emotional Focus" subsystem) — paraphrased from
- * aonprd.com/d20pfsrd.com during authoring; no Foundry source was consulted.
+ * aonprd.com/d20pfsrd.com; no Foundry source was consulted.
  * Foundry's GPL system code is never used as anything but a
  * behavioral oracle in tests, per the repo's clean-room discipline.
  *
@@ -18,7 +18,7 @@
  *     Focus (`EmotionalFocus.goodSaves`) rather than being fixed — reusing
  *     `tables.ts`'s `babForLevels("high", hd)` / `saveForLevels("high"|"low",
  *     hd)` reproduces the published progression exactly (verified by hand
- *     against the source table during authoring).
+ *     against the source table).
  *   - HP: PF1 RAW average-hp-per-HD on a d10 (average 5.5/HD, floored) plus
  *     the phantom's own Constitution modifier per HD, floored at 1 hp/HD —
  *     same `Math.floor(avg * hd) + conMod * hd` shape as `companion.ts`'s d8
@@ -53,7 +53,7 @@
  *     {@link PHANTOM_SLAM_DAMAGE}).
  *   - Attacks: two slam natural attacks, damage dice scaling with spiritualist
  *     level per {@link PHANTOM_SLAM_DAMAGE} (verified against aonprd.com's
- *     "Table: Phantom Slam Damage" during authoring — Medium: 1d6 at levels
+ *     "Table: Phantom Slam Damage" — Medium: 1d6 at levels
  *     1–4, 1d8 at 5–12, 2d6 at 13–16, 2d8 at 17–20; Small/Large are one step
  *     down/up the standard PF1 natural-weapon damage-die ladder at each tier,
  *     which reproduces the published 1st-level values (Small 1d4, Large 1d8)
@@ -274,7 +274,7 @@ export interface PhantomProgressionRow {
  * Table: Manifested Phantom's Base Statistics (PF1 Occult Adventures
  * "Phantom"), indexed by spiritualist level 1–20. `hd` reproduces
  * `babForLevels("high", hd)` exactly (full BAB, 1/level) for every row —
- * verified by hand during authoring.
+ * verified by hand.
  */
 export const PHANTOM_PROGRESSION: readonly PhantomProgressionRow[] = [
   { level: 1, hd: 1, acBonus: 0, abilityBonus: 0, special: ["Darkvision", "Link", "Share Spells"] },
@@ -363,7 +363,7 @@ export function phantomAbilityIncreaseSlots(level: number): number {
 
 /**
  * Medium phantom slam damage by spiritualist level (aonprd.com's "Table:
- * Phantom Slam Damage", paraphrased during authoring). Small/Large step one
+ * Phantom Slam Damage", paraphrased). Small/Large step one
  * rung down/up the standard PF1 natural-weapon damage-die ladder
  * (…1d4→1d6→1d8→1d10→2d6→2d8→2d10…) at each tier — this reproduces the
  * published 1st-level values exactly (Small 1d4, Medium 1d6, Large 1d8).

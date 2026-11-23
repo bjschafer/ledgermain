@@ -1342,14 +1342,14 @@ export function challengeRiderText(
  * three leveled abilities), and the vendored source carries none of that
  * structure: an order's 2nd/8th/15th-level abilities live entirely inside
  * its free-text `description` (headed "### Order Abilities"), not as a
- * parseable `OrderAbility[]`. Every one of the 38 now has a hand-authored
+ * parseable `OrderAbility[]`. Every one of the 38 has a hand-authored
  * chassis (`CAVALIER_ORDERS` / `SAMURAI_ORDERS` / `SPLATBOOK_ORDERS`), so
  * `vendoredToEntry` (the prose-only fallback for an unmatched vendored
  * entry) is currently unreached in practice — kept because there's no
  * guarantee a future refdata bump won't add a 39th order this file hasn't
  * caught up to yet.
  *
- * Collision audit (all 38 hand-authored entries, run against the pinned Pf
+ * Collision check (all 38 hand-authored entries, run against the pinned Pf
  * Data 1e slice): 37 of 38 matched a vendored entry by normalized name
  * directly; the samurai's Ronin order is the one exception — the vendored
  * source names it plainly "Ronin" (its own page even notes "cavaliers can
@@ -1417,7 +1417,7 @@ function vendoredToEntry(entry: CavalierOrder): MergedOrderEntry {
  * REPLACED by that hand-authored chassis (keeping its id, skills, Challenge
  * template, and ability tiers, but carrying the vendored entry's full prose/
  * sources along). No hand-authored-only entries exist to append — all 38
- * matched (see the collision audit above).
+ * matched (see the collision check above).
  */
 export function mergedOrderCatalog(refData: RefData): MergedOrderEntry[] {
   const all = { ...CAVALIER_ORDERS, ...SAMURAI_ORDERS, ...SPLATBOOK_ORDERS };

@@ -1,17 +1,15 @@
 /**
- * Psychic's slice of the pipeline (2026-08-09). All 29 vendored archetype
- * features across psychic's 8 archetypes are read in full and bucketed as
- * `numeric` / `situational` / `subsystem` / `blocked`, and the `numeric` ones
- * get a real `Change`-shaped extraction, the same methodology the magus pilot
- * (`magus.ts`) established. Per the per-class file convention (`index.ts`'s
- * doc comment), this file owns BOTH of psychic's pipeline artifacts —
- * `PSYCHIC_ARCHETYPE_EFFECTS_EXTRACTED` and
- * `PSYCHIC_ARCHETYPE_FEATURE_CLASSIFICATION` — so a future wave working on a
- * different class never has a reason to touch this file; only `index.ts` (the
- * aggregator, a later integration step not done here) needs a new import +
- * spread line.
+ * Psychic's slice of the pipeline. All 29 vendored archetype features across
+ * psychic's 8 archetypes are read in full and bucketed as `numeric` /
+ * `situational` / `subsystem` / `blocked`, and the `numeric` ones get a real
+ * `Change`-shaped extraction, following the methodology in `./magus.ts`. Per
+ * the per-class file convention (`index.ts`'s doc comment), this file owns
+ * BOTH of psychic's pipeline artifacts — `PSYCHIC_ARCHETYPE_EFFECTS_EXTRACTED`
+ * and `PSYCHIC_ARCHETYPE_FEATURE_CLASSIFICATION` — so work on a different
+ * class never has a reason to touch this file; only `index.ts` (the
+ * aggregator) needs one new import + one new spread per class.
  *
- * ── Psychic-specific mechanical facts this pass relies on ─────────────────
+ * ── Psychic-specific mechanical facts this classification relies on ───────
  *
  * 1. **Phrenic Pool** (base L1 feature) rides a real vendored
  *    `uses.maxFormula: "floor(@class.unlevel / 2) + @abilities.cha.mod"`,
@@ -291,11 +289,11 @@ export const PSYCHIC_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
  * This table is deliberately SEPARATE from `archetype-effects.ts`'s
  * `ARCHETYPE_FEATURE_EFFECTS` (the hand-verified table) — every entry here
  * additionally carries `confidence`/`provenance` so a reviewer (or the UI)
- * can never confuse "a human read the rulebook and checked this" with "an
- * extraction pass inferred this from prose." Only 1 of psychic's 29 features
- * cleared the `numeric` bar (see `PSYCHIC_ARCHETYPE_FEATURE_CLASSIFICATION`
- * above for the full per-feature audit) — psychic's archetype kit is almost
- * entirely spellcasting alterations, phrenic-pool spend-options,
+ * can never confuse "a human read the rulebook and checked this" with "a
+ * machine inferred this from prose." Only 1 of psychic's 29 features cleared
+ * the `numeric` bar (see `PSYCHIC_ARCHETYPE_FEATURE_CLASSIFICATION` above
+ * for the full per-feature classification) — psychic's archetype kit is
+ * almost entirely spellcasting alterations, phrenic-pool spend-options,
  * amplification pick-list changes, and activated forms, all deferred
  * subsystems in this engine today (see this file's header doc comment).
  *
@@ -307,7 +305,7 @@ export const PSYCHIC_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
  *    prose, or the bonus is gated on a real-but-partial condition this
  *    engine CAN check while a second, textually-present condition can't be
  *    checked and is dropped — partial honesty, flagged in `detail`.
- *  - "low": not used in this pass.
+ *  - "low": not used here.
  */
 export const PSYCHIC_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
   Record<string, ExtractedArchetypeFeatureEffect>

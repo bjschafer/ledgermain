@@ -1,7 +1,7 @@
 /**
  * Clean-room PF1 mesmerist Bold Stare table (Occult Adventures), hand-authored
  * from the published rules (verified against aonprd.com's Mesmerist Stares
- * index and each entry's own page, 2026-07-08).
+ * index and each entry's own page).
  *
  * Cadence (PF1 OA RAW, "Bold Stare": verified against aonprd.com's live
  * Mesmerist class page — gained at 3rd level, "and every 4 levels
@@ -14,16 +14,13 @@
  * at are already modeled (display-only, per-target); Bold Stare just extends
  * what else that SAME penalty value applies to.
  *
- * Scope: FULL vendored parity as of the extension — all 24 vendored bold stare
- * options, pooled across every splatbook the pinned data carries (Occult
- * Adventures, Occult Origins, Occult Realms, Heroes of Golarion). The original
- * cut scoped to OCCULT ADVENTURES CORE ONLY (pg. 42-43): 7 options (Allure,
- * Disorientation, Psychic Inception, Sapped Magic, Sluggishness,
- * Susceptibility, Timidity) — already more than the 5 a mesmerist ever picks
- * by 19th, so that scope never actually constrained a real build; a later pass folds in
- * the remaining 17 splatbook options (the Devilbane family plus Disquiet,
- * Distracted, Infiltration, Lethality, Nightblindness, Nightmare, Oscillation,
- * Restriction, Sabotage, Sensed, Unaided) for full-catalog browsing.
+ * Scope: FULL vendored parity — all 24 vendored bold stare options, pooled
+ * across every splatbook the pinned data carries (Occult Adventures, Occult
+ * Origins, Occult Realms, Heroes of Golarion): the Occult Adventures core 7
+ * (Allure, Disorientation, Psychic Inception, Sapped Magic, Sluggishness,
+ * Susceptibility, Timidity), the Devilbane family, plus Disquiet, Distracted,
+ * Infiltration, Lethality, Nightblindness, Nightmare, Oscillation,
+ * Restriction, Sabotage, Sensed, and Unaided.
  *
  * Modelling posture: MOST bold stares are a clean, unconditional extension of
  * the ALREADY-MODELED hypnotic-stare penalty to one or more additional roll
@@ -263,7 +260,7 @@ export function boldStareRiderSummary(baseLabel: string, boldStareIds: readonly 
  * picker) and for resolving a picked id, mirroring `rage-powers.ts`'s
  * `mergedRagePowerCatalog`/`resolveRagePower` exactly.
  *
- * Collision audit: all 24 hand-authored entries matched a vendored entry by
+ * Collision check: all 24 hand-authored entries matched a vendored entry by
  * normalized name — zero misses, zero aliases needed. NOTE: a vendored-only
  * bold stare (picked straight from the full-catalog picker, were the
  * vendored catalog to ever outgrow this table again on a future data bump)

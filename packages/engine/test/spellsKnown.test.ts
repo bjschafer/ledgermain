@@ -3,9 +3,8 @@ import { describe, expect, it } from "bun:test";
 import { baseSpellsKnown } from "../src/index.js";
 
 // Hand-computed fixtures from the published PF1 CRB sorcerer spells-known
-// table (0th..9th spell level). These pin down the L7+ rows that were
-// previously wrong (the table incorrectly capped 1st-level known at 4 and
-// never granted a 5th known spell of a level).
+// table (0th..9th spell level). These pin the L7+ rows, where 1st-level known
+// rises to 5 and the 5th known spell of a level appears.
 
 describe("baseSpellsKnown() — sorcerer, L7+", () => {
   it("L7 sorcerer knows five 1st-level spells (7/5/3/2)", () => {

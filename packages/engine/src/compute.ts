@@ -1598,7 +1598,7 @@ function computeWeaponAttacks(
     // conditions (Divine Favor, Rage, sickened, etc.). "twdamage" (thrown)
     // joins the ranged line only for a weapon actually tagged "thrown" (see
     // isThrownAttack above) rather than being approximated onto every ranged
-    // line — a longbow no longer picks up a thrown-only damage bonus.
+    // line — a longbow doesn't pick up a thrown-only damage bonus.
     const weaponDamageStack = resolveStack([
       ...forTarget(collected, "damage"),
       ...forTarget(collected, "wdamage"),

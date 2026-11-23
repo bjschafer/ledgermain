@@ -7,8 +7,8 @@
  * needs one new import + one new spread per class.
  *
  * Scope: all 11 vendored sorcerer archetypes, 36 features.
- * `SORCERER_ARCHETYPE_EFFECTS_EXTRACTED` is EMPTY this wave — every feature
- * that isn't already covered by the pre-existing hand-verified table
+ * `SORCERER_ARCHETYPE_EFFECTS_EXTRACTED` is EMPTY — every feature that isn't
+ * already covered by the pre-existing hand-verified table
  * (`archetype-effects.ts`'s Sorcerer of Sleep's Pesh Expert and Seeker's
  * Tinkering, both flagged `numeric` below with a "hand-verified, ground
  * truth" note and deliberately NOT re-added here, same posture as
@@ -16,17 +16,16 @@
  * `blocked` on individual reading. This is a real, disclosed finding, not a
  * shortcut — see "Findings" below.
  *
- * **The bloodline-suppression composition gap (per the task's sorcerer-
- * specific instructions).** Sorcerer bloodline arcana/powers are hand-
- * authored in `bloodlines.ts` and applied by a dedicated loop in `collect.ts`
- * that has NO archetype-swap awareness at all (see Sorcerer of Sleep's Pesh
- * Expert). Every one of this file's `pairedBaseFeatureUuid` values (where
- * present) resolves to a "bloodline power"/"bloodline feat" slot rather than
- * a normal `RefData.classFeatures` entry, confirming this gap applies to
- * nearly every archetype in this class. Two features are `blocked`
- * specifically because their OWN correctness depends on suppressing or
- * substituting the character's selected bloodline, which this engine has no
- * mechanism for:
+ * **The bloodline-suppression composition gap.** Sorcerer bloodline arcana/
+ * powers are hand-authored in `bloodlines.ts` and applied by a dedicated loop
+ * in `collect.ts` that has NO archetype-swap awareness at all (see Sorcerer
+ * of Sleep's Pesh Expert). Every one of this file's `pairedBaseFeatureUuid`
+ * values (where present) resolves to a "bloodline power"/"bloodline feat"
+ * slot rather than a normal `RefData.classFeatures` entry, confirming this
+ * gap applies to nearly every archetype in this class. Two features are
+ * `blocked` specifically because their OWN correctness depends on
+ * suppressing or substituting the character's selected bloodline, which this
+ * engine has no mechanism for:
  *
  *  - **Mongrel Mage's Mongrel Reservoir** (L1) doesn't just replace a
  *    bloodline power — it replaces the ENTIRE bloodline class feature,
@@ -37,9 +36,8 @@
  *    — can represent at all). There is no flat number to extract here
  *    either way (it's a resource-pool-gated ACTIVATION mechanic, not a
  *    passive bonus), but it's called out as `blocked` rather than
- *    `subsystem` per the task's explicit framing, since a future pass
- *    attempting to model this archetype at all would need to solve the
- *    daily-bloodline-reselection problem first.
+ *    `subsystem`, since modeling this archetype at all would need to solve
+ *    the daily-bloodline-reselection problem first.
  *  - **Nine-Tailed Heir's Magical Tail** (L3) is a SUSPECTED VENDORED-DATA
  *    BUG: its description is a verbatim copy of the generic, class-wide
  *    bloodline bonus-spell/bonus-feat progression blurb ("Each sorcerer has
@@ -54,16 +52,15 @@
  *    archetype ACTUALLY does would require reasoning about the hand-
  *    authored bloodline bonus-spell/feat progression's suppression — same
  *    composition gap as Mongrel Reservoir — so `blocked` either way; not
- *    fixed here per "report suspects, don't fix."
+ *    fixed here.
  *
  * No other sorcerer archetype's OWN replacement feature clears the
  * `numeric` bar (see the classification table for each one's specific
  * reason) — so beyond those two `blocked` entries, this composition gap
- * doesn't force any OTHER classification decision this wave (nothing else
+ * doesn't force any OTHER classification decision here (nothing else
  * had a clean number that suppression would have made unsafe to extract).
  *
- * **Findings that should change how a future wave reads (or doesn't need to
- * re-derive) this file:** sorcerer's archetype surface is small (11
+ * **Classification findings:** sorcerer's archetype surface is small (11
  * archetypes) and thematically narrow — most either (a) trade a bloodline
  * power/feat for an ACTIVATED, resource-gated ability (Dragon Drinker's
  * dragon's-blood mechanics, Umbral Scion's darkness manipulation, Tattooed
@@ -348,7 +345,7 @@ export const SORCERER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
 /**
  * ── SORCERER_ARCHETYPE_EFFECTS_EXTRACTED ──────────────────────────────────
  *
- * Empty this wave — see the file-header "Findings" section. Every sorcerer
+ * Empty — see the file-header "Findings" section. Every sorcerer
  * archetype feature that clears the `numeric` bar is already covered by the
  * pre-existing hand-verified table (`archetype-effects.ts`'s Sorcerer of
  * Sleep and Seeker entries); no NEW numeric extraction was found across the

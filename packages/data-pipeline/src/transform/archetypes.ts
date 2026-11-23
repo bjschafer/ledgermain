@@ -12,14 +12,15 @@ import {
 } from "./common.js";
 
 /**
- * Reads the previously-vendored `archetype-features.json` (if any — absent on
- * a from-scratch build) purely to recover `.level` for features the new
+ * Reads the legacy `archetype-features.json` (if any — absent on a
+ * from-scratch build) purely to recover `.level` for features the new
  * source doesn't itemize with a structured level (see
- * `transformArchetypePack`'s doc comment). Keyed by `${archetypeId}:${slug(featureName)}`
- * — level-independent, since the level is exactly what's missing. Not a
- * general "trust the old data" mechanism: name/description/existence always
- * come from the current source; only the numeric level falls back this way,
- * and only for the minority of features this source doesn't structure.
+ * `transformArchetypePack`'s doc comment). Keyed by
+ * `${archetypeId}:${slug(featureName)}` — level-independent, since the level
+ * is exactly what's missing. Not a general "trust the old data" mechanism:
+ * name/description/existence always come from the current source; only the
+ * numeric level falls back this way, and only for the minority of features
+ * this source doesn't structure.
  */
 export function loadLegacyArchetypeFeatureLevels(
   archetypeFeaturesJsonPath: string,
@@ -634,7 +635,7 @@ function guessLevelFromOpeningProse(
 /**
  * Resolves the `.level` FIELD (never the id — see below) from, in order: an
  * explicit signal that already won outright under the pre-existing rules
- * (`s.level` on the supplements path, a previously-vendored level on the
+ * (`s.level` on the supplements path, a level from the previous build on the
  * inline-prose/orphan paths — passed in as `explicitLevel`), the source's own
  * `archetypeLevel` flag, a level qualifier parsed off `replacesText` ("hex
  * gained at 2nd level" implies the replacement lands at 2nd level too), a
@@ -739,7 +740,7 @@ function classesOf(doc: RawDoc): string[] {
  * mechanics, e.g. Paladin's Sacred Oaths, as freestanding features with no
  * archetype wrapper), features are recovered by grouping `pf-arch-features/`
  * items by their shared `tags[0]` value instead. Those recovered features
- * have no structured level, so it's taken from the previously-vendored data
+ * have no structured level, so it's taken from the previous build's data
  * when the same (archetype, feature) pair existed before (continuity for
  * existing `CharacterDoc`s and the hand-authored `@pf1/engine`
  * `archetype-effects.ts` table that keys off these exact ids), falling back to
@@ -934,18 +935,17 @@ export function transformArchetypePack(
  * (`Rhetorican`, `Tatterdermalion`), the other the original correctly-spelled
  * inline-prose doc it superseded (`Rhetorician`, `Tatterdemalion`, one with
  * zero structured features, the other's features folded into the surviving
- * doc's prose). A sweep for other same-class archetype names within edit
- * distance 2 turned up mostly coincidental near-misses with their own
- * distinct sources (druid's Bat/Bear/Boar Shaman, rogue's
- * Sapper/Sniper/Sharper, ...) — left alone. Two more, though, are a
- * DIFFERENT split-archetype defect this table doesn't cover: antipaladin's
- * Rough Rampage/Rough Rampager and paladin's Virtuoso Bravo/Virtuous Bravo
- * each have exactly one real wrapper doc (the archetype's actual name,
- * description, and sources) whose own features are tagged under a
- * *different* spelling than the wrapper's name, so the vanished-parent
- * recovery pass below synthesizes a second, sourceless archetype under the
- * features' tag spelling to hold them — not the doc-duplication pattern this
- * table merges, so left for separate handling.
+ * doc's prose). Other same-class archetype names within edit distance 2 are
+ * mostly coincidental near-misses with their own distinct sources (druid's
+ * Bat/Bear/Boar Shaman, rogue's Sapper/Sniper/Sharper, ...) — left alone. Two
+ * more, though, are a DIFFERENT split-archetype defect this table doesn't
+ * cover: antipaladin's Rough Rampage/Rough Rampager and paladin's Virtuoso
+ * Bravo/Virtuous Bravo each have exactly one real wrapper doc (the
+ * archetype's actual name, description, and sources) whose own features are
+ * tagged under a *different* spelling than the wrapper's name, so the
+ * vanished-parent recovery pass below synthesizes a second, sourceless
+ * archetype under the features' tag spelling to hold them — not the
+ * doc-duplication pattern this table merges, so left for separate handling.
  */
 const ARCHETYPE_DEDUP_MERGES: { keep: string; drop: string; displayName: string }[] = [
   { keep: "witch:rhetorican", drop: "witch:rhetorician", displayName: "Rhetorician" },

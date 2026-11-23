@@ -26,11 +26,10 @@ import { HeartIcon } from "../icons.js";
 import type { BuilderProps } from "../builder/types.js";
 
 /**
- * Toast threshold for Damage/Heal (UX audit: "feedback: toasts + undo").
- * Routine ±5 clicks at the table shouldn't interrupt play with a toast every
- * time — but a big hit (>= this) or one that lands the character at 0 HP or
- * below is exactly the kind of "wait, did I mean to do that?" moment an
- * Undo action is worth surfacing for.
+ * Toast threshold for Damage/Heal. Routine ±5 clicks at the table shouldn't
+ * interrupt play with a toast every time — but a big hit (>= this) or one that
+ * lands the character at 0 HP or below is exactly the kind of "wait, did I
+ * mean to do that?" moment an Undo action is worth surfacing for.
  */
 const HP_TOAST_THRESHOLD = 10;
 

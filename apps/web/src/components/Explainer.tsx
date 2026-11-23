@@ -3,12 +3,10 @@ import { Caret } from "./Caret.js";
 
 /**
  * Collapsed-by-default explainer block: a clickable `<summary>` line (with
- * the shared panel caret) that expands into a body of guidance
- * prose. Extracted from the Spellbook panel's original "How X spellcasting
- * works" idiom (`SpellsSection.tsx`'s prior `SpellHints`) so any panel with a
- * standing explainer paragraph can fold it away by default instead of always
- * rendering it, matching the house convention: reference prose stays out of
- * the way until asked for.
+ * the shared panel caret) that expands into a body of guidance prose, so a
+ * panel with a standing explainer paragraph can fold it away by default
+ * instead of always rendering it — reference prose stays out of the way
+ * until asked for.
  */
 export function Explainer({
   title,

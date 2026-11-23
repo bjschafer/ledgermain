@@ -4,10 +4,10 @@
  * bucketed as `numeric` / `situational` / `subsystem` / `blocked`, and the
  * `numeric` ones get a real `Change`-shaped extraction. Per the per-class file
  * convention (`index.ts`'s doc comment), this file owns BOTH of swashbuckler's
- * pipeline artifacts; only `index.ts` (the aggregator, a later integration
- * step not done here) needs a new import + spread line.
+ * pipeline artifacts; only `index.ts` (the aggregator) needs one new import +
+ * one new spread per class.
  *
- * ── Swashbuckler-specific mechanical facts this pass relies on ────────────
+ * ── Swashbuckler-specific mechanical facts this classification relies on ──
  *
  * 1. **Panache** (base L1 feature) rides a vendored
  *    `uses.maxFormula: "max(1, @abilities.cha.mod)"`, applied generically via
@@ -361,7 +361,7 @@ export const SWASHBUCKLER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Avenger’s Target",
     level: 5,
     bucket: "situational",
-    note: "the flat +1 attack/damage clause is scoped to the 'light or one-handed piercing melee weapons and whips' category — no weapon-category formula input exists, and no prior wave has followed the vendored base Weapon Training's unscoped-mattack simplification (class note 5); the scaling studied-target bonuses are per-chosen-enemy on top",
+    note: "the flat +1 attack/damage clause is scoped to the 'light or one-handed piercing melee weapons and whips' category — no weapon-category formula input exists, and no extracted entry follows the vendored base Weapon Training's unscoped-mattack simplification (class note 5); the scaling studied-target bonuses are per-chosen-enemy on top",
   },
   "swashbuckler:mysterious-avenger:class-skills:0": {
     archetypeId: "swashbuckler:mysterious-avenger",
@@ -608,7 +608,7 @@ export const SWASHBUCKLER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
  *  - "medium": one clause of a multi-clause feature is extracted while
  *    sibling clauses (no-target DC shifts, freeform sub-skill scopes,
  *    resource riders) are dropped — partial honesty, flagged in `detail`.
- *  - "low": not used in this pass.
+ *  - "low": not used here.
  */
 export const SWASHBUCKLER_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
   Record<string, ExtractedArchetypeFeatureEffect>

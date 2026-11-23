@@ -17,7 +17,7 @@ import {
  * every other subsystem imported so far, this is a CHASSIS overlay (a
  * hand-authored order carries bonus skills/Challenge rider/leveled abilities,
  * not just prose) — see `cavalier-orders.ts`'s "vendored catalog overlay" doc
- * comment for the collision-audit narrative (37 of 38 hand-authored entries
+ * comment for the collision check (37 of 38 hand-authored entries
  * matched directly; the samurai's Ronin order needed a wording-drift alias to
  * the vendored "Ronin", not "Order of the Ronin").
  */

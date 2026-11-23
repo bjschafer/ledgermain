@@ -1,23 +1,23 @@
 /**
- * Unchained Barbarian's slice of the pipeline (2026-08-08), covering the 41
- * vendored `barbarianUnchained` archetypes / 161 archetype features. Per the
- * per-class file convention (`./index.ts`'s doc comment), this file owns BOTH
- * of this class's pipeline artifacts —
+ * Unchained Barbarian's slice of the pipeline, covering the 41 vendored
+ * `barbarianUnchained` archetypes / 161 archetype features. Per the per-class
+ * file convention (`./index.ts`'s doc comment), this file owns BOTH of this
+ * class's pipeline artifacts —
  * `BARBARIAN_UNCHAINED_ARCHETYPE_EFFECTS_EXTRACTED` (the machine-extracted
  * `Change`-shaped effects table) and
  * `BARBARIAN_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION` (the full
- * per-feature audit) — so a future wave working on a different class never
- * has a reason to touch this file; only `index.ts` (the aggregator, out of
- * scope for this wave) needs one new import + one new spread per class.
+ * per-feature classification) — so work on a different class never has a
+ * reason to touch this file; only `index.ts` (the aggregator) needs one new
+ * import + one new spread per class.
  *
- * Load-bearing discovery this pass made before reading a single feature: the
- * vendored `archetype-features.json` slice for `barbarianUnchained:*` is
- * BYTE-IDENTICAL, entry for entry (same `name`, `level`, and full HTML
- * `description`), to the sibling `barbarian:*` (chained) slice `./barbarian.ts`
- * already covers — verified programmatically across all 161 shared slugs, zero
- * diffs. The data pipeline vendors one prose source and stamps it under both
- * class tags; Unchained's real mechanical differences (a single continuous
- * Rage progression instead of Rage/Greater Rage/Mighty Rage as separate
+ * Load-bearing fact about this class's data: the vendored
+ * `archetype-features.json` slice for `barbarianUnchained:*` is BYTE-IDENTICAL,
+ * entry for entry (same `name`, `level`, and full HTML `description`), to the
+ * sibling `barbarian:*` (chained) slice `./barbarian.ts` already covers —
+ * verified programmatically across all 161 shared slugs, zero diffs. The data
+ * pipeline vendors one prose source and stamps it under both class tags;
+ * Unchained's real mechanical differences (a single continuous Rage
+ * progression instead of Rage/Greater Rage/Mighty Rage as separate
  * ability-bonus tiers, temp HP instead of some of the old bonuses) live in the
  * `Rage (Unchained)` BUFF (`buff-effects.ts`'s `RAGE_UNCHAINED_TEMP_HP`) and
  * base class features, not in this archetype-feature prose. So every
@@ -27,13 +27,13 @@
  * re-derivation from scratch, they are `./barbarian.ts`'s own reading of the
  * identical text, re-applied under this class's own id namespace (and
  * `pairedBaseFeatureUuid`/`archetypeId` values, which DO differ per class,
- * were re-verified independently — see `barbarianDamageReductionReplaced`'s
- * own `AMBIGUOUS_DR_REPLACEMENTS` map in `archetypes.ts`, which already treats
+ * are verified independently — see `barbarianDamageReductionReplaced`'s own
+ * `AMBIGUOUS_DR_REPLACEMENTS` map in `archetypes.ts`, which already treats
  * `barbarianUnchained:invulnerable-rager` as its own confirmed unpaired swap,
  * separate from the chained entry).
  *
- * This pass deliberately did NOT rubber-stamp every `./barbarian.ts` bucket,
- * for two reasons:
+ * This file does NOT rubber-stamp every `./barbarian.ts` bucket, for two
+ * reasons:
  *
  * 1. **Hand-verified exclusions don't carry over.** `archetype-effects.ts`
  *    (the hand-verified table `resolveArchetypeFeatureEffect` always prefers)
@@ -49,9 +49,9 @@
  *    literals (the underlying rules text is identical) — or resolution would
  *    silently drop them for every Unchained character.
  * 2. **A corrected reading of the special-senses target family.** Some
- *    `barbarian:*` entries this pass cross-checked classify a "gain
- *    darkvision/scent/blindsense/blindsight" grant as `subsystem` ("no
- *    number"). That undersells `targets.ts`: `sensedv`/`sensell`/`sensesc`/
+ *    `barbarian:*` entries classify a "gain darkvision/scent/blindsense/
+ *    blindsight" grant as `subsystem` ("no number"). That undersells
+ *    `targets.ts`: `sensedv`/`sensell`/`sensesc`/
  *    `sensebse`/`sensebs` are real, applied `Change` targets
  *    (`senses.ts`, highest-wins resolution per sense kind), already used this
  *    way by `rage-powers.ts`'s own Scent/Darkvision/Low-Light-Vision rage
@@ -59,7 +59,7 @@
  *    "Keen Senses" tiers and Sharptooth's "Scent of Blood" (Scent) are
  *    genuinely unconditional sense grants gated only by the character's own
  *    level (the same gate every other archetype feature is subject to), so
- *    this pass extracts them as `numeric` — seven ids that would otherwise be
+ *    they are extracted here as `numeric` — seven ids that would otherwise be
  *    missed entirely. Superstitious's Cave Dweller sibling "Tunnel Vision"
  *    (unconditional darkvision 60 ft. + a separately-scoped, dropped
  *    Perception bonus) gets the same "extract the unconditional clause"
@@ -87,8 +87,8 @@
  *  - "blocked": a genuine composition trap, recorded rather than guessed at.
  *    This class's data has four shapes (the first three inherited straight
  *    from `./barbarian.ts`'s own findings against the identical prose; the
- *    fourth is new to this pass, found while independently classifying the
- *    12 archetype features `./barbarian.ts` doesn't cover — see below):
+ *    fourth comes from the 12 archetype features `./barbarian.ts` doesn't
+ *    cover — see below):
  *      1. A feature that changes Rage's ROUNDS/DAY count or cadence (a flat
  *         reduction, an effective-level shift, or a triggered per-kill/
  *         per-hit "gain N rounds" mechanic) — any of these would
@@ -120,15 +120,15 @@
  *         (`wildborn:damage-reduction:7`, below) risks reproducing it wrong
  *         rather than composing it correctly.
  *
- * Precedent this pass leaned on (identical to `./barbarian.ts`'s own, since
- * the underlying base-class mechanics are shared):
+ * Precedents (identical to `./barbarian.ts`'s own, since the underlying
+ * base-class mechanics are shared):
  *  - Fast Movement (base L1) carries a real vendored Change (`landSpeed`,
  *    type "base", gated on `@armor.type<=1` and not encumbered) but is a
  *    SINGLE flat grant at ONE level — a clean 1:1 `pairedBaseFeatureUuid`
  *    swap is already suppressed for free by `activeArchetypeSwaps`/
  *    `collect.ts`. Most "replaces fast movement" features in this data are
- *    themselves `situational`/`subsystem`/mount-only, so there was nothing to
- *    extract that could clash with the base grant either way.
+ *    themselves `situational`/`subsystem`/mount-only, so nothing extractable
+ *    here can clash with the base grant either way.
  *  - Trap Sense (base L3) carries an EMPTY vendored `changes: []` — nothing
  *    to suppress, ever.
  *  - Damage Reduction (base L7, hardcoded in `tables.ts`'s
@@ -139,18 +139,16 @@
  *  - Rage's ability-score bonuses (Str/Con/Dex) are NOT auto-applied anywhere
  *    in this engine (a manual player-toggled buff, same posture as ki/grit/
  *    panache) — confirmed via the Urban Barbarian hand table entry's own doc
- *    comment (`archetype-effects.ts`) and this wave's own brief: the Rage
- *    (Unchained) buff's untyped bonuses are correct vendored content, not a
- *    bug, and rage-STATE modifications stay `situational`/`blocked`, never an
- *    always-on Change. Rage Powers are a modeled pick-list subsystem
+ *    comment (`archetype-effects.ts`): the Rage (Unchained) buff's untyped
+ *    bonuses are correct vendored content, not a bug, and rage-STATE
+ *    modifications stay `situational`/`blocked`, never an always-on Change.
+ *    Rage Powers are a modeled pick-list subsystem
  *    (`rage-powers.ts`); any feature that swaps/grants/restricts them is
  *    `subsystem`.
  *
- * A second, independent vendored-data oddity found in this class's own
- * 12-feature gap (features `./barbarian.ts` doesn't classify, because the
- * archetype data source repoint added them after that file was written —
- * same repoint `./barbarian.ts`'s own header documents): Breaker's "Feral
- * Transformation" and "Savage Rapport" are filed under `archetypeId:
+ * A second, independent vendored-data oddity sits in this class's own
+ * 12-feature gap (the features `./barbarian.ts` doesn't classify): Breaker's
+ * "Feral Transformation" and "Savage Rapport" are filed under `archetypeId:
  * "barbarianUnchained:breaker"` but their text is Beastkin Berserker's own
  * two abilities verbatim (Breaker's real features are "Battle Scavenger" and
  * "Destructive") — a cross-archetype content leak, not a rules question.
@@ -679,7 +677,7 @@ export const BARBARIAN_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Extreme Endurance",
     level: 3,
     bucket: "numeric",
-    note: "fire OR cold energy resistance, wired via the archetypeFeature pick-choice mechanism (build.pickChoices) now that a generic way to record the player's build-time energy-type choice exists.",
+    note: "fire OR cold energy resistance, wired via the archetypeFeature pick-choice mechanism (build.pickChoices) because a generic way to record the player's build-time energy-type choice exists.",
   },
   "barbarianUnchained:invulnerable-rager:invulnerability:2": {
     archetypeId: "barbarianUnchained:invulnerable-rager",
@@ -946,7 +944,7 @@ export const BARBARIAN_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Crack Shot",
     level: 5,
     bucket: "situational",
-    note: "Dex-to-damage with firearms while raging (confirmed on aonprd: 'while raging', replaces improved uncanny dodge) — the firearms weapon-group half now has a Dex-to-damage mechanism (gun-training.ts / per-weapon damageAbility), but the rage gate has no seam in this archetype-extracted route, so it stays unwired; a player can approximate it with a per-weapon damageAbility: 'dex' override while raging",
+    note: "Dex-to-damage with firearms while raging (confirmed on aonprd: 'while raging', replaces improved uncanny dodge) — the firearms weapon-group half has a Dex-to-damage mechanism (gun-training.ts / per-weapon damageAbility), but the rage gate has no seam in this archetype-extracted route, so it stays unwired; a player can approximate it with a per-weapon damageAbility: 'dex' override while raging",
   },
   "barbarianUnchained:savage-technologist:primal-magnetism:3": {
     archetypeId: "barbarianUnchained:savage-technologist",
@@ -1263,7 +1261,7 @@ export const BARBARIAN_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Dishonorable",
     level: 7,
     bucket: "numeric",
-    note: "scaling CMB/CMD bonus vs. dirty trick, unconditional from 7th — now expressible via Change.maneuverCategories (maneuver-categories.ts), wired in BARBARIAN_UNCHAINED_ARCHETYPE_EFFECTS_EXTRACTED; paired 1:1 to Damage Reduction so the base DR grant is already cleanly suppressed",
+    note: "scaling CMB/CMD bonus vs. dirty trick, unconditional from 7th — expressible via Change.maneuverCategories (maneuver-categories.ts), wired in BARBARIAN_UNCHAINED_ARCHETYPE_EFFECTS_EXTRACTED; paired 1:1 to Damage Reduction so the base DR grant is already cleanly suppressed",
   },
   "barbarianUnchained:untamed-rager:feral-appearance:3": {
     archetypeId: "barbarianUnchained:untamed-rager",
@@ -1589,8 +1587,8 @@ export const BARBARIAN_UNCHAINED_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
   // Sharptooth's "Scent of Blood" is a vendored duplicate of the split
   // "Scent of Blood (Scent)" entry above — identical combined text, same
   // 2nd-level gate, so extracting the same Scent grant under this id is
-  // harmless even if a future integration pass wires both (sense resolution
-  // is highest-wins, not additive).
+  // harmless now that both are wired (sense resolution is highest-wins, not
+  // additive).
   "barbarianUnchained:sharptooth:scent-of-blood:2": {
     changes: [c("1", "sensesc")],
     detail: () => "Scent",

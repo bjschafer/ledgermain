@@ -1,7 +1,7 @@
 /**
  * Hand-computed fixture tests for `CLASS_FEATURE_CHOICES` (`class-feature-
  * effects.ts`) and the `collect.ts` granted-class-features loop that applies
- * it — the classFeature pick-choice namespace's base-loop pilot.
+ * it — the classFeature pick-choice namespace.
  *
  * Proctor's "Monitor Expression" (prestige class, level 2): "a proctor must
  * select a specific expression of her role for her monitor demigod." Four

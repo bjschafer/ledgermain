@@ -1,13 +1,13 @@
 /**
  * Single point of precedence between the hand-verified feat-effects table
  * (`feat-effects.ts`'s `FEAT_EFFECTS`) and the machine-extracted one
- * (`feat-effects-extracted.ts`'s `FEAT_EFFECTS_EXTRACTED`, the feat
- * batch-extraction pass). Mirrors `archetype-effects-resolve.ts`'s precedence
- * module exactly: both `collect.ts` (applying changes) and
- * `apps/web/src/model/feats.ts` (driving the featChoices choice-UI) resolve
- * through this module instead of touching either table directly, so the
- * precedence rule — hand-verified always wins when a slug appears in both —
- * lives in exactly one place and can't drift between the two call sites.
+ * (`feat-effects-extracted.ts`'s `FEAT_EFFECTS_EXTRACTED`). Mirrors
+ * `archetype-effects-resolve.ts`'s precedence module exactly: both
+ * `collect.ts` (applying changes) and `apps/web/src/model/feats.ts` (driving
+ * the featChoices choice-UI) resolve through this module instead of touching
+ * either table directly, so the precedence rule — hand-verified always wins
+ * when a slug appears in both — lives in exactly one place and can't drift
+ * between the two call sites.
  */
 
 import { FEAT_EFFECTS, featNameSlug, type FeatEntry } from "./feat-effects.js";
@@ -34,7 +34,7 @@ export interface ResolvedFeatEffect {
  * pack) only when no earlier table has an entry — a slug present in more than
  * one is governed entirely by the earliest, so the tables can never
  * double-apply for the same feat. The two extracted tables are disjoint by
- * construction (the community sweep excluded every system-pack slug), so
+ * construction (the community table excludes every system-pack slug), so
  * their relative order is a formality.
  *
  * `handTable`/`extractedTable` default to the real production tables; the

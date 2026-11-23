@@ -14,11 +14,11 @@ import {
 } from "../src/index.js";
 
 /**
- * Kineticist (Occult Adventures, 17-class expansion follow-up wave) — class
- * vend + the Burn resource pool (which rides in FREE from the vendored Burn
- * feature's `uses.maxFormula: "3 + @abilities.con.mod"`, no hand-authoring
- * needed for the max) + the hand-authored display helpers. Lookups scoped by
- * classTag, never bare name.
+ * Kineticist (Occult Adventures) — class vend + the Burn resource pool (which
+ * rides in FREE from the vendored Burn feature's
+ * `uses.maxFormula: "3 + @abilities.con.mod"`, no hand-authoring needed for the
+ * max) + the hand-authored display helpers. Lookups scoped by classTag, never
+ * bare name.
  */
 const ref = loadRefData();
 

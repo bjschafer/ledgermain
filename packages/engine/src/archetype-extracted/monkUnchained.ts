@@ -1,21 +1,19 @@
 /**
- * Unchained Monk's slice of the pipeline (2026-08-08), covering all 69
- * vendored `monkUnchained:*` archetype features across 14 archetypes. Per the
+ * Unchained Monk's slice of the pipeline, covering all 69 vendored
+ * `monkUnchained:*` archetype features across 14 archetypes. Per the
  * per-class file convention (`./index.ts`'s doc comment), this file owns BOTH
  * of this class's pipeline artifacts —
  * `MONK_UNCHAINED_ARCHETYPE_EFFECTS_EXTRACTED` and
- * `MONK_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION` — so a future wave working
- * on a different class never has a reason to touch this file; only
- * `index.ts` (the aggregator, out of scope for this wave) needs one new
- * import + one new spread per class.
+ * `MONK_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION` — so work on a different
+ * class never has a reason to touch this file; only `index.ts` (the
+ * aggregator) needs one new import + one new spread per class.
  *
  * ── Overlap with chained monk's prose (verified, not assumed) ─────────────
  *
- * Before reading a single feature, this pass diffed all 69
- * `monkUnchained:<archetype>:<feature>:<level>` descriptions against the
- * corresponding `monk:<archetype>:<feature>:<level>` id (normalizing one
- * vendored slug typo, `disciple-of-wholness` vs. `disciple-of-wholeness`) —
- * same method the unchained-barbarian wave (`./barbarianUnchained.ts`) used
+ * All 69 `monkUnchained:<archetype>:<feature>:<level>` descriptions were
+ * diffed against the corresponding `monk:<archetype>:<feature>:<level>` id
+ * (normalizing one vendored slug typo, `disciple-of-wholness` vs.
+ * `disciple-of-wholeness`) — the same method `./barbarianUnchained.ts` used
  * against chained barbarian. Result: 66 of 69 are byte-identical (same
  * `name`/`level`/full HTML `description`); the vendored data stamps one prose
  * source under both class tags for archetypes that work with either chassis.
@@ -27,30 +25,28 @@
  * are ki-spend/resource-gated abilities with no baseline number), so the
  * wording difference has zero effect on this classification's buckets.
  *
- * `./monk.ts` (chained monk's own file) classifies only 60 of the 328
- * features vendored under `monk:*` (13 archetypes) — see that file's header.
- * Of this class's 14 archetypes, only 6 (black-asp is a partial
- * exception — see below; brazen-disciple, disciple-of-wholeness,
- * invested-regent, sage-counselor, scaled-fist, soul-shepherd) fall inside
- * that classified 13-archetype set, and this file reuses `./monk.ts`'s own
- * judgment for every shared id in those 6 (re-verified against the identical
- * text pulled above, not blind-copied) rather than re-deriving from scratch.
- * The remaining 8 archetypes (black-asp, elemental-monk, lifting-hand,
- * monk-of-the-mantis, perfect-scholar, serpent-fire-adept, softstrike-monk,
- * windstep-master) — plus a handful of ids inside the 6 "shared" archetypes
- * that `./monk.ts` itself never classified (Invested Regent's `investiture:1`
- * and `vested-power:2`, Scaled Fist's `draconic-mettle:4`, Soul Shepherd's
- * `otherworldly-resilience:2` — all outside `./monk.ts`'s original 60-feature
- * scope) — were read and classified fresh from the vendored prose for this
- * pass. `elemental-monk`'s own four features are also textually identical to
- * chained monk's separately-named `harrow-warden` archetype (same four
- * ability names: Elemental Strike, Genie Style, Elemental Precision, Planar
- * Guide) — a second content-reuse pattern, cross-checked but not required
- * since `elemental-monk` itself needed a fresh read anyway.
+ * `./monk.ts` (chained monk's own file) classifies EVERY feature of all 56
+ * vendored `monk:*` archetypes (328 features) — see that file's header. All
+ * 14 of this class's archetypes have a chained-monk counterpart there, and 65
+ * of this file's 69 ids have a same-key `monk:` twin; 62 of those 65 reuse
+ * `./monk.ts`'s bucket (re-verified against the identical text pulled above,
+ * not blind-copied), while 3 differ:
+ * `brazen-disciple:genie-apotheosis:20` (`subsystem` here, `numeric` in
+ * `./monk.ts`), `serpent-fire-adept:light-spirit:4` (`situational` vs.
+ * `subsystem`), and `windstep-master:swift-ki:4` (`subsystem` vs.
+ * `situational`). The other 4 ids are Disciple of Wholeness's
+ * `greater-hone-body:11`, `healing-ki:4`, `hone-body:5`, and `hone-soul:13`,
+ * which have no same-key twin only because the vendored unchained slug
+ * misspells the archetype (`disciple-of-wholness` vs.
+ * `disciple-of-wholeness`); their buckets match the correctly-spelled
+ * `monk:` entries. `elemental-monk`'s own four features are also textually
+ * identical to chained monk's separately-named `harrow-warden` archetype
+ * (same four ability names: Elemental Strike, Genie Style, Elemental
+ * Precision, Planar Guide) — a second content-reuse pattern.
  *
- * Three real numeric findings resulted, none carried over from `./monk.ts`
- * (which found zero for monk's overlapping archetypes) because none of the
- * three sit in ids `./monk.ts` actually classified:
+ * The three numeric entries below correspond to `./monk.ts`'s classification
+ * of the same features; the effect tables resolve by exact feature id, so the
+ * `monkUnchained:` ids need their own entries:
  *
  * 1. **Perfect Scholar's "Lore"** (`lore:4`) is a flat, unconditional
  *    Knowledge bonus scaling with monk level — the same `skill.knowledge`
@@ -62,12 +58,11 @@
  * 2. **Scaled Fist's "Draconic Mettle"** (`draconic-mettle:4`) is a flat +2
  *    on saves against fear, paralysis, and sleep — a `Change.saveCategories`
  *    case (`allSavingThrows` + `saveCategories`, the idiom
- *    `class-feature-effects.ts`'s Unchained Heart and `./slayer.ts`'s Pureblade
- *    already use). `paralysis` has no `SAVE_CATEGORIES` entry in
- *    `save-categories.ts` (only `fear`/`sleep`/etc. are modeled, both children
- *    of `mind`) — that third of the three named effect types is dropped,
- *    flagged in `detail`, same posture as every other partial-condition entry
- *    in this pipeline.
+ *    `class-feature-effects.ts`'s Unchained Heart and `./slayer.ts`'s
+ *    Pureblade already use). The entry scopes to `fear` and `sleep`;
+ *    `paralysis` is a real `SAVE_CATEGORIES` entry (`save-categories.ts`) but
+ *    is not included here, so the third named effect type is unmodeled and
+ *    flagged in `detail`.
  * 3. **Soul Shepherd's "Otherworldly Resilience"** (`otherworldly-resilience:2`)
  *    is a flat, wholly unconditional DR/adamantine plus cold and electricity
  *    resistance, scaling once at 9th level — no activation, no resource
@@ -86,9 +81,8 @@
  * vs. nonlethal) output to split, and no override hook for the level input
  * that wouldn't require touching `tables.ts`/`compute.ts` (out of scope for
  * this pipeline) and risk double-counting against the level the table already
- * reads directly. Recorded, not guessed at — the class brief's own standing
- * guidance for this class ("flurry/unarmed-damage progressions ride engine
- * hand tables... altering them is blocked") applies exactly here.
+ * reads directly. Recorded, not guessed at: flurry/unarmed-damage
+ * progressions ride engine hand tables, and altering them is blocked.
  *
  * Every other numeric-looking scaling number in this class's kit (Chakra
  * Mastery's/Invested Regent's/Vested Power's own new resource pools; Hellcat
@@ -270,7 +264,7 @@ export const MONK_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Investiture",
     level: 1,
     bucket: "subsystem",
-    note: "grants a brand-new, entirely unmodeled investiture-point resource pool (size 1/2 monk level + Cha mod, not the class's Ki Pool) that can be spent for an activated, swift-action sacred save bonus — resource-gated activation, not an always-on number; not in `./monk.ts`'s original 60-feature scope",
+    note: "grants a brand-new, entirely unmodeled investiture-point resource pool (size 1/2 monk level + Cha mod, not the class's Ki Pool) that can be spent for an activated, swift-action sacred save bonus — resource-gated activation, not an always-on number",
   },
   "monkUnchained:invested-regent:torture-training:2": {
     archetypeId: "monkUnchained:invested-regent",
@@ -284,7 +278,7 @@ export const MONK_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Vested Power",
     level: 2,
     bucket: "subsystem",
-    note: "lets a bonus-feat slot be spent on a vested power (a named pick-list) instead of a feat — a choice-menu swap, no Change-shaped number; not in `./monk.ts`'s original 60-feature scope",
+    note: "lets a bonus-feat slot be spent on a vested power (a named pick-list) instead of a feat — a choice-menu swap, no Change-shaped number",
   },
   "monkUnchained:invested-regent:weapon-and-armor-proficiency:1": {
     archetypeId: "monkUnchained:invested-regent",
@@ -448,7 +442,7 @@ export const MONK_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Draconic Mettle",
     level: 4,
     bucket: "numeric",
-    note: "flat, unconditional +2 save bonus vs. fear, paralysis, and sleep effects — fear/sleep are real Change.saveCategories entries (save-categories.ts); paralysis has no SAVE_CATEGORIES entry at all and is dropped, flagged in detail. Not in `./monk.ts`'s original 60-feature scope",
+    note: "flat, unconditional +2 save bonus vs. fear, paralysis, and sleep effects — fear/sleep are real Change.saveCategories entries (save-categories.ts); paralysis is a real entry too but is not included here, flagged in detail",
   },
   "monkUnchained:scaled-fist:draconic-might:1": {
     archetypeId: "monkUnchained:scaled-fist",
@@ -580,7 +574,7 @@ export const MONK_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Otherworldly Resilience",
     level: 2,
     bucket: "numeric",
-    note: "flat, wholly unconditional DR/adamantine plus cold and electricity resistance, scaling once at 9th level — no activation, no resource spend, nothing dropped. dr.adamantine/eres.cold/eres.electricity are established qualified targets. Not in `./monk.ts`'s original 60-feature scope",
+    note: "flat, wholly unconditional DR/adamantine plus cold and electricity resistance, scaling once at 9th level — no activation, no resource spend, nothing dropped. dr.adamantine/eres.cold/eres.electricity are established qualified targets",
   },
   "monkUnchained:soul-shepherd:spirit-sense:12": {
     archetypeId: "monkUnchained:soul-shepherd",
@@ -640,14 +634,14 @@ export const MONK_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
  * This table is deliberately SEPARATE from `archetype-effects.ts`'s
  * `ARCHETYPE_FEATURE_EFFECTS` (the hand-verified table) — every entry here
  * additionally carries `confidence`/`provenance` so a reviewer (or the UI)
- * can never confuse "a human read the rulebook and checked this" with "an
- * extraction pass inferred this from prose." Only 3 of this class's 69
- * features cleared the `numeric` bar (see
+ * can never confuse "a human read the rulebook and checked this" with "a
+ * machine inferred this from prose." Only 3 of this class's 69 features
+ * cleared the `numeric` bar (see
  * `MONK_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION` above for the full
- * per-feature audit) — this class's kit leans heavily on ki-spend activated
- * abilities, bonus-feat LIST changes, and entirely unmodeled sub-resource
- * pools (investiture, chakras/serpent-fire ki), none of which are
- * Change-shaped.
+ * per-feature classification) — this class's kit leans heavily on ki-spend
+ * activated abilities, bonus-feat LIST changes, and entirely unmodeled
+ * sub-resource pools (investiture, chakras/serpent-fire ki), none of which
+ * are Change-shaped.
  *
  * Confidence rubric (identical to `./magus.ts`'s):
  *  - "high": a literal, fully general (no scope restriction) reading of a
@@ -656,7 +650,7 @@ export const MONK_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
  *  - "medium": a real-but-partial condition/qualifier from the prose is
  *    dropped because this engine has no way to check it or no matching
  *    vocabulary entry, flagged in `detail`.
- *  - "low": not used in this pass.
+ *  - "low": not used here.
  */
 export const MONK_UNCHAINED_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
   Record<string, ExtractedArchetypeFeatureEffect>
@@ -680,9 +674,8 @@ export const MONK_UNCHAINED_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
   // Scaled Fist's "Draconic Mettle" grants a flat, unconditional +2 on saves
   // vs. fear, paralysis, and sleep effects — no level scaling, no activation.
   // `fear` and `sleep` are real Change.saveCategories entries
-  // (save-categories.ts); `paralysis` has no SAVE_CATEGORIES entry at all
-  // (only the modeled subset of PF1's save-category vocabulary exists there)
-  // and is dropped, flagged in `detail`.
+  // (save-categories.ts); `paralysis` is a real entry too but is not included
+  // here, flagged in `detail`.
   "monkUnchained:scaled-fist:draconic-mettle:4": {
     changes: [
       {

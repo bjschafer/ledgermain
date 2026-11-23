@@ -189,8 +189,8 @@ describe("model/psychicAmplifications: phrenicAmplificationPrereqResult", () => 
   // linked spell." (Dual Amplification's own vendored description) is the
   // only structured, checkable "requires another amplification" signal
   // across all 31 published entries — nothing else names another
-  // amplification by name or count, so this test also documents that the
-  // audit found exactly one.
+  // amplification by name or count, so this test also pins that exactly one
+  // does.
   it("only Dual Amplification, of all 31 catalog entries, carries a structured requirement", () => {
     const doc = makeDoc({});
     const catalog = mergedPhrenicAmplificationCatalog(ref);

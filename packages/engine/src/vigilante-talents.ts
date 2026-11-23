@@ -40,7 +40,7 @@
  * handful of talents here DO carry a flat, unconditional, self-targeting
  * numeric bonus once selected (Shadow's Speed's landSpeed bump, Monkey's
  * Paws's Escape Artist bonus, Rooftop Infiltrator's half-base-speed climb
- * speed grant — sweep) — these get real `changes[]`. Rooftop Infiltrator's
+ * speed grant) — these get real `changes[]`. Rooftop Infiltrator's
  * grant targets `climbSpeed` (additive, base 0 for a vigilante with no other
  * climb speed source — same shape as `ninja-tricks.ts`'s Wall Climber);
  * Monkey's Paws' OWN "climb speed equal to base speed" clause is deliberately
@@ -61,11 +61,11 @@
  * Chase Master's chase subsystem), or a feat/ability grant with no Change
  * target (Combat Expertise, Fist of the Avenger's unarmed damage rider) —
  * these stay `displayOnly: true` with a `contextNotes` reminder carrying the
- * exact number, same discipline as every prior table in this project. A later catalog pass
- * full-parity sweep (the ~65 entries added below the original curated slice)
- * surfaced no additional promotion candidates — every remaining talent's bonus
- * is either a bonus-feat grant (no numeric Change target), a cross-table pick,
- * or conditional on a prerequisite talent/subtype/ability score this engine
+ * exact number, same discipline as every prior table in this project. The
+ * full-parity entries below the original curated slice surfaced no additional
+ * promotion candidates — every remaining talent's bonus is either a
+ * bonus-feat grant (no numeric Change target), a cross-table pick, or
+ * conditional on a prerequisite talent/subtype/ability score this engine
  * doesn't enforce.
  */
 
@@ -119,10 +119,10 @@ function buildSocial(entries: RawSocialTalent[]): VigilanteTalentDef[] {
     minLevel: e.minLevel ?? 1,
     changes: e.changes ?? [],
     contextNotes: e.contextNotes,
-    // Every social talent below carries no real Change (RAW's full-parity
-    // sweep confirmed each one is honest prose — identity-gated, cross-table,
-    // or a bonus this engine has no Change target for), so an entry with an
-    // empty changes[] is triage-acknowledged rather than backlog.
+    // Every social talent below carries no real Change (each one is honest
+    // prose — identity-gated, cross-table, or a bonus this engine has no
+    // Change target for), so an entry with an empty changes[] is
+    // triage-acknowledged rather than backlog.
     displayOnly: (e.changes?.length ?? 0) === 0,
   }));
 }
@@ -361,7 +361,7 @@ const SOCIAL_TALENT_LIST: VigilanteTalentDef[] = buildSocial([
       identityGatedNote,
     ],
   },
-  // --- full-parity sweep ---------------------------------------------
+  // --- full-parity additions -----------------------------------------
   {
     id: "ancestralEnlightenment",
     name: "Ancestral Enlightenment",
@@ -812,7 +812,7 @@ const TALENT_LIST: VigilanteTalentEntry[] = buildTalent([
       "Gain Combat Reflexes as a bonus feat (or swap); gain an additional attack of opportunity per round at 8th and 16th level.",
     contextNotes: [note("Grants a bonus feat — add it to Feats separately.", "bonusFeats")],
   },
-  // --- full-parity sweep ----------------------------------------------
+  // --- full-parity additions ------------------------------------------
   {
     id: "animalPatron",
     name: "Animal Patron",
@@ -1230,7 +1230,7 @@ export function vigilanteTalentsForSpecialization(
  * BROWSING/resolving, mirroring `rage-powers.ts`'s "vendored catalog overlay"
  * section exactly, for BOTH pools.
  *
- * Collision audit (full-parity sweep): all 46 hand-authored social talents
+ * Collision check (full-parity additions): all 46 hand-authored social talents
  * match a vendored entry by normalized name, except `seamlessShapechanger`
  * ("Seamless Shapechanger", the published AoN spelling) — the vendored catalog
  * carries a source typo, key `seemless_shapechanger`/"Seemless Shapechanger",
@@ -1248,7 +1248,7 @@ export function vigilanteTalentsForSpecialization(
  * to set `gate` for its own entries — "Avenger Talents"/"Stalker Talents"
  * map to `"avenger"`/`"stalker"`, "Hidden Strike Talents" maps to `"stalker"`
  * too since hidden strike is a Stalker-only class feature — but that mapping
- * is a one-time authoring decision, not runtime logic, so it isn't re-derived
+ * is a one-time modeling decision, not runtime logic, so it isn't re-derived
  * for vendored-only fallback rows.)
  */
 

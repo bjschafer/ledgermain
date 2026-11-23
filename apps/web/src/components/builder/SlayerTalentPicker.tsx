@@ -25,7 +25,7 @@ interface SlayerTalentPickerProps {
 }
 
 /**
- * Slayer talent selection (hand-table follow-up) — slayer only. Browses the
+ * Slayer talent selection — slayer only. Browses the
  * full published catalog (`mergedSlayerTalentCatalog` — every vendored entry,
  * overlaid with the hand-verified table on a name match), same convention as
  * `RagePowerPicker`. A `badge-modeled` "M" marks which entries carry a real,

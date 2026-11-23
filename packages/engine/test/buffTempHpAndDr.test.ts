@@ -8,11 +8,11 @@ import { compute, resolveDamage } from "../src/index.js";
 /**
  * Fixture coverage for the `SUPPLEMENTAL_BUFF_CHANGES` additions in
  * `packages/data-pipeline/src/supplements.ts`: Divine Power / Heroism,
- * Greater grant temp HP scaling with caster level (vendored `changes[]`
- * omitted it, even though each buff's own description already quotes the
- * number), Stoneskin grants DR 10/adamantine (vendored `changes` was
- * empty), and the later batch below (Delay Poison, Armor of the Tireless
- * Warrior, Resiliency/Chaos Totem Greater/Veemod/Force Field placeholders).
+ * Greater grant temp HP scaling with caster level (each buff's own description
+ * quotes the number, but the vendored `changes[]` omits it), Stoneskin grants
+ * DR 10/adamantine (the vendored `changes` is empty), plus Delay Poison, Armor
+ * of the Tireless Warrior, and Resiliency/Chaos Totem Greater/Veemod/Force
+ * Field placeholders.
  */
 const ref = loadRefData();
 

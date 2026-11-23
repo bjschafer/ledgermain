@@ -73,7 +73,7 @@ function discoveryFeatureNames(doc: CharacterDoc): string[] {
 }
 
 describe("ALCHEMIST_DISCOVERIES table", () => {
-  it("only the five Phase 5 promotions carry unconditional changes; Cognatogen alone is modeled without them", () => {
+  it("only the five promoted discoveries carry unconditional changes; Cognatogen alone is modeled without them", () => {
     const withChanges: string[] = [];
     for (const id of ALCHEMIST_DISCOVERY_IDS) {
       const discovery = ALCHEMIST_DISCOVERIES[id]!;
@@ -103,7 +103,7 @@ describe("ALCHEMIST_DISCOVERIES table", () => {
     expect(ALCHEMIST_DISCOVERIES.grandCognatogen?.minLevel).toBe(16);
   });
 
-  it("covers the full 168-entry vendored catalog (issue #74 Phase 5 parity)", () => {
+  it("covers the full 168-entry vendored catalog (full parity)", () => {
     expect(ALCHEMIST_DISCOVERY_IDS.length).toBe(168);
   });
 

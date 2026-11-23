@@ -179,10 +179,11 @@ export function collectRace(ctx: CollectContext): void {
     // structured bonus was already suppressed above; everywhere else the
     // source only names WHAT it replaces, not a verified mapping to specific
     // `Race.changes`/`contextNotes` entries, so these apply on top rather than
-    // risk dropping the wrong thing on an unaudited entry (see `RacialTrait`'s
-    // doc comment in `@pf1/schema`). The model layer excludes any vendored
-    // entry whose name already matches a hand-authored one for the character's
-    // race, so this never double-grants the SAME trait's bonus twice.
+    // risk dropping the wrong thing on an entry with no verified mapping (see
+    // `RacialTrait`'s doc comment in `@pf1/schema`). The model layer excludes
+    // any vendored entry whose name already matches a hand-authored one for
+    // the character's race, so this never double-grants the SAME trait's
+    // bonus twice.
     for (const t of activeVendoredTraits) {
       // Gated by `gateOpen` same as the hand-authored loop above — lets a
       // vendored trait's own supplemented rider (e.g. a skinwalker heritage's

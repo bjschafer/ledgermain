@@ -8,7 +8,7 @@
  * revelations through `collectGrantedFeatures`/`resolveClassFeatures` — same
  * pattern as `arcanistExploits.test.ts`.
  *
- * A small, deliberately narrow set of revelations WAS promoted off
+ * A small, deliberately narrow set of revelations is promoted off
  * `displayOnly` (see `oracle-revelations.ts`'s doc comment for the RAW
  * citations) — `PROMOTED_REVELATION_IDS` below is the explicit exceptions
  * list, and each has its own `compute` fixture describe block further down:
@@ -92,11 +92,10 @@ function revelationFeatureNames(doc: CharacterDoc): string[] {
 }
 
 /**
- * Every revelation promoted off `displayOnly` (the same promotion pass — see
- * `oracle-revelations.ts`'s doc comment for each one's RAW citation). This
- * is the explicit exceptions list the invariant test below checks against —
- * any revelation NOT in this set must still be `displayOnly` with
- * `changes: []`.
+ * Every revelation promoted off `displayOnly` (see `oracle-revelations.ts`'s
+ * doc comment for each one's RAW citation). This is the explicit exceptions
+ * list the invariant test below checks against — any revelation NOT in this
+ * set must still be `displayOnly` with `changes: []`.
  */
 const PROMOTED_REVELATION_IDS = [
   "metal:ironConstitution",
@@ -219,8 +218,7 @@ describe("ORACLE_REVELATIONS table", () => {
     // All 34 vendored mysteries are modeled. Most publish exactly 10
     // revelations; the exceptions genuinely have fewer RAW — Ascetic 8
     // (Ultimate Magic), Juju 9 (Faiths & Philosophies), Streets 9 (Ultimate
-    // Magic) — each confirmed against aonprd.com by its authoring pass, not a
-    // data gap.
+    // Magic) — each confirmed against aonprd.com, not a data gap.
     expect(ORACLE_MYSTERY_TAGS.length).toBe(34);
     const published: Record<string, number> = { ascetic: 8, juju: 9, streets: 9 };
     let total = 0;

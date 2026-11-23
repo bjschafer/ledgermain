@@ -12,19 +12,16 @@ import { isTargetApplied } from "../src/targets.js";
 /**
  * The gunslinger slice of the prose->Change extraction pipeline.
  *
- * TEST APPROACH: gunslinger's aggregator wiring (`archetype-extracted/index.ts`)
- * is a later integration step this pass doesn't touch, so
- * `resolveArchetypeFeatureEffect`/`compute` do NOT pick up this file's tables
- * yet through the normal production path. These fixtures therefore (1) assert
- * directly against `GUNSLINGER_ARCHETYPE_EFFECTS_EXTRACTED`'s exported
- * `changes` shape, (2) hand-compute each formula via the real `formula.ts`
- * evaluator (`evaluateFormula`) at several class levels against the exact
- * published-rules numbers cited in each entry's `provenance`, and (3) verify
+ * These fixtures assert directly against
+ * `GUNSLINGER_ARCHETYPE_EFFECTS_EXTRACTED`'s exported `changes` shape,
+ * hand-compute each formula via the real `formula.ts` evaluator
+ * (`evaluateFormula`) at several class levels against the exact published-rules
+ * numbers cited in each entry's `provenance`, and verify
  * `resolveArchetypeFeatureEffect` resolves correctly when explicitly given
  * this file's tables as its override arguments (the mechanism it's designed
  * for — see its doc comment). `loadRefData` is used to sanity-check that
  * every archetypeId/name this file references actually exists in the real
- * vendored data slice, same posture as `archetypeExtractedMagus.test.ts`.
+ * vendored data slice.
  */
 const ref = loadRefData();
 
@@ -36,7 +33,7 @@ function archetypeId(name: string): string {
   return entry.id;
 }
 
-/** The same normalization the sweep's batch files used: tags out, whitespace squashed. */
+/** The same normalization the extraction used: tags out, whitespace squashed. */
 function strippedDescription(html: string): string {
   return html
     .replace(/<[^>]+>/g, " ")
@@ -63,7 +60,7 @@ describe("GUNSLINGER_ARCHETYPE_FEATURE_CLASSIFICATION: coverage", () => {
     expect(Object.keys(GUNSLINGER_ARCHETYPE_FEATURE_CLASSIFICATION).length).toBe(82);
   });
 
-  it("bucket counts match the audited totals (65 subsystem, 10 situational, 3 blocked, 4 numeric)", () => {
+  it("bucket counts match the classified totals (65 subsystem, 10 situational, 3 blocked, 4 numeric)", () => {
     const counts: Record<string, number> = {};
     for (const entry of Object.values(GUNSLINGER_ARCHETYPE_FEATURE_CLASSIFICATION)) {
       counts[entry.bucket] = (counts[entry.bucket] ?? 0) + 1;

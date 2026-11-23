@@ -28,7 +28,7 @@
  * effect on the monk's own sheet (the effect only applies to ONE designated
  * strike in a specific round, not persistently). Same discipline as
  * `monk-ki-powers.ts`/`witch-hexes.ts`: every entry here is `displayOnly:
- * true` with `changes: []`, task brief confirmed.
+ * true` with `changes: []`.
  */
 
 import type { Change, ContextNote, MonkStyleStrike, RefData, SourceRef } from "@pf1/schema";

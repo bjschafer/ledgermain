@@ -11,13 +11,11 @@ import {
 
 /**
  * The witch slice of the prose->Change extraction pipeline, mirroring the
- * fighter pilot's methodology (`archetype-extracted/fighter.ts`) and the
- * barbarian wave's test structure. Unlike the barbarian wave,
- * `WITCH_ARCHETYPE_EFFECTS_EXTRACTED` IS already merged into
- * `archetype-extracted/index.ts`'s aggregator (this wave's own footprint
- * includes that one-import-one-spread wiring change), so the numeric fixture
- * tests below run through the real `compute()` pipeline end-to-end rather
- * than evaluating formulas in isolation.
+ * methodology in `archetype-extracted/fighter.ts`.
+ * `WITCH_ARCHETYPE_EFFECTS_EXTRACTED` is merged into
+ * `archetype-extracted/index.ts`'s aggregator, so the numeric fixture tests
+ * below run through the real `compute()` pipeline end-to-end rather than
+ * evaluating formulas in isolation.
  */
 const ref = loadRefData();
 

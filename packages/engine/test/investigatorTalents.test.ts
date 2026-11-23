@@ -6,10 +6,8 @@
  * exercised: the talent table's own gating/ surfacing (same pattern as
  * `alchemistDiscoveries.test.ts`), Studied Combat's insight bonus, Studied
  * Strike's precision dice, and confirming the vendored Inspiration pool +
- * skill dice already work end-to-end (audit flagged inspiration as unwired
- * display-only prose — this test proves the vendored
- * `uses.maxFormula`/`changes[]` already ride the generic pipeline with no
- * extra code needed).
+ * skill dice work end-to-end through the generic `uses.maxFormula`/`changes[]`
+ * pipeline with no extra code needed.
  */
 
 import { describe, expect, it } from "bun:test";
@@ -82,7 +80,7 @@ describe("INVESTIGATOR_TALENTS table", () => {
     }
   });
 
-  it("covers the full 67-entry vendored investigator talent catalog (issue #74)", () => {
+  it("covers the full 67-entry vendored investigator talent catalog", () => {
     expect(INVESTIGATOR_TALENT_IDS.length).toBe(67);
   });
 
@@ -138,7 +136,7 @@ describe("Studied Combat / Studied Strike class-feature detail lines", () => {
   });
 });
 
-describe("Inspiration (issue #13 audit follow-up: already wired via vendored data)", () => {
+describe("Inspiration (wired via vendored data)", () => {
   it("pool max = floor(level/2) + Int mod, min 1 (RAW)", () => {
     // Level 6 investigator, Int 16 (+3 mod): floor(6/2) + 3 = 6.
     const doc = makeInvestigator(6, 16);

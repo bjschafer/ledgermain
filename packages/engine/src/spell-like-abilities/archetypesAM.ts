@@ -3,8 +3,8 @@
  * tag (alchemist … monkUnchained) — keyed by the vendored
  * `RefData.archetypeFeatures` id
  * (`"<classTag>:<archetypeSlug>:<featureSlug>:<level>"`). The N–Z half lives
- * in `archetypesNZ.ts`; the class-tag split keeps wave agents' diffs
- * disjoint, and `index.ts` merges the two.
+ * in `archetypesNZ.ts`; the class-tag split keeps shard diffs disjoint, and
+ * `index.ts` merges the two.
  *
  * Defaults for this shard (see `types.ts`): caster level is the archetype's
  * class level (`@class.unlevel`); the feature's own `level` already gates

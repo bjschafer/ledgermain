@@ -3,8 +3,8 @@
  * the CRB Improved Familiar table's "Mephit (any type)" CL 7 row. Hand
  * authored clean room from the published Bestiary stat blocks (verified via
  * d20pfsrd.com's raw page text, not its AI-summarized extraction, after a
- * mismatch surfaced during authoring; see the Fly-skill note below) — see
- * `types.ts` for the authoring rules. The ten share one chassis: Small
+ * mismatch surfaced; see the Fly-skill note below) — see
+ * `types.ts` for the modeling rules. The ten share one chassis: Small
  * outsider, 3 HD (3d10+3), Str 13/Dex 15/Con 12/Int 6/Wis 11/Cha 14, AC
  * breakdown +2 Dex/+3 natural/+1 size (+1 dodge on nine of the ten, see
  * magma below), Fort +2/Ref +5/Will +3, 2 claws +5 (1d3+1), a breath weapon
@@ -27,7 +27,7 @@
  * Fly skill gap (air, dust only): both fly at "perfect" maneuverability,
  * whose RAW +8 skill bonus alone (plus Dex 2, size 2) already totals 12 at
  * ZERO ranks, exceeding the printed Fly +10 with no way to subtract back
- * down to it. This is a printed-book inconsistency, not an authoring error
+ * down to it. This is a printed-book inconsistency, not a modeling error
  * (confirmed against the raw stat block text, not just an AI summary) —
  * `fly` is left out of these two entries' `ownSkillRanks` since any rank
  * count only widens the gap, and the resulting sheet reads Fly +12 for

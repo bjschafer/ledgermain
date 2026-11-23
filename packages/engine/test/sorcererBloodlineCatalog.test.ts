@@ -11,8 +11,8 @@ import {
 
 /**
  * Coverage for the vendored-catalog overlay — see `bloodlines.ts`'s "vendored
- * catalog overlay" section doc comment for the collision-audit narrative this
- * asserts against.
+ * catalog overlay" section doc comment for the collision check this asserts
+ * against.
  */
 const ref = loadRefData();
 

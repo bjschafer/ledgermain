@@ -175,18 +175,17 @@ export function SettingsSection({
    * (nothing to map); the external formats always produce one so the player
    * can see what did/didn't come across.
    *
-   * Feedback (UX audit: "feedback: toasts + undo") — importing used to
-   * silently swap the active character with no confirmation of what just
-   * loaded. A native export preserves its original `id`, so re-importing the
-   * same export while it's already the active character overwrites it in
-   * place (Dexie `put` upserts by id) rather than adding a new one — that
-   * case gets "Updated {name}" instead of "Imported {name} (...)". This only
-   * compares against the CURRENTLY ACTIVE doc's id, not every saved
-   * character on the device, so a native re-import that happens to collide
-   * with some other (not-currently-open) saved character is still reported
-   * as "Imported" even though it also updates in place — an accepted
-   * approximation to avoid threading the full saved-character list into this
-   * handler for a one-line toast.
+   * Importing swaps the active character and reports what came across. A
+   * native export preserves its original `id`, so re-importing the same
+   * export while it's already the active character overwrites it in place
+   * (Dexie `put` upserts by id) rather than adding a new one — that case gets
+   * "Updated {name}" instead of "Imported {name} (...)". This only compares
+   * against the CURRENTLY ACTIVE doc's id, not every saved character on the
+   * device, so a native re-import that happens to collide with some other
+   * (not-currently-open) saved character is still reported as "Imported" even
+   * though it also updates in place — an accepted approximation to avoid
+   * threading the full saved-character list into this handler for a one-line
+   * toast.
    */
   async function handleImportChange(e: ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];

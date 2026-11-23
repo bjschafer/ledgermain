@@ -1,8 +1,8 @@
 /**
  * Hand-computed fixture tests for `TRAIT_CHOICES` (`trait-effects-extracted.ts`)
  * and the `collect.ts`/`traitGrantedClassSkills` consumption it feeds — the
- * trait pick-choice namespace's pilot (Deep Cover) plus the fixed-menu and
- * family-shaped waves that followed.
+ * trait pick-choice namespace (Deep Cover) plus the fixed-menu and
+ * family-shaped entries.
  *
  * Deep Cover (Pathfinder Society trait): "Bluff or Disguise (your choice) is
  * a class skill for you." The "always take 10 to assume/maintain your cover
@@ -110,7 +110,7 @@ describe("Deep Cover: Bluff-or-Disguise class-skill pick", () => {
  * Structural sanity over the WHOLE `TRAIT_CHOICES` table (not just the
  * fixtures below) — catches a typo'd option id, an unknown skill target, or
  * an unrecognized family before it ships silently broken. Mirrors
- * `traitEffectsExtracted.test.ts`'s sweep-wide checks for
+ * `traitEffectsExtracted.test.ts`'s cross-cutting checks for
  * `TRAIT_EFFECTS_EXTRACTED`.
  */
 describe("TRAIT_CHOICES: structural sanity", () => {

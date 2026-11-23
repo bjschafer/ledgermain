@@ -297,16 +297,15 @@ describe("rage-power while-raging buff gate (issue #75)", () => {
 });
 
 /**
- * Fixture coverage for the parity sweep's batch 1 (A-F) promotions added
- * alongside the original three (see `rage-powers.ts`'s doc comment for the
- * full per-power promotion rationale). Beast Totem, Celestial Blood, Chaos
- * Totem, Draconic Blood, and Earth Totem use the same while-raging
- * `activeWhenBuff` gate as Raging Climber/Swimmer/Swift Foot; the three
- * Linnorm Death Curses are a NEW shape — a flat damage bonus verified as
- * unconditional (not scoped to "while raging" at all), so they carry a plain
- * ungated `Change`.
+ * Fixture coverage for the promoted rage powers in the A-F range (see
+ * `rage-powers.ts`'s doc comment for the full per-power promotion rationale).
+ * Beast Totem, Celestial Blood, Chaos Totem, Draconic Blood, and Earth Totem
+ * use the same while-raging `activeWhenBuff` gate as Raging
+ * Climber/Swimmer/Swift Foot; the three Linnorm Death Curses are a different
+ * shape — a flat damage bonus verified as unconditional (not scoped to "while
+ * raging" at all), so they carry a plain ungated `Change`.
  */
-describe("#74 parity sweep batch 1 (A-F): newly promoted rage powers", () => {
+describe("rage powers with live Changes (A-F)", () => {
   function raceId(name: string): string {
     const entry = Object.entries(ref.races).find(([, r]) => r.name === name);
     if (!entry) throw new Error(`race not found: ${name}`);
@@ -451,18 +450,17 @@ describe("#74 parity sweep batch 1 (A-F): newly promoted rage powers", () => {
 });
 
 /**
- * Fixture coverage for the parity sweep's batch 2 (G-R) promotions (see
- * `rage-powers.ts`'s doc comment for the full per-power promotion
- * rationale). Greater Chaos Totem uses the `dr.<qualifier>` shape (new for
- * this table — DR is inherently bypass-qualified, unlike a plain `dr`
- * Change); the rest are either the same `eres.<energy>`-while-raging shape
- * as Celestial Blood, the same `sensedv`-while-raging shape as
- * shifter-aspects.ts's Bat aspect (this batch's corrected understanding that
- * senses resolve highest-wins, not lowest — see the file doc comment), the
- * same enhancement-skill-while-raging shape as Raging Climber/Swimmer, or an
+ * Fixture coverage for the promoted rage powers in the G-R range (see
+ * `rage-powers.ts`'s doc comment for the full per-power promotion rationale).
+ * Greater Chaos Totem uses the `dr.<qualifier>` shape (new for this table —
+ * DR is inherently bypass-qualified, unlike a plain `dr` Change); the rest are
+ * either the same `eres.<energy>`-while-raging shape as Celestial Blood, the
+ * same `sensedv`-while-raging shape as shifter-aspects.ts's Bat aspect (senses
+ * resolve highest-wins, not lowest — see the file doc comment), the same
+ * enhancement-skill-while-raging shape as Raging Climber/Swimmer, or an
  * ungated flat damage Change like the other Linnorm Death Curses.
  */
-describe("#74 parity sweep batch 2 (G-R): newly promoted rage powers", () => {
+describe("rage powers with live Changes (G-R)", () => {
   function raceId(name: string): string {
     const entry = Object.entries(ref.races).find(([, r]) => r.name === name);
     if (!entry) throw new Error(`race not found: ${name}`);
@@ -664,19 +662,19 @@ describe("#74 parity sweep batch 2 (G-R): newly promoted rage powers", () => {
 });
 
 /**
- * Fixture coverage for the parity sweep's batch 3 (S-Z) promotions,
- * closing out full vendored parity — see `rage-powers.ts`'s doc comment for
- * the full per-power promotion rationale. Sun Totem is the same
+ * Fixture coverage for the promoted rage powers in the S-Z range, which
+ * completes full vendored parity — see `rage-powers.ts`'s doc comment for the
+ * full per-power promotion rationale. Sun Totem is the same
  * `eres.fire`-while-raging shape as Lesser/Greater Sun Totem; Unrestrained
  * Rage is a new shape for this table (`immEffect.paralysis`, the engine's
  * closed effect-immunity vocabulary); Taiga/Tarn/Tor Linnorm Death Curse are
- * three more ungated flat `mwdamage` Changes, same as the other Linnorm
- * Death Curses; Low-Light Vision and Scent are the legacy revisit — two
- * original-29-entry rows promoted this batch using the same
- * `sensell`/`sensesc` flag-Change shape as `vigilante-talents.ts`'s Shadow's
- * Sight and `shifter-aspects.ts`'s aspects.
+ * three more ungated flat `mwdamage` Changes, same as the other Linnorm Death
+ * Curses; Low-Light Vision and Scent are the legacy revisit — two
+ * original-29-entry rows using the same `sensell`/`sensesc` flag-Change shape
+ * as `vigilante-talents.ts`'s Shadow's Sight and `shifter-aspects.ts`'s
+ * aspects.
  */
-describe("#74 parity sweep batch 3 (S-Z): newly promoted rage powers", () => {
+describe("rage powers with live Changes (S-Z)", () => {
   function raceId(name: string): string {
     const entry = Object.entries(ref.races).find(([, r]) => r.name === name);
     if (!entry) throw new Error(`race not found: ${name}`);

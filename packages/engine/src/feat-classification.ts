@@ -1,8 +1,8 @@
 /**
- * Full classification of the feat batch-extraction pass: every one of the
- * 390 feats the Foundry PF1 *system* pack shipped, bucketed and reasoned,
- * mirroring the archetype-extracted/ pipeline's convention (see
- * `archetype-extracted/index.ts`).
+ * Full classification of the feats in the Foundry PF1 *system* pack: every
+ * one of the 390 feats shipped at the pinned `FOUNDRY_SHA` when classified,
+ * bucketed and reasoned, mirroring the archetype-extracted/ pipeline's
+ * convention (see `archetype-extracted/index.ts`).
  *
  * `packages/data-pipeline/data/feats.json` also carries ~3,150 feats
  * merged in from the community `pf1-content` module (see config.ts's
@@ -25,7 +25,8 @@
  *  - "choice-numeric" — numeric but parameterized by a player choice (a
  *                        weapon type, a skill). Extracted ONLY when the
  *                        existing featChoices "skill"/"weapon" choice-UI shape
- *                        already covers it; otherwise classified and deferred.
+ *                        already covers it; otherwise classified and left
+ *                        unwired.
  *  - "substitution" — swaps which ability modifier feeds a term ("use Dex
  *                        instead of Str for a rapier's damage"). Never a
  *                        Change: a substitution replaces the modifier it
@@ -56,26 +57,23 @@
  *                        guessing a numeric entry is the point: wrong sheet
  *                        numbers are the worst failure mode.
  *
- * Methodology (disclosed, not hidden): every "numeric"/"choice-numeric"/"pool"/
- * "blocked" entry was individually read against the vendored feat description
- * (this repo's own OGL data slice) and cross-checked against the published PF1
- * rules (clean-room — no Foundry system code consulted, per CLAUDE.md). The
- * bulk "situational"/"subsystem" split for feats with no extraction candidate
- * was a heuristic-assisted pass (a regex scan for a "+N"/"-N" pattern in the
- * rules text, tag-driven for whole categories like Item Creation/Metamagic/
- * Critical/Combat Maneuver/Proficiency/Skill Unlock/Style/Teamwork) — this
- * mirrors archetype-extracted/fighter.ts's own disclosed pilot methodology.
- * The situational/subsystem boundary doesn't affect engine correctness
- * (neither bucket ever emits a Change), only audit-file clarity.
+ * Methodology: every "numeric"/"choice-numeric"/"pool"/"blocked" entry was
+ * individually read against the vendored feat description (this repo's own
+ * OGL data slice) and cross-checked against the published PF1 rules
+ * (clean-room — no Foundry system code consulted). The bulk
+ * "situational"/"subsystem" split for feats with no extraction candidate was
+ * heuristic-assisted (a regex scan for a "+N"/"-N" pattern in the rules text,
+ * tag-driven for whole categories like Item Creation/Metamagic/Critical/
+ * Combat Maneuver/Proficiency/Skill Unlock/Style/Teamwork) — the same
+ * methodology `archetype-extracted/fighter.ts` documents. The situational/
+ * subsystem boundary doesn't affect engine correctness (neither bucket ever
+ * emits a Change), only classification clarity.
  *
- * Frozen at the time of the original audit, with one exception: verdicts that
- * turned on the lack of a maneuver-scoped CMB/CMD vocabulary, a save
- * category, or (as of the PC natural-attack mechanism) a PC-facing natural-
- * attack target the engine didn't yet have consult the current, larger
- * vocabulary (`maneuver-categories.ts`, `save-categories.ts`,
- * `pc-natural-attacks/`) rather than the one that existed when the entry was
- * first written — a handful of entries have been revisited and promoted on
- * that basis, never on a re-reading of the rules text itself.
+ * Verdicts that turned on the lack of a maneuver-scoped CMB/CMD vocabulary,
+ * a save category, or a PC-facing natural-attack target consult the current,
+ * larger vocabulary (`maneuver-categories.ts`, `save-categories.ts`,
+ * `pc-natural-attacks/`), so a handful of entries are promoted on that
+ * basis, never on a re-reading of the rules text itself.
  */
 
 export type FeatClassificationBucket =
@@ -115,13 +113,13 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "acrobatic-steps",
     name: "Acrobatic Steps",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted classification, see file header)",
   },
   "agile-maneuvers": {
     slug: "agile-maneuvers",
     name: "Agile Maneuvers",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted classification, see file header)",
   },
   alertness: {
     slug: "alertness",
@@ -145,19 +143,19 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "amateur-gunslinger",
     name: "Amateur Gunslinger",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted classification, see file header)",
   },
   "amateur-investigator": {
     slug: "amateur-investigator",
     name: "Amateur Investigator",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted classification, see file header)",
   },
   "amateur-swashbuckler": {
     slug: "amateur-swashbuckler",
     name: "Amateur Swashbuckler",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted classification, see file header)",
   },
   "animal-affinity": {
     slug: "animal-affinity",
@@ -169,31 +167,31 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "aquadynamic-focus",
     name: "Aquadynamic Focus",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   "aquadynamic-shot": {
     slug: "aquadynamic-shot",
     name: "Aquadynamic Shot",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   "arcane-armor-mastery": {
     slug: "arcane-armor-mastery",
     name: "Arcane Armor Mastery",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted classification, see file header)",
   },
   "arcane-armor-training": {
     slug: "arcane-armor-training",
     name: "Arcane Armor Training",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted classification, see file header)",
   },
   "arcane-strike": {
     slug: "arcane-strike",
     name: "Arcane Strike",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   "armor-proficiency-heavy": {
     slug: "armor-proficiency-heavy",
@@ -241,13 +239,13 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "bashing-finish",
     name: "Bashing Finish",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   "blazing-aura": {
     slug: "blazing-aura",
     name: "Blazing Aura",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted classification, see file header)",
   },
   "bleeding-critical": {
     slug: "bleeding-critical",
@@ -259,7 +257,7 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "blind-fight",
     name: "Blind-Fight",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   "blinding-critical": {
     slug: "blinding-critical",
@@ -271,31 +269,31 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "block-chakras",
     name: "Block Chakras",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted classification, see file header)",
   },
   "block-upper-chakras": {
     slug: "block-upper-chakras",
     name: "Block Upper Chakras",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted classification, see file header)",
   },
   "bloody-assault": {
     slug: "bloody-assault",
     name: "Bloody Assault",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   bludgeoner: {
     slug: "bludgeoner",
     name: "Bludgeoner",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   bodyguard: {
     slug: "bodyguard",
     name: "Bodyguard",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted classification, see file header)",
   },
   "breadth-of-experience": {
     slug: "breadth-of-experience",
@@ -313,19 +311,19 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "brilliant-planner",
     name: "Brilliant Planner",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted classification, see file header)",
   },
   "caster-s-champion": {
     slug: "caster-s-champion",
     name: "Caster's Champion",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   "catch-off-guard": {
     slug: "catch-off-guard",
     name: "Catch Off-Guard",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   "channel-smite": {
     slug: "channel-smite",
@@ -337,37 +335,37 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "charging-hurler",
     name: "Charging Hurler",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   chokehold: {
     slug: "chokehold",
     name: "Chokehold",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   cleave: {
     slug: "cleave",
     name: "Cleave",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   "cleaving-finish": {
     slug: "cleaving-finish",
     name: "Cleaving Finish",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted classification, see file header)",
   },
   "close-quarters-thrower": {
     slug: "close-quarters-thrower",
     name: "Close-Quarters Thrower",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted classification, see file header)",
   },
   "clustered-shots": {
     slug: "clustered-shots",
     name: "Clustered Shots",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   "combat-casting": {
     slug: "combat-casting",
@@ -391,7 +389,7 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "combat-vigor",
     name: "Combat Vigor",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted classification, see file header)",
   },
   "command-undead": {
     slug: "command-undead",
@@ -403,7 +401,7 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "conceal-spell",
     name: "Conceal Spell",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted classification, see file header)",
   },
   "craft-construct": {
     slug: "craft-construct",
@@ -415,7 +413,7 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "craft-cybernetics",
     name: "Craft Cybernetics",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted classification, see file header)",
   },
   "craft-magic-arms-and-armor": {
     slug: "craft-magic-arms-and-armor",
@@ -433,7 +431,7 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "craft-pharmaceutical",
     name: "Craft Pharmaceutical",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted classification, see file header)",
   },
   "craft-poppet": {
     slug: "craft-poppet",
@@ -445,7 +443,7 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "craft-robot",
     name: "Craft Robot",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted classification, see file header)",
   },
   "craft-rod": {
     slug: "craft-rod",
@@ -469,13 +467,13 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "craft-technological-arms-and-armor",
     name: "Craft Technological Arms and Armor",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted classification, see file header)",
   },
   "craft-technological-item": {
     slug: "craft-technological-item",
     name: "Craft Technological Item",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted classification, see file header)",
   },
   "craft-wand": {
     slug: "craft-wand",
@@ -511,13 +509,13 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "crossbow-mastery",
     name: "Crossbow Mastery",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted classification, see file header)",
   },
   "crushing-impact": {
     slug: "crushing-impact",
     name: "Crushing Impact",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   "cultivate-magic-plants": {
     slug: "cultivate-magic-plants",
@@ -529,7 +527,7 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "dazzling-display",
     name: "Dazzling Display",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted classification, see file header)",
   },
   "deadly-aim": {
     slug: "deadly-aim",
@@ -541,13 +539,13 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "deadly-finish",
     name: "Deadly Finish",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   "deadly-stroke": {
     slug: "deadly-stroke",
     name: "Deadly Stroke",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   "deafening-critical": {
     slug: "deafening-critical",
@@ -559,7 +557,7 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "death-or-glory",
     name: "Death or Glory",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   deceitful: {
     slug: "deceitful",
@@ -571,13 +569,13 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "defensive-combat-training",
     name: "Defensive Combat Training",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted classification, see file header)",
   },
   "deflect-arrows": {
     slug: "deflect-arrows",
     name: "Deflect Arrows",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted classification, see file header)",
   },
   "deft-hands": {
     slug: "deft-hands",
@@ -601,43 +599,43 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "dirty-fighting",
     name: "Dirty Fighting",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   "disarming-strike": {
     slug: "disarming-strike",
     name: "Disarming Strike",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   "disengaging-feint": {
     slug: "disengaging-feint",
     name: "Disengaging Feint",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted classification, see file header)",
   },
   "disengaging-flourish": {
     slug: "disengaging-flourish",
     name: "Disengaging Flourish",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted classification, see file header)",
   },
   "disengaging-shot": {
     slug: "disengaging-shot",
     name: "Disengaging Shot",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted classification, see file header)",
   },
   disruptive: {
     slug: "disruptive",
     name: "Disruptive",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   "distance-thrower": {
     slug: "distance-thrower",
     name: "Distance Thrower",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted classification, see file header)",
   },
   dodge: {
     slug: "dodge",
@@ -649,13 +647,13 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "dolphin-circle",
     name: "Dolphin Circle",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   "dolphin-dart": {
     slug: "dolphin-dart",
     name: "Dolphin Dart",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   "dolphin-style": {
     slug: "dolphin-style",
@@ -667,13 +665,13 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "double-slice",
     name: "Double Slice",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted classification, see file header)",
   },
   "dreadful-carnage": {
     slug: "dreadful-carnage",
     name: "Dreadful Carnage",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   "eldritch-claws": {
     slug: "eldritch-claws",
@@ -709,7 +707,7 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "enforcer",
     name: "Enforcer",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted classification, see file header)",
   },
   "enlarge-spell": {
     slug: "enlarge-spell",
@@ -745,13 +743,13 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "extra-amplification",
     name: "Extra Amplification",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted classification, see file header)",
   },
   "extra-arcana": {
     slug: "extra-arcana",
     name: "Extra Arcana",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted classification, see file header)",
   },
   "extra-arcane-pool": {
     slug: "extra-arcane-pool",
@@ -763,7 +761,7 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "extra-arcanist-exploit",
     name: "Extra Arcanist Exploit",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted classification, see file header)",
   },
   "extra-bane": {
     slug: "extra-bane",
@@ -781,7 +779,7 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "extra-cantrips-or-orisons",
     name: "Extra Cantrips or Orisons",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted classification, see file header)",
   },
   "extra-channel": {
     slug: "extra-channel",
@@ -793,13 +791,13 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "extra-discovery",
     name: "Extra Discovery",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted classification, see file header)",
   },
   "extra-evolution": {
     slug: "extra-evolution",
     name: "Extra Evolution",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted classification, see file header)",
   },
   "extra-feature": {
     slug: "extra-feature",
@@ -811,13 +809,13 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "extra-focus-power",
     name: "Extra Focus Power",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted classification, see file header)",
   },
   "extra-gnome-magic": {
     slug: "extra-gnome-magic",
     name: "Extra Gnome Magic",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted classification, see file header)",
   },
   "extra-grit": {
     slug: "extra-grit",
@@ -829,7 +827,7 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "extra-hex",
     name: "Extra Hex",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted classification, see file header)",
   },
   "extra-inspiration": {
     slug: "extra-inspiration",
@@ -841,13 +839,13 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "extra-investigator-talent",
     name: "Extra Investigator Talent",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted classification, see file header)",
   },
   "extra-item-slot": {
     slug: "extra-item-slot",
     name: "Extra Item Slot",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted classification, see file header)",
   },
   "extra-ki": {
     slug: "extra-ki",
@@ -877,7 +875,7 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "extra-mercy",
     name: "Extra Mercy",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted classification, see file header)",
   },
   "extra-mesmerist-tricks": {
     slug: "extra-mesmerist-tricks",
@@ -889,7 +887,7 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "extra-ninja-trick",
     name: "Extra Ninja Trick",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted classification, see file header)",
   },
   "extra-panache": {
     slug: "extra-panache",
@@ -913,7 +911,7 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "extra-rage-power",
     name: "Extra Rage Power",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted classification, see file header)",
   },
   "extra-reservoir": {
     slug: "extra-reservoir",
@@ -925,19 +923,19 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "extra-revelation",
     name: "Extra Revelation",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted classification, see file header)",
   },
   "extra-rogue-talent": {
     slug: "extra-rogue-talent",
     name: "Extra Rogue Talent",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted classification, see file header)",
   },
   "extra-slayer-talent": {
     slug: "extra-slayer-talent",
     name: "Extra Slayer Talent",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted classification, see file header)",
   },
   "extra-surge": {
     slug: "extra-surge",
@@ -949,25 +947,25 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "false-opening",
     name: "False Opening",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   "far-shot": {
     slug: "far-shot",
     name: "Far Shot",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   "felling-smash": {
     slug: "felling-smash",
     name: "Felling Smash",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   fleet: {
     slug: "fleet",
     name: "Fleet",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted classification, see file header)",
   },
   fleshwarper: {
     slug: "fleshwarper",
@@ -979,19 +977,19 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "flyby-attack",
     name: "Flyby Attack",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted classification, see file header)",
   },
   "focused-shot": {
     slug: "focused-shot",
     name: "Focused Shot",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted classification, see file header)",
   },
   "following-step": {
     slug: "following-step",
     name: "Following Step",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted classification, see file header)",
   },
   "forge-ring": {
     slug: "forge-ring",
@@ -1009,19 +1007,19 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "gorgon-s-fist",
     name: "Gorgon's Fist",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   "gory-finish": {
     slug: "gory-finish",
     name: "Gory Finish",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted classification, see file header)",
   },
   "great-cleave": {
     slug: "great-cleave",
     name: "Great Cleave",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   "great-fortitude": {
     slug: "great-fortitude",
@@ -1033,7 +1031,7 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "greater-blind-fight",
     name: "Greater Blind-Fight",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   "greater-bull-rush": {
     slug: "greater-bull-rush",
@@ -1081,7 +1079,7 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "greater-penetrating-strike",
     name: "Greater Penetrating Strike",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted classification, see file header)",
   },
   "greater-reposition": {
     slug: "greater-reposition",
@@ -1093,7 +1091,7 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "greater-shield-focus",
     name: "Greater Shield Focus",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   "greater-spell-focus": {
     slug: "greater-spell-focus",
@@ -1111,7 +1109,7 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "greater-spring-attack",
     name: "Greater Spring Attack",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   "greater-steal": {
     slug: "greater-steal",
@@ -1135,13 +1133,13 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "greater-two-weapon-fighting",
     name: "Greater Two-Weapon Fighting",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   "greater-vital-strike": {
     slug: "greater-vital-strike",
     name: "Greater Vital Strike",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   "greater-weapon-focus": {
     slug: "greater-weapon-focus",
@@ -1159,7 +1157,7 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "greater-whip-mastery",
     name: "Greater Whip Mastery",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   "grisly-ornament": {
     slug: "grisly-ornament",
@@ -1195,7 +1193,7 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "hurricane-punch",
     name: "Hurricane Punch",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted classification, see file header)",
   },
   "impaling-critical": {
     slug: "impaling-critical",
@@ -1219,7 +1217,7 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "improved-charging-hurler",
     name: "Improved Charging Hurler",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   "improved-counterspell": {
     slug: "improved-counterspell",
@@ -1291,7 +1289,7 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "improved-ki-throw",
     name: "Improved Ki Throw",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted classification, see file header)",
   },
   "improved-lightning-reflexes": {
     slug: "improved-lightning-reflexes",
@@ -1321,7 +1319,7 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "improved-precise-shot",
     name: "Improved Precise Shot",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   "improved-reposition": {
     slug: "improved-reposition",
@@ -1333,19 +1331,19 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "improved-shield-bash",
     name: "Improved Shield Bash",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted classification, see file header)",
   },
   "improved-snap-shot": {
     slug: "improved-snap-shot",
     name: "Improved Snap Shot",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   "improved-spring-attack": {
     slug: "improved-spring-attack",
     name: "Improved Spring Attack",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   "improved-steal": {
     slug: "improved-steal",
@@ -1375,43 +1373,43 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "improved-two-weapon-feint",
     name: "Improved Two-Weapon Feint",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   "improved-two-weapon-fighting": {
     slug: "improved-two-weapon-fighting",
     name: "Improved Two-Weapon Fighting",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   "improved-unarmed-strike": {
     slug: "improved-unarmed-strike",
     name: "Improved Unarmed Strike",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted classification, see file header)",
   },
   "improved-vital-strike": {
     slug: "improved-vital-strike",
     name: "Improved Vital Strike",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   "improved-whip-mastery": {
     slug: "improved-whip-mastery",
     name: "Improved Whip Mastery",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   "improvised-weapon-mastery": {
     slug: "improvised-weapon-mastery",
     name: "Improvised Weapon Mastery",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   "in-harm-s-way": {
     slug: "in-harm-s-way",
     name: "In Harm’s Way",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted classification, see file header)",
   },
   "infuse-poison": {
     slug: "infuse-poison",
@@ -1447,7 +1445,7 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "ki-throw",
     name: "Ki Throw",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted classification, see file header)",
   },
   leadership: {
     slug: "leadership",
@@ -1471,19 +1469,19 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "lightning-stance",
     name: "Lightning Stance",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   "lingering-performance": {
     slug: "lingering-performance",
     name: "Lingering Performance",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted classification, see file header)",
   },
   lunge: {
     slug: "lunge",
     name: "Lunge",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   "magical-aptitude": {
     slug: "magical-aptitude",
@@ -1507,7 +1505,7 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "martial-dominance",
     name: "Martial Dominance",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   "martial-weapon-proficiency": {
     slug: "martial-weapon-proficiency",
@@ -1531,37 +1529,37 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "medusa-s-wrath",
     name: "Medusa's Wrath",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   "misdirection-attack": {
     slug: "misdirection-attack",
     name: "Misdirection Attack",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted classification, see file header)",
   },
   "misdirection-redirection": {
     slug: "misdirection-redirection",
     name: "Misdirection Redirection",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted classification, see file header)",
   },
   "misdirection-tactics": {
     slug: "misdirection-tactics",
     name: "Misdirection Tactics",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted classification, see file header)",
   },
   mobility: {
     slug: "mobility",
     name: "Mobility",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   "monastic-legacy": {
     slug: "monastic-legacy",
     name: "Monastic Legacy",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted classification, see file header)",
   },
   "monstrous-crafter": {
     slug: "monstrous-crafter",
@@ -1573,13 +1571,13 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "mounted-archery",
     name: "Mounted Archery",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   "mounted-combat": {
     slug: "mounted-combat",
     name: "Mounted Combat",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted classification, see file header)",
   },
   "mounted-shield": {
     slug: "mounted-shield",
@@ -1591,7 +1589,7 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "mounted-skirmisher",
     name: "Mounted Skirmisher",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted classification, see file header)",
   },
   multiattack: {
     slug: "multiattack",
@@ -1615,13 +1613,13 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "nimble-moves",
     name: "Nimble Moves",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted classification, see file header)",
   },
   "opening-volley": {
     slug: "opening-volley",
     name: "Opening Volley",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   outflank: {
     slug: "outflank",
@@ -1639,7 +1637,7 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "painful-collision",
     name: "Painful Collision",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted classification, see file header)",
   },
   "paired-opportunists": {
     slug: "paired-opportunists",
@@ -1651,13 +1649,13 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "passing-trick",
     name: "Passing Trick",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   "penetrating-strike": {
     slug: "penetrating-strike",
     name: "Penetrating Strike",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   persuasive: {
     slug: "persuasive",
@@ -1669,25 +1667,25 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "pin-down",
     name: "Pin Down",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted classification, see file header)",
   },
   "pinning-knockout": {
     slug: "pinning-knockout",
     name: "Pinning Knockout",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   "pinpoint-targeting": {
     slug: "pinpoint-targeting",
     name: "Pinpoint Targeting",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   "piranha-strike": {
     slug: "piranha-strike",
     name: "Piranha Strike",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   "point-blank-shot": {
     slug: "point-blank-shot",
@@ -1717,31 +1715,31 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "pressure-adept",
     name: "Pressure Adept",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted classification, see file header)",
   },
   "psychic-sensitivity": {
     slug: "psychic-sensitivity",
     name: "Psychic Sensitivity",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted classification, see file header)",
   },
   "pushing-assault": {
     slug: "pushing-assault",
     name: "Pushing Assault",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   "quick-dirty-trick": {
     slug: "quick-dirty-trick",
     name: "Quick Dirty Trick",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   "quick-draw": {
     slug: "quick-draw",
     name: "Quick Draw",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   "quick-steal": {
     slug: "quick-steal",
@@ -1753,7 +1751,7 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "quick-stow",
     name: "Quick Stow",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   "quicken-spell": {
     slug: "quicken-spell",
@@ -1771,13 +1769,13 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "ranged-feint",
     name: "Ranged Feint",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   "rapid-reload": {
     slug: "rapid-reload",
     name: "Rapid Reload",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted classification, see file header)",
   },
   "rapid-shot": {
     slug: "rapid-shot",
@@ -1801,13 +1799,13 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "rending-claws",
     name: "Rending Claws",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   "ride-by-attack": {
     slug: "ride-by-attack",
     name: "Ride-By Attack",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted classification, see file header)",
   },
   "robot-s-bane": {
     slug: "robot-s-bane",
@@ -1819,19 +1817,19 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "run",
     name: "Run",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   "saving-shield": {
     slug: "saving-shield",
     name: "Saving Shield",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   "scavenger-s-luck": {
     slug: "scavenger-s-luck",
     name: "Scavenger's Luck",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted classification, see file header)",
   },
   "scorching-weapons": {
     slug: "scorching-weapons",
@@ -1843,7 +1841,7 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "scorpion-style",
     name: "Scorpion Style",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   "scribe-scroll": {
     slug: "scribe-scroll",
@@ -1873,7 +1871,7 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "shark-leap",
     name: "Shark Leap",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   "shark-style": {
     slug: "shark-style",
@@ -1885,31 +1883,31 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "shark-tear",
     name: "Shark Tear",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   "shatter-defenses": {
     slug: "shatter-defenses",
     name: "Shatter Defenses",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   "shield-focus": {
     slug: "shield-focus",
     name: "Shield Focus",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   "shield-master": {
     slug: "shield-master",
     name: "Shield Master",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   "shield-of-swings": {
     slug: "shield-of-swings",
     name: "Shield of Swings",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   "shield-proficiency": {
     slug: "shield-proficiency",
@@ -1921,13 +1919,13 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "shield-slam",
     name: "Shield Slam",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   "shot-on-the-run": {
     slug: "shot-on-the-run",
     name: "Shot on the Run",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   "sickening-critical": {
     slug: "sickening-critical",
@@ -1939,7 +1937,7 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "sidestep",
     name: "Sidestep",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted classification, see file header)",
   },
   "signature-skill": {
     slug: "signature-skill",
@@ -2125,7 +2123,7 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "snap-shot",
     name: "Snap Shot",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   snatch: {
     slug: "snatch",
@@ -2137,7 +2135,7 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "snatch-arrows",
     name: "Snatch Arrows",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted classification, see file header)",
   },
   "spell-focus": {
     slug: "spell-focus",
@@ -2149,7 +2147,7 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "spell-mastery",
     name: "Spell Mastery",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted classification, see file header)",
   },
   "spell-penetration": {
     slug: "spell-penetration",
@@ -2161,13 +2159,13 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "spellbreaker",
     name: "Spellbreaker",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted classification, see file header)",
   },
   "spirited-charge": {
     slug: "spirited-charge",
     name: "Spirited Charge",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted classification, see file header)",
   },
   "spit-venom": {
     slug: "spit-venom",
@@ -2179,7 +2177,7 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "spring-attack",
     name: "Spring Attack",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   "staggering-critical": {
     slug: "staggering-critical",
@@ -2203,13 +2201,13 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "step-up",
     name: "Step Up",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   "step-up-and-strike": {
     slug: "step-up-and-strike",
     name: "Step Up and Strike",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   "still-spell": {
     slug: "still-spell",
@@ -2227,7 +2225,7 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "strike-back",
     name: "Strike Back",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   "stunning-critical": {
     slug: "stunning-critical",
@@ -2239,13 +2237,13 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "stunning-fist",
     name: "Stunning Fist",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   "sundering-strike": {
     slug: "sundering-strike",
     name: "Sundering Strike",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   "swap-places": {
     slug: "swap-places",
@@ -2263,25 +2261,25 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "technologist",
     name: "Technologist",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted classification, see file header)",
   },
   "technology-adept": {
     slug: "technology-adept",
     name: "Technology Adept",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted classification, see file header)",
   },
   technophobe: {
     slug: "technophobe",
     name: "Technophobe",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   "throw-anything": {
     slug: "throw-anything",
     name: "Throw Anything",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   "tiring-critical": {
     slug: "tiring-critical",
@@ -2311,7 +2309,7 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "trick-riding",
     name: "Trick Riding",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   "turn-undead": {
     slug: "turn-undead",
@@ -2323,31 +2321,31 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "two-handed-thrower",
     name: "Two-Handed Thrower",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   "two-weapon-defense": {
     slug: "two-weapon-defense",
     name: "Two-Weapon Defense",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   "two-weapon-feint": {
     slug: "two-weapon-feint",
     name: "Two-Weapon Feint",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted classification, see file header)",
   },
   "two-weapon-fighting": {
     slug: "two-weapon-fighting",
     name: "Two-Weapon Fighting",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   "two-weapon-rend": {
     slug: "two-weapon-rend",
     name: "Two-Weapon Rend",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   unseat: {
     slug: "unseat",
@@ -2371,19 +2369,19 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "vicious-stomp",
     name: "Vicious Stomp",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted classification, see file header)",
   },
   "vital-strike": {
     slug: "vital-strike",
     name: "Vital Strike",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   "wave-strike": {
     slug: "wave-strike",
     name: "Wave Strike",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted classification, see file header)",
   },
   "weapon-finesse": {
     slug: "weapon-finesse",
@@ -2407,13 +2405,13 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "whip-mastery",
     name: "Whip Mastery",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   "whirlwind-attack": {
     slug: "whirlwind-attack",
     name: "Whirlwind Attack",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   "widen-spell": {
     slug: "widen-spell",
@@ -2425,18 +2423,18 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "wind-stance",
     name: "Wind Stance",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
   wingover: {
     slug: "wingover",
     name: "Wingover",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted classification, see file header)",
   },
   "wrest-charge": {
     slug: "wrest-charge",
     name: "Wrest Charge",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted classification, see file header)",
   },
 };

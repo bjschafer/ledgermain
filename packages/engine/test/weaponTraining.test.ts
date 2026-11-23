@@ -1,9 +1,9 @@
 /**
- * Fixture tests for fighter's base Weapon Training group picks (the deferred
- * "Fighter weapon training group choices" item, built now that the engine can
- * express a semantic weapon-group target at all). See
- * `packages/engine/src/tables.ts`'s `weaponTrainingBonus` for the formula and
- * `collect.ts`'s "Weapon Training group picks" section for the wiring.
+ * Fixture tests for fighter's base Weapon Training group picks (the "Fighter
+ * weapon training group choices" item; the engine expresses a semantic
+ * weapon-group target). See `packages/engine/src/tables.ts`'s
+ * `weaponTrainingBonus` for the formula and `collect.ts`'s "Weapon Training
+ * group picks" section for the wiring.
  */
 
 import { describe, expect, it } from "bun:test";

@@ -21,8 +21,7 @@ import {
  * Mesmerist Tricks resource pools (both ride the generic vendored
  * `uses.maxFormula` pipeline for free), and Consummate Liar's Bluff bonus
  * (rides the generic vendored `changes[]` pipeline for free). RefData is
- * always looked up by `tag`, never bare class `name` (a prior wave hit a
- * name-collision bug doing the latter).
+ * always looked up by `tag`, never bare class `name` — the bare names collide.
  */
 const ref = loadRefData();
 

@@ -6,12 +6,11 @@
  * `subsystem` / `blocked`. Per the per-class file convention (`index.ts`'s
  * doc comment), this file owns BOTH of bloodrager's pipeline artifacts —
  * `BLOODRAGER_ARCHETYPE_EFFECTS_EXTRACTED` and
- * `BLOODRAGER_ARCHETYPE_FEATURE_CLASSIFICATION` — so a future wave working
- * on a different class never has a reason to touch this file; only
- * `index.ts` (the aggregator, a later integration step not done here) needs
- * a new import + spread line.
+ * `BLOODRAGER_ARCHETYPE_FEATURE_CLASSIFICATION` — so work on a different
+ * class never has a reason to touch this file; only `index.ts` (the
+ * aggregator) needs a new import + spread line.
  *
- * ── Bloodrager-specific mechanical facts this pass relies on ──────────────
+ * ── Bloodrager-specific mechanical facts this classification relies on ────
  *
  * 1. **Bloodrage** itself is a hand-authored, self-contained toggle-able
  *    `Buff` (`bloodrage.ts`'s `BLOODRAGE_BUFF`) — the vendored "Bloodrage"
@@ -33,8 +32,8 @@
  *    Conduit's Contact Specialist, Bloody-Knuckled Rowdy's Pugilist,
  *    Steelblood's Indomitable Stance) but none of them carries a
  *    `pairedBaseFeatureUuid` — so Fast Movement's Change keeps applying in
- *    full regardless, a pre-existing over-application gap unrelated to
- *    (and not touched by) any of this file's own extractions.
+ *    full regardless, an over-application gap unrelated to this file's own
+ *    extractions.
  * 3. **Natural attacks** (claws, slams, bites): Hag-Riven's Claws of the Hag
  *    and Rageshaper's Terrible Slam are both unconditional, standing grants
  *    — wired outside this file, via `pc-natural-attacks/class-archetype.ts`'s
@@ -46,14 +45,14 @@
  *    Slam's hardness-bypass) has no target either way. Every OTHER feature
  *    riding either grant (Sorcerous Claws' enhancement bonus, Hexing Claws'
  *    feat swap, ...) stays `subsystem` too — a resource-spend or pick-list
- *    layered on top of a grant that, while now wired, still can't carry an
+ *    layered on top of a grant that, while wired, still can't carry an
  *    enhancement bonus or a conditional feat swap through this table's shape.
  * 4. **Mounts and animal companions** (Bloodrider's Feral Mount) carry the
  *    mount's own numbers, never the bloodrager's — no mount subsystem is
  *    tracked here, the same ruling `samurai.ts`/`cavalier.ts` use for
  *    mount abilities.
- * 5. **Bloodline** (powers, bonus feats, bonus spells) is the deferred
- *    pick-list machinery `bloodrager-bloodlines.ts` already models at the
+ * 5. **Bloodline** (powers, bonus feats, bonus spells) is the pick-list
+ *    machinery `bloodrager-bloodlines.ts` already models at the
  *    base-class level; archetype features that add to, restrict, reorder,
  *    or duplicate its schedule stay `subsystem` — there's no archetype-
  *    scoped bloodline hook in the `Change` vocabulary. Bloodrager's own
@@ -296,7 +295,7 @@ export const BLOODRAGER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Atavistic Avatar",
     level: 1,
     bucket: "subsystem",
-    note: "Skill Focus (from a 2-skill list per emotional focus) plus medium spiritualist/phantom emotional-focus powers while bloodraging — pick-list feat grant riding a deferred medium/spiritualist subsystem, no Change",
+    note: "Skill Focus (from a 2-skill list per emotional focus) plus medium spiritualist/phantom emotional-focus powers while bloodraging — pick-list feat grant riding an unmodeled medium/spiritualist subsystem, no Change",
   },
   "bloodrager:id-rager:atavistic-caster:4": {
     archetypeId: "bloodrager:id-rager",
@@ -335,7 +334,7 @@ export const BLOODRAGER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Primal Choices",
     level: 4,
     bucket: "subsystem",
-    note: "swaps a bloodline power for two barbarian rage powers — a pick-list alteration to the deferred bloodline schedule (class note 5), no baseline number",
+    note: "swaps a bloodline power for two barbarian rage powers — a pick-list alteration to the unmodeled bloodline schedule (class note 5), no baseline number",
   },
   "bloodrager:primalist:enhance-primal-magic-event:5": {
     archetypeId: "bloodrager:primalist",
@@ -365,14 +364,14 @@ export const BLOODRAGER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Spirit",
     level: 1,
     bucket: "subsystem",
-    note: "grants the medium's spirit and spirit surge abilities (great-cat spirits only) — deferred medium-spirit subsystem, no number",
+    note: "grants the medium's spirit and spirit surge abilities (great-cat spirits only) — unmodeled medium-spirit subsystem, no number",
   },
   "bloodrager:prowler-at-world-s-end:bloodline-powers:4": {
     archetypeId: "bloodrager:prowler-at-world-s-end",
     name: "Bloodline Powers",
     level: 4,
     bucket: "subsystem",
-    note: "reorders the bloodline-power acquisition schedule to a delayed cadence — a schedule change to the deferred bloodline machinery (class note 5), no number of its own",
+    note: "reorders the bloodline-power acquisition schedule to a delayed cadence — a schedule change to the unmodeled bloodline machinery (class note 5), no number of its own",
   },
   "bloodrager:prowler-at-world-s-end:chosen-of-the-spirits:11": {
     archetypeId: "bloodrager:prowler-at-world-s-end",
@@ -462,7 +461,7 @@ export const BLOODRAGER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Indomitable Stance",
     level: 1,
     bucket: "numeric",
-    note: "the +1 combat maneuver checks, +1 CMD vs. overrun, and +1 AC vs. charge clauses are all flat and unconditional, now expressible via Change.maneuverCategories/Change.acCategories (extracted below); Reflex-vs-trample and attack/damage-vs-charging-creatures have no matching save category or target and stay prose; replaces fast movement (unpaired, class note 2)",
+    note: "the +1 combat maneuver checks, +1 CMD vs. overrun, and +1 AC vs. charge clauses are all flat and unconditional, expressible via Change.maneuverCategories/Change.acCategories (extracted below); Reflex-vs-trample and attack/damage-vs-charging-creatures have no matching save category or target and stay prose; replaces fast movement (unpaired, class note 2)",
   },
   "bloodrager:steelblood:weapon-and-armor-proficiency:1": {
     archetypeId: "bloodrager:steelblood",
@@ -581,9 +580,9 @@ export const BLOODRAGER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
  *
  * Only 3 of bloodrager's 61 features cleared the `numeric` bar (see
  * `BLOODRAGER_ARCHETYPE_FEATURE_CLASSIFICATION` above for the full
- * per-feature classification) — bloodrager's kit is dominated by the deferred
- * bloodline pick-list machinery, spells-known/spell-list edits, live
- * bloodrage-state conditions, an unmodeled natural-attack subsystem, and
+ * per-feature classification) — bloodrager's kit is dominated by the bloodline
+ * pick-list machinery, spells-known/spell-list edits, live bloodrage-state
+ * conditions, a natural-attack subsystem wired outside this pipeline, and
  * resource-spend activated abilities, none of which clear the bar (see this
  * file's header facts).
  *
@@ -594,7 +593,7 @@ export const BLOODRAGER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
  *  - "medium": the formula required deriving a non-obvious cadence from
  *    prose, or one textually-present clause the engine can't express is
  *    dropped — partial honesty, flagged in `detail`.
- *  - "low": not used in this pass.
+ *  - "low": not used here.
  */
 export const BLOODRAGER_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
   Record<string, ExtractedArchetypeFeatureEffect>
@@ -616,7 +615,7 @@ export const BLOODRAGER_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
   // Steelblood's "Indomitable Stance" packs five clauses into one sentence
   // pair. Three are flat and unconditional: "+1 bonus on combat maneuver
   // checks", "+1 to CMD against overrun combat maneuvers" (maneuverCategories
-  // now covers the CMD-scoped half), and "+1 to AC against charge attacks"
+  // covers the CMD-scoped half), and "+1 to AC against charge attacks"
   // (acCategories covers this half too). The other two (Reflex vs. trample,
   // attack/damage vs. charging creatures) are narrowly scoped to specific
   // save/attack shapes the vocabulary has no matching category or target

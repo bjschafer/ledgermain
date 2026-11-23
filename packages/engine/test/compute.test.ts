@@ -647,9 +647,9 @@ describe("compute: monk L5 (human, no armor)", () => {
   it("Maneuver Training's CMB correction: @attributes.bab.total is wired into rollData, so it nets to level-minus-BAB", () => {
     // Maneuver Training's vendored changes[]: "@class.unlevel - @attributes.bab.total"
     // untyped bonus to cmb — swaps medium-BAB CMB for a full-monk-level CMB,
-    // i.e. a "+ (unlevel - actualBAB)" correction. BAB is now computed before
+    // i.e. a "+ (unlevel - actualBAB)" correction. BAB is computed before
     // roll data is built and threaded through as `attributes.bab.total`, so
-    // this nets to `unlevel - bab` (5 - 3 = 2), not the pre-fix `unlevel - 0`.
+    // this nets to `unlevel - bab` (5 - 3 = 2).
     // cmb = bab(3) + str2 + sizeSpecial(0) + maneuverTraining(5 - 3) = 7
     expect(sheet.cmb).toBe(7);
   });
@@ -712,7 +712,7 @@ describe("compute: monk L5 (human, no armor)", () => {
   // Track, and same non-gap: `ClassFeature` has no `contextNotes` field at
   // all, so nothing in the pipeline captures it and the engine's own
   // `contextNotes` concept (conditions.ts) is an unrelated, hand-authored
-  // mechanism. Already covered by the general note from the Ranger pass.
+  // mechanism. Already covered by the general note for Ranger.
 });
 
 describe("compute: monk AC Bonus (Wis-to-AC), armored vs. unarmored", () => {
@@ -759,10 +759,10 @@ describe("compute: monk AC Bonus (Wis-to-AC), armored vs. unarmored", () => {
   });
 
   it("shield-using monk does NOT get the AC/CMD bonus (the shield half of the gate)", () => {
-    // `@shield.type` used to be absent from roll data entirely, and a missing
-    // path resolves to 0 — so `lt(@shield.type, 1)` silently passed and a monk
-    // kept the Wis-to-AC bonus while carrying a shield. `buildRollData` now
-    // populates it from equipped shield-slot gear.
+    // `@shield.type` must be populated in roll data: a missing path resolves
+    // to 0, so `lt(@shield.type, 1)` would silently pass and a monk would keep
+    // the Wis-to-AC bonus while carrying a shield. `buildRollData` populates it
+    // from equipped shield-slot gear.
     const doc = makeDoc({
       classes: [{ tag: "monk", level: 5 }],
       abilities,
@@ -819,10 +819,6 @@ describe("compute: monk AC Bonus (Wis-to-AC), armored vs. unarmored", () => {
     expect(dexComponent?.value).toBe(1);
     expect(dexComponent?.source).toBe("Dexterity (Heavy load)");
   });
-
-  // Remaining documented gap: @shield.type is never populated in rolldata.ts
-  // (missing path → 0), so a monk wielding a shield still incorrectly
-  // receives this bonus. Encumbrance is now wired (see the two tests above).
 });
 
 describe("compute: CMD RAW-correct derivation, no double-counting (issue #33)", () => {
@@ -840,7 +836,7 @@ describe("compute: CMD RAW-correct derivation, no double-counting (issue #33)", 
     expect(baseSheet.ac.normal).toBe(13);
   });
 
-  it("Iron Mask (masterwork) no longer double-counts its Dex-halving penalty into CMD", () => {
+  it("Iron Mask (masterwork) does not double-count its Dex-halving penalty into CMD", () => {
     // Iron Mask, masterwork: two identical untyped changes, one targeting
     // "ac" and one targeting "cmd", both
     // `min(0, -floor(@abilities.dex.mod / 2))`. With dexMod=3: floor(3/2)=1,
@@ -1308,15 +1304,11 @@ function buffByName(name: string) {
 
 // --- item/equipment breadth -------------------------------------
 //
-// The `items` pack widened from 111 to 1089 vendored entries (every non-folder
-// doc, not just those carrying typed `changes`). All 111 typed-change items —
-// including Cloak of Resistance and Ring of Protection, exercised below — were
-// *already* present under the old filter (it selected on `changes.length >
-// 0`), so there are no genuinely new stat-granting items to add here; the
-// first two cases below are regression coverage confirming the broadened
-// dataset didn't disturb them. "Staff of Healing" and "Air Bladder" are
-// genuinely new (mundane / changeless), added by the breadth expansion, and
-// exercise the previously-absent charges shape and a no-op equip path.
+// The `items` pack carries 1089 vendored entries (every non-folder doc, not
+// just those carrying typed `changes`). Cloak of Resistance and Ring of
+// Protection are regression coverage for the typed-change items; "Staff of
+// Healing" and "Air Bladder" are mundane/changeless and exercise the charges
+// shape and a no-op equip path.
 describe("compute: item breadth (issue #15)", () => {
   it("Cloak of Resistance +1 applies a resist bonus to all saves when equipped", () => {
     const doc = makeDoc({
@@ -1343,16 +1335,16 @@ describe("compute: item breadth (issue #15)", () => {
   });
 
   it("a charged consumable (Staff of Healing) vends with a maxFormula/per charges shape", () => {
-    // Confirms the newly-captured `uses` shape on RefData.items — reference
-    // data only (no live `value`; current charges are session state, not
-    // modeled here).
+    // Confirms the captured `uses` shape on RefData.items — reference data
+    // only (no live `value`; current charges are session state, not modeled
+    // here).
     const staff = ref.items[itemByName("Staff of Healing")]!;
     expect(staff.uses).toEqual({ maxFormula: "10", per: "charges" });
     expect(staff.changes).toEqual([]);
 
     // Equipping a changeless charged item is a no-op on the derived sheet
     // (no crash, no phantom bonus) — this is the common case for the ~978
-    // newly-vendored mundane/consumable items that carry no typed changes.
+    // vendored mundane/consumable items that carry no typed changes.
     const doc = makeDoc({
       classes: [{ tag: "fighter", level: 1 }],
       abilities: { str: 14, dex: 12, con: 14, int: 10, wis: 10, cha: 8 },

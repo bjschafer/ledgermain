@@ -21,10 +21,9 @@ import { deleteSharesForCharacter, shareKeysForPurge } from "./shares.js";
 /**
  * 2 MB — generous for a fully-built character (deep gear list, full
  * spellbook, many saved rolls) while still bounding KV storage and abuse.
- * A fixed constant (not a config var) is the simplest choice consistent with
- * the "envelope-level checks only" posture — this cap, like the
- * JSON-well-formedness check, is a size/shape check, never a peek at game
- * content.
+ * A fixed constant (not a config var) keeps the Worker to envelope-level checks
+ * only: this cap, like the JSON-well-formedness check, is a size/shape check,
+ * never a peek at game content.
  */
 const MAX_DOC_BYTES = 2_000_000;
 
@@ -127,12 +126,11 @@ export async function getCharacter(ownerId: string, id: string, env: Env): Promi
 /**
  * `PUT /api/characters/:id` — push a document.
  *
- * Optimistic concurrency: the pushed `version` must be
- * strictly greater than whatever is currently stored (or nothing may be
- * stored yet). Otherwise this is a stale write — respond `409` with the
- * currently-stored document so the client can implement "a newer version
- * exists on another device — reload?" (or let the user force-overwrite by
- * re-pushing with a bumped version).
+ * Optimistic concurrency: the pushed `version` must be strictly greater than
+ * whatever is currently stored (or nothing may be stored yet). Otherwise this
+ * is a stale write — respond `409` with the currently-stored document so the
+ * client can implement "a newer version exists on another device — reload?"
+ * (or let the user force-overwrite by re-pushing with a bumped version).
  *
  * A client that knows which version its edits started from sends it as
  * `X-Base-Version`, and then the stored version must be exactly that one.

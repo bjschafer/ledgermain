@@ -279,14 +279,14 @@ describe("Cleric Wisdom house-rule (issue #56)", () => {
 });
 
 /**
- * Fixture tests for `DerivedResourcePool.linkedBuffIds` (issue: wire the
- * previously-dead `ClassFeature.grantsBuffs` field). Of the 12 vendored
- * features carrying `grantsBuffs`, only 3 resolve against the vendored buff
- * slice — Rage, Inspire Courage, and Aura of Protection (Domain Power) — the
- * other 9 occurrences must resolve to an empty `linkedBuffIds`, never throw.
- * An audit of those 9 found: none are actually buffs (see `resolveGrantsBuffs`'s
- * doc comment in resources.ts) — they resolve to feats or an item instead, so
- * dropping them (this file's existing behavior) is correct as-is, not a gap.
+ * Fixture tests for `DerivedResourcePool.linkedBuffIds` (the
+ * `ClassFeature.grantsBuffs` field). Of the 12 vendored features carrying
+ * `grantsBuffs`, only 3 resolve against the vendored buff slice — Rage,
+ * Inspire Courage, and Aura of Protection (Domain Power) — the other 9
+ * occurrences must resolve to an empty `linkedBuffIds`, never throw. Those 9
+ * are not actually buffs (see `resolveGrantsBuffs`'s doc comment in
+ * resources.ts) — they resolve to feats or an item instead, so dropping them
+ * is correct, not a gap.
  */
 describe("grantsBuffs -> linkedBuffIds", () => {
   it("barbarian 1 — Rage pool exposes the Rage buff link", () => {
@@ -371,7 +371,7 @@ describe("grantsBuffs -> linkedBuffIds", () => {
     expect(loh?.linkedBuffIds).toEqual([]);
   });
 
-  it("alchemist 5 — Mutagen pool exposes all 3 vendored buff links (Str/Dex/Con), audited before hand-authoring alchemist-discoveries.ts (issue #65)", () => {
+  it("alchemist 5 — Mutagen pool exposes all 3 vendored buff links (Str/Dex/Con), verified against the vendored data", () => {
     const doc = baseDoc({
       identity: { name: "Vex", race: raceId("Human"), classes: [{ tag: "alchemist", level: 5 }] },
     });

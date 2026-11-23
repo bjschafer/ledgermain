@@ -1,5 +1,5 @@
 /**
- * Hand-computed fixture tests for the summoning-feat pass (community
+ * Hand-computed fixture tests for the summoning feats (community
  * pf1-content pack — see `feat-effects.ts`'s "Summoning feats" section).
  * Extra Summons is the one summoning feat with a real PC-sheet number (a
  * `FEAT_POOL_EFFECTS` pool bonus, same shape as Extra Rage/Extra Arcane
@@ -173,10 +173,10 @@ describe("summoning feats with a contextNote-only effect (no PC-sheet Change)", 
     }
   });
 
-  // Every hand-authored summoning-feat slug added in this pass resolves to a
-  // real vendored feat name — guards against a typo'd slug silently never
-  // matching (resolveFeatEffect would just return undefined, no crash, but
-  // also no effect — this test would catch the drift).
+  // Every hand-authored summoning-feat slug resolves to a real vendored feat
+  // name — guards against a typo'd slug silently never matching
+  // (resolveFeatEffect would just return undefined, no crash, but also no
+  // effect — this test would catch the drift).
   it("every hand-authored summoning-feat slug resolves to a real vendored feat name", () => {
     const slugs = [
       "extra-summons",

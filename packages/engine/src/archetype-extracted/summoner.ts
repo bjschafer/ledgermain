@@ -6,7 +6,7 @@
  * bucketed as `numeric` / `situational` / `subsystem` / `blocked`, per the
  * per-class file convention (`index.ts`'s doc comment).
  *
- * ── Summoner-specific mechanical facts this pass relies on ────────────────
+ * ── Summoner-specific mechanical facts this classification relies on ──────
  *
  * 1. **The eidolon** is modeled as its own derived creature in this engine
  *    (`eidolon.ts`/`eidolon-unchained.ts`: subtypes, base forms, evolutions,
@@ -763,13 +763,13 @@ export const SUMMONER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
  * This table is deliberately SEPARATE from `archetype-effects.ts`'s
  * `ARCHETYPE_FEATURE_EFFECTS` (the hand-verified table) — every entry here
  * additionally carries `confidence`/`provenance` so a reviewer (or the UI)
- * can never confuse "a human read the rulebook and checked this" with "an
- * extraction pass inferred this from prose." Only 1 of summoner's 88
- * features cleared the `numeric` bar (see
+ * can never confuse "a human read the rulebook and checked this" with "a
+ * machine inferred this from prose." Only 2 of summoner's 88 features
+ * cleared the `numeric` bar (see
  * `SUMMONER_ARCHETYPE_FEATURE_CLASSIFICATION` above for the full per-feature
- * audit) — summoner's kit is built almost entirely around the eidolon
- * (an unhooked derived-creature subsystem in this engine), summon monster
- * SLA changes, and the three companion-interaction class features
+ * classification) — summoner's kit is built almost entirely around the
+ * eidolon (an unhooked derived-creature subsystem in this engine), summon
+ * monster SLA changes, and the three companion-interaction class features
  * (Life Link, Shield Ally, Bond Senses), none of which land a number on the
  * summoner's own sheet (see this file's header doc comment).
  *
@@ -780,7 +780,7 @@ export const SUMMONER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
  *  - "medium": the formula required deriving a non-obvious cadence from
  *    prose (an irregular schedule, a delayed onset, or combining two
  *    same-sentence level gates into one cumulative count).
- *  - "low": not used in this pass.
+ *  - "low": not used here.
  */
 export const SUMMONER_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
   Record<string, ExtractedArchetypeFeatureEffect>

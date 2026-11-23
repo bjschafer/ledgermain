@@ -11,7 +11,7 @@
  * Bracers of Armor (+1 through +8, CRB p. 460): "Bracers of armor surround
  * the wearer with an invisible but tangible field of force, granting an
  * armor bonus of +1 to +8, just as though he were wearing armor" — confirmed
- * against aonprd.com (2026-07-25). All eight vendored entries
+ * against aonprd.com. All eight vendored entries
  * (`Bracers of Armor +1` .. `+8`) carry an empty `changes[]`, so equipping
  * one currently grants nothing. `aac` (armor AC) is this engine's existing
  * target for a magic item's armor-type AC bonus — already exercised by the

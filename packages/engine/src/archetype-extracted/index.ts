@@ -1,10 +1,9 @@
 /**
  * Aggregator for the batch-extraction pipeline: composes every per-class file
  * in this directory into the single flat tables `archetype-effects-resolve.ts`
- * (effects) and the engine barrel (classification, an audit artifact — nothing
+ * (effects) and the engine barrel (classification, a review artifact — nothing
  * in `compute`/`collect.ts` reads it) already expect. This is the ONLY file a
- * new wave agent's diff should need to touch outside its own new per-class
- * file.
+ * new class's diff should need to touch outside its own new per-class file.
  *
  * Per-class file convention (read this before adding a class): each class gets
  * its own `./<class-tag>.ts` file exporting two `Readonly<Record<string,...>>`
@@ -13,8 +12,9 @@
  *
  *   - `<CLASS>_ARCHETYPE_EFFECTS_EXTRACTED` — machine-extracted `Change`-shaped
  *     effects (`ExtractedArchetypeFeatureEffect`, from `./types.js`).
- *   - `<CLASS>_ARCHETYPE_FEATURE_CLASSIFICATION` — the full per-feature audit
- *     (`ArchetypeFeatureClassificationEntry`, from `./types.js`), covering
+ *   - `<CLASS>_ARCHETYPE_FEATURE_CLASSIFICATION` — the full per-feature
+ *     classification (`ArchetypeFeatureClassificationEntry`, from
+ *     `./types.js`), covering
  *     EVERY feature of EVERY vendored archetype for that class, not just the
  *     ones that got an entry in the effects table.
  *

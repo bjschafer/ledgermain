@@ -185,7 +185,7 @@ export interface NormalizeOptions {
   /** `src/pf-prestige-features` directory from the pinned archetype module clone. */
   prestigeFeaturesDir: string;
   /**
-   * Path to the previously-vendored `archetype-features.json` (typically
+   * Path to the `archetype-features.json` from the previous build (typically
    * `OUTPUT_DIR`'s own copy, read before this run's `emit()` overwrites it) —
    * see `loadLegacyArchetypeFeatureLevels`'s doc comment. Optional: a
    * from-scratch build (no prior output) passes a nonexistent path and gets an

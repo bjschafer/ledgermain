@@ -8,7 +8,7 @@
  * Two kinds of entries populate the table:
  *   - Base spends every bearer of the class gets for free, hand-authored
  *     here (verified against aonprd.com's live Monk/Ninja class pages,
- *     2026-08-16, cross-checked against the vendored `class-features.json`
+ *     cross-checked against the vendored `class-features.json`
  *     Ki Pool description text for each class):
  *       - Monk (chained), 4th level: "Ki Speed" (+20 land speed, untyped,
  *         1 round) and "Ki Dodge" (+4 dodge AC, 1 round), both a swift

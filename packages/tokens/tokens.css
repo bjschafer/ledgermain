@@ -1,7 +1,7 @@
 /* ============================================================================
    Ledgermain design tokens — the "illuminated ledger" palette and type stack,
    shared by apps/web (the sheet) and apps/reference (the lookup site) so the
-   two read as one product. See apps/web/DESIGN_NOTES.md for the art direction.
+   two read as one product.
 
    Tokens only. Anything app-specific — spacing scales, z-index tiers, tap
    targets — stays in that app's own stylesheet.

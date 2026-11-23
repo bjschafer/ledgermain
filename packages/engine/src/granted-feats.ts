@@ -2,15 +2,15 @@
  * Feats a class hands the character outright, and the expansion that makes
  * them behave like feats the player picked.
  *
- * A class-granted feat has two halves, and this engine used to model only the
- * first. The BUDGET half (a granted feat costs no slot) lived in the web
- * layer; the MECHANICAL half never existed at all, because every feat-reading
- * path in this engine — `characterFeatSlugs`, `featInstances`, `ownedFeats`,
+ * A class-granted feat has two halves. The BUDGET half (a granted feat costs
+ * no slot) lives in the web layer; the MECHANICAL half is what
+ * {@link withGrantedFeats} adds, because every feat-reading path in this
+ * engine — `characterFeatSlugs`, `featInstances`, `ownedFeats`,
  * `collect.ts`'s feat walk — starts from `doc.build.feats`, which holds only
- * what the player chose. So an unchained rogue's Finesse Training resolved
- * "Weapon Finesse" for the feat list and then swung off Strength anyway, and
- * the only way to get the number the class already grants was to buy the feat
- * a second time and go over budget.
+ * what the player chose. Without it, an unchained rogue's Finesse Training
+ * would resolve "Weapon Finesse" for the feat list and still swing off
+ * Strength, and the only way to get the number the class already grants would
+ * be to buy the feat a second time and go over budget.
  *
  * {@link withGrantedFeats} closes that by expanding the grants into
  * `build.feats` once, at the top of `compute()`. Everything downstream then
@@ -340,7 +340,7 @@ export function grantedFeats(doc: CharacterDoc, refData: RefData): GrantedFeat[]
     if (!classDef) continue;
     for (const grant of classDef.features) {
       if (grant.level > cls.level || !grant.resolved) continue;
-      // Swapped out by an active archetype — no longer granted (mirrors collect.ts).
+      // Swapped out by an active archetype — not granted (mirrors collect.ts).
       if (archetypeSwaps.has(grant.uuid)) continue;
       const feature = refData.classFeatures[grant.featureId];
       if (!feature) continue;

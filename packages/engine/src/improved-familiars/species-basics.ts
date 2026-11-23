@@ -2,7 +2,7 @@
  * The CRB Improved Familiar table's non-templated CL 3/CL 5 rows: dire rat,
  * stirge, and the four Small elementals (air/earth/fire/water). Hand-authored
  * clean-room from the published Bestiary stat blocks (aonprd.com /
- * d20pfsrd.com) — see `types.ts` for the authoring rules (reverse-derived
+ * d20pfsrd.com) — see `types.ts` for the modeling rules (reverse-derived
  * `baseSaves`/`ownSkillRanks`, printed prereqs, defenses as display strings).
  */
 

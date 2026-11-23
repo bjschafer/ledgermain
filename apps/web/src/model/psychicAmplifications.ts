@@ -1,10 +1,8 @@
 /**
- * Pure Phrenic Amplification transitions (`psychic-disciplines.ts` shipped
- * bonus spells/phrenic pool ability and explicitly deferred amplifications as
- * "prose-heavy, genuinely choice-bearing content"). Amplification ids are just
- * entries in `build.psychicAmplifications`, mirroring `toggleOracleRevelation`
- * in `model/oracleRevelations.ts` — the engine's `PHRENIC_AMPLIFICATIONS`
- * table maps each to its (display-only) `changes[]`, surfaced through the same
+ * Pure Phrenic Amplification transitions. Amplification ids are just entries
+ * in `build.psychicAmplifications`, mirroring `toggleOracleRevelation` in
+ * `model/oracleRevelations.ts` — the engine's `PHRENIC_AMPLIFICATIONS` table
+ * maps each to its (display-only) `changes[]`, surfaced through the same
  * `collectGrantedFeatures` path. This is the amplification MENU only — the
  * Phrenic Pool itself (points spent per linked-spell cast) rides the vendored
  * `uses.maxFormula` resource-pool pipeline already (see `@pf1/engine`

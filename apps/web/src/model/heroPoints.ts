@@ -16,8 +16,8 @@ export const HERO_POINT_CAP = 3;
  * tracker, not a resolver — it never rolls or auto-applies any of these, so
  * the pool above is the only mechanical state; this table is purely a
  * reference the panel renders so a table doesn't need the book open to
- * remember the menu. Hand-authored from the published rule text (clean-room
- * — see CLAUDE.md §Licensing), not extracted from Foundry data.
+ * remember the menu. Hand-authored from the published rule text (clean-room),
+ * not extracted from Foundry data.
  */
 export interface HeroPointSpendOption {
   label: string;

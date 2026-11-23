@@ -10,8 +10,9 @@ import { compute } from "../src/index.js";
  * "Bonus Types"): two of the same type never stack, the highest applies. The
  * vendored data types them inconsistently — worn armor carries none, Mage
  * Armor and the Shield spell say `base`, the Robe of the Archmagi says
- * `untyped` — so before `computeAc`'s `acBonusType` normalization they landed
- * in separate always-summing groups and every source added.
+ * `untyped` — so `computeAc`'s `acBonusType` normalization is what groups them;
+ * without it each source lands in a separate always-summing group and every
+ * source adds.
  *
  * Expected values below are hand-computed from the CRB spell/item entries:
  * mage armor "+4 armor bonus", shield "+4 shield bonus", magic vestment

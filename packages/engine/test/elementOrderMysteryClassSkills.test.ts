@@ -4,7 +4,7 @@
  * class skills in its printed text (Occult Adventures' per-element
  * "Elemental Focus" entries; APG's per-order text; each APG mystery's
  * `classSkills` list, hand-verified in `oracle-mysteries.ts`/`cavalier-
- * orders.ts`/`kineticist-elements.ts`), previously collected but never fed
+ * orders.ts`/`kineticist-elements.ts`), collected in those tables and fed
  * into the derived skill list. Follows the cookbook's three-shape pattern
  * per class: real effect / unknown id / wrong class.
  */

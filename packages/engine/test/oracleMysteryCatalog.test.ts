@@ -11,8 +11,8 @@ import {
 
 /**
  * Coverage for the vendored-catalog overlay — see `oracle-mysteries.ts`'s
- * "vendored catalog overlay" section doc comment for the collision-audit
- * narrative this asserts against.
+ * "vendored catalog overlay" section doc comment for the collision check this
+ * asserts against.
  */
 const ref = loadRefData();
 
@@ -37,9 +37,8 @@ describe("mergedOracleMysteryCatalog", () => {
   });
 
   it("no vendored-only mysteries remain — every vendored tag has a hand-authored entry", () => {
-    // A later pass authored the remaining 23, so the merged catalog's
-    // display-only fallback now only exists for a future data bump that
-    // vendors a mystery this table hasn't caught up with.
+    // The merged catalog's display-only fallback only exists for a future data
+    // bump that vendors a mystery this table hasn't caught up with.
     for (const entry of merged) {
       expect(ORACLE_MYSTERIES[entry.tag], entry.tag).toBeDefined();
       expect(entry.displayOnly, entry.tag).toBe(false);
@@ -59,7 +58,7 @@ describe("resolveOracleMystery", () => {
     expect(mystery?.classSkills).toEqual(ORACLE_MYSTERIES.battle!.classSkills);
   });
 
-  it("resolves a formerly vendored-only tag through the hand table now", () => {
+  it("resolves a vendored-only mystery through the hand table", () => {
     const mystery = resolveOracleMystery("ancestor", ref);
     expect(mystery?.displayOnly).toBe(false);
     expect(mystery?.name).toBe("Ancestor");

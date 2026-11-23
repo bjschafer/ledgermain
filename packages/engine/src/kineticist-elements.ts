@@ -35,8 +35,8 @@
  * Blast needs air blast + cold blast; Charged Water Blast needs electric
  * blast + water blast) — see {@link KineticistCompositeBlastDef.requiredBlasts}.
  * An air+water kineticist qualifies for at most ONE of the two, decided by
- * which blasts she picked; both were previously offered unconditionally.
- * Every other composite is element-gated as before.
+ * which blasts she picked; without that gate both would be offered
+ * unconditionally. Every other composite is element-gated as before.
  *
  * CLASS SKILLS: each element grants 2 bonus class skills (Elemental Focus:
  * "grants her access to specific wild talents... and additional class skills"
@@ -51,7 +51,7 @@
  * which `live.kineticistDefenseBurn` records as a division of the burn the
  * character is already holding. The resolved numbers, and the Changes five of
  * the seven land on, live in `kineticist-defense.ts`; the `summary` below
- * stays the element picker's rules text, and is no longer what the Elemental
+ * stays the element picker's rules text, and is not what the Elemental
  * Defense class-feature row shows.
  *
  * COMPOSITE BLASTS are NOT a budgeted player pick — RAW ("Expanded
@@ -631,7 +631,7 @@ export function eligibleCompositeBlasts(
  * undefined rather than fabricated — safe because nothing downstream (the
  * picker's preview, `eligibleCompositeBlasts`) reads it.
  *
- * Collision audit (all 22 hand-authored entries): every one matched a
+ * Collision check (all 22 hand-authored entries): every one matched a
  * vendored entry by normalized name — no drift, no alias needed. No name
  * collides within the vendored catalog's composite-blast subset either.
  */

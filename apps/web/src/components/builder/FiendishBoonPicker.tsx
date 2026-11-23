@@ -20,8 +20,8 @@ interface FiendishBoonPickerProps {
  * display-only summary line — see `fiendishBoonLabel`'s doc comment for why
  * (same restraint paladin's own Divine Bond gets, which has no modeled numbers
  * or `build.*` field at all). The servant option is recorded but not built out
- * (companion stat block — deferred to), same "recorded, not tracked" posture
- * the ArcaneBondPicker's bonded-object name field has.
+ * (no companion stat block), same "recorded, not tracked" posture the
+ * ArcaneBondPicker's bonded-object name field has.
  */
 export function FiendishBoonPicker({ doc, update }: FiendishBoonPickerProps) {
   const isAntipaladin = doc.identity.classes.some((c) => c.tag === "antipaladin");

@@ -55,7 +55,7 @@ export function whatsNewHash(): string {
 /**
  * Read a location out of a URL fragment. Returns `null` for anything that
  * isn't ours — an empty hash, a `#session=` token, a stale bookmark naming a
- * mode that no longer exists — so callers can fall through to a default
+ * mode this build doesn't have — so callers can fall through to a default
  * rather than landing somewhere arbitrary.
  */
 export function parseLocationHash(hash: string): AppLocation | null {

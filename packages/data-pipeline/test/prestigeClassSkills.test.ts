@@ -150,7 +150,6 @@ describe("corrected prestige class skills", () => {
   it("gives Sense Motive to most of the catalog, as the published lists do", () => {
     const prestige = Object.values(ref.classes).filter((c) => c.subType === "prestige");
     const withSenseMotive = prestige.filter((c) => c.classSkills.includes("sen"));
-    // 7 before the correction pass, out of 119.
     expect(withSenseMotive.length).toBeGreaterThan(70);
   });
 });

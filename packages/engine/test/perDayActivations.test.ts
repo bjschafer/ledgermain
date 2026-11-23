@@ -4,8 +4,8 @@
  * `uses.maxFormula` derives a pool row (the surface the toggles attach to —
  * see `types.ts`), slugs must be kebab-case and unique within their feature,
  * the cross-shard merge must be collision-free, and every def must move a
- * number. Per-entry hand-computed fixture tests live in the wave shards'
- * own test files, mirroring `classFeatureSaves.test.ts`'s style.
+ * number. Per-entry hand-computed fixture tests live in the shard test files,
+ * mirroring `classFeatureSaves.test.ts`'s style.
  */
 
 import { describe, expect, it } from "bun:test";

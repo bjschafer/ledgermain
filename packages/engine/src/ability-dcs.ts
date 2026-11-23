@@ -100,8 +100,8 @@ interface RawInstance {
 /**
  * Cleric Wisdom house-rule alias (default off), duplicated in miniature from
  * `resources.ts`'s function of the same name — that module is a display-only
- * concern this module deliberately doesn't touch (see `ability-dcs.ts`'s
- * design brief). Returns a COPY of `data` with `abilities.cha` aliased to
+ * concern this module deliberately doesn't touch (see this module's doc
+ * comment). Returns a COPY of `data` with `abilities.cha` aliased to
  * `abilities.wis`'s values, scoped to a single formula evaluation; a
  * malformed/missing `abilities.wis` shape no-ops rather than throwing.
  */

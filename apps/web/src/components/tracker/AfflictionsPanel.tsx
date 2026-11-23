@@ -38,11 +38,11 @@ const KIND_LABELS: Record<AbilityAfflictionKind, string> = {
  * derived ability total dropping to 0 or below (its own per-ability RAW
  * effect; Con's is death, enforced separately by `hpState` in `model/hp.ts`).
  *
- * No auto-decrement on rest: the app's "rest" action is fragmented across
- * three independent panel buttons (HP/Resources/Prepared Spells) with no
- * single new-day event — see model/afflictions.ts's doc comment. Players heal
- * 1 point/ability/day of natural ability-damage recovery by hand, via the
- * same − stepper used to clear it entirely.
+ * Ability damage heals 1 point per ability per day of rest, applied by the
+ * New Day action (`model/rest.ts` `restNewDay` → `restAbilityDamage`); drain
+ * and penalties are left alone. Anything New Day doesn't cover (multiple
+ * recoveries at once, a corrected value) is adjusted by hand through the
+ * per-ability stepper, the same − control that clears it entirely.
  */
 export function AfflictionsPanel({ doc, sheet, update }: BuilderProps) {
   const active = activeAbilityAfflictions(doc);

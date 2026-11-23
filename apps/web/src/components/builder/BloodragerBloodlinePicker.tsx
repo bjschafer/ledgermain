@@ -45,9 +45,8 @@ interface BloodragerBloodlinePickerProps {
  *    `model/featSlots.ts`'s `bloodragerBloodline` slot kind;
  *  - grants ONE bonus spell known at each of 7th/10th/13th/16th bloodrager
  *    level (fixed schedule, NOT the sorcerer's `2L+1` cadence) — previewed
- *    here via `bloodragerBonusSpellsKnown`; display-only preview for now
- *    (not yet spliced into the known-spells list UI the way sorcerer's
- *    bloodline spells are).
+ *    here via `bloodragerBonusSpellsKnown`; display-only (not spliced into
+ *    the known-spells list UI the way sorcerer's bloodline spells are).
  */
 export function BloodragerBloodlinePicker({
   doc,

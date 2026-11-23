@@ -1,10 +1,10 @@
 /**
  * Clean-room PF1 skald Raging Song performance types, hand-authored from the
  * published Advanced Class Guide rules (Inspired Rage verified against
- * aonprd.com's live Skald class page, "Inspired Rage" ability, 2026-07-08;
+ * aonprd.com's live Skald class page, "Inspired Rage" ability;
  * Song of Marching, Song of Strength, Dirge of Doom, and Song of the Fallen
  * verified the same way, plus cross-checked against the vendored
- * `class-features.json` description text, 2026-08-15).
+ * `class-features.json` description text).
  *
  * Raging Song (the rounds/day pool everything below draws from) is ALREADY
  * fully vendored — `RefData.classFeatures`'s "Raging Song" entry (tag
@@ -12,7 +12,7 @@
  * @class.unlevel - 1) * 2)"`, verified against aonprd.com to match RAW
  * exactly ("3 + Cha modifier rounds/day at 1st level, +2 rounds/day per
  * level thereafter") — `deriveResourcePools` derives the pool with zero
- * hand-authoring needed there. None of the five performance types below
+ * hand-authored entries there. None of the five performance types below
  * carry a vendored `grantsBuffs` (unlike bard's Inspire Courage, which
  * resolves to a real vendored buff) — this module is the hand-authored
  * substitute, wired onto the Raging Song pool's `tableOptions` field
@@ -32,7 +32,7 @@
  *     applies fatigue in the first place, so this is automatically honored).
  *
  * RAW numbers for the other four performance types, verified against
- * aonprd.com and the vendored description text (2026-08-15):
+ * aonprd.com and the vendored description text:
  *   - Song of Marching (3rd): allies within 60 feet may hustle for the next
  *     hour without the fatigue/nonlethal-damage cost a hustle normally
  *     accrues (treated as a walk for that purpose). Only 1 round of raging
@@ -58,7 +58,7 @@
  *     raging song per revived ally per round to sustain; a sustained ally
  *     dies automatically if the performance ends or is interrupted.
  *
- * Scope/deferrals (task brief), all note-tier rather than modeled:
+ * Scope: all note-tier rather than modeled:
  *   - Every performance type below is written as "allies gain..." /
  *     "enemies become..." — this app tracks ONE character, so ally-facing
  *     toggles apply to the skald's own sheet (exactly like Rage applies to a

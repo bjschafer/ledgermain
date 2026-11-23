@@ -6,8 +6,8 @@ import { loadRefData } from "@pf1/data-pipeline";
 import { baseSpellsKnown, baseSpellsPerDay, compute } from "../src/index.js";
 
 /**
- * Medium (Occult Adventures, 17-class expansion follow-up wave) — the
- * hand-authored 4-level spells-per-day/known tables validated against the
+ * Medium (Occult Adventures) — the hand-authored 4-level
+ * spells-per-day/known tables validated against the
  * published "Table: Medium" / "Table: Medium Spells Known" (legacy.aonprd.com,
  * quoted verbatim during authoring), plus a class-vend smoke test against the
  * real vendored data slice. Lookups scoped by classTag, never bare name.
@@ -125,16 +125,14 @@ describe("medium class vend (real vendored data slice)", () => {
     expect(Object.values(list!).flat().length).toBeGreaterThan(300);
   });
 
-  it("spirit machinery is deferred: no per-spirit entries in the vendored classFeatures slice", () => {
+  it("the vendored classFeatures slice carries no per-spirit entries", () => {
     // Spirits are a live/daily seance choice, not a build choice. The upstream
     // Foundry pack DOES ship six standalone `*-spirit.*.yaml` legend entries
     // (archmage/champion/guardian/hierophant/marshal/trickster) plus spirit
-    // power entries in `packs/class-abilities/`, but — exactly like the
-    // per-mystery and per-discipline YAMLs before hand-authoring — they are
-    // NOT linked from the medium class def and do not come through the
-    // pipeline into `RefData.classFeatures`. This pins the deferral posture:
-    // a follow-up would hand-author them the
-    // way `psychic-disciplines.ts` did, with the choice stored in `live.*`.
+    // power entries in `packs/class-abilities/`, but they are NOT linked from
+    // the medium class def and do not come through the pipeline into
+    // `RefData.classFeatures`. The hand-authored `medium-spirits.ts` table is
+    // the live source for spirit choices; this pins the vendored slice's shape.
     const names = new Set(Object.values(ref.classFeatures).map((f) => f.name));
     expect(names.has("Archmage Spirit")).toBe(false);
     // The generic base features the class DOES link are vendored normally.

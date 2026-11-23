@@ -1,9 +1,8 @@
 /**
  * The single "new day" rest action — composes the independent per-module rest
- * transitions that used to live behind separate panel buttons (HP's "Rest",
- * Resources' "Refill all", Prepared Spells'/ spontaneous casting's per-class
- * "Refresh slots") into one call, and wires in ability damage's natural healing,
- * which had no daily event to hook until now.
+ * transitions (HP's "Rest", Resources' "Refill all", Prepared Spells'/
+ * spontaneous casting's per-class "Refresh slots") into one call, including
+ * ability damage's natural healing.
  *
  * This module does not reimplement any of the underlying rules — it only
  * imports and chains the existing pure transitions from `model/hp.ts`,
@@ -20,10 +19,10 @@
  *   3. Resources — `restAllResources`: every stored pool's `used` resets so
  *      remaining uses match its refill value (`max` for almost every pool;
  *      Arcane Reservoir's is lower per RAW). Requires `refData` to derive
- *      pools; without it, falls back to the old always-full reset. A tracked
- *      familiar's own metered spell-like abilities (`resetFamiliarSlaUses`)
- *      reset alongside, unconditionally (no `refData` needed). Gear that
- *      refills daily (a 3/day metamagic rod) gets its charges back too.
+ *      pools; without it, every pool refills to full. A tracked familiar's own
+ *      metered spell-like abilities (`resetFamiliarSlaUses`) reset alongside,
+ *      unconditionally (no `refData` needed). Gear that refills daily (a 3/day
+ *      metamagic rod) gets its charges back too.
  *   4. Spells — `restPreparedSpells` + `resetSpontaneousSlots`, once per
  *      caster class (multiclass support) when `refData` is given, so a
  *      multiclass character's prepared loadout AND spontaneous slots reset for
@@ -143,12 +142,12 @@ function classSpellSegment(
 
 /**
  * Compact, dot-separated receipt of what actually changed between `before`
- * and `after`, for the "New day" toast (issue: feedback/toasts+undo audit
- * slice). Compares the two docs directly rather than re-deriving from
- * `restNewDay`'s internals, so it also works standalone for the narrower
- * per-class "New day" ghost buttons in the Spells panel (which only call
- * `restPreparedSpells`/`resetSpontaneousSlots`, not the full `restNewDay`) —
- * those just won't have an HP/resource-pool segment since neither changed.
+ * and `after`, for the "New day" toast. Compares the two docs directly rather
+ * than re-deriving from `restNewDay`'s internals, so it also works standalone
+ * for the narrower per-class "New day" ghost buttons in the Spells panel
+ * (which only call `restPreparedSpells`/`resetSpontaneousSlots`, not the full
+ * `restNewDay`) — those just won't have an HP/resource-pool segment since
+ * neither changed.
  *
  * Segments that didn't change are omitted entirely (an already-full
  * character clicking "New day" with nothing expended gets `""`, not a wall

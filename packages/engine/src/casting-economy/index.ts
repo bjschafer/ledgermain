@@ -50,9 +50,8 @@ export const ARCHETYPE_CASTING_ADJUSTMENTS: Readonly<
 };
 
 /**
- * All source tables, overridable for tests (same posture as
- * `SLA_GRANT_TABLES`: the tables ship empty until the content wave lands, so
- * unit tests inject small tables to exercise each path).
+ * All source tables, overridable for tests (unit tests inject small tables to
+ * exercise each path).
  */
 export interface CastingAdjustmentTables {
   classFeature: Readonly<Record<string, readonly CastingAdjustmentDef[]>>;

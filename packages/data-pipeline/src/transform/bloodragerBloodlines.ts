@@ -17,7 +17,7 @@ const SKIP_KEYS = new Set(["not_found"]);
  * to a `BloodragerBloodline`. This file's bonus-feat/bonus-spell/power
  * blocks use the dataset's structured `::ab[Name]{l=N ...}`/
  * `::list[Label]{...}` directives (rendered to readable prose by the shared
- * reader — see `util/pfdata.ts`), unlike every other catalog in this wave.
+ * reader — see `util/pfdata.ts`), unlike every other catalog from this dataset.
  */
 function transformBloodragerBloodline(id: string, entry: PfDataEntry): BloodragerBloodline {
   return {

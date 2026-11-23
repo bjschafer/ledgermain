@@ -15,25 +15,14 @@ import {
 } from "../src/archetype-extracted/wizard.js";
 
 /**
- * fixture
- * tests for `archetype-extracted/wizard.ts`, hand-computed against the real
- * vendored data slice via `loadRefData`, same posture as
- * `archetypeEffectsExtracted.test.ts` (fighter's pilot).
+ * Fixture tests for `archetype-extracted/wizard.ts`, hand-computed against the
+ * real vendored data slice via `loadRefData`, same posture as
+ * `archetypeEffectsExtracted.test.ts`.
  *
- * IMPORTANT scope note: `wizard.ts` is a standalone per-class file that has
- * NOT been wired into `archetype-extracted/index.ts`'s aggregator yet (that
- * wiring is an explicit hard boundary for this wave — the aggregator is owned
- * by the integration step). That means `compute`'s real pipeline (which
- * resolves archetype effects through `resolveArchetypeFeatureEffect` using ITS
- * default, production-merged tables) does not yet see
- * `WIZARD_ARCHETYPE_EFFECTS_EXTRACTED` at all. Tests below that need to
- * exercise resolution/precedence for the new wizard table pass it in
- * explicitly as `resolveArchetypeFeatureEffect`'s override parameter — the
- * exact same pattern the fighter test file already uses for its synthetic
- * precedence fixture, just with the real wizard table instead of a made-up
- * one. Tests that only need to observe BASE wizard class-feature behavior
- * (unaffected by whether wizard.ts is wired in) exercise the real `compute`
- * pipeline directly.
+ * Tests below that need to exercise resolution/precedence for the wizard table
+ * pass it in explicitly as `resolveArchetypeFeatureEffect`'s override
+ * parameter; tests that only need to observe BASE wizard class-feature behavior
+ * exercise the real `compute` pipeline directly.
  */
 const ref = loadRefData();
 
@@ -98,7 +87,7 @@ describe("WIZARD_ARCHETYPE_FEATURE_CLASSIFICATION completeness (issue #45 wizard
     }
   });
 
-  it("bucket tally matches the audited counts (1 numeric / 8 situational / 79 subsystem / 20 blocked)", () => {
+  it("bucket tally matches the classified counts (1 numeric / 8 situational / 79 subsystem / 20 blocked)", () => {
     const tally: Record<string, number> = { numeric: 0, situational: 0, subsystem: 0, blocked: 0 };
     for (const entry of Object.values(WIZARD_ARCHETYPE_FEATURE_CLASSIFICATION)) {
       tally[entry.bucket] = (tally[entry.bucket] ?? 0) + 1;
@@ -193,7 +182,7 @@ describe("Worldseeker (wizard): Walk the Planes grants a flat +2 Knowledge (plan
     expect(resolved?.effect.changes).toHaveLength(1);
   });
 
-  it("is not present in the hand-verified table (so it truly is this wave's own extraction, not a duplicate)", () => {
+  it("is not present in the hand-verified table (so it is this extraction's own entry, not a duplicate)", () => {
     expect(ARCHETYPE_FEATURE_EFFECTS[id]).toBeUndefined();
   });
 });
@@ -205,7 +194,7 @@ describe("wizard:spell-sage:focused-spells:1 is intentionally NOT duplicated in 
     expect(WIZARD_ARCHETYPE_EFFECTS_EXTRACTED[id]).toBeUndefined();
   });
 
-  it("is classified `subsystem` in the audit table (matching its notes-only hand-verified entry)", () => {
+  it("is classified `subsystem` in the classification table (matching its notes-only hand-verified entry)", () => {
     expect(WIZARD_ARCHETYPE_FEATURE_CLASSIFICATION[id]?.bucket).toBe("subsystem");
   });
 

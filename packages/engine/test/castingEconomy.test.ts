@@ -1,8 +1,7 @@
 /**
  * Drift guards and resolution fixtures for the casting-economy adjustment
- * tables (`src/casting-economy/`). Table content ships via the #132 wave;
- * the resolution paths are exercised with injected tables, same posture as
- * `spellLikeAbilities.test.ts`.
+ * tables (`src/casting-economy/`). The resolution paths are exercised with
+ * injected tables, same posture as `spellLikeAbilities.test.ts`.
  */
 
 import { describe, expect, it } from "bun:test";

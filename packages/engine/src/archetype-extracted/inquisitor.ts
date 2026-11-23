@@ -3,10 +3,10 @@
  * id starts with `inquisitor:` (37 archetypes, 139 features) is read in full
  * and bucketed as `numeric` / `situational` / `subsystem` / `blocked`, and the
  * `numeric` ones get a real `Change`-shaped extraction. Same methodology as
- * the fighter/magus pilots (see those files' header comments for the general
- * shape).
+ * `./fighter.ts`/`./magus.ts` (see those files' header comments for the
+ * general shape).
  *
- * ── Inquisitor-specific mechanical facts this pass relies on ──────────────
+ * ── Inquisitor-specific mechanical facts this classification relies on ────
  *
  * 1. **Judgment** (the swift-action stance + its uses/day pool) is fully
  *    vendored and hand-authored on top in `judgments.ts` — the seven
@@ -862,7 +862,7 @@ export const INQUISITOR_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Defense against Magic",
     level: 3,
     bucket: "situational",
-    note: "real, scaling save bonus vs. arcane spells of chosen wizard schools, replacing all bonus teamwork feats, but there's no build field tracking WHICH schools were chosen (same posture as Myrmidarch's multi-group Weapon Training in the magus pass) — a blanket bonus would over-apply",
+    note: "real, scaling save bonus vs. arcane spells of chosen wizard schools, replacing all bonus teamwork feats, but there's no build field tracking WHICH schools were chosen (same posture as Myrmidarch's multi-group Weapon Training in `./magus.ts`) — a blanket bonus would over-apply",
   },
   "inquisitor:spellbreaker:foil-casting:3": {
     archetypeId: "inquisitor:spellbreaker",
@@ -1058,7 +1058,7 @@ export const INQUISITOR_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Silversmith",
     level: 2,
     bucket: "situational",
-    note: "class-level bonus on Craft/Spellcraft checks to make silver items — Craft is a freeform player-slugged skill instance (crf.<slug>), same gap as Master Smith in the magus pass",
+    note: "class-level bonus on Craft/Spellcraft checks to make silver items — Craft is a freeform player-slugged skill instance (crf.<slug>), same gap as Master Smith in `./magus.ts`",
   },
   "inquisitor:vampire-hunter:sun-strike:5": {
     archetypeId: "inquisitor:vampire-hunter",
@@ -1154,7 +1154,7 @@ export const INQUISITOR_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
  *  - "medium": a mixed feature where one clause is unconditional and
  *    extracted while a second, textually-present clause is scoped/activated
  *    and dropped — partial honesty, flagged in `detail`.
- *  - "low": not used in this pass.
+ *  - "low": not used here.
  */
 export const INQUISITOR_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
   Record<string, ExtractedArchetypeFeatureEffect>

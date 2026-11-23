@@ -1,5 +1,5 @@
 /**
- * Minimal transient-toast primitive (UX audit: "feedback: toasts + undo").
+ * Minimal transient-toast primitive.
  * One toast at a time — last-wins, matching how a single at-the-table
  * notification is actually read. Deliberately dependency-free: a tiny
  * module-level pub/sub that `ToastHost` (mounted once in `App.tsx`)

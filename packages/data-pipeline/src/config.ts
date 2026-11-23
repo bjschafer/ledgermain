@@ -90,10 +90,10 @@ export const SYSTEM_VERSION = "11.11";
  * `monk-ki-powers.json`, `monkStyleStrikes`/`monk-style-strikes.json`,
  * `cavalierOrders`/`cavalier-orders.json`, and `shifterAspects`/
  * `shifter-aspects.json` — one integration bump covering all three sibling
- * waves rather than bumping per-wave. v14 adds `changes` to `Domain` (the
- * doc-level `system.changes` a handful of top-level domains carry —
- * Protection's save resistance, Travel's +10 speed, Darkness/Rune's bonus
- * feats), the same shape `Subdomain.changes` already vendored. v15 adds
+ * catalogs. v14 adds `changes` to `Domain` (the doc-level `system.changes` a
+ * handful of top-level domains carry — Protection's save resistance, Travel's
+ * +10 speed, Darkness/Rune's bonus feats), the same shape
+ * `Subdomain.changes` already vendored. v15 adds
  * `elementalSchoolSpellLists`/ `elemental-school-spell-lists.json` (each
  * elemental wizard school's bonus-slot spell list, resolved by name from its
  * description prose) and `WizardSchool.oppositionOptions` (the elements an
@@ -194,12 +194,12 @@ export const SCHEMA_VERSION = 29;
 /**
  * Second pinned source: archetype data (Foundry's pf1 system ships none).
  * This is `Tryss_Farron/pf1e-archetypes` on GitLab, the maintained successor to
- * the (now-abandoned) `baileymh/pf1e-archetypes` GitHub module we vendored
- * from previously — same maintainer as the pinned `PF_CONTENT_REPO` below, and
- * registered on foundryvtt.com as that module's continuation. Ships per-entity
- * YAML packs under `src/` (the same shape `PF_CONTENT_REPO` uses, read via
- * `util/packs.ts` `readPack`) rather than the old fork's per-class CSVs. Pin
- * like FOUNDRY_SHA: exact commit, never a branch.
+ * the abandoned `baileymh/pf1e-archetypes` GitHub module — same maintainer as
+ * the pinned `PF_CONTENT_REPO` below, and registered on foundryvtt.com as that
+ * module's continuation. Ships per-entity YAML packs under `src/` (the same
+ * shape `PF_CONTENT_REPO` uses, read via `util/packs.ts` `readPack`) rather
+ * than the old fork's per-class CSVs. Pin like FOUNDRY_SHA: exact commit,
+ * never a branch.
  */
 export const ARCHETYPE_REPO = "https://gitlab.com/Tryss_Farron/pf1e-archetypes.git";
 

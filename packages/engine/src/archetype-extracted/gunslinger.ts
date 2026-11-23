@@ -1,17 +1,16 @@
 /**
- * Gunslinger's slice of the pipeline (2026-08-08): every vendored archetype
+ * Gunslinger's slice of the pipeline: every vendored archetype
  * feature whose id starts with `gunslinger:` (82 features across 25
  * archetypes) read individually and bucketed `numeric` / `situational` /
- * `subsystem` / `blocked`, following the exact methodology `magus.ts`/
- * `fighter.ts` established. Per the per-class file convention (`index.ts`'s
+ * `subsystem` / `blocked`, following the methodology in `magus.ts`/
+ * `fighter.ts`. Per the per-class file convention (`index.ts`'s
  * doc comment), this file owns BOTH of gunslinger's pipeline artifacts —
  * `GUNSLINGER_ARCHETYPE_EFFECTS_EXTRACTED` and
- * `GUNSLINGER_ARCHETYPE_FEATURE_CLASSIFICATION` — so a future wave working on
- * a different class never has a reason to touch this file; only `index.ts`
- * (the aggregator, a later integration step not done here) needs a new
- * import + spread line.
+ * `GUNSLINGER_ARCHETYPE_FEATURE_CLASSIFICATION` — so work on a different
+ * class never has a reason to touch this file; only `index.ts` (the
+ * aggregator) needs a new import + spread line.
  *
- * ── Gunslinger-specific mechanical facts this pass relies on ──────────────
+ * ── Gunslinger-specific mechanical facts this classification relies on ────
  *
  * 1. **Grit** (base L1 feature, `uses.maxFormula: "max(1, @abilities.wis.mod)"`,
  *    per day) is a real vendored resource pool. Any archetype feature that
@@ -34,9 +33,9 @@
  *    single firearm TYPE the player freely picks each tier (axe musket,
  *    blunderbuss, musket, pistol, ...) — the vendored feature itself carries
  *    `changes: []` (confirmed via `class-features.json`), matching the
- *    engine's general stance that per-weapon-type player choices are a
- *    deferred, unmodeled area for a plain `Change` target. Unlike most such
- *    choices, though, this one now has its OWN non-Change wiring:
+ *    engine's general stance that per-weapon-type player choices are an
+ *    unmodeled area for a plain `Change` target. Unlike most such
+ *    choices, though, this one has its OWN non-Change wiring:
  *    `gun-training.ts`'s `build.gunTrainingPicks` mechanism carries the
  *    Dex-to-damage half for the base feature and for every archetype
  *    reflavor whose covered weapon set is expressible with that module's
@@ -84,10 +83,10 @@
  *    any of these archetypes keeps gaining the unmodified
  *    `floor(@class.unlevel / 4)` bonus feats from the base progression
  *    regardless. This is a vendoring/wiring gap outside this file's scope
- *    (fixing it would mean editing `archetypes.ts`'s pairing data, which
- *    this pass doesn't touch) — but it directly blocks extracting any
- *    ADDITIONAL `bonusFeats` Change for Siege Gunner's Bonus Feat (would
- *    double-count against the still-active base progression) and Gun Tank's
+ *    (fixing it would mean editing `archetypes.ts`'s pairing data) — but it
+ *    directly blocks extracting any ADDITIONAL `bonusFeats` Change for Siege
+ *    Gunner's Bonus Feat (would double-count against the still-active base
+ *    progression) and Gun Tank's
  *    own level-20 Bonus Feat restatement (same risk, see that entry's note).
  *    It does NOT block Gun Tank's Armor Training, which grants a different,
  *    unclaimed target (`mDexA`/`acpA`) — nothing else in this table touches
@@ -180,7 +179,7 @@ export const GUNSLINGER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Exotic Pet",
     level: 5,
     bucket: "subsystem",
-    note: "grants a familiar (with conditional evasion while it's nearby) in place of Gun Training 1 — familiar subsystem plus a proximity-conditional evasion grant, neither a flat number. Gun Training's Dex-to-damage half is now wired (gun-training.ts), so this is a real trade rather than a free one; the buccaneer's sole surviving Gun Training tier (13th) is wired via gun-training.ts's own buccaneer entry",
+    note: "grants a familiar (with conditional evasion while it's nearby) in place of Gun Training 1 — familiar subsystem plus a proximity-conditional evasion grant, neither a flat number. Gun Training's Dex-to-damage half is wired (gun-training.ts), so this is a real trade rather than a free one; the buccaneer's sole surviving Gun Training tier (13th) is wired via gun-training.ts's own buccaneer entry",
   },
   "gunslinger:buccaneer:grit:1": {
     archetypeId: "gunslinger:buccaneer",
@@ -237,7 +236,7 @@ export const GUNSLINGER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Raider's Riposte",
     level: 17,
     bucket: "subsystem",
-    note: "grants a triggered attack of opportunity when an enemy misses one with an AoO, replacing Gun Training 4 — an action-economy permission, no flat number. Gun Training's Dex-to-damage half is now wired (gun-training.ts), so this trades away a real tier; the buccaneer's sole surviving tier (13th) is wired via gun-training.ts's own buccaneer entry",
+    note: "grants a triggered attack of opportunity when an enemy misses one with an AoO, replacing Gun Training 4 — an action-economy permission, no flat number. Gun Training's Dex-to-damage half is wired (gun-training.ts), so this trades away a real tier; the buccaneer's sole surviving tier (13th) is wired via gun-training.ts's own buccaneer entry",
   },
   "gunslinger:buccaneer:song-of-surrender:4": {
     archetypeId: "gunslinger:buccaneer",
@@ -251,7 +250,7 @@ export const GUNSLINGER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Sword and Pistol",
     level: 9,
     bucket: "subsystem",
-    note: "grants a single named feat (Sword and Pistol) in place of Gun Training 2 — a fixed feat grant, not the generic bonusFeats budget. Gun Training's Dex-to-damage half is now wired (gun-training.ts), so this trades away a real tier; the buccaneer's sole surviving tier (13th) is wired via gun-training.ts's own buccaneer entry",
+    note: "grants a single named feat (Sword and Pistol) in place of Gun Training 2 — a fixed feat grant, not the generic bonusFeats budget. Gun Training's Dex-to-damage half is wired (gun-training.ts), so this trades away a real tier; the buccaneer's sole surviving tier (13th) is wired via gun-training.ts's own buccaneer entry",
   },
 
   // ── gunslinger:bushwhacker ──
@@ -304,7 +303,7 @@ export const GUNSLINGER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Trapsmith",
     level: 5,
     bucket: "subsystem",
-    note: "grants a ranger-trap-crafting subsystem in place of Gun Training's 5th-level tier only (aonprd: Trapsmith 'alters gun training,' 9th/13th/17th are untouched) — trap mechanics aren't modeled, but the traded-away tier now carries a real Dex-to-damage bonus via gun-training.ts; the surviving 9th/13th/17th tiers are wired via gun-training.ts's own commando entry",
+    note: "grants a ranger-trap-crafting subsystem in place of Gun Training's 5th-level tier only (aonprd: Trapsmith 'alters gun training,' 9th/13th/17th are untouched) — trap mechanics aren't modeled, but the traded-away tier carries a real Dex-to-damage bonus via gun-training.ts; the surviving 9th/13th/17th tiers are wired via gun-training.ts's own commando entry",
   },
 
   // ── gunslinger:experimental-gunsmith ──
@@ -320,7 +319,7 @@ export const GUNSLINGER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Innovations",
     level: 5,
     bucket: "subsystem",
-    note: "a weapon-modification choice-list (expanded capacity, expanded chamber, grapple launcher, recoilless, vial launcher) replacing Gun Training's whole progression (5th/9th/13th/17th, aonprd) — each innovation is itself a mixed bag of niche weapon-property changes with no engine target. Gun Training's Dex-to-damage half is now wired (gun-training.ts), so this archetype id is in the base grant's suppressedBy list rather than left to (incorrectly) keep granting it",
+    note: "a weapon-modification choice-list (expanded capacity, expanded chamber, grapple launcher, recoilless, vial launcher) replacing Gun Training's whole progression (5th/9th/13th/17th, aonprd) — each innovation is itself a mixed bag of niche weapon-property changes with no engine target. Gun Training's Dex-to-damage half is wired (gun-training.ts), so this archetype id is in the base grant's suppressedBy list rather than left to (incorrectly) keep granting it",
   },
 
   // ── gunslinger:firebrand ──
@@ -329,7 +328,7 @@ export const GUNSLINGER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Bombs",
     level: 5,
     bucket: "subsystem",
-    note: "grants the alchemist bombs class feature (Cha-based) replacing Gun Training's whole progression (aonprd: 'This ability replaces gun training,' all four tiers) — bomb mechanics are a distinct subsystem (alchemist-discoveries.ts territory, not wired to archetype-extracted). Gun Training's Dex-to-damage half is now wired (gun-training.ts), so this archetype id is in the base grant's suppressedBy list rather than left to (incorrectly) keep granting it",
+    note: "grants the alchemist bombs class feature (Cha-based) replacing Gun Training's whole progression (aonprd: 'This ability replaces gun training,' all four tiers) — bomb mechanics are a distinct subsystem (alchemist-discoveries.ts territory, not wired to archetype-extracted). Gun Training's Dex-to-damage half is wired (gun-training.ts), so this archetype id is in the base grant's suppressedBy list rather than left to (incorrectly) keep granting it",
   },
   "gunslinger:firebrand:gunsmith:1": {
     archetypeId: "gunslinger:firebrand",
@@ -405,7 +404,7 @@ export const GUNSLINGER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Go By Feel",
     level: 1,
     bucket: "subsystem",
-    note: "a drawback (misfire chance can never drop below a natural 1) — the misfire VALUE now displays on the attack line (ResolvedWeaponAttack.firearm.misfire), but nothing in this engine adjusts it up or down, so this floor on such adjustments has nothing to constrain either way",
+    note: "a drawback (misfire chance can never drop below a natural 1) — the misfire VALUE displays on the attack line (ResolvedWeaponAttack.firearm.misfire), but nothing in this engine adjusts it up or down, so this floor on such adjustments has nothing to constrain either way",
   },
 
   // ── gunslinger:gun-tank ──
@@ -458,7 +457,7 @@ export const GUNSLINGER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Safe Handling",
     level: 2,
     bucket: "subsystem",
-    note: "reduces a firearm's misfire chance by 1 on the next attack — the misfire VALUE now displays on the attack line, but nothing tracks a per-attack adjustment to it, so this has no mechanism to hook into; replaces Nimble (structurally paired to the whole feature, pure loss per class note 5, despite the 'nimble +1' phrasing suggesting only a partial tier)",
+    note: "reduces a firearm's misfire chance by 1 on the next attack — the misfire VALUE displays on the attack line, but nothing tracks a per-attack adjustment to it, so this has no mechanism to hook into; replaces Nimble (structurally paired to the whole feature, pure loss per class note 5, despite the 'nimble +1' phrasing suggesting only a partial tier)",
   },
 
   // ── gunslinger:maverick ──
@@ -476,7 +475,7 @@ export const GUNSLINGER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Deeds",
     level: 1,
     bucket: "subsystem",
-    note: "swaps two deeds (Steady Aim, Fast Musket) for grit-gated range-increment and reload-time abilities — deeds subsystem (class note 2). The range increment itself now displays on the attack line (ResolvedWeaponAttack.rangeIncrement), but nothing adjusts it in response to a grit-spend deed, so Steady Aim has no target to modify either way",
+    note: "swaps two deeds (Steady Aim, Fast Musket) for grit-gated range-increment and reload-time abilities — deeds subsystem (class note 2). The range increment itself displays on the attack line (ResolvedWeaponAttack.rangeIncrement), but nothing adjusts it in response to a grit-spend deed, so Steady Aim has no target to modify either way",
   },
   "gunslinger:musket-master:gunsmith:1": {
     archetypeId: "gunslinger:musket-master",
@@ -548,7 +547,7 @@ export const GUNSLINGER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Stranger's Fortune",
     level: 5,
     bucket: "subsystem",
-    note: "lets the gunslinger ignore a misfire a limited number of times per day, in place of Gun Training 1 — misfire ADJUSTMENT (ignoring one) isn't modeled, though the misfire VALUE itself now displays on the attack line (ResolvedWeaponAttack.firearm.misfire). Gun Training's Dex-to-damage half is now wired too, so this trades away a real tier; the surviving 9th/13th/17th tiers are wired via gun-training.ts's own mysterious-stranger entry",
+    note: "lets the gunslinger ignore a misfire a limited number of times per day, in place of Gun Training 1 — misfire ADJUSTMENT (ignoring one) isn't modeled, though the misfire VALUE itself displays on the attack line (ResolvedWeaponAttack.firearm.misfire). Gun Training's Dex-to-damage half is wired too, so this trades away a real tier; the surviving 9th/13th/17th tiers are wired via gun-training.ts's own mysterious-stranger entry",
   },
 
   // ── gunslinger:pistolero ──
@@ -757,7 +756,7 @@ export const GUNSLINGER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
  * extraction pass inferred this from prose." Only 4 of gunslinger's 82
  * features cleared the `numeric` bar (see
  * `GUNSLINGER_ARCHETYPE_FEATURE_CLASSIFICATION` above for the full
- * per-feature audit).
+ * per-feature classification).
  *
  * Confidence rubric (identical to magus.ts's/fighter.ts's):
  *  - "high": a literal or near-literal reflavor of an already-modeled base
@@ -766,7 +765,7 @@ export const GUNSLINGER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
  *  - "medium": the formula required deriving a non-obvious cadence from
  *    prose (an irregular schedule, a delayed onset), or a clause had to be
  *    read as separable from a neighboring resource-gated condition.
- *  - "low": not used in this pass.
+ *  - "low": not used here.
  */
 export const GUNSLINGER_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
   Record<string, ExtractedArchetypeFeatureEffect>

@@ -284,11 +284,10 @@ describe("newDaySummary()", () => {
     expect(newDaySummary(before, after)).toBe("rage 5/5");
   });
 
-  // the app-wide New Day action's toast previously reported a single opaque "N
-  // spell slots refreshed" combining every caster class — extended below to
-  // break that segment out per class, mirroring however `restNewDay` actually
-  // reset that class's spell state (prepared reset vs. spontaneous slots
-  // restored).
+  // The app-wide New Day toast breaks spell resets out per caster class
+  // instead of one opaque "N spell slots refreshed" covering every class,
+  // mirroring however `restNewDay` reset that class's spell state (prepared
+  // reset vs. spontaneous slots restored).
   it("reports a single caster class's spell reset by name when refData is given (issue #63)", () => {
     let doc = addClass(createEmptyDoc("t"), "wizard");
     doc = setClassLevel(doc, "wizard", 1);

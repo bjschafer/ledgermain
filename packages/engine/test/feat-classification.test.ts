@@ -1,16 +1,16 @@
 /**
- * Completeness + sanity tests for the feat classification audit
+ * Completeness + sanity tests for the feat classification
  * (feat-classification.ts), keyed by name slug (feat ids are opaque Foundry
  * UUIDs — see feat-effects.ts's featNameSlug doc comment for why slugs, not
  * ids, are the stable key here).
  *
- * The audit's scope is frozen at the 390 feats the Foundry system pack shipped
- * when it ran — it predates the `pf1-content` community-pack merge (see
- * feat-classification.ts's file header), which added ~3,150 more feats to
- * `ref.feats` that this file makes no claim about. So "completeness" here
- * means the audited set is self-consistent (no orphaned entries pointing at
- * feats that no longer exist, no drift in its own entry count), not that it
- * covers every feat currently in the vendored pack.
+ * The classification covers the 390 feats the Foundry system pack shipped. It
+ * predates the `pf1-content` community-pack merge (see feat-classification.ts's
+ * file header), which added ~3,150 more feats to `ref.feats` that this file
+ * makes no claim about. So "completeness" here means the classified set is
+ * self-consistent (no orphaned entries pointing at feats that do not exist, no
+ * drift in its own entry count), not that it covers every feat currently in
+ * the vendored pack.
  */
 
 import { describe, expect, it } from "bun:test";
@@ -32,14 +32,14 @@ const VALID_BUCKETS: ReadonlySet<FeatClassificationBucket> = new Set([
   "blocked",
 ]);
 
-describe("FEAT_CLASSIFICATION completeness (issue #45)", () => {
+describe("FEAT_CLASSIFICATION completeness", () => {
   it("every entry still resolves to a real feat in the vendored pack (no orphaned entries)", () => {
     const featSlugs = new Set(Object.values(ref.feats).map((f) => featNameSlug(f.name)));
     const orphaned = Object.keys(FEAT_CLASSIFICATION).filter((slug) => !featSlugs.has(slug));
     expect(orphaned).toEqual([]);
   });
 
-  it("covers exactly the 390 system-pack feats audited for issue #45 (no silent growth/shrinkage)", () => {
+  it("covers exactly the 390 system-pack feats (no silent growth/shrinkage)", () => {
     expect(Object.keys(FEAT_CLASSIFICATION).length).toBe(390);
   });
 
@@ -74,12 +74,12 @@ describe("FEAT_CLASSIFICATION spot checks", () => {
     expect(FEAT_CLASSIFICATION["point-blank-shot"]?.bucket).toBe("situational");
   });
 
-  it("classifies the hand-verified + newly-extracted pool feats as pool", () => {
+  it("classifies the hand-verified and extracted pool feats as pool", () => {
     expect(FEAT_CLASSIFICATION["extra-rage"]?.bucket).toBe("pool");
     expect(FEAT_CLASSIFICATION["extra-arcane-pool"]?.bucket).toBe("pool");
   });
 
-  it("classifies the newly-extracted skill-pair/choice feats correctly", () => {
+  it("classifies the extracted skill-pair/choice feats correctly", () => {
     expect(FEAT_CLASSIFICATION["acrobatic"]?.bucket).toBe("numeric");
     expect(FEAT_CLASSIFICATION["stealthy"]?.bucket).toBe("numeric");
     expect(FEAT_CLASSIFICATION["intimidating-prowess"]?.bucket).toBe("numeric");
@@ -88,13 +88,13 @@ describe("FEAT_CLASSIFICATION spot checks", () => {
     expect(FEAT_CLASSIFICATION["master-craftsman"]?.bucket).toBe("choice-numeric");
   });
 
-  it("promotes Improved Natural Armor to numeric now that the increase stacking type exists", () => {
+  it("classifies Improved Natural Armor as numeric via the increase stacking type", () => {
     // Wired as nac/"increase" (stacking.ts) — see featResweepLevers.test.ts
     // for the summing behavior, including a repeat take via extraFeats.
     expect(FEAT_CLASSIFICATION["improved-natural-armor"]?.bucket).toBe("numeric");
   });
 
-  it("promotes the Spell Focus / Spell Penetration families now that spellDC/clCheck exist", () => {
+  it("classifies the Spell Focus / Spell Penetration families as numeric via spellDC/clCheck", () => {
     // Wired via spellDC.<school> and clCheck.sr (spell-dcs.ts) — see
     // spell-dcs.test.ts for the actual DC/CL-check behavior.
     expect(FEAT_CLASSIFICATION["spell-focus"]?.bucket).toBe("choice-numeric");
@@ -103,7 +103,7 @@ describe("FEAT_CLASSIFICATION spot checks", () => {
     expect(FEAT_CLASSIFICATION["greater-spell-penetration"]?.bucket).toBe("numeric");
   });
 
-  it("promotes the Improved/Greater maneuver family to numeric now that maneuverCategories exists", () => {
+  it("classifies the Improved/Greater maneuver family as numeric via maneuverCategories", () => {
     // Wired via Change.maneuverCategories (maneuver-categories.ts) — see
     // maneuverCategories.test.ts and feats.test.ts's Improved/Greater Trip
     // fixtures for the actual cmb/cmd behavior this promotion produces.

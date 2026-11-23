@@ -1,5 +1,5 @@
 /**
- * Hand-computed fixture tests for this wave's two pool-spend toggles:
+ * Hand-computed fixture tests for the two pool-spend toggles:
  * warpriest Sacred Weapon (`sacred-weapon-spends.ts`) and occultist Mental
  * Focus's Legacy Weapon base power (`mental-focus-spends.ts`). Pattern
  * follows `judgments.test.ts` / `bardicPerformances.test.ts` (loadRefData()
@@ -260,7 +260,7 @@ describe("mentalFocusToggleOptions: picked menu focus powers", () => {
     expect(options.map((o) => o.id)).toContain("mentalFocus:abjuration:aegis");
   });
 
-  it("skips a stale pick whose school is no longer a known implement", () => {
+  it("skips a stale pick whose school is not a known implement", () => {
     const options = mentalFocusToggleOptions(7, ["transmutation"], ["abjuration:aegis"]);
     expect(options.map((o) => o.id)).not.toContain("mentalFocus:abjuration:aegis");
   });

@@ -1,8 +1,8 @@
 /**
- * Class-feature classification shard: wave assignment "reachable1" — features
- * granted through some `RefData.classes[*].features` list (base or prestige),
- * so a `CLASS_FEATURE_CHANGE_PATCHES` entry can reach them. Owner-assigned
- * worklist; `index.ts` documents the shard convention.
+ * Class-feature classification shard "reachable1" — features granted through
+ * some `RefData.classes[*].features` list (base or prestige), so a
+ * `CLASS_FEATURE_CHANGE_PATCHES` entry can reach them. `index.ts` documents
+ * the shard convention.
  */
 
 import type { ClassFeatureClassificationEntry } from "./types.js";
@@ -11,7 +11,7 @@ const POOL_NOTE =
   "Grants a limited-use resource pool/points, not a flat sheet number; pools with a vendored uses.maxFormula already ride the generic resource-pool pipeline (resources.ts) for free, and this is not a Change-shaped effect for this table either way.";
 
 const PERFORMANCE_NOTE =
-  "A bardic-performance-shaped ability (activated, maintained, chosen from a list of effects): mirrors the archetype-wave rule that any performance modification is subsystem, whether or not it happens to carry a clean formula, since this table tracks unconditional Change targets and an activated maintained effect isn't one. Hand-authored toggles on the Bardic Performance pool (bardic-performances.ts) cover the twelve core CRB performance types besides Inspire Courage, which rides its own vendored linked buff; entries outside that set still have no Change-shaped target.";
+  "A bardic-performance-shaped ability (activated, maintained, chosen from a list of effects): mirrors the archetype rule that any performance modification is subsystem, whether or not it happens to carry a clean formula, since this table tracks unconditional Change targets and an activated maintained effect isn't one. Hand-authored toggles on the Bardic Performance pool (bardic-performances.ts) cover the twelve core CRB performance types besides Inspire Courage, which rides its own vendored linked buff; entries outside that set still have no Change-shaped target.";
 
 const COMMAND_NOTE =
   "One of Battle Herald's mutually exclusive maintained-action commands, chosen from a list while Inspiring Command is active: same activated/maintained-choice shape as a bardic performance, so subsystem rather than a flat Change even though the bonus itself has a clean formula.";
@@ -158,7 +158,7 @@ export const CLASS_FEATURE_CLASSIFICATION_REACHABLE_1: Readonly<
     bucket: "subsystem",
     note:
       PERFORMANCE_NOTE +
-      " Already rides a real vendored buff via `grantsBuffs`, toggled through the linked-buff mechanism on the Bardic Performance pool — that toggle does not change this table's bucket, matching the archetype-wave precedent that established this exact rule for this exact feature.",
+      " Already rides a real vendored buff via `grantsBuffs`, toggled through the linked-buff mechanism on the Bardic Performance pool — that toggle does not change this table's bucket, matching how the archetype-extracted tables bucket this same feature.",
   },
   qXqveaxXmdvqE8e8: {
     id: "qXqveaxXmdvqE8e8",

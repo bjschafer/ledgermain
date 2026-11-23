@@ -11,24 +11,22 @@ import {
 /**
  * The ninja slice of the prose->Change extraction pipeline.
  *
- * TEST APPROACH: ninja's aggregator wiring (`archetype-extracted/index.ts`)
- * is a later integration step this pass doesn't touch, so
- * `resolveArchetypeFeatureEffect`/`compute` do NOT pick up this file's tables
- * yet through the normal production path (same posture as
- * `archetypeExtractedMagus.test.ts`). Ninja is one of the zero-numeric
- * classes (like arcanist and unchained summoner): 0 of its 21 features
- * cleared the extraction bar, so there are no formula fixtures — the suites
- * below instead pin the coverage/bucket counts, prove the extracted table is
- * empty on purpose, exercise `resolveArchetypeFeatureEffect`'s override
- * arguments against these tables, and assert the vendored-data facts the
- * classification's key rulings rest on (the mask gate, the No Trace
- * restatement pairing, the zero-changes base-feature landscape). The
- * provenance check is kept in place so any future extracted entry is
- * machine-verified from day one.
+ * These fixtures assert directly against `NINJA_ARCHETYPE_EFFECTS_EXTRACTED`'s
+ * exported `changes` shape and verify `resolveArchetypeFeatureEffect` resolves
+ * correctly when explicitly given this file's tables as its override
+ * arguments. Ninja is one of the zero-numeric classes (like arcanist and
+ * unchained summoner): 0 of its 21 features cleared the extraction bar, so
+ * there are no formula fixtures — the suites below instead pin the
+ * coverage/bucket counts, prove the extracted table is empty on purpose,
+ * exercise `resolveArchetypeFeatureEffect`'s override arguments against these
+ * tables, and assert the vendored-data facts the classification's key rulings
+ * rest on (the mask gate, the No Trace restatement pairing, the zero-changes
+ * base-feature landscape). The provenance check is kept in place so any future
+ * extracted entry is machine-verified from day one.
  */
 const ref = loadRefData();
 
-/** The same normalization the sweep's batch files used: tags out, whitespace squashed. */
+/** The same normalization the extraction used: tags out, whitespace squashed. */
 function strippedDescription(html: string): string {
   return html
     .replace(/<[^>]+>/g, " ")
@@ -192,8 +190,8 @@ describe("resolveArchetypeFeatureEffect: resolves through ninja's tables when ex
 
   it("the override path itself works: a verified-table override for a ninja id resolves as 'verified'", () => {
     // Proves the resolver consults the override arguments (not the global
-    // tables) — the mechanism a future aggregator-wiring pass relies on —
-    // without pretending ninja has a real entry.
+    // tables) — the mechanism the aggregator wiring relies on — without
+    // pretending ninja has a real entry.
     const resolved = resolveArchetypeFeatureEffect(
       "ninja:mask-of-the-living-god:stern-gaze:3",
       { "ninja:mask-of-the-living-god:stern-gaze:3": { changes: [] } },

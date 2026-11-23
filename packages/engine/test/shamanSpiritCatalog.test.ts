@@ -12,12 +12,11 @@ import {
 
 /**
  * Coverage for the vendored-catalog overlay — see `shaman-spirits.ts`'s
- * "vendored catalog overlay" section doc comment for the collision-audit
- * narrative this asserts against.
+ * "vendored catalog overlay" section doc comment for the collision check this
+ * asserts against.
  *
- * All 18 real vendored spirits now have a hand-authored counterpart (the
- * splatbook-10 batch closed the gap the core-8 batch left), so there is no
- * REAL vendored-only spirit left to exercise the fallback branch against.
+ * All 18 real vendored spirits have a hand-authored counterpart, so there is no
+ * REAL vendored-only spirit to exercise the fallback branch against.
  * `refWithFakeSpirit` below injects one synthetic entry on top of the real
  * data for the tests that need to prove that branch still works for a
  * future spirit this table hasn't caught up to yet.

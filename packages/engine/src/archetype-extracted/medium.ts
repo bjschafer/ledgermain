@@ -1,12 +1,12 @@
 /**
- * Medium's slice of the pipeline (2026-08-08). Every vendored archetype
- * feature for the class (15 medium archetypes, 74 features) was read in full
- * and bucketed as `numeric` / `situational` / `subsystem` / `blocked`, per the
- * per-class file convention (`index.ts`'s doc comment). This file owns BOTH
- * of medium's pipeline artifacts — `MEDIUM_ARCHETYPE_EFFECTS_EXTRACTED` and
+ * Medium's slice of the pipeline. Every vendored archetype feature for the
+ * class (15 medium archetypes, 74 features) was read in full and bucketed as
+ * `numeric` / `situational` / `subsystem` / `blocked`, per the per-class file
+ * convention (`index.ts`'s doc comment). This file owns BOTH of medium's
+ * pipeline artifacts — `MEDIUM_ARCHETYPE_EFFECTS_EXTRACTED` and
  * `MEDIUM_ARCHETYPE_FEATURE_CLASSIFICATION`.
  *
- * ── Medium-specific mechanical facts this pass relies on ──────────────────
+ * ── Medium-specific mechanical facts this classification relies on ────────
  *
  * 1. **Channeled spirits are a modeled pick-list subsystem**
  *    (`medium-spirits.ts`): the currently-channeled spirit lives in
@@ -17,9 +17,9 @@
  *    path at all, so a `Change` formula in THIS file has no way to condition
  *    on "while channeling spirit X" or "while channeling any spirit" — any
  *    archetype feature phrased that way is, from this pipeline's point of
- *    view, un-checkable, not merely inconvenient. Per the wave brief:
- *    features that swap/restrict which spirits can be channeled, or that add
- *    to / modify what a channeled spirit's Spirit Bonus grants, are
+ *    view, un-checkable, not merely inconvenient. Features that
+ *    swap/restrict which spirits can be channeled, or that add to / modify
+ *    what a channeled spirit's Spirit Bonus grants, are
  *    `subsystem` — never `numeric`, even when the archetype locks the
  *    character into a single spirit (e.g. Medium of the Master's Dedicated
  *    Spirit restricts her to Champion only) — the bonus is still gated on
@@ -49,9 +49,8 @@
  *    flat or rank-gated bonus across the ten Knowledge skills (`kar`, `kdu`,
  *    `ken`, `kge`, `khi`, `klo`, `kna`, `kno`, `kpl`, `kre` — confirmed
  *    against `oracle-mysteries.ts`'s own Knowledge-skill lists) is a clean,
- *    unconditional `numeric` extraction, same idiom as the community feat
- *    sweep's rank-gated Skill Focus entries (`feat-effects-extracted-
- *    community.ts`).
+ *    unconditional `numeric` extraction, same idiom as the rank-gated Skill
+ *    Focus entries in `feat-effects-extracted-community.ts`.
  *
  * Two vendored-data oddities worth flagging (not blockers, just recorded):
  * Kami Medium's `taboo:1` and Outer Channeler's `taboo:2` each restate the
@@ -205,14 +204,14 @@ export const MEDIUM_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     bucket: "subsystem",
     note:
       "dodge AC equal to the champion spirit's Spirit Bonus while light/unarmored (@armor.type " +
-      "<=1 is checkable on its own). Investigated for this wave: the Spirit Bonus value only " +
+      "<=1 is checkable on its own). The Spirit Bonus value only " +
       "applies while a spirit is actively channeled (doc.live.mediumSpirit), and " +
       "medium-spirits.ts's own architecture applies that directly in collect.ts's TypeScript, " +
       "never through a Change formula — rolldata.ts exposes no @live.mediumSpirit path a Change " +
       "formula in this table could check (class note 1). Wiring this would mean extending " +
       "collect.ts's existing champion-spirit Spirit Bonus loop to also push an archetype-gated " +
       "dodge AC Change (checking doc.build.archetypes for medium-of-the-master) — new " +
-      "cross-module plumbing in a file this wave doesn't own, not a self-contained " +
+      "cross-module plumbing in collect.ts, not a self-contained " +
       "medium-spirits.ts addition, so left unwired.",
   },
   "medium:medium-of-the-master:spirit-call:1": {
@@ -525,7 +524,7 @@ export const MEDIUM_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Knowledge of Tales",
     level: 1,
     bucket: "numeric",
-    note: "flat, unconditional +1 (scaling every 4 levels) on Knowledge checks for Knowledge skills the storyteller is trained in — rank-gated per skill via @skills.<id>.rank, the same idiom as the community feat sweep's rank-gated Skill Focus entries",
+    note: "flat, unconditional +1 (scaling every 4 levels) on Knowledge checks for Knowledge skills the storyteller is trained in — rank-gated per skill via @skills.<id>.rank, the same idiom as the rank-gated Skill Focus entries in `feat-effects-extracted-community.ts`",
   },
   "medium:storyteller:learn-the-story:7": {
     archetypeId: "medium:storyteller",
@@ -659,10 +658,10 @@ export const MEDIUM_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
  * This table is deliberately SEPARATE from `archetype-effects.ts`'s
  * `ARCHETYPE_FEATURE_EFFECTS` (the hand-verified table) — every entry here
  * additionally carries `confidence`/`provenance` so a reviewer (or the UI)
- * can never confuse "a human read the rulebook and checked this" with "an
- * extraction pass inferred this from prose." Only 2 of medium's 74 features
- * cleared the `numeric` bar (see `MEDIUM_ARCHETYPE_FEATURE_CLASSIFICATION`
- * above for the full per-feature audit) — medium's kit leans almost entirely
+ * can never confuse "a human read the rulebook and checked this" with "a
+ * machine inferred this from prose." Only 2 of medium's 74 features cleared
+ * the `numeric` bar (see `MEDIUM_ARCHETYPE_FEATURE_CLASSIFICATION` above for
+ * the full per-feature classification) — medium's kit leans almost entirely
  * on the channeled-spirit/influence/taboo/spirit-surge subsystem, which
  * `medium-spirits.ts` already models outside this pipeline's `Change`
  * formulas (see this file's header doc comment, point 1).
@@ -674,7 +673,7 @@ export const MEDIUM_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
  *  - "medium": the formula required deriving a non-obvious cadence from
  *    prose, or the bonus is gated on a real-but-partial condition this
  *    engine CAN check while a second condition can't be and is dropped.
- *  - "low": not used in this pass.
+ *  - "low": not used here.
  */
 export const MEDIUM_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
   Record<string, ExtractedArchetypeFeatureEffect>
@@ -683,8 +682,8 @@ export const MEDIUM_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
   // medium levels) on Knowledge checks, but ONLY for Knowledge skills the
   // storyteller is trained in ("in which he's trained") — expressed as one
   // rank-gated Change per Knowledge skill, the same `@skills.<id>.rank`
-  // idiom the community feat sweep's rank-gated Skill Focus entries use
-  // (`feat-effects-extracted-community.ts`).
+  // idiom the rank-gated Skill Focus entries in
+  // `feat-effects-extracted-community.ts` use.
   "medium:storyteller:knowledge-of-tales:1": {
     changes: KNOWLEDGE_SKILLS.map((id) =>
       c(`if(gte(@skills.${id}.rank, 1), 1 + floor(@class.unlevel / 4), 0)`, `skill.${id}`),

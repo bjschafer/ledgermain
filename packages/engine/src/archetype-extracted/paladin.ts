@@ -10,13 +10,13 @@
  *
  * ── PALADIN_ARCHETYPE_FEATURE_CLASSIFICATION ──────────────────────────────
  *
- * Classification audit: EVERY feature of EVERY vendored paladin archetype (60
- * archetypes, 247 features), read individually and bucketed `numeric` /
+ * Classification: EVERY feature of EVERY vendored paladin archetype (62
+ * archetypes, 255 features), read individually and bucketed `numeric` /
  * `situational` / `subsystem` / `blocked` per the same bucket definitions
  * as `archetype-extracted/fighter.ts`'s doc comment (not repeated here). Two
- * paladin-specific composition hazards drove a
- * disproportionate share of the `blocked`/`subsystem` calls this class
- * surfaced, neither of which existed for fighter:
+ * paladin-specific composition hazards drove a disproportionate share of
+ * the `blocked`/`subsystem` calls here, neither of which existed for
+ * fighter:
  *
  * 1. **Divine Grace is the only "big four" paladin base feature that's
  *    actually `Change`-shaped.** Of Smite Evil, Lay on Hands, Divine Grace,
@@ -34,10 +34,10 @@
  *    feature that AMBIGUOUSLY (no `pairedBaseFeatureUuid`) restates a
  *    Divine-Grace-shaped number (Cha bonus to some or all saves) is the one
  *    genuine "double-count trap" this class has for a `Change`-shaped base
- *    mechanic — `blocked`, per the task's own explicit call-out. Ambiguous
- *    swaps of Smite Evil / Lay on Hands / Aura of Courage can't create the
- *    same trap (nothing `Change`-shaped to double), so those stay
- *    `situational`/`subsystem` on their own content's merits.
+ *    mechanic — `blocked`. Ambiguous swaps of Smite Evil / Lay on Hands /
+ *    Aura of Courage can't create the same trap (nothing `Change`-shaped to
+ *    double), so those stay `situational`/`subsystem` on their own content's
+ *    merits.
  * 2. **Many 20th-level "replaces holy champion" features literally restate
  *    Holy Champion's own two RAW sentences** ("Her DR increases to 10/evil.
  *    Whenever she channels positive energy or uses lay on hands to heal a
@@ -53,8 +53,7 @@
  *    amount" half is never extracted (Lay on Hands/Channel healing amounts
  *    aren't `Change`-shaped in this engine at all — see hazard 1).
  *
- * Two more standing limitations, not paladin-specific traps but worth
- * recording since they suppressed several otherwise-clean numbers:
+ * One more standing limitation, not paladin-specific but worth recording:
  *
  * - `chaSkills`/`dexSkills`/etc. (the ability-based skill-GROUP targets) are
  *   listed in `targets.ts`'s `UNAPPLIED_TARGET_LABELS`, not `APPLIED_TARGETS`
@@ -63,14 +62,6 @@
  *   vendored-data fidelity but is honest that it's inert). No paladin feature
  *   needed this target, but it was checked and ruled out for one candidate —
  *   see Black Blood Revelation's cousin note in `oracle.ts`.
- * - `bonusSkillRanks` is listed in `targets.ts`'s `APPLIED_TARGETS`, but
- *   `apps/web/src/model/skills.ts`'s `skillBudget` only ever reads it from
- *   `refData.races[...].changes` — an archetype-authored `bonusSkillRanks`
- *   `Change` would be silently inert (never summed anywhere). This sank two
- *   otherwise-clean "4 + Int skill ranks instead of 2 + Int" numbers
- *   (Faithful Wanderer's Wanderer's Lore, Tortured Crusader's
- *   Self-Sufficient) to `subsystem` — flagged as a process-doc finding in the
- *   wave report rather than silently worked around.
  *
  * Also found: three vendored-data duplicate-text ids (a single multi-tier
  * ability's prose byte-for-byte repeated across 2-3 separate archetype-
@@ -417,7 +408,7 @@ export const PALADIN_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Wanderer's Lore",
     level: 1,
     bucket: "numeric",
-    note: "doubles skill ranks/level to 4+Int — the ranks-doubling half is now extracted as a bonusSkillRanks Change (issue #62 wired apps/web's skillBudget to also read active-archetype bonusSkillRanks effects, gated on the archetype's class level); the class-skill-list swap half is still not modeled (no engine target for a per-archetype class-skill list)",
+    note: "doubles skill ranks/level to 4+Int — the ranks-doubling half is extracted as a bonusSkillRanks Change (issue #62 wired apps/web's skillBudget to also read active-archetype bonusSkillRanks effects, gated on the archetype's class level); the class-skill-list swap half is still not modeled (no engine target for a per-archetype class-skill list)",
   },
   "paladin:faithful-wanderer:champion-s-bond:5": {
     archetypeId: "paladin:faithful-wanderer",
@@ -669,7 +660,7 @@ export const PALADIN_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Channel Positive Energy",
     level: 4,
     bucket: "subsystem",
-    note: "Channel Energy reflavor with its own resource economy (no lay-on-hands cost, own 3+Cha uses/day pool) and, per its own vendored prose ('channel positive energy as a cleric equal to her paladin level -3'), a genuine level-3 effective-level reduction the base paladin ability does not have (base Channel Positive Energy uses full paladin level as effective cleric level). Both the independent pool and the effective-level offset are now wired via channel-variants.ts's dedicated override (resources.ts/ability-dcs.ts), the same subsystem cleric fiendish-vessel/blossoming-light/evangelist/scroll-scholar use for their own channel-progression divergences — still a bespoke resource-pool subsystem outside this table's Change-extraction scope, so `subsystem` stands",
+    note: "Channel Energy reflavor with its own resource economy (no lay-on-hands cost, own 3+Cha uses/day pool) and, per its own vendored prose ('channel positive energy as a cleric equal to her paladin level -3'), a genuine level-3 effective-level reduction the base paladin ability does not have (base Channel Positive Energy uses full paladin level as effective cleric level). Both the independent pool and the effective-level offset are wired via channel-variants.ts's dedicated override (resources.ts/ability-dcs.ts), the same subsystem cleric fiendish-vessel/blossoming-light/evangelist/scroll-scholar use for their own channel-progression divergences — still a bespoke resource-pool subsystem outside this table's Change-extraction scope, so `subsystem` stands",
   },
   "paladin:hospitaler:aura-of-healing:11": {
     archetypeId: "paladin:hospitaler",
@@ -1404,7 +1395,7 @@ export const PALADIN_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Heartstone",
     level: 2,
     bucket: "blocked",
-    note: "blocked: verbatim Divine Grace text ('gains a bonus equal to her Charisma bonus (if any) on all saving throws'), ambiguous (unpaired) reflavor of the exact same mechanic. Extracting it would double the Cha-to-all-saves bonus alongside the still-unsuppressed base Divine Grace Change — the exact double-count trap the task flagged for this base feature.",
+    note: "blocked: verbatim Divine Grace text ('gains a bonus equal to her Charisma bonus (if any) on all saving throws'), ambiguous (unpaired) reflavor of the exact same mechanic. Extracting it would double the Cha-to-all-saves bonus alongside the still-unsuppressed base Divine Grace Change — the exact double-count trap for this base feature.",
   },
   "paladin:stonelord:stoneblood:3": {
     archetypeId: "paladin:stonelord",
@@ -1467,7 +1458,7 @@ export const PALADIN_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "First Into Battle",
     level: 2,
     bucket: "blocked",
-    note: "blocked: ambiguous (unpaired) swap of Divine Grace. This feature's own Initiative bonus doesn't target-overlap Divine Grace's allSavingThrows Change, but per the task's guidance any ambiguous swap of this base feature is treated as the double-count-trap category — recorded conservatively rather than extracted, since Divine Grace itself would remain unsuppressed and keep showing as an active, un-replaced ability on the sheet.",
+    note: "blocked: ambiguous (unpaired) swap of Divine Grace. This feature's own Initiative bonus doesn't target-overlap Divine Grace's allSavingThrows Change, but any ambiguous swap of this base feature is treated as the double-count-trap category — recorded conservatively rather than extracted, since Divine Grace itself would remain unsuppressed and keep showing as an active, un-replaced ability on the sheet.",
   },
   "paladin:sword-of-valor:prayer-of-the-fourth-act:6": {
     archetypeId: "paladin:sword-of-valor",
@@ -1904,7 +1895,7 @@ export const PALADIN_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
  * literal/near-literal reflavor of an already-established mechanism or a
  * single, clearly-worded, fully-general scaling bonus; "medium" = a
  * non-obvious cadence or a partially-dropped second condition (flagged in
- * `detail`); "low" = reserved, unused this wave.
+ * `detail`); "low" = reserved, unused.
  */
 export const PALADIN_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
   Record<string, ExtractedArchetypeFeatureEffect>

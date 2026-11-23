@@ -18,7 +18,7 @@ import {
  * Coverage for the kineticist-wild-talent + composite-blast vendored-catalog
  * overlays — mirrors `ragePowerCatalog.test.ts`'s pattern. See
  * `kineticist-wild-talents.ts`'s "vendored catalog overlay" doc comment for
- * the collision-audit narrative this asserts against.
+ * the collision check this asserts against.
  */
 const ref = loadRefData();
 

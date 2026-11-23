@@ -4,10 +4,9 @@
  * option, modeled as its OWN trackable creature (HD/BAB/saves/AC/attacks/
  * skills), mirroring `familiar.ts`'s shape and posture closely. Clean-room
  * from the published PF1 rules (CRB "Animal Companions" / APG's identical
- * reprint) — verified against d20pfsrd.com during authoring; no Foundry
- * source was consulted. Foundry's GPL system code is never
- * used as anything but a behavioral oracle in tests, per the repo's
- * clean-room discipline.
+ * reprint) — verified against d20pfsrd.com; no Foundry source was consulted.
+ * Foundry's GPL system code is never used as anything but a behavioral
+ * oracle in tests, per the repo's clean-room discipline.
  *
  * Animal Companion Basics (PF1 CRB "Animal Companions"):
  *   - The companion has its OWN Hit Dice, BAB, and saves — unlike a familiar,
@@ -17,7 +16,7 @@
  *     exactly the good/good/poor (`high`/`high`/`low`) save tiers computed
  *     from that HD — reusing `tables.ts`'s `babForLevels`/`saveForLevels`
  *     reproduces every row of the published table exactly (verified by hand
- *     against all 20 rows during authoring).
+ *     against all 20 rows).
  *   - HP: PF1 RAW average-hp-per-HD, "For a d8, the average is 4.5; multiply
  *     by the number of Hit Dice and round down" — every companion in
  *     {@link BASE_COMPANIONS} uses a d8, the universal PF1 "Animal" type Hit
@@ -39,7 +38,7 @@
  *   - Multiattack (unlocked at HD milestone, {@link
  *     ANIMAL_COMPANION_PROGRESSION}): still surfaced as a special-ability chip
  *     (its narrative/skill-check benefits beyond the attack math aren't
- *     modeled), but as of it DOES soften the secondary-natural-attack penalty
+ *     modeled), but it DOES soften the secondary-natural-attack penalty
  *     from −5 to −2 in `deriveCompanion`'s attack math below — see
  *     `natural-attacks.ts`. Primary/secondary natural-attack math (full
  *     BAB+Str vs. −5/−2 and half Str) is modeled here via the shared
@@ -84,7 +83,7 @@
  *     exact same `routeSharedBuffs` pipeline as a shared buff, so it affects
  *     AC/saves/skills/attacks/ability scores/speed/init identically. This
  *     required two small additions to `shared-creature-buffs.ts` neither
- *     shared buff previously exercised: a global `skills` target (shaken/
+ *     shared buff otherwise exercises: a global `skills` target (shaken/
  *     sickened/panicked's flat skill-check penalty) and folding `wdamage`
  *     ["weapon damage"] into the same bucket as `damage` (natural attacks
  *     count as weapon damage for effects like sickened's penalty).
@@ -218,7 +217,7 @@ export interface BaseCompanion {
 /**
  * Fourteen popular PF1 animal-companion forms (CRB "Animal Companions" +
  * Hunter's Bond's own list), keyed by a stable slug for the builder's picker.
- * Verified against d20pfsrd.com's "Animal Companions" page during authoring
+ * Verified against d20pfsrd.com's "Animal Companions" page
  * (see the module doc comment).
  */
 export const BASE_COMPANIONS: Readonly<Record<string, BaseCompanion>> = {
@@ -462,7 +461,7 @@ export const BASE_COMPANION_IDS = Object.keys(BASE_COMPANIONS);
 
 /**
  * RAW Cavalier/Samurai "Mount" species lists (Ultimate Combat, verified
- * against aonprd.com during authoring), intersected with this module's own
+ * against aonprd.com), intersected with this module's own
  * {@link BASE_COMPANION_IDS} — the full published lists include several exotic
  * animals (Camel, Elk, Giraffe, Zebra, Axe Beak, Seahorse (Giant), Tortoise
  * (Giant) for Medium riders; Antelope, Capybara, Kangaroo, Lizard (Giant
@@ -498,7 +497,7 @@ export interface CompanionProgressionRow {
  * Table: Animal Companion Base Statistics (PF1 CRB "Animal Companions" / APG
  * reprint), indexed by effective druid level 1–20. `hd` reproduces
  * `babForLevels("med", hd)` / `saveForLevels("high"|"low", hd)` exactly for
- * every row (verified by hand during authoring) — {@link deriveCompanion}
+ * every row (verified by hand) — {@link deriveCompanion}
  * relies on this rather than hardcoding BAB/save numbers separately.
  */
 export const ANIMAL_COMPANION_PROGRESSION: readonly CompanionProgressionRow[] = [
@@ -718,7 +717,7 @@ export interface DerivedCompanionSkill {
 
 /**
  * A creature's total skill-point budget (Monster Creation's own formula,
- * verified against aonprd.com during authoring: "2 + Int mod
+ * verified against aonprd.com: "2 + Int mod
  * per HD," minimum 1 per HD) — every one of {@link BASE_COMPANIONS}'
  * Intelligence scores is low enough (2, occasionally 1) that this almost
  * always resolves to exactly 1 per HD, but the formula is applied generically

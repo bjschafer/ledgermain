@@ -213,9 +213,9 @@ describe("addWornArmorFromRef()", () => {
     expect(inst.armor!.enhancement).toBe(3);
     expect(inst.armor!.material).toBe("mithral");
     expect(inst.armor!.maxDex).toBe(3); // 1 + 2 mithral
-    // -(6 - 3 mithral); the masterwork-implied-by-enhancement -1 is no longer
-    // baked in here — `@pf1/engine`'s armorPieceAcp applies it at compute
-    // time, and skips it for mithral since the material's -3 already assumes
+    // -(6 - 3 mithral); the masterwork-implied-by-enhancement -1 isn't baked
+    // in here — `@pf1/engine`'s armorPieceAcp applies it at compute time, and
+    // skips it for mithral since the material's -3 already assumes
     // masterwork quality (see compute.armorAcp.test.ts).
     expect(inst.armor!.acp).toBe(-3);
     expect(inst.armor!.type).toBe(2); // 3 - 1 mithral

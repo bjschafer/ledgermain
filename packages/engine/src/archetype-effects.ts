@@ -1,7 +1,6 @@
 /**
  * Hand-authored mechanical effects for archetype class features. Clean-room
- * from the published PF1 rules — no Foundry source was consulted (DESIGN.md
- * §6).
+ * from the published PF1 rules — no Foundry source was consulted.
  *
  * Context: the vendored archetype dataset (`packages/data-pipeline/src/
  * transform/archetypes.ts`, ultimately from the third-party `pf1e-archetypes`
@@ -13,7 +12,7 @@
  * script could turn into a `Change` — numeric support has to be hand-authored
  * per feature, the same posture as `feat-effects.ts`/`traits.ts`/`tables.ts`.
  *
- * Scope (audited, not exhaustive): this table only covers archetype features
+ * Scope (not exhaustive): this table only covers archetype features
  * that grant an UNCONDITIONAL, always-on numeric effect — the same bar
  * `traits.ts` uses (a narrowly-scoped "+X vs. fear" or "+X while wielding your
  * chosen weapon" bonus is deliberately left unmodeled here, same as
@@ -137,7 +136,7 @@ export const ARCHETYPE_FEATURE_EFFECTS: Readonly<Record<string, ArchetypeFeature
   // applies to a specific attack the player chooses each round, not an
   // always-on Change (same bar as Power Attack/Deadly Aim's situational
   // treatment in `feat-effects.ts`). Left as a display-only note; the swap
-  // itself (Armor Training's `mDexA`/`acpA` no longer applying) is already
+  // itself (Armor Training's `mDexA`/`acpA` stop applying) is already
   // exercised by the "bug fix" describe block above.
   "fighter:two-handed-fighter:overhand-chop:3": {
     changes: [],
@@ -408,19 +407,19 @@ export const ARCHETYPE_FEATURE_EFFECTS: Readonly<Record<string, ArchetypeFeature
 
   // ── Arcanist ─────────────────────────────────────────────────────────────
 
-  // Audited all 11 vendored arcanist archetypes (Arcane Tinkerer, Blood
-  // Arcanist, Brown-Fur Transmuter, Eldritch Font, Elemental Master,
-  // Magaambyan Initiate, Occultist, School Savant, Tarot Student, Twilight
-  // Sage, White Mage) — every one of them reworks the arcane
-  // reservoir/exploit/spells-known subsystems (extra prepared spells, reservoir
-  // point costs, spell-list additions) rather than granting a flat number.
+  // All 11 vendored arcanist archetypes (Arcane Tinkerer, Blood Arcanist,
+  // Brown-Fur Transmuter, Eldritch Font, Elemental Master, Magaambyan
+  // Initiate, Occultist, School Savant, Tarot Student, Twilight Sage, White
+  // Mage) rework the arcane reservoir/exploit/spells-known subsystems (extra
+  // prepared spells, reservoir point costs, spell-list additions) rather than
+  // granting a flat number.
   // School Savant is the most-played of the set (a direct arcanist analogue
   // of the wizard's arcane school) and is recorded here as the representative
   // no-Change entry: its "gains the wizard arcane school's abilities, using
   // arcanist level as wizard level" hook would require wiring a whole new
   // cross-class feature-grant path (mirroring `collectGrantedFeatures`'s
   // domain/school handling) rather than a table entry — out of scope here,
-  // noted for a future pass.
+  // noted as still open.
   "arcanist:school-savant:school-focus-su:1": {
     changes: [],
     detail: () => "grants a wizard arcane school's powers — not modeled (see doc comment)",

@@ -1,18 +1,16 @@
 /**
  * Samurai's slice of the pipeline. Every vendored samurai archetype (6
  * archetypes, 26 features) was read in full and bucketed as `numeric` /
- * `situational` / `subsystem` / `blocked`, following the exact methodology
- * the fighter pilot (`fighter.ts`) and the cavalier pass (`cavalier.ts` —
- * samurai's sibling class, whose challenge/order/mount/banner rulings carry
- * over nearly one-for-one) already validated. Per the per-class file
- * convention (`index.ts`'s doc comment), this file owns BOTH of samurai's
- * pipeline artifacts — `SAMURAI_ARCHETYPE_EFFECTS_EXTRACTED` and
- * `SAMURAI_ARCHETYPE_FEATURE_CLASSIFICATION` — so a future wave working on a
- * different class never has a reason to touch this file; only `index.ts`
- * (the aggregator, a later integration step not done here) needs a new
- * import + spread line.
+ * `situational` / `subsystem` / `blocked`, following the methodology in
+ * `./fighter.ts` and `./cavalier.ts` (samurai's sibling class, whose
+ * challenge/order/mount/banner rulings carry over nearly one-for-one). Per
+ * the per-class file convention (`index.ts`'s doc comment), this file owns
+ * BOTH of samurai's pipeline artifacts — `SAMURAI_ARCHETYPE_EFFECTS_EXTRACTED`
+ * and `SAMURAI_ARCHETYPE_FEATURE_CLASSIFICATION` — so work on a different
+ * class never has a reason to touch this file; only `index.ts` (the
+ * aggregator) needs one new import + one new spread per class.
  *
- * ── Samurai-specific mechanical facts this pass relies on ─────────────────
+ * ── Samurai-specific mechanical facts this classification relies on ───────
  *
  * 1. **Challenge** (base L1 feature) is per-target and per-use, exactly as
  *    for cavalier (cavalier.ts class note 3): the samurai-level extra damage
@@ -271,12 +269,12 @@ export const SAMURAI_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
  * This table is deliberately SEPARATE from `archetype-effects.ts`'s
  * `ARCHETYPE_FEATURE_EFFECTS` (the hand-verified table) — every entry here
  * additionally carries `confidence`/`provenance` so a reviewer (or the UI)
- * can never confuse "a human read the rulebook and checked this" with "an
- * extraction pass inferred this from prose." Only 2 of samurai's 26
- * features cleared the `numeric` bar (see
- * `SAMURAI_ARCHETYPE_FEATURE_CLASSIFICATION` above for the full per-feature
- * audit) — samurai's archetypes lean on challenge riders, resolve
- * spend-options, iaijutsu-strike upgrades, and named-feat grants, all
+ * can never confuse "a human read the rulebook and checked this" with "a
+ * machine inferred this from prose." Only 2 of samurai's 26 features cleared
+ * the `numeric` bar (see `SAMURAI_ARCHETYPE_FEATURE_CLASSIFICATION` above
+ * for the full per-feature classification) — samurai's archetypes lean on
+ * challenge riders, resolve spend-options, iaijutsu-strike upgrades, and
+ * named-feat grants, all
  * per-use/per-target shapes or unmodeled subsystems (see this file's header
  * doc comment).
  *
@@ -289,7 +287,7 @@ export const SAMURAI_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
  *    real-but-partial condition this engine CAN check (`@armor.type`/
  *    `@shield.type`) while a second, textually-present clause can't be
  *    checked and is dropped — partial honesty, flagged in `detail`.
- *  - "low": not used in this pass.
+ *  - "low": not used here.
  */
 export const SAMURAI_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
   Record<string, ExtractedArchetypeFeatureEffect>

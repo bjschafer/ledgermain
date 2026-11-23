@@ -98,7 +98,7 @@ describe("WITCH_HEXES table", () => {
     expect(WITCH_HEXES.lifeGiver?.tier).toBe("grand");
   });
 
-  it("covers every vendored hex (60 regular + 31 major + 13 grand — full parity, issue #74 Phase 5)", () => {
+  it("covers every vendored hex (60 regular + 31 major + 13 grand — full parity)", () => {
     expect(WITCH_HEX_IDS.length).toBe(104);
     expect(hexesForTier("hex").length).toBe(60);
     expect(hexesForTier("major").length).toBe(31);

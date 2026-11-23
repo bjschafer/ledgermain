@@ -1,11 +1,10 @@
 /**
  * Content-side promotions onto `DerivedSheet.abilityDCs` (`ability-dcs.ts`),
- * covering the pieces this wave owns: the Sacred Conduit character trait
- * (`traits.ts`) and the Master of Many Styles / Martial Artist "Pain Points"
- * archetype feature (`archetype-extracted/monk.ts`). Mirrors
- * `abilityDCs.test.ts`'s full-`compute()` fixture style so the
- * `targets.ts`/`collect.ts` wiring is exercised too, not just the raw table
- * entries.
+ * covering the Sacred Conduit character trait (`traits.ts`) and the Master of
+ * Many Styles / Martial Artist "Pain Points" archetype feature
+ * (`archetype-extracted/monk.ts`). Mirrors `abilityDCs.test.ts`'s
+ * full-`compute()` fixture style so the `targets.ts`/`collect.ts` wiring is
+ * exercised too, not just the raw table entries.
  */
 
 import { describe, expect, it } from "bun:test";

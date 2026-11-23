@@ -1,6 +1,6 @@
 /**
  * Shared primary/secondary natural-attack classification + math (PF1 Combat
- * "Natural Attacks" — verified against aonprd.com during authoring for): a
+ * "Natural Attacks", verified against aonprd.com): A
  * creature making a full attack with more than one KIND of natural weapon
  * (e.g. a bite plus 2 claws) resolves every attack in the same round, but not
  * all at the same bonus — exactly one kind is the creature's PRIMARY attack
@@ -37,7 +37,7 @@
  * is 2+, so name-based classification actually applies) isn't independently
  * re-derived per species — it reuses the exact classification this codebase
  * already established (and verified against aonprd.com/d20pfsrd.com) in
- * `eidolon.ts`'s evolution flavor text during authoring: "Bite"/"Claws"/
+ * `eidolon.ts`'s evolution flavor text: "Bite"/"Claws"/
  * "Gore"/"Slam"/"Sting" are primary-type natural weapons; "Hooves"/
  * "Pincers"/"Tail Slap"/"Tentacle"/"Wing Buffet" are secondary-type ones —
  * matching the Bestiary's own named examples of secondary weapons ("tails

@@ -5,12 +5,11 @@
  * real `Change`-shaped extraction. Per the per-class file convention
  * (`index.ts`'s doc comment), this file owns BOTH of shaman's pipeline
  * artifacts — `SHAMAN_ARCHETYPE_EFFECTS_EXTRACTED` and
- * `SHAMAN_ARCHETYPE_FEATURE_CLASSIFICATION` — so a wave working on a
- * different class never has a reason to touch this file; only `index.ts`
- * (the aggregator, a later integration step not done here) needs a new
- * import + spread line.
+ * `SHAMAN_ARCHETYPE_FEATURE_CLASSIFICATION` — so work on a different class
+ * never has a reason to touch this file; only `index.ts` (the aggregator)
+ * needs one new import + one new spread per class.
  *
- * ── Shaman-specific mechanical facts this pass relies on ──────────────────
+ * ── Shaman-specific mechanical facts this classification relies on ────────
  *
  * 1. **Spirits** (spirit / greater spirit / true spirit), the **wandering
  *    spirit**, **spirit animals**, and **hexes** are all deferred subsystems
@@ -531,7 +530,7 @@ export const SHAMAN_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
  *  - "medium": the formula required deriving a non-obvious cadence from
  *    prose, or one textually-present clause the engine can't express is
  *    dropped — partial honesty, flagged in `detail`.
- *  - "low": not used in this pass.
+ *  - "low": not used here.
  */
 export const SHAMAN_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
   Record<string, ExtractedArchetypeFeatureEffect>

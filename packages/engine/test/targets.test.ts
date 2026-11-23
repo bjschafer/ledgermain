@@ -68,25 +68,26 @@ describe("real refdata buffs", () => {
     expect(unappliedChanges(buff.changes)).toEqual([]);
   });
 
-  it("Spell Resistance has no unapplied changes now that spellResist feeds the defenses line", () => {
+  it("Spell Resistance has no unapplied changes (spellResist feeds the defenses line)", () => {
     const buff = buffByName("Spell Resistance");
     expect(unappliedChanges(buff.changes)).toEqual([]);
   });
 
-  it("Ant Haul has no unapplied changes now that carryMult feeds carrying capacity", () => {
+  it("Ant Haul has no unapplied changes (carryMult feeds carrying capacity)", () => {
     const buff = buffByName("Ant Haul");
     expect(unappliedChanges(buff.changes)).toEqual([]);
   });
 
-  it("Enlarge Person has no unapplied changes now that carryStr/carryMult are consumed", () => {
+  it("Enlarge Person has no unapplied changes (carryStr/carryMult are consumed)", () => {
     const buff = buffByName("Enlarge Person");
     expect(unappliedChanges(buff.changes)).toEqual([]);
   });
 
-  it("Accurate Stance has no unapplied changes now that tattack feeds thrown weapon attacks", () => {
-    // This is the buff at the center of the bug report: its mattack/tattack
-    // pair used to show "tattack" as an unapplied touch-attack target, which
-    // was doubly wrong (mislabeled, and the target is consumed after all).
+  it("Accurate Stance has no unapplied changes (tattack feeds thrown weapon attacks)", () => {
+    // This is the buff at the center of the bug report: without the pairing,
+    // its mattack/tattack pair would show "tattack" as an unapplied
+    // touch-attack target, which is doubly wrong (mislabeled, and the target
+    // is consumed after all).
     const buff = buffByName("Accurate Stance");
     expect(unappliedChanges(buff.changes)).toEqual([]);
   });

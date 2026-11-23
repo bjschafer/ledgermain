@@ -4,10 +4,10 @@
  * a chosen cleric/inquisitor domain (or subdomain, or druid nature-bond
  * domain), wizard arcane school (or focused school), or inquisitor
  * inquisition. `collectGrantedFeatures` (`archetypes.ts`) already resolves
- * all of these for display and uses/day tracking, but nothing in
- * `collect.ts` walked their `changes[]` before this table existed — the
- * class-feature loop only reaches `RefData.classes[*].features`, a base or
- * prestige class's own list, never a granted power. A granted power whose
+ * all of these for display and uses/day tracking, but the class-feature loop
+ * only reaches `RefData.classes[*].features`, a base or prestige class's own
+ * list, never a granted power, so nothing in `collect.ts` walks their
+ * `changes[]`. A granted power whose
  * published text promises a numeric effect that fails to reach the sheet is
  * this table's reason to exist, same problem `CLASS_FEATURE_CHANGE_PATCHES`
  * solves for base class features (`class-feature-effects.ts`).
@@ -32,7 +32,7 @@
  * **Patches only, never the vendored power's own `changes[]`.** The
  * collection loop in `collect.ts` deliberately does NOT apply a granted
  * power's vendored `changes[]` — those were left unrouted on purpose, and
- * auditing whether any of them are safe to turn on is a separate pass, not
+ * classifying whether any of them are safe to turn on is separate work, not
  * part of standing up this hook.
  *
  * Only unconditional, self-facing numbers belong here — the same posture
@@ -65,8 +65,8 @@ export type { GrantedPowerChoiceEntry };
  * Choose-one granted-power selections (Resistance (Power)'s energy type), the
  * `GRANTED_POWER_CHANGE_PATCHES` counterpart for powers that need a stored
  * pick rather than an unconditional number. Only `schools.ts` has an entry
- * today; the other two origin tables merge in here too so a future wave's
- * domain/inquisition choice-pilot needs no change to this aggregator.
+ * today; the other two origin tables merge in here too so a future
+ * domain/inquisition choice implementation needs no change to this aggregator.
  */
 export const GRANTED_POWER_CHOICES: Readonly<Record<string, GrantedPowerChoiceEntry>> = {
   ...SCHOOL_POWER_CHOICES,

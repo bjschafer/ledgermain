@@ -191,7 +191,7 @@ export const SUMMONER_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
 /**
  * ── SUMMONER_UNCHAINED_ARCHETYPE_EFFECTS_EXTRACTED ────────────────────────
  *
- * Empty this wave — see the file-header notes. None of the 17 vendored
+ * Empty — see this file's header. None of the 17 vendored
  * `summonerUnchained` archetype features clears the `numeric` bar (every
  * one lands on the eidolon, the summon SLA, or a cross-class subsystem
  * grant, and the hand-verified table in `archetype-effects.ts` has no

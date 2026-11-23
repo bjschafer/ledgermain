@@ -16,8 +16,8 @@ import {
  * `live.mediumSpirit` (the daily séance pick) drives both the flat Spirit
  * Bonus + Séance Boon `Change`s (`collect.ts`) and the spirit's 4 Spirit
  * Powers (`archetypes.ts`'s `collectGrantedFeatures`). See `medium-
- * spirits.ts`'s file doc comment for the per-spirit audit of which parts are
- * real, unconditional `Change`s vs. prose-only (verified against
+ * spirits.ts`'s file doc comment for the per-spirit classification of which
+ * parts are real, unconditional `Change`s vs. prose-only (verified against
  * `targets.ts`'s `APPLIED_TARGETS`).
  */
 const ref = loadRefData();
@@ -88,7 +88,7 @@ describe("MEDIUM_SPIRITS table", () => {
   });
 
   it("every spirit contributes at least one real spiritBonusTarget", () => {
-    // Audited in the file doc comment: no spirit is left entirely inert.
+    // Documented in the file doc comment: no spirit is left entirely inert.
     for (const tag of MEDIUM_SPIRIT_TAGS) {
       expect(MEDIUM_SPIRITS[tag]!.spiritBonusTargets.length).toBeGreaterThan(0);
     }

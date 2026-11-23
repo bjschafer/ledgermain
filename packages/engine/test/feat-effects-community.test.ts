@@ -59,11 +59,11 @@ function makeDoc(over?: {
 }
 
 /**
- * Hand-computed fixtures for the community feat sweep's extracted/pool
+ * Hand-computed fixtures for the community feat classification's extracted/pool
  * entries (see feat-classification-community.ts). Expected values cite the
  * published rule the vendored description carries.
  */
-describe("community feat sweep: extracted static effects", () => {
+describe("community feat classification: extracted static effects", () => {
   it("Sea Legs: +2 on Acrobatics, Climb, and Swim (Pirates of the Inner Sea)", () => {
     const base = compute(makeDoc(), ref);
     const sheet = compute(makeDoc({ feats: [featId("Sea Legs")] }), ref);
@@ -104,7 +104,7 @@ describe("community feat sweep: extracted static effects", () => {
   });
 });
 
-describe("community feat sweep: pool promotions", () => {
+describe("community feat classification: pool promotions", () => {
   it("Extended Bane: inquisitor 5 w/ Wis 16's Bane (5 rounds) gains +Wis mod -> 8 (Ultimate Magic)", () => {
     const doc = makeDoc({
       classes: [{ tag: "inquisitor", level: 5 }],
@@ -147,12 +147,11 @@ describe("community feat sweep: pool promotions", () => {
 });
 
 /**
- * Fixtures for the maneuver-category and save-category re-sweep (post-dates
- * the original community classification pass; see feat-classification-
- * community.ts's header) — proves both a community maneuver-scoped CMB/CMD
- * feat and a community save-category feat compose the same way the hand-
- * verified fixtures in maneuverCategories.test.ts and featSaveCategories.test.ts
- * already established.
+ * Fixtures for the maneuver-category and save-category promotions (see
+ * feat-classification-community.ts's header) — proves both a community
+ * maneuver-scoped CMB/CMD feat and a community save-category feat compose the
+ * same way the hand-verified fixtures in maneuverCategories.test.ts and
+ * featSaveCategories.test.ts already established.
  */
 describe("community maneuver/save-category promotions", () => {
   it("Feline Grace: +2 CMD against all five named maneuvers, one merged line", () => {
@@ -190,8 +189,8 @@ describe("community maneuver/save-category promotions", () => {
 
 /**
  * Fixtures for the community feats promoted onto the new spell-DC/CL-check
- * vocabulary (spell-dcs.ts) — the same re-sweep that wired Spell Focus and
- * Spell Penetration in feat-classification.ts.
+ * vocabulary (spell-dcs.ts), which also wired Spell Focus and Spell
+ * Penetration in feat-classification.ts.
  */
 describe("community spell-DC / CL-check promotions", () => {
   it("Dispel Focus + Greater Dispel Focus: +2 each on dispel checks, stacking to +4 (community pack)", () => {
@@ -215,9 +214,9 @@ describe("community spell-DC / CL-check promotions", () => {
 });
 
 /**
- * Fixtures for the parameterized-skill-family re-sweep: named Craft/
- * Profession/Perform instances and whole-family targets, now that compute.ts
- * supports dotted per-instance targets and bare-prefix fan-out (see
+ * Fixtures for the parameterized-skill-family promotions: named Craft/
+ * Profession/Perform instances and whole-family targets, with compute.ts
+ * supporting dotted per-instance targets and bare-prefix fan-out (see
  * feat-classification-community.ts's brewmaster/fabulist/master-alchemist/
  * fascinated-by-the-mundane notes).
  */
@@ -474,10 +473,10 @@ describe("feat-choice axes: options / energy / craft", () => {
 });
 
 /**
- * Fixtures for content wave C1: the remaining choice-blocked community feats
- * wired onto the "options"/"energy"/craft-family axes.
+ * Fixtures for the remaining choice-blocked community feats wired onto the
+ * "options"/"energy"/craft-family axes.
  */
-describe("content wave C1: options-axis feat choices", () => {
+describe("options-axis feat choices", () => {
   const mothersGift = featId("Mother's Gift");
 
   it("Mother's Gift: no choice stored emits nothing", () => {
@@ -747,13 +746,13 @@ describe("content wave C1: options-axis feat choices", () => {
 });
 
 /**
- * Spirit Focus (content wave C1): the +1 lives in collect.ts's medium
- * spirit-bonus loop, not in feat-effects-extracted-community.ts's build() —
- * see that loop's comment. `abilitySkills` legends (Archmage's Int-based
- * skills) fan out to every skill.<id> keyed to that ability, matching the
- * plain Spirit Bonus's own fan-out (mediumSpirits.test.ts's Archmage fixture).
+ * Spirit Focus: the +1 lives in collect.ts's medium spirit-bonus loop, not in
+ * feat-effects-extracted-community.ts's build() — see that loop's comment.
+ * `abilitySkills` legends (Archmage's Int-based skills) fan out to every
+ * skill.<id> keyed to that ability, matching the plain Spirit Bonus's own
+ * fan-out (mediumSpirits.test.ts's Archmage fixture).
  */
-describe("content wave C1: Spirit Focus (medium spirit-bonus loop)", () => {
+describe("Spirit Focus (medium spirit-bonus loop)", () => {
   const spiritFocus = featId("Spirit Focus");
 
   function mediumDoc(over: { mediumSpirit?: string; featChoice?: string }): CharacterDoc {

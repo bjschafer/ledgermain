@@ -11,8 +11,8 @@ import {
 
 /**
  * Coverage for the vendored-catalog overlay — see `bloodrager-bloodlines.ts`'s
- * "vendored catalog overlay" section doc comment for the collision-audit
- * narrative this asserts against.
+ * "vendored catalog overlay" section doc comment for the collision check this
+ * asserts against.
  */
 const ref = loadRefData();
 

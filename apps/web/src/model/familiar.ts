@@ -349,8 +349,7 @@ export function deriveFamiliarSheet(
  * hides it. Otherwise, checked data-driven wherever the compute pipeline
  * already resolves the choice, plus two spots it can't:
  *  - a Wizard's arcane bond, unless it's set to a bonded object (mirrors
- *    `ArcaneBondPicker`'s own choice, which `ClassesSection` used to encode
- *    inline here)
+ *    `ArcaneBondPicker`'s own choice)
  *  - a Sorcerer with the Arcane bloodline (base or a wildblooded mutation
  *    that keeps its Arcane Bond power): the same familiar-or-object choice
  *    as a wizard's, but with no picker of its own to record which, so it's

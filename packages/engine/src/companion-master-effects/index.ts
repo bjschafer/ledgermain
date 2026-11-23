@@ -64,7 +64,7 @@ export type {
   ResolvedCompanionMasterEffects,
 } from "./types.js";
 
-/** All archetype-feature entries, merged across the per-wave shard files. */
+/** All archetype-feature entries, merged across the per-class shard files. */
 export const COMPANION_EFFECT_ARCHETYPE_FEATURES: Readonly<
   Record<string, ArchetypeCompanionEffect>
 > = {

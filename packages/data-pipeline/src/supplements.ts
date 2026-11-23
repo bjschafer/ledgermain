@@ -1936,14 +1936,12 @@ export function applyDruidDomainFeatureSupplements(
 
 /**
  * Hand-authored corrections for vendored `ArchetypeFeature.level` values that
- * contradict the feature's own description prose — issue #47 (consolidated
- * #45-wave archetype-extraction bug list). The third-party archetype CSV
- * dataset (`config.ts`'s `CLASS_ARCHETYPE_FILES`, read by
- * `transform/archetypes.ts`) occasionally tags a row's level column with a
- * value its own prose disagrees with, which shifts WHEN the (here, always
- * non-numeric/subsystem) ability starts showing as granted in
- * `resolveClassFeatures`'s `f.level <= <class level>` gate — sometimes by
- * several levels.
+ * contradict the feature's own description prose. The third-party archetype
+ * dataset (`ARCHETYPE_REPO`'s YAML packs, read by `transform/archetypes.ts`)
+ * occasionally tags a feature with a level its own prose disagrees with, which
+ * shifts WHEN the (here, always non-numeric/subsystem) ability starts showing
+ * as granted in `resolveClassFeatures`'s `f.level <= <class level>` gate —
+ * sometimes by several levels.
  *
  * Keyed by the feature's **id** (NOT its level-suffixed form re-derived from
  * the corrected level) — every consumer across `packages/engine/src/
@@ -1961,12 +1959,11 @@ export function applyDruidDomainFeatureSupplements(
  */
 export const SUPPLEMENTAL_ARCHETYPE_FEATURE_LEVEL: Record<string, number> = {
   // Prose: "At 3rd level, a seeker of the lost gains a +1 competence bonus
-  // on Perception checks to notice magical traps..." — vendored level column
-  // reads 2.
+  // on Perception checks to notice magical traps..." — vendored level reads 2.
   "rogue:seeker-of-the-lost:arcana-breaker:2": 3,
   // Prose: "At 13th level, a druid gains the ability to change her
   // appearance at will, as if using the alter self spell..." — vendored
-  // level column reads 6.
+  // level reads 6.
   "druid:urban-druid:a-thousand-faces:6": 13,
 };
 

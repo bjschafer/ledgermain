@@ -218,7 +218,7 @@ describe("Destruction domain's 8th-level power", () => {
   // CRB p. 43: Destruction grants Destructive Smite (1st) and Destructive
   // Aura (8th). Destructive Aura was hand-authored in data-pipeline
   // `supplements.ts` until the Foundry pack grew a document for it; the
-  // supplement is now only its rounds-per-day formula, which the pack halves.
+  // supplement is only its rounds-per-day formula, which the pack halves.
   it("a level-1 Destruction cleric gets Destructive Smite only", () => {
     expect(domainFeatureNames(makeCleric(1, ["Destruction"]))).toEqual(["Destructive Smite"]);
   });

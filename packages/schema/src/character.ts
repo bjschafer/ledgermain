@@ -380,8 +380,8 @@ export interface CharacterDoc {
      */
     wizardOppositionElement?: ElementalSchoolTag;
     /**
-     * Arcane bond chosen at L1 by wizards (some sorcerer archetypes also bond —
-     * that gate is deferred; the picker renders for wizards only in v1). A
+     * Arcane bond chosen at L1 by wizards (some sorcerer archetypes also bond,
+     * but have no picker of their own — it renders for wizards only). A
      * familiar grants its published master bonus (hand-authored table in
      * `@pf1/engine` `familiars.ts`, applied through the engine's
      * change-collection path — e.g. bat +3 Fly, toad +3 hit points). A bonded
@@ -615,8 +615,8 @@ export interface CharacterDoc {
       /**
        * How the tracker's "Rest"/"New Day" actions heal HP overnight.
        * - `"full"` (default): heal straight to max — a common table house-rule
-       * simplification, and the tracker's earlier behavior, preserved for
-       *   every existing document that predates this setting.
+       * simplification, and what an absent `restMode` means for documents
+       * that predate the setting.
        * - `"natural"`: PF1 RAW natural healing rate — 1 HP × character level
        *   per night of rest, capped at max. Full bed rest (2×level, requiring
        *   a full day of doing nothing else) is out of scope for v1; this only
@@ -858,18 +858,15 @@ export interface CharacterDoc {
      * (PF1 RAW: `["bows"]` alone means only the 5th-level pick has been made
      * yet). Each entry should be one of `@pf1/engine`'s `WEAPON_GROUPS` slugs
      * (free-choice — not hard-validated, same soft posture as
-     * `oracleMystery`/`oracleCurse`). Previously deferred (no schema field
-     * existed at all) because the engine had no semantic weapon-group
-     * targeting; built `attack.weapon.<group>`/`damage.weapon.<group>`
-     * matching against a weapon's vendored `weaponGroups`, so this field plus
-     * `collect.ts`'s per-group bonus derivation (mirroring the RAW "+1 at the
-     * grant level, +1 more per 4 levels thereafter, including to earlier
-     * picks" progression) is the only remaining piece. Suppressed entirely —
-     * see `@pf1/engine` `weaponTrainingReplaced` — when an active archetype
-     * replaces the base Weapon Training feature (e.g. Archer's Expert Archer),
-     * so its own extracted per-archetype bonus is never doubled by also
-     * filling in this field. Empty/undefined for non-fighters or a fighter who
-     * hasn't made any picks yet.
+     * `oracleMystery`/`oracleCurse`). `collect.ts` turns each pick into
+     * `attack.weapon.<group>`/`damage.weapon.<group>` changes matching a
+     * weapon's vendored `weaponGroups`, at the RAW "+1 at the grant level, +1
+     * more per 4 levels thereafter, including to earlier picks" progression.
+     * Ignored entirely — see `@pf1/engine` `weaponTrainingReplaced` — when an
+     * active archetype replaces the base Weapon Training feature (e.g.
+     * Archer's Expert Archer), so its own extracted per-archetype bonus is
+     * never doubled by also filling in this field. Empty/undefined for
+     * non-fighters or a fighter who hasn't made any picks yet.
      */
     weaponTrainingGroups?: string[];
     /**
@@ -1056,7 +1053,7 @@ export interface CharacterDoc {
      * via `compute.ts`'s `classSkillSet` — see `KINETICIST_ELEMENTS`' doc
      * comment), the Elemental Defense wild talent auto-granted at 2nd level,
      * and an automatic bonus basic utility wild talent. Free-choice, soft
-     * posture — no validation that it's one of the 5 modeled tags.
+     * posture — no validation that it's one of the 7 modeled tags.
      * Empty/undefined for non-kineticists or a kineticist who hasn't picked
      * yet. Back-compat: documents without this field are unaffected.
      */
@@ -1222,7 +1219,7 @@ export interface CharacterDoc {
      * (4th, 6th,..., 20th — 9 total by 20th); see `model/monkKiPowers.ts` for
      * the budget math. Every ki power here is `displayOnly` (a
      * limited-use/activated ability with no unconditional numeric effect — see
-     * `MONK_KI_POWERS`' doc comment for why none of the 39 core Pathfinder
+     * `MONK_KI_POWERS`' doc comment for why none of the 44 core Pathfinder
      * Unchained ki powers cleared the bar for a real `Change`), same posture
      * as `witchHexes`. Free-choice, soft warning only on overspend.
      * Empty/undefined for non-monkUnchained characters. Back-compat: documents
@@ -1409,7 +1406,9 @@ export interface CharacterDoc {
      * `live.activeBuffs`/`model/shifterAspects.ts` `toggleShifterAspectBuff`)
      * built directly from `SHIFTER_ASPECTS` (there is no vendored buff to link
      * — see that table's doc comment). The major form (Wild Shape
-     * transformation) is NOT modeled — deferred to the polymorph work.
+     * transformation) is not modeled as an aspect-specific battle form; the
+     * tracker's Polymorph / Wild Shape panel covers transformations
+     * generically.
      * Empty/undefined for non-shifters. Back-compat: documents without this
      * field are unaffected.
      */
@@ -2052,8 +2051,8 @@ export interface AnimalCompanionBuild {
    * comment. `"cavalier-mount"`/ `"samurai-mount"` are the Cavalier's and
    * Samurai's own "Mount" class feature (UC "This mount functions as a druid's
    * animal companion, using the cavalier's/samurai's level as his effective
-   * druid level" — verified against aonprd.com during authoring; identical
-   * text for both classes) — 1:1, no −3 offset, granted at 1st level (unlike
+   * druid level" — verified against aonprd.com; identical text for both
+   * classes) — 1:1, no −3 offset, granted at 1st level (unlike
    * the ranger's 4th-level gate), and kept as two separate tags (rather than
    * one shared "mount" tag) purely to match this field's existing one-tag-per-
    * class-feature convention, even where the math is identical.
@@ -3215,8 +3214,8 @@ export interface DerivedSheet {
    * by any relative "size"-target Change (Enlarge/Reduce Person,...), then
    * replaced outright by an active polymorph form's size if one is active (see
    * `live.activeForm`). Feeds the size modifiers baked into
-   * `ac`/`attack`/`attacks`/`cmb`/`cmd` above; exposed directly here
-   * (previously computed only internally by `compute`) so the UI can show it.
+   * `ac`/`attack`/`attacks`/`cmb`/`cmd` above; exposed directly here so the
+   * UI can show it.
    */
   size: SizeId;
   initiative: ResolvedStat;

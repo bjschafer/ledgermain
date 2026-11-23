@@ -347,11 +347,11 @@ describe("Notes-only archetypes carry a detail summary but no numeric effect", (
     ["Knife Master", "rogue"],
     ["Oath of Vengeance", "paladin"],
     ["Divine Hunter", "paladin"],
-    // Archaeologist is no longer notes-only: the bard wave extracted its
-    // Clever Explorer feature (+1/2 level Disable Device/Perception,
-    // archetype-extracted/bard.ts) as a real numeric effect, so it now
-    // correctly earns the "extracted" modeled-effect badge. Archaeologist's
-    // Luck itself remains notes-only (hand-verified table, still no Change).
+    // Archaeologist is not notes-only: Clever Explorer (+1/2 level Disable
+    // Device/Perception, archetype-extracted/bard.ts) is a real numeric
+    // effect, so it earns the "extracted" modeled-effect badge.
+    // Archaeologist's Luck itself remains notes-only (hand-verified table,
+    // still no Change).
     ["Menhir Savant", "druid"],
     ["Spell Sage", "wizard"],
     ["School Savant", "arcanist"],

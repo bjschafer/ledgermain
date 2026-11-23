@@ -157,10 +157,9 @@ describe("vendored non-core race: Aasimar / Tiefling planetouched energy resista
 
 describe("vendored non-core race: Drow Noble (scaling spell resistance)", () => {
   // Drow Noble carries `{ target: "spellResist", operator: "set", formula:
-  // "11 + @details.level.value" }`. `@details.level.value` used to be absent
-  // from roll data entirely (missing paths resolve to 0, so this evaluated as
-  // a flat 11 regardless of level) — rolldata.ts now threads character level
-  // through that path, so this scales as RAW intends.
+  // "11 + @details.level.value" }`. `@details.level.value` must be threaded
+  // through roll data: a missing path resolves to 0, which would make this a
+  // flat 11 regardless of level.
   const sheetL1 = compute(makeDoc("Drow Noble"), ref);
 
   it("SR = 11 + level at L1", () => {

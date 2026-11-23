@@ -5,9 +5,9 @@
  * quotes from aonprd.com's "Combat" chapter and the Universal Monster
  * Rules), the same source this module's math is built from.
  *
- * All source tables ship empty (a content wave fills them later), so every
- * fixture injects a synthetic `PcNaturalAttackTables` via the resolver's
- * table parameter rather than seeding real racial/class/archetype/feat data.
+ * Every fixture injects a synthetic `PcNaturalAttackTables` via the resolver's
+ * table parameter, so these tests exercise the resolver's own math rather than
+ * the shipped racial/class/archetype/feat content tables.
  */
 
 import { describe, expect, it } from "bun:test";

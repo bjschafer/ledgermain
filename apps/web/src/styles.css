@@ -1,6 +1,6 @@
 /* ============================================================================
    Ledgermain — Pathfinder 1e character sheet
-   Direction: "Illuminated ledger" (see DESIGN_NOTES.md). Dark gilded workbench;
+   Direction: "Illuminated ledger". Dark gilded workbench;
    tabular ledger numerals; the signature is the gold stat seal + provenance.
 
    The palette and type stack live in @pf1/tokens, shared with the reference
@@ -259,7 +259,7 @@ a {
   cursor: pointer;
 }
 
-/* Stage 5 sync status (DESIGN.md §2.1) — rendered only when VITE_API_URL is configured. */
+/* Sync status — rendered only when VITE_API_URL is configured. */
 .sync-signin,
 .sync-signout {
   background: none;

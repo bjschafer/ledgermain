@@ -84,8 +84,8 @@ describe("buildPrintSheet — maneuver-scoped cmb/cmd totals", () => {
     doc = addClass(doc, "fighter");
     const computed = compute(doc, ref);
     // No content wires `maneuverCategories` yet — synthesize the sheet-level
-    // fields the way a compute() fixture eventually would, to cover the
-    // print-formatting logic itself rather than any particular source.
+    // fields the way a compute() fixture would, to cover the print-formatting
+    // logic itself rather than any particular source.
     const sheet = {
       ...computed,
       cmbConditionals: [{ total: computed.cmb + 2, categories: ["trip"], labels: ["trip"] }],

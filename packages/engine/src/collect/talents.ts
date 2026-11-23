@@ -137,7 +137,7 @@ export function collectTalentFamilies(ctx: CollectContext): void {
   }
 }
 
-/** Slayer talents (build choice, hand-table follow-up). */
+/** Slayer talents (build choice). */
 export function collectSlayerTalents(ctx: CollectContext): void {
   const { doc, refData, rollData, out, gateOpen } = ctx;
   // Talent ids are hand-authored clean-room content overlaid onto the

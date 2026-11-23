@@ -28,7 +28,7 @@ interface KiPowerPickerProps {
  * `HexPicker`/`RagePowerPicker`'s "M" badge convention — ki powers are
  * entirely `displayOnly` in the hand-authored table (see `@pf1/engine`
  * `monk-ki-powers.ts`'s doc comment for why none of the 39 core powers clear
- * the bar for a real `Change`), so today every row shows prose only. Flat
+ * the bar for a real `Change`), so every row shows prose only. Flat
  * list, soft-filtered by `minLevel` (below-level powers stay pickable, just
  * annotated) — free-choice, never blocks past the expected count, same
  * hybrid-prereqs posture as `HexPicker`.

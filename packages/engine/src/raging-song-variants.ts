@@ -356,7 +356,7 @@ export const RAGING_SONG_VARIANTS: ArchetypePerformanceVariant[] = [
     // Inspire Resilience replaces Inspired Rage; Song of Defiance replaces
     // Song of Strength; Dirge of Determination replaces Dirge of Doom. Song
     // of Marching and Song of the Fallen are unmodified restatements. Verified
-    // against d20pfsrd's Undying Word page 2026-08-16: the vendored text (and
+    // against d20pfsrd's Undying Word page: the vendored text (and
     // AoN) only states Strength and the AC penalty are dropped, so the
     // Constitution and Will bonuses carry over unchanged from Inspired Rage.
     archetypeId: "skald:undying-word",

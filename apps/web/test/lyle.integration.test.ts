@@ -5,14 +5,12 @@
  * `model/preparedSpells.ts`, `model/familiar.ts`, `model/buffs.ts`,
  * `model/resources.ts`) exactly as the builder UI would drive them — no
  * hand-assembled `CharacterDoc` literals. Every asserted number is
- * transcribed from the owner's Hero Lab Online PDF export (see the
- * scratchpad spec this was authored from).
+ * transcribed from the owner's Hero Lab Online PDF export.
  *
- * This is also the repo's first combined regression test for three features
- * that all landed together: the arcanist hybrid caster (`model/spellcasting.ts`
- * `CASTER_MODELS.arcanist`), tracked familiars (`@pf1/engine` `familiar.ts` /
- * `model/familiar.ts`), and Sylph alternate racial traits
- * (`@pf1/engine` `racial-traits.ts`).
+ * It also covers three features end to end: the arcanist hybrid caster
+ * (`model/spellcasting.ts` `CASTER_MODELS.arcanist`), tracked familiars
+ * (`@pf1/engine` `familiar.ts` / `model/familiar.ts`), and Sylph alternate
+ * racial traits (`@pf1/engine` `racial-traits.ts`).
  *
  * The PDF was exported with Mage Armor + Bless both active — the "no buffs"
  * describe block below reconstructs the character's baseline (what a fresh
@@ -88,13 +86,12 @@ describe("Lyle — identity, build choices recorded on the document", () => {
     expect(expectedArcanistExploitCount(baseDoc, ref)).toBe(3);
   });
 
-  it("regression: arcanist is now recognised as a caster class (caster-level.ts fix)", () => {
-    // Before this fix, `FULL_CASTER_TAGS` in engine caster-level.ts didn't list
-    // "arcanist", so `casterLevel()` (used by the Sheet header's per-class CL
-    // line, and by feat-prerequisite checks) silently returned 0 for every
-    // arcanist. Not a `compute()`/DerivedSheet bug — `compute()` never reads
-    // this module — but a real, small, structural gap in the just-landed
-    // arcanist support. Fixed by adding "arcanist" to the set.
+  it("regression: arcanist is recognised as a caster class (caster-level.ts)", () => {
+    // `FULL_CASTER_TAGS` in engine caster-level.ts must list "arcanist";
+    // otherwise `casterLevel()` (used by the Sheet header's per-class CL line
+    // and by feat-prerequisite checks) returns 0 for every arcanist. Not a
+    // `compute()`/DerivedSheet concern — `compute()` never reads this module —
+    // but a structural gap this guard pins shut.
     expect(casterLevel(baseDoc)).toBe(4);
   });
 });
@@ -278,7 +275,7 @@ describe("Mortlach — the cat familiar, derived from Lyle's sheet", () => {
 describe("Lyle — hybrid arcanist spellcasting (prepare wizard-style, cast sorcerer-style)", () => {
   const model = casterModelFor("arcanist")!;
 
-  it("prepared today: 6 cantrips, 3 first-level, 1 second-level (the L4 prepared-capacity table)", () => {
+  it("prepared: 6 cantrips, 3 first-level, 1 second-level (the L4 prepared-capacity table)", () => {
     const prepared = baseDoc.live.spells?.prepared ?? [];
     expect(prepared).toHaveLength(10);
     const byLevel = new Map(preparedCapacityByLevel(model, 4).map((l) => [l.level, l.limit]));

@@ -14,8 +14,8 @@ import type { BuilderProps } from "../builder/types.js";
  * `linkedBuffIds` — see `model/shifterAspects.ts`'s doc comment for why (no
  * vendored buff to link).
  *
- * Major form (Wild Shape into the aspect's battle form) is NOT here —
- * deferred to the polymorph work; each aspect's card says so.
+ * Major form (Wild Shape into the aspect's battle form) lives in the
+ * Polymorph panel, not here; each aspect's card says so.
  */
 export function ShifterAspectPanel({ doc, update }: BuilderProps) {
   const isShifter = doc.identity.classes.some((c) => c.tag === "shifter");

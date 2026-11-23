@@ -1,24 +1,23 @@
 /**
- * Hunter's slice of the pipeline (2026-08-08). Per the per-class file
+ * Hunter's slice of the pipeline. Per the per-class file
  * convention (documented in `index.ts`), this file owns BOTH of hunter's
  * pipeline artifacts — `HUNTER_ARCHETYPE_EFFECTS_EXTRACTED` and
- * `HUNTER_ARCHETYPE_FEATURE_CLASSIFICATION` — so a future wave working on a
- * different class never has a reason to touch this file; only `index.ts`
- * (the aggregator, a later integration step not done here) needs one new
- * import + one new spread line.
+ * `HUNTER_ARCHETYPE_FEATURE_CLASSIFICATION` — so work on a different class
+ * never has a reason to touch this file; only `index.ts` (the aggregator)
+ * needs one new import + one new spread line.
  *
  * Every one of hunter's 21 vendored archetypes (100 features), individually
  * read against `packages/data-pipeline/data/archetype-features.json` and
  * bucketed `numeric` / `situational` / `subsystem` / `blocked` using the same
  * bar `archetype-effects.ts`'s own header documents.
  *
- * ── Hunter-specific mechanical facts this pass relies on ──────────────────
+ * ── Hunter-specific mechanical facts this classification relies on ────────
  *
  * 1. **Animal Companion** is a companion creature (a separate stat block the
  *    engine does not fold into the hunter's own `DerivedSheet`). Any feature
  *    that grants, restricts, or buffs the companion itself — including a
  *    "+X to the companion's Y" bonus — is `subsystem`/`situational`, never
- *    extracted onto the hunter's own sheet, per this wave's brief.
+ *    extracted onto the hunter's own sheet.
  * 2. **Animal Focus** (base L1 feature, `uses.maxFormula: "@class.unlevel"`
  *    per day, vendored `changes: []`) is a swift-action-activated, chosen-
  *    aspect buff with a minutes/day duration budget — every archetype
@@ -28,9 +27,8 @@
  *    duration-limited state, same posture as an unmodeled buff.
  * 3. **Teamwork-feat grants** (the base Teamwork Feat class feature and
  *    every archetype variant of it — Feral Hunter's/Packmaster's own
- *    reflavors) are uniformly `subsystem` per this wave's brief, regardless
- *    of whether the count itself would otherwise read as a countable
- *    `bonusFeats` slot.
+ *    reflavors) are uniformly `subsystem`, regardless of whether the count
+ *    itself would otherwise read as a countable `bonusFeats` slot.
  * 4. **A fixed named-feat grant** (Precise Shot, Improved Unarmed Strike, a
  *    named choice between two specific feats) is `subsystem`, not a
  *    countable `bonusFeats` slot — see `archetype-extracted/cleric.ts`'s
@@ -88,7 +86,7 @@
  * instead" rider — same posture as `ranger.ts`'s Strong Senses/`
  * rogueUnchained.ts`'s darkvision-rider precedent) or an interpretive
  * reading of "no daily limit" as "now unconditional." "low" unused (bucketed
- * `blocked` instead per this wave's brief).
+ * `blocked` instead).
  */
 
 import {
@@ -110,7 +108,7 @@ const COMPANION_SCOPED_NOTE =
 
 /** Shared note text for teamwork-feat grants/variants (see class note 3). */
 const TEAMWORK_FEAT_NOTE =
-  "teamwork-feat grant/variant — subsystem regardless of count, per this wave's brief (class note 3).";
+  "teamwork-feat grant/variant — subsystem regardless of count (class note 3).";
 
 /** Shared note text for a fixed named-feat (or short named-list) grant (see class note 4). */
 const NAMED_FEAT_GRANT_NOTE =
@@ -918,8 +916,8 @@ export const HUNTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     note:
       "below 15th level this is a duration-limited, free-action-activated climb speed (not " +
       "modeled — situational in isolation); at 15th, the text removes the daily-duration cap " +
-      "entirely ('she can use brachiation with no limit on the duration'), which this pass " +
-      "reads as becoming unconditional from that point on. Only the 15th-level-and-later, " +
+      "entirely ('she can use brachiation with no limit on the duration'), read here " +
+      "as becoming unconditional from that point on. Only the 15th-level-and-later, " +
       "'equal to her base speed' tier is extracted for the hunter's own sheet here. The " +
       "companion's own climb-speed enhancement bonus (+10 ft. from 1st level, +20 ft. from 8th, " +
       "unconditional and not duration-limited) is wired via COMPANION_EFFECT_ARCHETYPE_FEATURES " +
@@ -1054,7 +1052,7 @@ export const HUNTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
  * can never confuse "a human read the rulebook and checked this" with "an
  * extraction pass inferred this from prose." Only 5 of hunter's 100 features
  * cleared the `numeric` bar (see `HUNTER_ARCHETYPE_FEATURE_CLASSIFICATION`
- * above for the full per-feature audit) — hunter's kit leans heavily on
+ * above for the full per-feature classification) — hunter's kit leans heavily on
  * companion-scoped bonuses, Animal Focus's activated aspect lists, and
  * teamwork-feat/named-feat grants, all bucketed per this file's class notes.
  */

@@ -1070,9 +1070,9 @@ export const FEAT_EFFECTS: Readonly<Record<string, FeatEntry>> = {
   // rank each): pick 2 templates (Aerial/Aqueous/Chthonic/Dark/Fiery/
   // Primordial); apply one per creature in place of celestial/entropic/
   // fiendish/resolute when casting summon monster. Repeatable, +2 templates
-  // each time. Already classified `subsystem` in feat-classification.ts's
-  // frozen audit (no numeric target) — this contextNote is the "spell out the
-  // mechanic" companion to that classification.
+  // each time. Classified `subsystem` in feat-classification.ts (no numeric
+  // target) — this contextNote is the "spell out the mechanic" companion to
+  // that classification.
   "versatile-summon-monster": {
     type: "static",
     changes: [],
@@ -1087,9 +1087,9 @@ export const FEAT_EFFECTS: Readonly<Record<string, FeatEntry>> = {
   // (conjuration), Knowledge (nature)/Knowledge (planes) 1 rank each): when
   // summoning animals/humanoids/vermin via summon nature's ally, apply one of
   // 5 templates instead of Augment Summoning's +4 Str/Con (same template for
-  // every creature in one casting). Already classified `subsystem` in
-  // feat-classification.ts's frozen audit; same companion-note posture as
-  // Versatile Summon Monster above.
+  // every creature in one casting). Classified `subsystem` in
+  // feat-classification.ts; same companion-note posture as Versatile Summon
+  // Monster above.
   "versatile-summon-nature-s-ally": {
     type: "static",
     changes: [],
@@ -1100,21 +1100,21 @@ export const FEAT_EFFECTS: Readonly<Record<string, FeatEntry>> = {
     ],
   },
 
-  // ── Sweep: feats found via a description scan for "summon(ed/ing)" that
-  // don't have "summon" in their own name, but genuinely modify the
-  // caster's own summon-monster/summon-nature's-ally mechanic (or, for the
-  // Dimensional Awareness/Banishing Critical/Dimensional Disruption chain and
-  // Painful Anchor, an opponent's) with a concrete rider. Excluded from this
-  // sweep: feats whose description only mentions a summoned creature in
-  // passing as an example (Cunning Caster/Subtle Devices's "obvious effect"
-  // concealment checks), or that touch an unrelated mechanic entirely
-  // (Tattoo Attunement/Conversion/Transformation, Damned, Ancient Tradition,
-  // Blood Drinker, Blood Vengeance, Expanded Studies, Companion Figurine,
-  // Beast Rider, Planar Infusion, Esoteric Conjuration, Enemy Cult,
-  // Atheist Abjurations, Improved Planar Mentor, Spirit Symbiosis,
-  // Spontaneous Nature's Ally, Planar Preservationist, Planar Sensitivity,
-  // Triton Portal) — none of those change what summon monster/summon
-  // nature's ally itself does.
+  // ── Summon-rider feats: feats found via a description scan for
+  // "summon(ed/ing)" that don't have "summon" in their own name, but
+  // genuinely modify the caster's own summon-monster/summon-nature's-ally
+  // mechanic (or, for the Dimensional Awareness/Banishing Critical/
+  // Dimensional Disruption chain and Painful Anchor, an opponent's) with a
+  // concrete rider. Excluded from this group: feats whose description only
+  // mentions a summoned creature in passing as an example (Cunning
+  // Caster/Subtle Devices's "obvious effect" concealment checks), or that
+  // touch an unrelated mechanic entirely (Tattoo Attunement/Conversion/
+  // Transformation, Damned, Ancient Tradition, Blood Drinker, Blood
+  // Vengeance, Expanded Studies, Companion Figurine, Beast Rider, Planar
+  // Infusion, Esoteric Conjuration, Enemy Cult, Atheist Abjurations,
+  // Improved Planar Mentor, Spirit Symbiosis, Spontaneous Nature's Ally,
+  // Planar Preservationist, Planar Sensitivity, Triton Portal) — none of
+  // those change what summon monster/summon nature's ally itself does.
 
   // Spiritualist's Call (prereq the Phantom class feature): the spiritualist
   // analog of Summoner's Call above — same +2/10-minutes shape, targeting
@@ -1322,10 +1322,9 @@ export const FEAT_POOL_EFFECTS: Readonly<Record<string, FeatPoolEffect>> = {
   // feat, spell, or effect that specifically works with the lay on hands
   // paladin class feature. For example, the Extra Lay On Hands feat grants
   // an antipaladin 2 additional uses of the touch of corruption class
-  // feature." The multi-target follow-up (previously a known gap —
-  // `FeatPoolEffect` only supported one `featureTag`): unambiguous RAW
-  // support confirmed directly in the vendored text above, not just an
-  // inference, so both tags are wired here rather than left as a note.
+  // feature." `FeatPoolEffect` supports multiple `featureTag`s, so both tags
+  // are wired here rather than left as a note: unambiguous RAW support
+  // confirmed directly in the vendored text above, not just an inference.
   "extra-lay-on-hands": { featureTag: ["layOnHands", "touchOfCorruption"], maxDelta: 2 },
 
   // Extra Reservoir: +3 points to the arcane reservoir maximum (Advanced
@@ -1333,18 +1332,17 @@ export const FEAT_POOL_EFFECTS: Readonly<Record<string, FeatPoolEffect>> = {
   "extra-reservoir": { featureTag: "arcaneReservoir", maxDelta: 3 },
 
   // Extra Arcane Pool: +2 points to the magus's arcane pool maximum (PF1
-  // Ultimate Magic p. 10). Added by the feat batch-extraction pass (see
-  // feat-classification.ts) — the magus's Arcane Pool class feature already
+  // Ultimate Magic p. 10). The magus's Arcane Pool class feature already
   // carries a vendored `uses.maxFormula` tagged `arcanePool`, so it derives
   // generically via `deriveResourcePools` exactly like the five entries above;
   // no resources.ts change was needed.
   "extra-arcane-pool": { featureTag: "arcanePool", maxDelta: 2 },
 
-  // ── The eight below were "subsystem" in feat-classification.ts's frozen
-  // audit despite their pools existing: each class feature already carries a
-  // vendored `uses.maxFormula` with the tag named here (verified against
-  // class-features.json), so they derive generically exactly like Extra Rage.
-  // Deltas are the vendored benefit text's own numbers, quoted per entry.
+  // ── The eight below are classified "pool": each class feature already
+  // carries a vendored `uses.maxFormula` with the tag named here (verified
+  // against class-features.json), so they derive generically exactly like
+  // Extra Rage. Deltas are the vendored benefit text's own numbers, quoted per
+  // entry.
 
   // Extra Bane (Ultimate Magic): "You can use your bane ability for 3
   // additional rounds per day."
@@ -1386,8 +1384,9 @@ export const FEAT_POOL_EFFECTS: Readonly<Record<string, FeatPoolEffect>> = {
   // likewise has no modeled pool to raise.
   "extra-panache": { featureTag: "panache", maxDelta: 2 },
 
-  // ── Community-sweep pool promotions (see feat-classification-community.ts
-  // for the sweep's methodology). Deltas quote the vendored benefit text.
+  // ── Community-pack pool promotions (see feat-classification-community.ts
+  // for the classification methodology). Deltas quote the vendored benefit
+  // text.
 
   // Believer's Hands (Advanced Class Guide): "you instead gain one extra use of
   // lay on hands each day" — the "instead" branch applies exactly when the

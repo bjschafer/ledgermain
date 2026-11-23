@@ -74,9 +74,9 @@ export interface SavedRollOption {
  * first (the most common starting point for a situational full-attack
  * combo), then base melee/ranged, each per-weapon attack line, CMB/CMD,
  * initiative, and the three saves. Skills are deliberately not offered here
- * (niche for saved rolls) but `resolveSource` still handles `kind: "skill"`
- * for rolls saved before this change. Options with no live
- * counterpart (e.g. a since-removed weapon) simply don't appear here —
+ * (niche for saved rolls), but `resolveSource` still handles `kind: "skill"`
+ * so an older saved roll with a skill source keeps resolving. Options with no
+ * live counterpart (e.g. a since-removed weapon) simply don't appear here —
  * they're still resolvable-but-missing on an already-saved roll via
  * {@link resolveSavedRoll}.
  */
@@ -1028,7 +1028,7 @@ export interface AttachableFeatGroups {
 }
 
 /**
- * Classification buckets (`@pf1/engine`'s feat-classification audit) whose
+ * Classification buckets (`@pf1/engine`'s feat classification) whose
  * effect `compute()` already folds into the sheet's own numbers — Iron Will's
  * +2 Will, Weapon Focus's +1 attack, Extra Rage's pool bump, Fencing Grace's
  * Dex-for-Str swap on a rapier's damage. Attaching one of these to a saved

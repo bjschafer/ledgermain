@@ -5,11 +5,8 @@
  * specificity, so the later base wins on source order and every declaration
  * they share is silently discarded from the modifier.
  *
- * Seven of these had shipped: a deeds row lost its summary into the 20px caret
- * gutter of the class it reused, and six chip/row modifiers had been inert
- * since the day they were written. Three carried comments describing the very
- * behaviour the cascade was throwing away, which is why reading the stylesheet
- * never caught them.
+ * A modifier can carry a comment describing the very behavior the cascade
+ * throws away, which is why reading the stylesheet does not catch these.
  *
  * Only the losing direction is reported. A modifier defined *after* its base
  * wins as intended, which is the normal pattern and most of the stylesheet.
@@ -254,8 +251,8 @@ function ternaryBranches(expr: string): [string, string] | null {
  *
  * The distinction that matters: a class written in a template literal's static
  * text still stands alone when every conditional around it is false, so it is
- * a base. Treating those conditionals as always-on is what made an earlier
- * version of this check mistake bases for modifiers and report nothing.
+ * a base. Treating those conditionals as always-on would mistake bases for
+ * modifiers and report nothing.
  */
 export function parseClassAttr(raw: string, where: string): ElementUse {
   const required = new Set<string>();

@@ -76,8 +76,8 @@ export function BuffsPanel({ doc, sheet, refData, update }: BuilderProps) {
     [doc.live.activeBuffs],
   );
 
-  // Namespaces a dedicated panel renders itself (stances and styles today)
-  // are claimed in panelOwnedBuffs.ts rather than subtracted here, so a future
+  // Namespaces a dedicated panel renders itself (stances and styles) are
+  // claimed in panelOwnedBuffs.ts rather than subtracted here, so a future
   // one cannot forget to join and end up listed in both places.
   const visibleActiveBuffs = useMemo(
     () => doc.live.activeBuffs.filter((buff) => !isPanelOwnedBuff(buff)),
@@ -321,7 +321,7 @@ function PartialBadge({ changes }: { changes: readonly Change[] }) {
 /**
  * "This buff does nothing on this sheet" flag — for buffs with an empty
  * `changes[]` AND an empty `contextNotes[]`: toggling them is a silent trap
- * with no visible effect at all. Every vendored buff now carries changes,
+ * with no visible effect at all. Every vendored buff carries changes,
  * notes, or instance state (empty ones are fixed at the data layer via
  * `data-pipeline`'s supplement tables — Stoneskin, the per-element Resist
  * Energy variants, …), so this badge only ever fires for a user-authored

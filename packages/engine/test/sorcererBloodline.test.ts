@@ -139,8 +139,8 @@ describe("variant-dependent bloodline powers (build.sorcererBloodlineVariant)", 
 });
 
 /**
- * 20th-level capstone immunities/senses/DR, newly wired to real Change
- * targets (imm.<type>/immEffect.<slug>/sense*) rather than left display-only.
+ * 20th-level capstone immunities/senses/DR, wired to real Change targets
+ * (imm.<type>/immEffect.<slug>/sense*) rather than left display-only.
  * RAW citations live on each entry in `bloodlines.ts`; expected values
  * hand-computed from the quoted text.
  */

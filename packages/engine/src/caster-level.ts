@@ -212,10 +212,8 @@ export const EXTRACT_CASTER_TAGS: ReadonlySet<string> = new Set(["alchemist", "i
  * `casterLevelForClass` above (bard: `FULL_CASTER_TAGS`; paladin/ranger/
  * antipaladin: `OFFSET_CASTER_TAGS`) as well as having an entry here — this
  * table answers a different question (advancement-target kind, not CL) so it
- * stays alongside those, not instead of them. Antipaladin was previously
- * absent from this table (moot until something actually advanced antipaladin
- * casting, but wrong regardless — a paladin's mirror-image class is divine
- * too, same as paladin/ranger above it).
+ * stays alongside those, not instead of them. Antipaladin is divine for the
+ * same reason: it is a paladin's mirror-image class.
  *
  * Cross-check against `ARCANE_CASTER_TAGS` in `packages/engine/src/compute.ts`
  * (used for arcane-spell-failure display): every tag marked `"arcane"` here —

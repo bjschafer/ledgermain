@@ -76,11 +76,10 @@ export function restoreResource(doc: CharacterDoc, id: string, n = 1): Character
 /**
  * Rest: every pool's remaining uses reset to its refill value. `derived` (from
  * `deriveResourcePools`) supplies each pool's `restValue` — `max` for almost
- * every pool (byte-identical to the old always-full behavior), but strictly
- * below `max` for Arcane Reservoir (see `DerivedResourcePool.restValue`'s doc
- * comment for the RAW citation). A pool with no matching entry in `derived`
- * (manual pools: spell slots, item charges, or any call site that omits
- * `derived` entirely) falls back to the earlier behavior of refilling to full.
+ * every pool, but strictly below `max` for Arcane Reservoir (see
+ * `DerivedResourcePool.restValue`'s doc comment for the RAW citation). A pool
+ * with no matching entry in `derived` (manual pools: spell slots, item
+ * charges, or any call site that omits `derived` entirely) refills to full.
  */
 export function restAllResources(
   doc: CharacterDoc,

@@ -11,9 +11,9 @@ import {
 
 /**
  * Coverage for the vendored-catalog overlay — see `mesmerist-bold-stares.ts`'s
- * "vendored catalog overlay" section doc comment for the collision-audit
- * narrative this asserts against, and `witchHexCatalog.test.ts` for the
- * full-parity pattern this mirrors.
+ * "vendored catalog overlay" section doc comment for the collision check this
+ * asserts against, and `witchHexCatalog.test.ts` for the full-parity pattern
+ * this mirrors.
  */
 const ref = loadRefData();
 
@@ -55,7 +55,7 @@ describe("resolveMesmeristBoldStare", () => {
     expect(resolveMesmeristBoldStare("allure", ref)).toBe(MESMERIST_BOLD_STARES.allure);
   });
 
-  it("resolves a formerly vendored-only stare (now hand-authored, issue #74) via the hand table", () => {
+  it("resolves a vendored-only stare through its hand-authored entry", () => {
     const stare = resolveMesmeristBoldStare("nightmare", ref);
     expect(stare).toBe(MESMERIST_BOLD_STARES.nightmare);
     expect(stare?.displayOnly).toBe(true);

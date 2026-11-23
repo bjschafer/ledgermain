@@ -1,14 +1,12 @@
 /**
- * Fighter's slice of the pipeline (the pilot, 2026-07-06, extended 2026-07-06
- * once the weapon-group-targeting gap was fixed — see the "reclassified after
- * the weapon-group fix" section below). Per the per-class file convention
+ * Fighter's slice of the pipeline. Per the per-class file convention
  * (documented in `index.ts`), this file owns BOTH of fighter's pipeline
  * artifacts — `FIGHTER_ARCHETYPE_EFFECTS_EXTRACTED` (the machine-extracted
  * `Change`-shaped effects table) and
- * `FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION` (the full per-feature audit) — so
- * a future wave working on a different class never has a reason to touch this
- * file; only `index.ts` (the aggregator) needs one new import + one new spread
- * per class.
+ * `FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION` (the full per-feature
+ * classification) — so work on a different class never has a reason to touch
+ * this file; only `index.ts` (the aggregator) needs one new import + one new
+ * spread per class.
  *
  * ── FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION ──────────────────────────────
  *
@@ -42,38 +40,32 @@
  *    just triggered by
  *    partial-tier atomicity instead of an ambiguous multi-feature swap. Fixing
  *    this for real needs the base feature split into discrete per-tier/
- *    per-level grants (engine work, out of scope for a table entry).
+ *    per-level grants (engine work beyond a table entry).
  *
- * Methodology note (disclosed, not hidden): the `numeric` and `blocked`
- * buckets were individually hand-verified against the vendored prose (each
- * carries its own reasoning below, or lives in
- * `FIGHTER_ARCHETYPE_EFFECTS_EXTRACTED` with a `provenance` sentence). The
- * `situational` / `subsystem` split for the remaining bulk was
- * heuristic-assisted (regex over the prose for a numeric pattern vs. a known
- * non-numeric grant shape, spot-checked against every archetype this agent
- * read in full) — the boundary between those two buckets doesn't affect
- * engine correctness (neither emits a `Change`), only audit-file clarity, so
- * this is a deliberate, disclosed scoping choice for the pilot rather than an
- * oversight.
+ * Methodology: the `numeric` and `blocked` buckets were individually
+ * hand-verified against the vendored prose (each carries its own reasoning
+ * below, or lives in `FIGHTER_ARCHETYPE_EFFECTS_EXTRACTED` with a
+ * `provenance` sentence). The `situational` / `subsystem` split for the
+ * remaining bulk was heuristic-assisted (regex over the prose for a numeric
+ * pattern vs. a known non-numeric grant shape, spot-checked against every
+ * archetype read in full) — the boundary between those two buckets doesn't
+ * affect engine correctness (neither emits a `Change`), only
+ * classification-file clarity, so this is a deliberate scoping choice rather
+ * than an oversight.
  *
- * **Weapon-group reclassification (2026-07-06):** finding 1 (the
- * weapon-group-tagging gap) is fixed — `attack.weapon.<group>`/
- * `damage.weapon.<group>` now also match a weapon's vendored, semantic
- * `.weaponGroups` (`weapon-groups.ts`), not just its free-text `.group` tag.
- * Every one of the ~41 fighter features this pilot had bucketed
- * `situational`/`subsystem` "weapon-group-scoped... — see weapon-group-tagging
- * process note" was re-read against the vendored archetype-features prose;
- * those whose prose names one concrete, real weapon group (not a player
- * free-choice, not a maneuver/enemy-state restriction on top) were promoted to
- * `numeric` and extracted into `FIGHTER_ARCHETYPE_EFFECTS_EXTRACTED` below,
- * using the same `1 + floor((@class.unlevel - G) / 4)` Weapon-Training cadence
+ * **Weapon-group scoping:** `attack.weapon.<group>`/`damage.weapon.<group>`
+ * match a weapon's vendored, semantic `.weaponGroups` (`weapon-groups.ts`),
+ * not just its free-text `.group` tag. Features whose prose names one
+ * concrete, real weapon group (not a player free-choice, not a
+ * maneuver/enemy-state restriction on top) are `numeric` and extracted into
+ * `FIGHTER_ARCHETYPE_EFFECTS_EXTRACTED` below, using the same
+ * `1 + floor((@class.unlevel - G) / 4)` Weapon-Training cadence
  * (RAW: +1 at the feature's own grant level `G`, +1 every 4 fighter levels
- * thereafter) that fighter's base Weapon Training itself uses — now that a
- * semantic `attack.weapon.<group>`/`damage.weapon.<group>` target exists for
- * it too. Features that remained ambiguous (the prose names a *player-chosen*
- * group, grants something unrelated, or additionally restricts by
- * maneuver/enemy state) stayed in their original bucket with an updated note
- * explaining why the weapon-group fix specifically did not unlock them.
+ * thereafter) that fighter's base Weapon Training itself uses. Features that
+ * remain ambiguous (the prose names a *player-chosen* group, grants something
+ * unrelated, or additionally restricts by maneuver/enemy state) stay in
+ * `situational`/`subsystem` with a note explaining why the weapon-group scope
+ * does not unlock them.
  */
 
 import {
@@ -91,7 +83,7 @@ export const FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Aerial Expertise",
     level: 2,
     bucket: "numeric",
-    note: "general Fly-check bonus, unconditional — spot-verified against aonprd.com 2026-07-06 (still machine-tier; promotion mechanics are a future decision)",
+    note: "general Fly-check bonus, unconditional — spot-verified against aonprd.com (still machine-tier; promotion mechanics are a future decision)",
   },
   "fighter:aerial-assaulter:take-the-high-ground:2": {
     archetypeId: "fighter:aerial-assaulter",
@@ -113,7 +105,7 @@ export const FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     level: 5,
     bucket: "subsystem",
     note:
-      "re-read after the weapon-group fix: prose is VERBATIM base Weapon Training (unmodified, " +
+      "prose is VERBATIM base Weapon Training (unmodified, " +
       "free player choice of group each tier) — not a reflavor at all. Not given its own " +
       "extracted entry; becomes modelable via build.weaponTrainingGroups + collect.ts's generic " +
       "derivation (this same archetype's fighter still gets it, same as any other fighter).",
@@ -152,9 +144,9 @@ export const FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     level: 5,
     bucket: "subsystem",
     note:
-      "re-read after the weapon-group fix: unrelated to weapon groups — lets a Fly check " +
+      "unrelated to weapon groups — lets a Fly check " +
       "substitute for an Acrobatics check when moving through a threatened/occupied square. No " +
-      "number to extract; the weapon-group fix doesn't apply here.",
+      "number to extract; no weapon-group target applies here.",
   },
   "fighter:airborne-ambusher:flying-dodger:9": {
     archetypeId: "fighter:airborne-ambusher",
@@ -225,9 +217,9 @@ export const FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     level: 5,
     bucket: "subsystem",
     note:
-      "re-read after the weapon-group fix: scoped by DAMAGE TYPE (bludgeoning/slashing/" +
-      "piercing), not by this engine's WEAPON_GROUPS vocabulary — no vendored group matches a " +
-      "damage type, so the weapon-group fix doesn't unlock this. Also situational (underwater " +
+      "scoped by DAMAGE TYPE (bludgeoning/slashing/piercing), not by this engine's " +
+      "WEAPON_GROUPS vocabulary — no vendored group matches a damage type, so the " +
+      "weapon-group target doesn't apply. Also situational (underwater " +
       "only). Stays subsystem/unmodelable.",
   },
   "fighter:archer:hawkeye:2": {
@@ -250,8 +242,8 @@ export const FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     level: 5,
     bucket: "numeric",
     note:
-      "fixed group (bows), unconditional, general scaling formula — extracted after the " +
-      "weapon-group fix (see FIGHTER_ARCHETYPE_EFFECTS_EXTRACTED above).",
+      "fixed group (bows), unconditional, general scaling formula — extracted (see " +
+      "FIGHTER_ARCHETYPE_EFFECTS_EXTRACTED above).",
   },
   "fighter:archer:safe-shot:9": {
     archetypeId: "fighter:archer",
@@ -322,12 +314,10 @@ export const FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     level: 5,
     bucket: "subsystem",
     note:
-      "re-read after the weapon-group fix: mis-tagged by the pilot's heuristic — this is a DR " +
-      "progression keyed by ARMOR TYPE (light/medium/heavy), not a weapon-group bonus at all; " +
-      "the weapon-group fix doesn't apply. It IS a real, @armor.type-checkable, unconditional " +
-      "number (same shape as the hand-verified table's Savage Barbarian precedent) — a genuine " +
-      "candidate for extraction, but out of scope for this weapon-group-focused pass; flagged " +
-      "for a future audit rather than silently left mis-described.",
+      "Armored Defense is a DR progression keyed by ARMOR TYPE (light/medium/heavy), not a " +
+      "weapon-group bonus — the weapon-group scope doesn't apply. It IS a real, " +
+      "@armor.type-checkable, unconditional number (same shape as the hand-verified table's " +
+      "Savage Barbarian precedent) — a genuine candidate for extraction, not yet extracted.",
   },
   "fighter:armor-master:fortification:9": {
     archetypeId: "fighter:armor-master",
@@ -350,7 +340,7 @@ export const FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     bucket: "numeric",
     note:
       "fixed group (close), unconditional, explicit capped-scaling formula (max +5 attack/+7 " +
-      "damage at 19th) — extracted after the weapon-group fix (see " +
+      "damage at 19th) — extracted (see " +
       "FIGHTER_ARCHETYPE_EFFECTS_EXTRACTED above). Composition note (issue #46): this feature's " +
       "vendored pairedBaseFeatureUuid resolves to ARMOR Training's uuid, not Weapon Training's, " +
       "despite the prose saying 'replaces weapon training 1 and 2' — a vendored-data mispairing, " +
@@ -585,10 +575,8 @@ export const FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     level: 5,
     bucket: "subsystem",
     note:
-      "re-read after the weapon-group fix: entirely unrelated to weapon groups — grants " +
-      "limited bloodrager spellcasting. A pilot heuristic false-positive (the generic " +
-      "placeholder note was applied to every WeaponTraining5-paired feature id without " +
-      "reading each one); this one has nothing to do with Weapon Training at all.",
+      "grants limited bloodrager spellcasting — nothing to do with Weapon Training or " +
+      "weapon groups.",
   },
   "fighter:corsair:bonus-feat:1": {
     archetypeId: "fighter:corsair",
@@ -609,7 +597,7 @@ export const FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Deck Fighting",
     level: 2,
     bucket: "subsystem",
-    note: "the 2nd-level bonus-feat instance it trades was vendor-paired to Bravery (the CSV level-matching quirk, now neutralized in MISPAIRED_TARGET_REMAP) and is wired via ARCHETYPE_TIER_REPLACEMENTS instead — own ability grants Cleave as a bonus feat, no independent number",
+    note: "the 2nd-level bonus-feat instance it trades was vendor-paired to Bravery (the CSV level-matching quirk, neutralized in MISPAIRED_TARGET_REMAP) and is wired via ARCHETYPE_TIER_REPLACEMENTS instead — own ability grants Cleave as a bonus feat, no independent number",
   },
   "fighter:corsair:armored-pirate:3": {
     archetypeId: "fighter:corsair",
@@ -638,8 +626,8 @@ export const FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     level: 5,
     bucket: "numeric",
     note:
-      "fixed group (crossbows), unconditional, general scaling formula — extracted after the " +
-      "weapon-group fix (see FIGHTER_ARCHETYPE_EFFECTS_EXTRACTED above).",
+      "fixed group (crossbows), unconditional, general scaling formula — extracted (see " +
+      "FIGHTER_ARCHETYPE_EFFECTS_EXTRACTED above).",
   },
   "fighter:crossbowman:improved-deadshot:7": {
     archetypeId: "fighter:crossbowman",
@@ -710,7 +698,7 @@ export const FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     level: 5,
     bucket: "subsystem",
     note:
-      "re-read after the weapon-group fix: not weapon-group-scoped — bonus applies to implanted " +
+      "not weapon-group-scoped — bonus applies to implanted " +
       "weapons/cybernetic-arm attacks specifically (a fictional-tech category, not one of " +
       "WEAPON_GROUPS), and its own text says it does NOT stack with Weapon Training's attack " +
       "bonus. Also grants an unrelated slam natural attack. No number to extract here.",
@@ -764,7 +752,7 @@ export const FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     bucket: "numeric",
     note:
       "flat +2 on dirty trick combat maneuver checks and +2 CMD against dirty trick, " +
-      "unconditional from 5th level — now expressible via Change.maneuverCategories " +
+      "unconditional from 5th level — expressible via Change.maneuverCategories " +
       "(maneuver-categories.ts), wired in FIGHTER_ARCHETYPE_EFFECTS_EXTRACTED.",
   },
   "fighter:dirty-fighter:speedy-tricks:9": {
@@ -807,7 +795,7 @@ export const FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Draconic Defense",
     level: 3,
     bucket: "numeric",
-    note: "natural armor bonus, unconditional (energy resistance half not modeled — energy type not tracked in schema) — spot-verified against aonprd.com 2026-07-06 (still machine-tier; promotion mechanics are a future decision)",
+    note: "natural armor bonus, unconditional (energy resistance half not modeled — energy type not tracked in schema) — spot-verified against aonprd.com (still machine-tier; promotion mechanics are a future decision)",
   },
   "fighter:dragonheir-scion:draconic-strike:4": {
     archetypeId: "fighter:dragonheir-scion",
@@ -865,7 +853,7 @@ export const FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     bucket: "numeric",
     note:
       "fixed group (spears), unconditional, only free-choice groups are dropped (this " +
-      "archetype never gains any others) — extracted after the weapon-group fix (see " +
+      "archetype never gains any others) — extracted (see " +
       "FIGHTER_ARCHETYPE_EFFECTS_EXTRACTED above).",
   },
   "fighter:dragoon:spinning-lance:7": {
@@ -930,7 +918,7 @@ export const FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     level: 5,
     bucket: "subsystem",
     note:
-      "re-read after the weapon-group fix: the group is still a FREE player choice (not " +
+      "the group is still a FREE player choice (not " +
       "fixed) — the archetype only restricts the fighter to a single group forever (no 9th/" +
       "13th/17th picks). Not given its own extracted entry (no fixed group to hardcode); " +
       "modelable via build.weaponTrainingGroups[0] alone (the generic picker doesn't hard-" +
@@ -1019,7 +1007,7 @@ export const FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Share Training",
     level: 2,
     bucket: "subsystem",
-    note: "the 2nd-level bonus-feat instance it trades was vendor-paired to Bravery (the CSV level-matching quirk, now neutralized in MISPAIRED_TARGET_REMAP) and is wired via ARCHETYPE_TIER_REPLACEMENTS instead — own ability lets the familiar use the guardian's combat feats, no independent number",
+    note: "the 2nd-level bonus-feat instance it trades was vendor-paired to Bravery (the CSV level-matching quirk, neutralized in MISPAIRED_TARGET_REMAP) and is wired via ARCHETYPE_TIER_REPLACEMENTS instead — own ability lets the familiar use the guardian's combat feats, no independent number",
   },
   "fighter:eldritch-guardian:steel-will:2": {
     archetypeId: "fighter:eldritch-guardian",
@@ -1049,7 +1037,7 @@ export const FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     bucket: "numeric",
     note:
       "fixed group (hammers), unconditional, single-group-forever (no free choice remains) — " +
-      "extracted after the weapon-group fix (see FIGHTER_ARCHETYPE_EFFECTS_EXTRACTED above).",
+      "extracted (see FIGHTER_ARCHETYPE_EFFECTS_EXTRACTED above).",
   },
   "fighter:foehammer:hammer-to-the-ground:7": {
     archetypeId: "fighter:foehammer",
@@ -1120,10 +1108,8 @@ export const FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     level: 5,
     bucket: "situational",
     note:
-      "re-read after the weapon-group fix: not weapon-group-scoped — a real number, but scoped " +
-      "to a hand/stance state (wielding one melee weapon, other hand free) this engine has no " +
-      "roll data for (no off-hand/empty-hand tracking). Reclassified from subsystem (the " +
-      "pilot's blind placeholder) to situational.",
+      "a real number, but scoped to a hand/stance state (wielding one melee weapon, other " +
+      "hand free) this engine has no roll data for (no off-hand/empty-hand tracking).",
   },
   "fighter:free-hand-fighter:timely-tip:9": {
     archetypeId: "fighter:free-hand-fighter",
@@ -1179,7 +1165,7 @@ export const FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Shadow Weapon",
     level: 1,
     bucket: "subsystem",
-    note: "the wholesale 'replaces armor training' claim is now paired via a data-pipeline supplement (SUPPLEMENTAL_ARCHETYPE_FEATURE_PAIRING in supplements.ts), so the base Armor Training grant is correctly suppressed — grants a summoned/scaling weapon (no engine concept of a non-itemized weapon); its enhancement-bonus-on-the-weapon half stays unmodeled",
+    note: "the wholesale 'replaces armor training' claim is paired via a data-pipeline supplement (SUPPLEMENTAL_ARCHETYPE_FEATURE_PAIRING in supplements.ts), so the base Armor Training grant is correctly suppressed — grants a summoned/scaling weapon (no engine concept of a non-itemized weapon); its enhancement-bonus-on-the-weapon half stays unmodeled",
   },
   "fighter:gloomblade:student-of-darkness:1": {
     archetypeId: "fighter:gloomblade",
@@ -1201,9 +1187,9 @@ export const FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     level: 5,
     bucket: "subsystem",
     note:
-      "re-read after the weapon-group fix: explicitly does NOT select a weapon group — the " +
+      "explicitly does NOT select a weapon group — the " +
       "bonus applies only to conjured 'shadow weapons' (a subsystem this app doesn't model at " +
-      "all: no shadow-weapon creation/tracking). The weapon-group fix has nothing to attach to " +
+      "all: no shadow-weapon creation/tracking). No weapon-group target to attach to " +
       "here.",
   },
   "fighter:high-guardian:obligation:1": {
@@ -1295,7 +1281,7 @@ export const FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Maneuver Mastery",
     level: 3,
     bucket: "numeric",
-    note: "general CMB/CMD bonus (all maneuvers), unconditional — spot-verified against aonprd.com 2026-07-06 (still machine-tier; promotion mechanics are a future decision)",
+    note: "general CMB/CMD bonus (all maneuvers), unconditional — spot-verified against aonprd.com (still machine-tier; promotion mechanics are a future decision)",
   },
   "fighter:lore-warden-pfs-field-guide:bravery:6": {
     archetypeId: "fighter:lore-warden-pfs-field-guide",
@@ -1337,10 +1323,7 @@ export const FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Martial Flexibility",
     level: 5,
     bucket: "subsystem",
-    note:
-      "re-read after the weapon-group fix: entirely unrelated to weapon groups — a limited-use " +
-      "ability to temporarily gain any combat feat. No number to extract; the pilot's " +
-      "placeholder note didn't reflect this feature's actual text.",
+    note: "a limited-use ability to temporarily gain any combat feat. No number to extract.",
   },
   "fighter:mobile-fighter:agility:2": {
     archetypeId: "fighter:mobile-fighter",
@@ -1362,11 +1345,9 @@ export const FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     level: 5,
     bucket: "situational",
     note:
-      "re-read after the weapon-group fix: not weapon-group-scoped — a real, cleanly-scaling " +
-      "number, but conditional on the specific action taken that round (moved 5+ ft. before " +
-      "attacking), same 'specific action' exclusion `feat-effects.ts` already uses for Power " +
-      "Attack/Deadly Aim. Reclassified from subsystem (the pilot's blind placeholder) to " +
-      "situational.",
+      "a real, cleanly-scaling number, but conditional on the specific action taken that " +
+      "round (moved 5+ ft. before attacking), same 'specific action' exclusion " +
+      "`feat-effects.ts` already uses for Power Attack/Deadly Aim.",
   },
   "fighter:mobile-fighter:rapid-attack:11": {
     archetypeId: "fighter:mobile-fighter",
@@ -1437,11 +1418,10 @@ export const FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     level: 5,
     bucket: "situational",
     note:
-      "re-read after the weapon-group fix: scoped to 'alchemical weapons and bombs,' a category " +
-      "not covered by this engine's WEAPON_GROUPS vocabulary (no vendored weapon carries such a " +
-      "tag), so the weapon-group fix doesn't unlock it — same shape as Knife Master's weapon- " +
-      "category scoping in the hand-verified table. Reclassified from subsystem (the pilot's " +
-      "blind placeholder) to situational (a real, if unmodelable, +1 attack number).",
+      "scoped to 'alchemical weapons and bombs,' a category not covered by this engine's " +
+      "WEAPON_GROUPS vocabulary (no vendored weapon carries such a tag), so the weapon-group " +
+      "target doesn't reach it — same shape as Knife Master's weapon-category scoping in the " +
+      "hand-verified table. A real, if unmodelable, +1 attack number.",
   },
   "fighter:opportunist:weapon-training:9": {
     archetypeId: "fighter:opportunist",
@@ -1477,7 +1457,7 @@ export const FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     level: 5,
     bucket: "subsystem",
     note:
-      "re-read after the weapon-group fix: despite the name, prose is VERBATIM base Weapon " +
+      "despite the name, prose is VERBATIM base Weapon " +
       "Training (unmodified, free player choice of group each tier) — not a reflavor. Not given " +
       "its own extracted entry; modelable generically via build.weaponTrainingGroups.",
   },
@@ -1558,7 +1538,7 @@ export const FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     bucket: "numeric",
     note:
       "TWO fixed groups (spears AND polearms), same bonus on each, unconditional — extracted " +
-      "after the weapon-group fix (see FIGHTER_ARCHETYPE_EFFECTS_EXTRACTED above). Known " +
+      "(see FIGHTER_ARCHETYPE_EFFECTS_EXTRACTED above). Known " +
       "imprecision: a weapon vendored in BOTH groups (e.g. Tiger Fork) would receive the bonus " +
       "twice, since RAW's 'take the highest, don't stack overlapping groups' rule isn't modeled " +
       "generically — same class of limitation as base Weapon Training's own overlap rule, which " +
@@ -1612,7 +1592,7 @@ export const FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     level: 5,
     bucket: "subsystem",
     note:
-      "re-read after the weapon-group fix: entirely unrelated to weapon groups — a limited-use " +
+      "entirely unrelated to weapon groups — a limited-use " +
       "swift action that boosts a worn magic item's enhancement bonus or caster level. No " +
       "number to extract here.",
   },
@@ -1643,7 +1623,7 @@ export const FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     level: 5,
     bucket: "subsystem",
     note:
-      "re-read after the weapon-group fix: despite the name, prose is VERBATIM base Weapon " +
+      "despite the name, prose is VERBATIM base Weapon " +
       "Training (unmodified, free player choice of group each tier) — not a reflavor. Not given " +
       "its own extracted entry; modelable generically via build.weaponTrainingGroups.",
   },
@@ -1737,7 +1717,7 @@ export const FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     level: 5,
     bucket: "situational",
     note:
-      "re-read after the weapon-group fix: fixed group (natural weapons), unconditional, clean " +
+      "fixed group (natural weapons), unconditional, clean " +
       "scaling formula — but 'natural' is not one of this engine's WEAPON_GROUPS (no vendored " +
       "weapon carries it at all; natural attacks aren't in weapons.json). Unlike Unarmed " +
       "Fighter's monk+natural combo, there's no OTHER group here to fall back to, so nothing is " +
@@ -1799,10 +1779,9 @@ export const FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     level: 5,
     bucket: "subsystem",
     note:
-      "re-read after the weapon-group fix: not weapon-group-scoped — an activated, once/day, " +
-      "bardic-Inspire-Courage-style party buff. Same 'no generic activated-performance-buff " +
-      "mechanism' gap already documented for Archaeologist's Luck (archetype-effects.ts's " +
-      "notes-only slice).",
+      "not weapon-group-scoped — an activated, once/day, " +
+      "bardic-Inspire-Courage-style party buff. No vendored Buff of its own for the generic " +
+      "toggle (`grantsBuffs`) to activate, so it stays prose.",
   },
   "fighter:seasoned-commander:inspire-greatness:9": {
     archetypeId: "fighter:seasoned-commander",
@@ -1859,7 +1838,7 @@ export const FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     level: 5,
     bucket: "subsystem",
     note:
-      "re-read after the weapon-group fix: not weapon-group-scoped — a real, scaling insight " +
+      "not weapon-group-scoped — a real, scaling insight " +
       "bonus (attack/damage/Will), but only while an activated 'centered' stance is active " +
       "(entered as a move action, dropped by several conditions). This engine has no generic " +
       "'active stance' auto-toggle; a player could hand-model it as a manually-toggled custom " +
@@ -1913,10 +1892,9 @@ export const FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     level: 5,
     bucket: "situational",
     note:
-      "re-read after the weapon-group fix: not weapon-group-scoped — a real, scaling number, " +
-      "but limited to shield BASH attacks specifically (shields aren't in WEAPON_GROUPS and " +
-      "this app doesn't track 'attacking with the shield' as a distinct attack line). " +
-      "Reclassified from subsystem (the pilot's blind placeholder) to situational.",
+      "a real, scaling number, but limited to shield BASH attacks specifically (shields " +
+      "aren't in WEAPON_GROUPS and this app doesn't track 'attacking with the shield' as a " +
+      "distinct attack line).",
   },
   "fighter:shielded-fighter:shield-buffet:9": {
     archetypeId: "fighter:shielded-fighter",
@@ -1965,7 +1943,7 @@ export const FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Breaker Momentum",
     level: 2,
     bucket: "subsystem",
-    note: "the 2nd-level bonus-feat instance it trades was vendor-paired to Bravery (the CSV level-matching quirk, now neutralized in MISPAIRED_TARGET_REMAP) and is wired via ARCHETYPE_TIER_REPLACEMENTS instead — own ability grants a free overrun attempt after a successful bull rush, no exploitable number",
+    note: "the 2nd-level bonus-feat instance it trades was vendor-paired to Bravery (the CSV level-matching quirk, neutralized in MISPAIRED_TARGET_REMAP) and is wired via ARCHETYPE_TIER_REPLACEMENTS instead — own ability grants a free overrun attempt after a successful bull rush, no exploitable number",
   },
   "fighter:siegebreaker:persistent-menace:4": {
     archetypeId: "fighter:siegebreaker",
@@ -2125,7 +2103,7 @@ export const FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Athletic Prowess",
     level: 1,
     bucket: "numeric",
-    note: "general Acrobatics/Climb bonus, unconditional — spot-verified against aonprd.com 2026-07-06 (still machine-tier; promotion mechanics are a future decision)",
+    note: "general Acrobatics/Climb bonus, unconditional — spot-verified against aonprd.com (still machine-tier; promotion mechanics are a future decision)",
   },
   "fighter:swarm-fighter:mobility:1": {
     archetypeId: "fighter:swarm-fighter",
@@ -2168,10 +2146,9 @@ export const FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     level: 5,
     bucket: "situational",
     note:
-      "re-read after the weapon-group fix: entirely unrelated to weapon groups — a " +
-      "positioning ability (move into a larger creature's space) with a real AC/Reflex bonus " +
-      "conditional on currently sharing that space, an action-state this engine doesn't track. " +
-      "Reclassified from subsystem (the pilot's blind placeholder) to situational.",
+      "a positioning ability (move into a larger creature's space) with a real AC/Reflex " +
+      "bonus conditional on currently sharing that space, an action-state this engine doesn't " +
+      "track.",
   },
   "fighter:swarm-fighter:strike-the-underbelly:9": {
     archetypeId: "fighter:swarm-fighter",
@@ -2213,7 +2190,7 @@ export const FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Tactical Awareness",
     level: 2,
     bucket: "numeric",
-    note: "general initiative bonus, unconditional — spot-verified against aonprd.com 2026-07-06 (still machine-tier; promotion mechanics are a future decision)",
+    note: "general initiative bonus, unconditional — spot-verified against aonprd.com (still machine-tier; promotion mechanics are a future decision)",
   },
   "fighter:tactician:armor-training:3": {
     archetypeId: "fighter:tactician",
@@ -2326,10 +2303,9 @@ export const FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     level: 5,
     bucket: "situational",
     note:
-      "re-read after the weapon-group fix: not weapon-group-scoped — a real, scaling CMB/CMD " +
-      "number, but conditional on wielding an oversized (larger-creature-sized) weapon, a " +
-      "per-weapon-size-vs-wielder-size state this engine doesn't track. Reclassified from " +
-      "subsystem (the pilot's blind placeholder) to situational.",
+      "a real, scaling CMB/CMD number, but conditional on wielding an oversized " +
+      "(larger-creature-sized) weapon, a per-weapon-size-vs-wielder-size state this engine " +
+      "doesn't track.",
   },
   "fighter:tower-shield-specialist:tower-shield-specialist:5": {
     archetypeId: "fighter:tower-shield-specialist",
@@ -2337,10 +2313,9 @@ export const FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     level: 5,
     bucket: "subsystem",
     note:
-      "re-read after the weapon-group fix: not weapon-group-scoped — removes the tower " +
-      "shield's -2 attack-roll encumbrance penalty. No new bonus to grant (this engine doesn't " +
-      "track that penalty as a distinct component in the first place, so there's nothing to " +
-      "remove either).",
+      "removes the tower shield's -2 attack-roll encumbrance penalty. No new bonus to grant " +
+      "(this engine doesn't track that penalty as a distinct component in the first place, so " +
+      "there's nothing to remove either).",
   },
   "fighter:tower-shield-specialist:tower-shield-defense:9": {
     archetypeId: "fighter:tower-shield-specialist",
@@ -2390,8 +2365,8 @@ export const FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     level: 5,
     bucket: "numeric",
     note:
-      "fixed group (tribal), unconditional, single-group-forever — extracted after the " +
-      "weapon-group fix (see FIGHTER_ARCHETYPE_EFFECTS_EXTRACTED above). The feat-sharing half " +
+      "fixed group (tribal), unconditional, single-group-forever — extracted (see " +
+      "FIGHTER_ARCHETYPE_EFFECTS_EXTRACTED above). The feat-sharing half " +
       "(Weapon Focus etc. on ONE tribal weapon applies to the whole group) is not modeled — no " +
       "engine mechanism links a feat's weapon choice to a group at all.",
   },
@@ -2415,7 +2390,7 @@ export const FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     level: 5,
     bucket: "subsystem",
     note:
-      "re-read after the weapon-group fix: same free player choice of group as unmodified " +
+      "same free player choice of group as unmodified " +
       "Weapon Training, PLUS an extra condition this engine can't check at all — the bonus " +
       "only applies while wielding the weapon two-handed, and WeaponInstance has no 'currently " +
       "two-handed' flag (damageMultiplier hints at it but isn't a reliable substitute — a " +
@@ -2465,7 +2440,7 @@ export const FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     level: 5,
     bucket: "subsystem",
     note:
-      "re-read after the weapon-group fix: despite the name, prose is VERBATIM base Weapon " +
+      "despite the name, prose is VERBATIM base Weapon " +
       "Training (unmodified, free player choice of group each tier) — not a reflavor. Not given " +
       "its own extracted entry; modelable generically via build.weaponTrainingGroups.",
   },
@@ -2545,8 +2520,8 @@ export const FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     level: 5,
     bucket: "numeric",
     note:
-      "fixed groups (monk AND natural weapons), unconditional — extracted after the " +
-      "weapon-group fix, but only the monk half (see FIGHTER_ARCHETYPE_EFFECTS_EXTRACTED " +
+      "fixed groups (monk AND natural weapons), unconditional — extracted, but only the " +
+      "monk half (see FIGHTER_ARCHETYPE_EFFECTS_EXTRACTED " +
       "above): 'natural' is not one of this engine's WEAPON_GROUPS (no vendored weapon carries " +
       "it — natural attacks aren't in weapons.json at all), so that half stays unmodeled rather " +
       "than emitting a target that can never match anything. Same 'model only the modelable " +
@@ -2628,10 +2603,9 @@ export const FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     level: 5,
     bucket: "subsystem",
     note:
-      "re-read after the weapon-group fix: entirely unrelated to weapon groups — grants the " +
       "Heroic Recovery feat (or another combat feat) as a bonus feat, with extra daily uses at " +
-      "higher levels. No flat number of its own to extract (the granted feat's own effect is " +
-      "out of scope, same as any other bonus-feat grant).",
+      "higher levels. No flat number of its own to extract (the granted feat's own effect " +
+      "isn't modeled, same as any other bonus-feat grant).",
   },
   "fighter:unbreakable:heroic-defiance:9": {
     archetypeId: "fighter:unbreakable",
@@ -2696,7 +2670,7 @@ export const FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     bucket: "numeric",
     note:
       "fixed group (blades-light), unconditional baseline, single-group-forever — extracted " +
-      "after the weapon-group fix (see FIGHTER_ARCHETYPE_EFFECTS_EXTRACTED above). The '+2 " +
+      "(see FIGHTER_ARCHETYPE_EFFECTS_EXTRACTED above). The '+2 " +
       "extra damage while using duelist stance' addon is dropped (activated-stance condition " +
       "this engine can't check), same honesty-bar treatment as every other stance/action-gated " +
       "addon in this table.",
@@ -2784,7 +2758,7 @@ export const FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     level: 5,
     bucket: "subsystem",
     note:
-      "re-read after the weapon-group fix: entirely unrelated to weapon groups — grants the " +
+      "entirely unrelated to weapon groups — grants the " +
       "barbarian Rage subsystem (using fighter level as barbarian level). Same 'rage isn't " +
       "auto-applied' posture already documented for Urban Barbarian in archetype-effects.ts.",
   },
@@ -2843,7 +2817,7 @@ export const FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     level: 5,
     bucket: "situational",
     note:
-      "re-read after the weapon-group fix: does NOT force a fixed group — it ADDS 'Barsoomian' " +
+      "does NOT force a fixed group — it ADDS 'Barsoomian' " +
       "(a homebrew weapon list) as one more option among the normal free choices at each tier. " +
       "Since the group actually picked is still an unknowable player choice (same shape as " +
       "unmodified base Weapon Training), there is nothing to extract per-archetype; a player " +
@@ -2872,12 +2846,11 @@ export const FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     bucket: "numeric",
     note:
       "DR 5/- gated on @armor.type==0 — extracted (see FIGHTER_ARCHETYPE_EFFECTS_EXTRACTED " +
-      "above). Originally DROPPED to situational in the pilot because a conditional dr-target " +
-      "Change always contributed a modifier (even at value 0) and defenses.ts only showed the " +
-      "Defenses stat-group when at least one dr/resistance/sr entry existed, so an armored " +
-      "Warlord with no other DR source got a spurious 'DR/- 0' seal. FIXED 2026-07-06 in " +
-      "defenses.ts (groupByQualifier/computeSr now drop zero-value qualifiers) — promoted to " +
-      "numeric once the underlying engine wart was fixed rather than the targeting model.",
+      "above). A conditional dr-target Change always contributes a modifier (even at value 0), " +
+      "and defenses.ts only shows the Defenses stat-group when at least one dr/resistance/sr " +
+      "entry exists, so an armored Warlord with no other DR source would otherwise get a " +
+      "spurious 'DR/- 0' seal; defenses.ts's groupByQualifier/computeSr drop zero-value " +
+      "qualifiers, so the entry is safe to extract.",
   },
   "fighter:weapon-bearer-squire:weapon-rack:1": {
     archetypeId: "fighter:weapon-bearer-squire",
@@ -2891,7 +2864,7 @@ export const FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Swift Sharpening",
     level: 2,
     bucket: "situational",
-    note: "the 2nd-level bonus-feat instance it trades was vendor-paired to Bravery (the CSV level-matching quirk, now neutralized in MISPAIRED_TARGET_REMAP) and is wired via ARCHETYPE_TIER_REPLACEMENTS instead — own ability is a real +1 circumstance bonus on the next attack roll with a sharpened weapon, scoped to a full-round sharpening action",
+    note: "the 2nd-level bonus-feat instance it trades was vendor-paired to Bravery (the CSV level-matching quirk, neutralized in MISPAIRED_TARGET_REMAP) and is wired via ARCHETYPE_TIER_REPLACEMENTS instead — own ability is a real +1 circumstance bonus on the next attack roll with a sharpened weapon, scoped to a full-round sharpening action",
   },
   "fighter:weapon-bearer-squire:combat-repairs:3": {
     archetypeId: "fighter:weapon-bearer-squire",
@@ -2934,7 +2907,7 @@ export const FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     level: 5,
     bucket: "subsystem",
     note:
-      "re-read after the weapon-group fix: entirely unrelated to weapon groups — a limited-use " +
+      "entirely unrelated to weapon groups — a limited-use " +
       "reroll (attack/crit-confirm/miss-chance/damage) as an immediate action. No flat number " +
       "to extract; this app doesn't model rerolls at all (no dice roller, per the project's own " +
       "posture).",
@@ -2973,8 +2946,7 @@ export const FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
  * ── FIGHTER_ARCHETYPE_EFFECTS_EXTRACTED ───────────────────────────────────
  *
  * Machine-extracted mechanical effects for fighter archetype class features
- * (the prose→Change extraction pipeline, pilot slice, extended 2026-07-06 by
- * the weapon-group reclassification described above). Clean-room from the
+ * (the prose→Change extraction pipeline, fighter slice). Clean-room from the
  * published PF1 rules — the vendored prose this was extracted from
  * (`archetype-features.json`) is OGL, so reading it is fine; no Foundry source
  * was consulted.
@@ -2990,14 +2962,14 @@ export const FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
  * can never silently double-apply. (No fighter id is present in both tables
  * today; the precedence rule is exercised by a dedicated fixture test.)
  *
- * Extraction pass (2026-07-06): every feature of every vendored fighter
- * archetype was read and classified as `numeric` / `situational` /
- * `subsystem` / `blocked` — see `FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION`
- * above for the full, per-feature audit. Only `numeric` features get an
- * entry here. The honesty bar is identical to the hand-verified table's: a
- * bonus scoped to a specific maneuver, weapon, enemy state, or action (real
- * number, but the static sheet can't safely apply it everywhere) is
- * `situational`, not `numeric` — see the classification above.
+ * Every feature of every vendored fighter archetype was read and classified as
+ * `numeric` / `situational` / `subsystem` / `blocked` — see
+ * `FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION` above for the full per-feature
+ * classification. Only `numeric` features get an entry here. The honesty bar
+ * is identical to the hand-verified table's: a bonus scoped to a specific
+ * maneuver, weapon, enemy state, or action (real number, but the static sheet
+ * can't safely apply it everywhere) is `situational`, not `numeric` — see the
+ * classification above.
  *
  * Confidence rubric:
  *  - "high": a literal or near-literal reflavor of an already-modeled base
@@ -3009,8 +2981,7 @@ export const FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
  *    real-but-partial condition this engine CAN check (`@armor.type`) while a
  *    second, textually-present condition (encumbrance, a specific shield)
  *    can't be checked and is dropped — partial honesty, flagged in `detail`.
- *  - "low": not used in this pilot batch — reserved for future waves with
- *    messier prose.
+ *  - "low": not used here.
  */
 export const FIGHTER_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
   Record<string, ExtractedArchetypeFeatureEffect>
@@ -3234,8 +3205,8 @@ export const FIGHTER_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
       "+10 feet.",
   },
 
-  // ── Semantic weapon-group bonuses (Weapon Training reflavors, unlocked by ─
-  // ── the 2026-07-06 weapon-group-targeting fix — see the header note) ─────
+  // ── Semantic weapon-group bonuses (Weapon Training reflavors, scoped by ──
+  // ── a concrete weapon group — see the header note) ──────────────────────
   // All ten of these are Weapon Training reflavors that fix (fully or
   // partially) which group the player would otherwise freely choose,
   // grafting the SAME formula shape base Weapon Training itself uses

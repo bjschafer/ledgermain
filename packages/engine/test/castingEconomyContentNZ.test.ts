@@ -1,5 +1,5 @@
 /**
- * Hand-computed fixtures for the #132 N-Z casting-economy content wave:
+ * Hand-computed fixtures for the N-Z casting-economy content tables:
  * archetype rows in `casting-economy/archetypesNZ.ts` and
  * `casting-economy/bonus-knownNZ.ts`. Exercises the real (non-injected)
  * tables through `resolveCastingAdjustments` / `resolveBonusKnownSpells`,

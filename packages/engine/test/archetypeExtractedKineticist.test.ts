@@ -11,18 +11,15 @@ import {
 /**
  * The kineticist slice of the prose->Change extraction pipeline.
  *
- * TEST APPROACH: kineticist's aggregator wiring (`archetype-extracted/index.ts`)
- * is a later integration step this pass doesn't touch, so
- * `resolveArchetypeFeatureEffect`/`compute` do NOT pick up this file's tables
- * yet through the normal production path. These fixtures therefore (1) assert
- * directly against `KINETICIST_ARCHETYPE_EFFECTS_EXTRACTED`'s exported
- * `changes` shape, (2) hand-compute each formula via the real `formula.ts`
- * evaluator (`evaluateFormula`) at several class levels against the exact
- * published-rules numbers cited in each entry's `provenance`, and (3) verify
+ * These fixtures assert directly against
+ * `KINETICIST_ARCHETYPE_EFFECTS_EXTRACTED`'s exported `changes` shape,
+ * hand-compute each formula via the real `formula.ts` evaluator
+ * (`evaluateFormula`) at several class levels against the exact published-rules
+ * numbers cited in each entry's `provenance`, and verify
  * `resolveArchetypeFeatureEffect` resolves correctly when explicitly given
  * this file's tables as its override arguments. `loadRefData` sanity-checks
  * that every archetypeId/name this file references actually exists in the
- * real vendored data slice, same posture as `archetypeEffectsExtracted.test.ts`.
+ * real vendored data slice.
  */
 const ref = loadRefData();
 
@@ -34,7 +31,7 @@ function archetypeId(name: string): string {
   return entry.id;
 }
 
-/** The same normalization the sweep's batch files used: tags out, whitespace squashed. */
+/** The same normalization the extraction used: tags out, whitespace squashed. */
 function strippedDescription(html: string): string {
   return html
     .replace(/<[^>]+>/g, " ")

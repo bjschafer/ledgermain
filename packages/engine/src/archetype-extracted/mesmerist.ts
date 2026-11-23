@@ -1,17 +1,16 @@
 /**
- * Mesmerist's slice of the pipeline (2026-08-08). All 92 vendored archetype
- * features across mesmerist's 21 archetypes are read in full and bucketed as
+ * Mesmerist's slice of the pipeline. All 92 vendored archetype features
+ * across mesmerist's 21 archetypes are read in full and bucketed as
  * `numeric` / `situational` / `subsystem` / `blocked`, and the `numeric` ones
- * get a real `Change`-shaped extraction, the same methodology the magus pilot
- * (`magus.ts`) established. Per the per-class file convention (`index.ts`'s
- * doc comment), this file owns BOTH of mesmerist's pipeline artifacts —
+ * get a real `Change`-shaped extraction, following the methodology in
+ * `./magus.ts`. Per the per-class file convention (`index.ts`'s doc
+ * comment), this file owns BOTH of mesmerist's pipeline artifacts —
  * `MESMERIST_ARCHETYPE_EFFECTS_EXTRACTED` and
- * `MESMERIST_ARCHETYPE_FEATURE_CLASSIFICATION` — so a future wave working on a
- * different class never has a reason to touch this file; only `index.ts` (the
- * aggregator, a later integration step not done here) needs a new import +
- * spread line.
+ * `MESMERIST_ARCHETYPE_FEATURE_CLASSIFICATION` — so work on a different
+ * class never has a reason to touch this file; only `index.ts` (the
+ * aggregator) needs one new import + one new spread per class.
  *
- * ── Mesmerist-specific mechanical facts this pass relies on ───────────────
+ * ── Mesmerist-specific mechanical facts this classification relies on ─────
  *
  * 1. **Hypnotic Stare** (base L1 feature, `changes: []` upstream) imposes a
  *    -2/-3 Will-save penalty on an ENEMY the mesmerist is staring at — it's
@@ -23,10 +22,10 @@
  *    Compelling Voice, ...) is `subsystem` for the same reason.
  * 2. **Painful Stare** (base feature, `changes: []`) adds precision damage
  *    to an attack that hits the stared target — real dice, but per-attack
- *    and free-action-triggered on the mesmerist's choice. Per the class
- *    brief, this is `situational`; any archetype feature that only retypes
- *    or riders it (Dreamstalker's Dreams of Pain, Toxitician's Painful
- *    Injection) inherits the same bucket.
+ *    and free-action-triggered on the mesmerist's choice. That makes it
+ *    `situational`; any archetype feature that only retypes or riders it
+ *    (Dreamstalker's Dreams of Pain, Toxitician's Painful Injection)
+ *    inherits the same bucket.
  * 3. **Bold Stare** (base feature) and **Mesmerist Tricks**
  *    (`doc.build.mesmeristTricks`, pool tag `mesmeristTricks`) are both
  *    modeled PICK-LIST subsystems elsewhere (`mesmerist-bold-stares.ts`,
@@ -51,16 +50,15 @@
  *    of the ~9 "replaces consummate liar" features carry that link, unlike
  *    the ~20 mesmerist features paired to Towering Ego/Glib Lie/Rule Minds),
  *    so the UI won't auto-strike Consummate Liar's row for these builds — a
- *    pre-existing data gap, not something this pass can fix (no `data-
- *    pipeline` edits in scope). Six of the nine state the replacement in
- *    plain prose ("This ability replaces consummate liar"), so extracting
- *    their own distinct-skill bonus is safe (no double-count: different
- *    skill, and the prose is unambiguous about the swap even though the
- *    structured link is missing) — see class notes on each entry below. The
- *    ninth, Vexing Trickster's "Consummate Trickster", does NOT state a
- *    replacement anywhere in its vendored text despite the name and duplicate
- *    1st-level slot strongly implying one — that ambiguity is exactly the
- *    "replacement suppression" trap the wave brief calls out, and it's
+ *    pre-existing data gap, not something this table can fix. Six of the
+ *    nine state the replacement in plain prose ("This ability replaces
+ *    consummate liar"), so extracting their own distinct-skill bonus is safe
+ *    (no double-count: different skill, and the prose is unambiguous about
+ *    the swap even though the structured link is missing) — see class notes
+ *    on each entry below. The ninth, Vexing Trickster's "Consummate
+ *    Trickster", does NOT state a replacement anywhere in its vendored text
+ *    despite the name and duplicate 1st-level slot strongly implying one —
+ *    that ambiguity is exactly the "replacement suppression" trap, and it's
  *    `blocked` rather than guessed at (see its entry below).
  * 6. **Towering Ego** (base L2 feature) carries a real vendored Change
  *    (`will += @abilities.cha.mod`, untyped) with its own "loses the bonus
@@ -82,7 +80,7 @@
  *    prose, or the extraction cherry-picks one unconditional clause out of a
  *    larger mixed feature (dropping a genuinely uncheckable condition or a
  *    per-choice variable sub-effect), flagged in `detail`.
- *  - "low": not used in this pass.
+ *  - "low": not used here.
  */
 
 import {
@@ -794,15 +792,15 @@ export const MESMERIST_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
  * This table is deliberately SEPARATE from `archetype-effects.ts`'s
  * `ARCHETYPE_FEATURE_EFFECTS` (the hand-verified table) — every entry here
  * additionally carries `confidence`/`provenance` so a reviewer (or the UI)
- * can never confuse "a human read the rulebook and checked this" with "an
- * extraction pass inferred this from prose." Only 7 of mesmerist's 92
- * features cleared the `numeric` bar (see
- * `MESMERIST_ARCHETYPE_FEATURE_CLASSIFICATION` above for the full per-feature
- * audit) — mesmerist's kit leans heavily on the hypnotic-stare/painful-stare/
- * bold-stare/mesmerist-trick/touch-treatment family, all of which are
- * enemy-facing, per-attack, pick-list, or activated-resource subsystems
- * already modeled (or deliberately deferred) elsewhere in this engine (see
- * this file's header doc comment).
+ * can never confuse "a human read the rulebook and checked this" with "a
+ * machine inferred this from prose." Only 7 of mesmerist's 92 features
+ * cleared the `numeric` bar (see
+ * `MESMERIST_ARCHETYPE_FEATURE_CLASSIFICATION` above for the full
+ * per-feature classification) — mesmerist's kit leans heavily on the
+ * hypnotic-stare/painful-stare/bold-stare/mesmerist-trick/touch-treatment
+ * family, all of which are enemy-facing, per-attack, pick-list, or
+ * activated-resource subsystems already modeled (or deliberately deferred)
+ * elsewhere in this engine (see this file's header doc comment).
  */
 export const MESMERIST_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
   Record<string, ExtractedArchetypeFeatureEffect>

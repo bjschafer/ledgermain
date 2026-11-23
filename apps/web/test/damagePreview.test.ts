@@ -168,8 +168,8 @@ describe("what the panel should show", () => {
   });
 
   it("echoes the terms as soon as a type is named, even with nothing to reduce", () => {
-    // The gap this fixes: "5 fire" on a character with no fire resistance
-    // used to show nothing at all, so the parse was invisible.
+    // "5 fire" on a character with no fire resistance still echoes the term,
+    // so the parse is visible even when nothing reduces it.
     const p = damagePreview("5 fire", undefined);
     expect(p.bare).toBe(false);
     expect(p.showTerms).toBe(true);

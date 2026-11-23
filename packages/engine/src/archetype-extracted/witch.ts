@@ -1,13 +1,13 @@
 /**
- * Witch's slice of the pipeline, repeating the fighter pilot's methodology
- * (`./fighter.ts`) for the 42 vendored witch archetypes / 188 archetype
+ * Witch's slice of the pipeline, following the methodology in
+ * `./fighter.ts` for the 42 vendored witch archetypes / 188 archetype
  * features. Per the per-class file convention (`./index.ts`'s doc comment),
  * this file owns BOTH of witch's pipeline artifacts —
  * `WITCH_ARCHETYPE_EFFECTS_EXTRACTED` (the machine-extracted `Change`-shaped
  * effects table) and `WITCH_ARCHETYPE_FEATURE_CLASSIFICATION` (the full
- * per-feature audit) — so a future wave working on a different class never
- * has a reason to touch this file; only `index.ts` (the aggregator) needs
- * one new import + one new spread per class.
+ * per-feature classification) — so work on a different class never has a
+ * reason to touch this file; only `index.ts` (the aggregator) needs one new
+ * import + one new spread per class.
  *
  * ── WITCH_ARCHETYPE_FEATURE_CLASSIFICATION ────────────────────────────────
  *

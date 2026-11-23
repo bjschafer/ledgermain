@@ -63,7 +63,7 @@
  * duration, scaling, and activation shape instead.
  *
  * All 16 numbers/DCs verified against aonprd.com's live "Shaman Hexes" page
- * (https://aonprd.com/ShamanHexes.aspx) during authoring, cross-checked
+ * (https://aonprd.com/ShamanHexes.aspx), cross-checked
  * against the vendored `description` HTML in
  * `packages/data-pipeline/data/shaman-hexes.json` (sourced under OGL from
  * the same "Pf Data 1e" dataset `witch-hexes.ts`'s sibling catalog uses) —
@@ -334,7 +334,7 @@ function plainTextPreview(html: string, max = 200): string {
  * keeps the display name stable.
  */
 
-/** Alias map for a hand-authored id whose vendored-catalog counterpart uses a different name — see the collision-audit comment above. Empty today (no drift found); kept for a future addition. */
+/** Alias map for a hand-authored id whose vendored-catalog counterpart uses a different name — see the collision check above. Empty (no drift found); kept for a future addition. */
 const SHAMAN_HEX_NAME_ALIASES: Record<string, string> = {};
 
 function normalizeHexName(name: string): string {
@@ -394,7 +394,7 @@ export function resolveGeneralShamanHex(
  * REPLACED by that hand-authored def (keeping its id), but carrying the
  * vendored entry's prose/sources along for display, plus any hand-authored
  * entry with no vendored counterpart appended (none today — see the
- * collision-audit comment above; the fallback exists for a future
+ * collision check above; the fallback exists for a future
  * addition). `!entry.displayOnly` marks a live-mechanics row for the
  * picker's "M" badge, same convention as `mergedWitchHexCatalog`/
  * `mergedRagePowerCatalog` — every hex here is `displayOnly` today (see the

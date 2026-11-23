@@ -102,7 +102,7 @@ describe("PER_DAY_ACTIVATIONS_DOMAINS: no wired entries (see file doc comment)",
     expect(PER_DAY_ACTIVATIONS_DOMAINS).toEqual({});
   });
 
-  it("none of the audited domain-power feature ids surface a toggle at any level", () => {
+  it("none of the domain-power feature ids checked here surface a toggle at any level", () => {
     const auditedFeatureIds = [
       "kHXw5V06TkymXxF3", // Aura of Protection — already modeled via grantsBuffs
       "yDG7xVuH7oqWS4Mt", // Deflection Aura — already modeled via grantsBuffs

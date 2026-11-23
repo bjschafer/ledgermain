@@ -6,10 +6,10 @@ import { loadRefData } from "@pf1/data-pipeline";
 import { compute } from "../src/index.js";
 
 /**
- * Hand-computed fixtures for the speed/class-value/natural-armor re-sweep
- * wave (see feat-classification-community.ts and feat-classification.ts).
- * Each cites the vendored feat's own Benefits text (this repo's OGL data
- * slice) or, for Bravery-linked feats, the hand-verified Bravery entry
+ * Hand-computed fixtures for the speed/class-value/natural-armor promotions
+ * (see feat-classification-community.ts and feat-classification.ts). Each
+ * cites the vendored feat's own Benefits text (this repo's OGL data slice) or,
+ * for Bravery-linked feats, the hand-verified Bravery entry
  * (class-feature-effects.ts) whose progression they reuse.
  */
 const ref = loadRefData();

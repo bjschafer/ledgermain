@@ -1,14 +1,14 @@
 /**
  * Clean-room PF1 inquisitor Judgment table, hand-authored from the published
  * Advanced Player's Guide rules (verified against aonprd.com's live Inquisitor
- * class page, "Judgment" ability, 2026-07-08).
+ * class page, "Judgment" ability).
  *
  * Judgment itself (the swift-action stance + its 1/day-at-1st,
  * +1-at-4th-and-every-3-levels-thereafter uses/day pool) is ALREADY fully
  * vendored — `RefData.classFeatures`'s "Judgment" entry (tag `judgment`)
  * carries `uses.maxFormula: "1 + floor((@class.unlevel - 1) / 3)"`, verified
  * against aonprd.com to match RAW exactly, so `deriveResourcePools` derives
- * the pool with zero hand-authoring needed there. What's missing is the
+ * the pool with zero hand-authored entries there. What's missing is the
  * seven individual judgment TYPES themselves: the vendored "Judgment"
  * feature's `grantsBuffs` UUIDs (`Compendium.pf1.class-abilities.Item.*`)
  * point at per-judgment sub-entries that never made it into the data
@@ -48,15 +48,14 @@
  *     applying resistance to all five at once (which would be a real magic;
  *     RAW is exactly one type).
  *   - Smiting has no numeric target at all (it changes what a weapon
- *     bypasses, not a bonus value) — `changes: []`, context note only, per
- *     the task brief.
+ *     bypasses, not a bonus value) — `changes: []`, context note only.
  *
- * Sacred-vs-profane (task brief): "If the inquisitor is evil, she receives
+ * Sacred-vs-profane: "If the inquisitor is evil, she receives
  * profane bonuses instead of sacred. Neutral inquisitors must select profane
  * or sacred." This table always uses `type: "sacred"` and surfaces the
  * profane-swap as a context note rather than branching on `doc`'s alignment
- * field — same "note-tier, don't model alignment switching" bar the task brief
- * sets (and the same posture as Resiliency's bypass-type note above). A sacred
+ * field — same "note-tier, don't model alignment switching" bar
+ * (and the same posture as Resiliency's bypass-type note above). A sacred
  * and a profane bonus of the same VALUE never stack with each other anyway
  * (both are "highest applies" against unrelated sources 99% of the time in
  * practice), so this is a display-only gap, not a numeric one.
@@ -198,8 +197,7 @@ export const INQUISITOR_JUDGMENTS: JudgmentDef[] = [
     name: "Smiting",
     summary: "Weapons treated as magic to overcome DR; alignment-typed at 6th, adamantine at 10th.",
     // No numeric bonus at all — this judgment changes what a weapon bypasses,
-    // not a value the stacking engine tracks. Context note only, per the
-    // task brief ("Smiting (context note)").
+    // not a value the stacking engine tracks. Context note only.
     changes: [],
     contextNotes: [
       SACRED_PROFANE_NOTE,

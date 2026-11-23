@@ -27,13 +27,12 @@ import { type CollectContext, evalChange } from "./shared.js";
 /** Class features granted by level, with archetype swaps applied. */
 export function collectGrantedClassFeatures(ctx: CollectContext): void {
   const { doc, refData, rollData, out } = ctx;
-  // Audit finding: an active archetype's swapped-out base feature (e.g.
-  // Two-Handed Fighter replacing Armor Training) previously kept contributing
-  // its `changes[]` here regardless — this loop had no awareness of
-  // `doc.build.archetypes` at all. `archetypeSwaps` (uuid -> replacing
-  // archetype feature name, gated on the character's current level in that
-  // class — see `activeArchetypeSwaps` in `archetypes.ts`) fixes that: a
-  // swapped grant is skipped entirely, same as if the character never had it.
+  // An active archetype's swapped-out base feature (e.g. Two-Handed Fighter
+  // replacing Armor Training) must not contribute its `changes[]` here.
+  // `archetypeSwaps` (uuid -> replacing archetype feature name, gated on the
+  // character's current level in that class — see `activeArchetypeSwaps` in
+  // `archetypes.ts`) skips a swapped grant entirely, same as if the character
+  // never had it.
   const archetypeSwaps = activeArchetypeSwaps(doc, refData);
   for (const cls of doc.identity.classes) {
     const classDef = classByTag(refData, cls.tag);
@@ -234,8 +233,8 @@ export function collectGrantedPowerPatches(ctx: CollectContext): void {
   //
   // Only the hand patch table is applied here — never the granted power's
   // own vendored `changes[]`, which were left unrouted deliberately (see
-  // `granted-power-effects/index.ts`'s doc comment; auditing them is a
-  // separate pass).
+  // `granted-power-effects/index.ts`'s doc comment; classifying them is
+  // separate work).
   for (const gf of collectGrantedFeatures(doc, refData)) {
     if (
       gf.origin?.kind !== "domain" &&

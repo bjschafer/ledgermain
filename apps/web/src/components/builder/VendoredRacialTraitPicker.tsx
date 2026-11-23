@@ -80,8 +80,8 @@ function TraitGroupSection({
 }
 
 /**
- * The ~80-race vendored alternate-racial-trait catalog (fill plan), scoped to
- * the character's current race. Mirrors `RagePowerPicker`'s
+ * The ~80-race vendored alternate-racial-trait catalog, scoped to the
+ * character's current race. Mirrors `RagePowerPicker`'s
  * collapsible-search-list shape, but the honesty posture is different: unlike
  * the hand-authored picker inline in `RaceSection` (which enforces a real
  * standard-trait swap), a vendored pick's `replacedTraitNames` is a verified

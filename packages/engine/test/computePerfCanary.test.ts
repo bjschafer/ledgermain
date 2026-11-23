@@ -131,7 +131,7 @@ function medianComputeMs(doc: CharacterDoc, runs: number): number {
 /**
  * A canary, not a benchmark. The threshold is far above what any machine that
  * runs this suite should need (roughly 2 ms on a dev laptop) — it is here to
- * catch the shape of regression a content wave causes, where a new subsystem
+ * catch the shape of regression a content addition causes, where a new subsystem
  * re-scans a whole RefData collection per call and compute silently goes
  * order-of-magnitude slower with nothing measuring it. Widen it only for a
  * measured, understood change; a failure means read what the new work is.

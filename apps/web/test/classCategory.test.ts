@@ -133,7 +133,8 @@ describe("classCategory", () => {
     // Horizon Walker is real vendored data (not hand-authored, and not in the
     // CLASS_CATEGORY name table above) — it only resolves to "prestige"
     // because its `subType` is passed through, proving the subType-first
-    // check (not the name table) is what makes phase 2c's classes work.
+    // check (not the name table) is what classifies a vendored-only prestige
+    // class.
     const horizonWalker = Object.values(ref.classes).find((c) => c.name === "Horizon Walker");
     expect(horizonWalker?.subType).toBe("prestige");
     expect(classCategory(horizonWalker!)).toBe("prestige");

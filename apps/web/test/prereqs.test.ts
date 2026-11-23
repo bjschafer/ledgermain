@@ -236,7 +236,7 @@ describe("issue #108: 'or'-joined @UUID feat refs (featsAnyOf)", () => {
 
   it("negative: an 'and'-joined @UUID feat pair stays all-required (Cleave still needs Power Attack)", () => {
     // Cleave's structured prereq is a flat AND (Power Attack + Str 13 + BAB
-    // 1), not an alternative — confirms the fix didn't loosen a genuine AND.
+    // 1), not an alternative — a genuine AND stays all-required.
     const cleave = featByName("Cleave");
     const res = evaluatePrereqs(cleave, ctx()); // Power Attack not selected
     expect(res.blocked).toBe(true);

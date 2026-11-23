@@ -195,8 +195,8 @@ describe("expectedFeatCount: Ranger Combat Style bonus feats", () => {
   // `changes[]` entry targeting `bonusFeats` with formula
   // "floor((@class.unlevel + 2) / 4)" — this flows through the same generic
   // classBonusFeats pipeline as Fighter/Wizard/Sorcerer with no hand-authoring
-  // needed (step 2 audit). No feat is literally named "Combat Style Feat", so
-  // it's a free slot, not a fixed grant.
+  // needed. No feat is literally named "Combat Style Feat", so it's a free
+  // slot, not a fixed grant.
 
   it("Ranger 6 Elf → 3 base + 2 combat style = 5", () => {
     const doc = makeDoc({ classes: [{ tag: "ranger", level: 6 }], race: "Elf" });
@@ -283,23 +283,23 @@ describe("expectedFeatCount: archetype swaps of bonus-feat features (issue #40)"
   });
 });
 
-describe("expectedFeatCount: Monk Bonus Feat (Unarmed Strike quirk fixed)", () => {
+describe("expectedFeatCount: Monk Bonus Feat (Unarmed Strike quirk)", () => {
   // Monk's "Bonus Feat (MNK)" (granted at rL 1) carries a vendored `changes[]`
   // entry targeting `bonusFeats` with formula "1 + floor((@class.unlevel + 2)
   // / 4)" — flows through the same generic classBonusFeats pipeline with no
-  // hand-authoring needed (step 1 audit).
+  // hand-authoring needed.
   //
-  // Also discovered while auditing (step 1): Monk's "Unarmed Strike" class
-  // feature ALSO carries a vendored `changes[]` entry targeting `bonusFeats`
-  // with a flat formula of "1" — Foundry's way of representing the automatic
-  // Improved Unarmed Strike grant every monk gets at L1. Its feature name
-  // ("Unarmed Strike") doesn't match the feat it grants ("Improved Unarmed
-  // Strike"), so `classBonusFeats`'s by-name fixed-grant filter used to miss
-  // it and inflate the free bonus-feat-slot budget by +1 at every monk level.
-  // Fixed in step 2 via `FEATURE_NAME_OVERRIDES` in `feats.ts` — the
-  // expectations below assert the SRD-correct (un-inflated) behavior.
+  // Monk's "Unarmed Strike" class feature ALSO carries a vendored `changes[]`
+  // entry targeting `bonusFeats` with a flat formula of "1" — Foundry's way of
+  // representing the automatic Improved Unarmed Strike grant every monk gets
+  // at L1. Its feature name ("Unarmed Strike") doesn't match the feat it
+  // grants ("Improved Unarmed Strike"), so `classBonusFeats`'s by-name
+  // fixed-grant filter would miss it and inflate the free bonus-feat-slot
+  // budget by +1 at every monk level. `FEATURE_NAME_OVERRIDES` in `feats.ts`
+  // maps the name; the expectations below assert the SRD-correct
+  // (un-inflated) budget.
 
-  it("Monk 1 Elf → 1 base + Bonus Feat(1), Unarmed Strike no longer inflates the budget = 2", () => {
+  it("Monk 1 Elf → 1 base + Bonus Feat(1), Unarmed Strike doesn't inflate the budget = 2", () => {
     const doc = makeDoc({ classes: [{ tag: "monk", level: 1 }], race: "Elf" });
     expect(expectedFeatCount(doc, ref)).toBe(2);
   });
@@ -533,7 +533,7 @@ describe("expectedFeatCount: Rogue (Unchained) Finesse Training grant + Rogue's 
   // mismatched feature name" shape as Monk's Unarmed Strike above — its
   // vendored `changes[]` entry (flat "1", target bonusFeats) represents the
   // automatic Weapon Finesse grant every Unchained Rogue gets at 1st level.
-  // Fixed the same way, via `FEATURE_NAME_OVERRIDES`.
+  // `FEATURE_NAME_OVERRIDES` maps it the same way.
   it("Rogue (Unchained) 1 is granted Weapon Finesse outright (via the Finesse Training (UC) -> Weapon Finesse override)", () => {
     const doc = makeDoc({ classes: [{ tag: "rogueUnchained", level: 1 }], race: "Elf" });
     const granted = grantedFeats(doc, ref);
@@ -550,9 +550,9 @@ describe("expectedFeatCount: Rogue (Unchained) Finesse Training grant + Rogue's 
   // Vendored-data bug:
   // "Rogue's Edge (UC)" (granted at 5th level) carries a `bonusFeats` change
   // (`floor(@class.unlevel / 5)`), but the published ability grants "skill
-  // unlock powers" for a chosen skill — nothing about bonus feats. Before the
-  // fix, this would have inflated the budget by +1 at L5 (and further at
-  // L10/L15/L20). The un-inflated (SRD-correct) budget is asserted below.
+  // unlock powers" for a chosen skill — nothing about bonus feats. Counting
+  // it would inflate the budget by +1 at L5 and further at L10/L15/L20; the
+  // SRD-correct budget is asserted below.
   it("Rogue (Unchained) 5 Elf → 3 base feats, Rogue's Edge (UC) contributes NO bonus-feat slots", () => {
     const doc = makeDoc({ classes: [{ tag: "rogueUnchained", level: 5 }], race: "Elf" });
     // base: ceil(5/2) = 3; class bonus feats: 0 (Rogue's Edge (UC) excluded).
@@ -561,7 +561,8 @@ describe("expectedFeatCount: Rogue (Unchained) Finesse Training grant + Rogue's 
 
   it("Rogue (Unchained) 20 Elf → 10 base feats, still no class bonus feats at max level", () => {
     const doc = makeDoc({ classes: [{ tag: "rogueUnchained", level: 20 }], race: "Elf" });
-    // base: ceil(20/2) = 10; without the fix this would be 10 + floor(20/5) = 14.
+    // base: ceil(20/2) = 10; counting Rogue's Edge (UC) would give
+    // 10 + floor(20/5) = 14.
     expect(expectedFeatCount(doc, ref)).toBe(10);
   });
 });
@@ -894,7 +895,7 @@ describe("featChoiceOptions", () => {
     expect(featChoiceOptions("skill", ref, doc)).toEqual(featChoiceOptions("skill", ref));
   });
 
-  it("returns empty for type weapon (deferred)", () => {
+  it("returns empty for type weapon (not modeled)", () => {
     const opts = featChoiceOptions("weapon", ref);
     expect(opts).toHaveLength(0);
   });

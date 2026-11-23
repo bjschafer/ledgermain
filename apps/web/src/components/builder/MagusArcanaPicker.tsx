@@ -38,9 +38,9 @@ interface MagusArcanaPickerProps {
  * Browses the FULL published magus-arcana catalog (`mergedMagusArcanaCatalog`
  * — every vendored entry, overlaid with the 20-entry hand-verified base
  * Ultimate Magic table on a name match), not just the hand-verified slice.
- * Every entry today is display-only (see `@pf1/engine` `magus-arcana.ts`'s
- * doc comment), so the "M" badge convention (`RagePowerPicker`'s) never
- * actually lights up yet — kept for a future promoted entry.
+ * Every entry is display-only (see `@pf1/engine` `magus-arcana.ts`'s doc
+ * comment), so the "M" badge convention (`RagePowerPicker`'s) never lights
+ * up; it stays for a future promoted entry.
  *
  * Picked arcana also show up in the sheet's Class Features list (tagged
  * "— Magus Arcana"), via `collectGrantedFeatures`/`resolveClassFeatures` in

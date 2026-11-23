@@ -55,7 +55,7 @@ describe("resolveMonkKiPower", () => {
     expect(power).toBe(MONK_KI_POWERS.abundantStep);
   });
 
-  it("resolves a formerly vendored-only power (now hand-authored, issue #74) via the hand table", () => {
+  it("resolves a vendored-only power through its hand-authored entry", () => {
     const power = resolveMonkKiPower("qinggongPower", ref);
     expect(power).toBe(MONK_KI_POWERS.qinggongPower);
     expect(power?.displayOnly).toBe(true);

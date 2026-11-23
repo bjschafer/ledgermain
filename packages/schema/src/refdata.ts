@@ -57,8 +57,8 @@ export interface RefData {
    * "Abyssal") → spell level → spell ids. Inverted from `Spell.learnedAt.bloodline`.
    * A sorcerer's chosen bloodline grants one bonus spell known per odd sorcerer
    * level starting at 3 (level-`L` bloodline spell unlocked at sorcerer level
-   * `2L+1`); these do not count against the spells-known cap. Empty for non-sorcerer
-   * slices. 39 bloodlines in the current vendored slice.
+   * `2L+1`); these do not count against the spells-known cap. Empty for
+   * non-sorcerer slices.
    */
   bloodlineSpellLists: Record<string, SpellList>;
   /** Mundane base armor/shields (the `armors-and-shields` pack, magic excluded). */
@@ -283,7 +283,7 @@ export interface Race extends RefEntity {
  * only the replaced trait's NAME (`replacedTraitNames`), not a verified
  * mapping to the specific `Race.changes`/`contextNotes` entries it swaps
  * out, so mechanically suppressing them would risk silently dropping the
- * wrong thing (or the right thing for the wrong reason) on an unaudited
+ * wrong thing (or the right thing for the wrong reason) on an unverified
  * entry. The player is expected to manually retire the replaced standard
  * trait; the UI surfaces `replacedTraitNames` as a reminder, never a block.
  */
@@ -622,8 +622,8 @@ export interface ClassFeature extends RefEntity {
   /**
    * Structured attack/damage/save/heal actions from the feature's
    * `system.actions` block (e.g. Acid Dart's ranged touch acid damage,
-   * Stunning Fist's Fortitude DC). Present on a minority of the sliced
-   * features (~39 of 254 as of schema v8) — most class features (Rage,
+   * Stunning Fist's Fortitude DC). Present on a minority of class features
+   * (72 of the 2,348 vendored entries) — most class features (Rage,
    * Bravery, ...) carry no action data upstream, and `undefined`/absent here
    * means exactly that, not a missing extraction. When multiple actions
    * exist (e.g. Channel Energy's heal-living/harm-undead/heal-undead/
@@ -670,10 +670,9 @@ export interface Feat extends RefEntity {
    * Limited-use resource, mirroring `ClassFeature.uses` (see its doc
    * comment) — e.g. Combat Reflexes' `1 + max(0, @abilities.dex.mod)`
    * AoOs/round, Alignment Channel's `3 + @abilities.cha.mod` uses/day.
-   * 12 feats in the current vendored slice carry this (schema v9). No
-   * `source` field here (unlike `ClassFeature.uses`) — no vendored feat
-   * currently draws from another feature's pool the way Channel Positive
-   * Energy draws from Lay on Hands.
+   * A minority of vendored feats carry this. No `source` field here (unlike
+   * `ClassFeature.uses`) — no vendored feat currently draws from another
+   * feature's pool the way Channel Positive Energy draws from Lay on Hands.
    */
   uses?: { maxFormula?: string; per?: string };
   /**
@@ -712,7 +711,7 @@ export interface Trait extends RefEntity {
   contextNotes: ContextNote[];
   /**
    * Limited-use resource, same shape as `Feat.uses` — e.g. a once-per-day
-   * faction trait like "A Sure Thing". ~290 of the vendored 1,998 carry this.
+   * faction trait like "A Sure Thing". A minority of vendored traits carry it.
    */
   uses?: { maxFormula?: string; per?: string };
 }
@@ -1093,7 +1092,7 @@ export interface Archetype extends RefEntity {
  * A single archetype class feature — something an archetype adds, or that
  * replaces a base-class feature at the same level.
  *
- * No `changes` (mechanical effects) in v1: the dataset declares which features
+ * No `changes` (mechanical effects): the dataset declares which features
  * exist and at what level, not how to compute them (its `Description` prose has
  * at least one verified copy-paste error, so it isn't trustworthy as a mechanics
  * source either). Any future numeric
@@ -1584,8 +1583,7 @@ export type MesmeristBoldStare = RefEntity;
  * hand-authored entries matched a vendored entry by normalized name (including
  * "Space-Rending Spell" vs. the source's "Space-rending Spell" — a case-only
  * difference the normalizer already ignores) — a clean 1:1 match with zero
- * vendored-only entries and zero aliases needed, the only subsystem in this
- * wave where that's true.
+ * vendored-only entries and zero aliases needed.
  */
 export interface PhrenicAmplification extends RefEntity {
   /** Ability-type suffix as published, e.g. "(Su)", "(Ex)" — absent for a minority of entries. */
@@ -1604,8 +1602,8 @@ export interface PhrenicAmplification extends RefEntity {
 /**
  * A published psychic discipline. Sourced from the "Pf Data 1e" dataset's
  * `json/class_ability_disciplines.json` (23 real entries after dropping the
- * source's `not_found` sentinel). Unlike the other subsystems in this wave, a
- * discipline is a CHASSIS — a single character-defining pick
+ * source's `not_found` sentinel). Unlike the other catalogs, a discipline is
+ * a CHASSIS — a single character-defining pick
  * (`doc.build.psychicDiscipline`) that grants a whole bonus-spell progression
  * and Discipline Powers, not a menu of many small effects — so this catalog is
  * prose-only ROW DATA for the picker, never a source of derived mechanics.
@@ -1690,9 +1688,7 @@ export type MediumSpirit = RefEntity;
  * mystery's own `description`, under a "### Revelations" heading, as bolded
  * `**Name (Tag):**` paragraphs with no stable per-revelation key. Out of
  * scope for this catalog (and for `@pf1/engine` `oracle-revelations.ts`,
- * which stays scoped to its existing 10-core-mystery hand-authored table) —
- * see the data-pipeline transform's doc comment for why parsing them out
- * into discrete addressable records was deferred rather than forced.
+ * which stays scoped to its existing 10-core-mystery hand-authored table).
  */
 export interface OracleMystery extends RefEntity {}
 

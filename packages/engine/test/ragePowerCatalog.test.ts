@@ -13,8 +13,8 @@ import {
 
 /**
  * Coverage for the vendored-catalog overlay — see `rage-powers.ts`'s "vendored
- * catalog overlay" section doc comment for the collision-audit narrative this
- * asserts against.
+ * catalog overlay" section doc comment for the collision check this asserts
+ * against.
  */
 const ref = loadRefData();
 
@@ -23,8 +23,8 @@ describe("mergedRagePowerCatalog", () => {
   const byId = new Map(merged.map((p) => [p.id, p]));
 
   it("has exactly one row per vendored entry — no hand-authored-only rows remain", () => {
-    // "Sixth Sense", formerly the one hand-only row, was removed after an
-    // audit found no such Paizo rage power exists (see rage-powers.ts).
+    // Sixth Sense is not a Paizo rage power, so it has no hand-authored row
+    // (see rage-powers.ts).
     const vendoredCount = Object.keys(ref.ragePowers).length;
     expect(merged).toHaveLength(vendoredCount);
   });
@@ -45,13 +45,13 @@ describe("mergedRagePowerCatalog", () => {
   });
 
   it("no vendored-only entries remain except the pre-existing Guarded Stance (Unchained Stance) duplicate — the fallback path only exists for a future data bump", () => {
-    // Full hand-table parity as of the parity sweep's final batch (S-Z): every
-    // one of the 243 UNIQUE vendored names has a hand-authored row. The one
-    // exception is a documented, deliberate non-match rather than a gap —
-    // see the file doc comment's collision-audit section: the vendored
-    // catalog's 244th raw row is a reworded Pathfinder Unchained restatement
-    // of Guarded Stance that shares its normalized name with the
-    // hand-authored (CRB) entry, so it can never win a name-based match.
+    // Full hand-table parity: every one of the 243 UNIQUE vendored names has
+    // a hand-authored row. The one exception is a documented, deliberate
+    // non-match rather than a gap — see the file doc comment's collision check
+    // section: the vendored catalog's 244th raw row is a reworded Pathfinder
+    // Unchained restatement of Guarded Stance that shares its normalized name
+    // with the hand-authored (CRB) entry, so it can never win a name-based
+    // match.
     for (const entry of merged) {
       if (entry.id === "guarded_stance_stance") continue;
       expect(RAGE_POWERS[entry.id], entry.id).toBeDefined();
@@ -83,7 +83,7 @@ describe("resolveRagePower", () => {
 
   it("falls back to the vendored catalog for a vendored-only id", () => {
     // "guarded_stance_stance" (the Pathfinder Unchained restatement of
-    // Guarded Stance — see the file doc comment's collision-audit section)
+    // Guarded Stance — see the file doc comment's collision check section)
     // is the sole remaining vendored-only entry after full parity.
     const power = resolveRagePower("guarded_stance_stance", ref);
     expect(power?.displayOnly).toBe(true);

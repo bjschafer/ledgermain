@@ -3,8 +3,7 @@
  * read with no transient, moment-to-moment session state applied. Used purely
  * for display (Sheet.tsx): a stat whose live value differs from this baseline
  * gets a sage/oxblood tint + arrow, showing at a glance which numbers are
- * currently altered (issue: "recompute is invisible" — the living-sheet UX
- * audit).
+ * currently altered.
  *
  * Stripped from `live.*`:
  *  - `conditions` — Prone, Shaken, etc.

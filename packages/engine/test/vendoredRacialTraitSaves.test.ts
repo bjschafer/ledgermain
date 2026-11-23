@@ -185,7 +185,7 @@ describe("Aasimar Deathless Spirit (deliberately partial; necromancy applies to 
   });
 });
 
-describe("Ifrit Forge-Hardened (newly promoted: fatigue/exhaustion, Fortitude-only)", () => {
+describe("Ifrit Forge-Hardened (fatigue/exhaustion, Fortitude-only)", () => {
   const id = vendoredTraitId("Forge-Hardened", "Ifrit");
   const base = compute(makeDoc("Ifrit"), ref);
   const withTrait = compute(makeDoc("Ifrit", [id]), ref);
@@ -267,7 +267,7 @@ describe("Elf Blightborn (widened: necromancy and energy drain now promote along
 
   it("Fortitude merges curse, necromancy, and energy drain (removing negative levels) into one line", () => {
     // Elf Con -2 (mod -1): Fort = good save (+2) - 1 = 1. Blightborn ships
-    // two separate allSavingThrows notes now that both promote: +2 racial
+    // two separate allSavingThrows notes, both promoted: +2 racial
     // vs. curse/necromancy, and +2 racial vs. energy drain (removing
     // temporary negative levels). Both are the same type (racial) and the
     // same value, so they stack to a single +2 rather than +4, landing all

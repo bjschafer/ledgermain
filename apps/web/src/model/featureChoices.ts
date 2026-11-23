@@ -81,7 +81,7 @@ export function classFeatureChoiceDescriptor(
  * archetype features, and several call sites would need threading a new
  * parameter through. A stale pick here is inert (the granted-class-features
  * and granted-power loops only ever walk the character's CURRENT classes),
- * just not cleaned up — a gap, not a bug, left for a future wave.
+ * just not cleaned up — a gap, not a bug.
  */
 export function classFeatureChoice(doc: CharacterDoc, featureId: string): string | undefined {
   return doc.build.pickChoices?.[`classFeature:${featureId}`];

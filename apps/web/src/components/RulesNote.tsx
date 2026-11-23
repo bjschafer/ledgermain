@@ -18,7 +18,7 @@ import { useInlineRolls } from "../state/rollData.js";
  * `appliedAutomatically`, when true, swaps the `⚠` for a `✓` and adds an
  * "applied to your saves" cue: the situational-saves promotion tables (see
  * `@pf1/engine`'s `saveNoteCoverage`) turn some of these notes into a real
- * structured bonus, and a note whose WHOLE benefit is now a number should
+ * structured bonus, and a note whose WHOLE benefit is a number should
  * stop reading as a manual reminder — the text stays (it's still useful
  * table talk), only the affordance changes. Ignored when `retiredBy` is set;
  * a retired note is never "applied automatically" regardless.

@@ -11,19 +11,15 @@ import {
 /**
  * The investigator slice of the prose->Change extraction pipeline.
  *
- * TEST APPROACH: investigator's aggregator wiring (`archetype-extracted/
- * index.ts`) is a later integration step this pass doesn't touch, so
- * `resolveArchetypeFeatureEffect`/`compute` do NOT pick up this file's
- * tables yet through the normal production path. These fixtures therefore
- * (1) assert directly against `INVESTIGATOR_ARCHETYPE_EFFECTS_EXTRACTED`'s
- * exported `changes` shape, (2) hand-compute each formula via the real
- * `formula.ts` evaluator (`evaluateFormula`) at several class levels against
- * the exact published-rules numbers cited in each entry's `provenance`, and
- * (3) verify `resolveArchetypeFeatureEffect` resolves correctly when
- * explicitly given this file's tables as its override arguments (the
- * mechanism it's designed for). `loadRefData` sanity-checks that every
- * archetypeId/name this file references actually exists in the real
- * vendored data slice, same posture as `archetypeExtractedMagus.test.ts`.
+ * These fixtures assert directly against
+ * `INVESTIGATOR_ARCHETYPE_EFFECTS_EXTRACTED`'s exported `changes` shape,
+ * hand-compute each formula via the real `formula.ts` evaluator
+ * (`evaluateFormula`) at several class levels against the exact published-rules
+ * numbers cited in each entry's `provenance`, and verify
+ * `resolveArchetypeFeatureEffect` resolves correctly when explicitly given
+ * this file's tables as its override arguments (the mechanism it's designed
+ * for). `loadRefData` sanity-checks that every archetypeId/name this file
+ * references actually exists in the real vendored data slice.
  */
 const ref = loadRefData();
 
@@ -35,7 +31,7 @@ function archetypeId(name: string): string {
   return entry.id;
 }
 
-/** The same normalization the sweep's batch files used: tags out, whitespace squashed. */
+/** The same normalization the extraction used: tags out, whitespace squashed. */
 function strippedDescription(html: string): string {
   return html
     .replace(/<[^>]+>/g, " ")
@@ -75,7 +71,7 @@ describe("INVESTIGATOR_ARCHETYPE_FEATURE_CLASSIFICATION: coverage", () => {
     }
   });
 
-  it("bucket counts match this pass's audit plus the save-categories re-sweep and the Gadgetry promotion (153 total: 29 numeric, 31 situational, 83 subsystem, 10 blocked)", () => {
+  it("bucket counts match the classified totals (153 total: 29 numeric, 31 situational, 83 subsystem, 10 blocked)", () => {
     const counts: Record<string, number> = { numeric: 0, situational: 0, subsystem: 0, blocked: 0 };
     for (const entry of Object.values(INVESTIGATOR_ARCHETYPE_FEATURE_CLASSIFICATION)) {
       counts[entry.bucket] = (counts[entry.bucket] ?? 0) + 1;

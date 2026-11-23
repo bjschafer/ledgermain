@@ -15,11 +15,10 @@ import {
 /**
  * Fixture coverage for the gunslinger/swashbuckler deed subsystem.
  *
- * First confirms the premise the task brief asked to verify rather than
- * assume: grit (gunslinger) and panache (swashbuckler) pools already derive
- * from the generic `uses.maxFormula` resource-pool pipeline
- * (`resources.ts`), same as every other class resource pool — no
- * hand-authored pool logic was added for either.
+ * Confirms that grit (gunslinger) and panache (swashbuckler) pools derive
+ * from the generic `uses.maxFormula` resource-pool pipeline (`resources.ts`),
+ * same as every other class resource pool — no hand-authored pool logic for
+ * either.
  *
  * Then covers `deeds.ts`'s hand-authored reference table: level gating
  * (deeds are automatic, not a budgeted pick — every deed of your level and

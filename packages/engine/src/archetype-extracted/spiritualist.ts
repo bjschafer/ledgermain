@@ -1,11 +1,11 @@
 /**
- * Spiritualist's slice of the pipeline (2026-08-08). Spiritualist is an
- * already-modeled class (`phantom.ts`'s tracked companion creature) — the 125
- * vendored archetype features across its 23 archetypes are read in full and
- * bucketed as `numeric` / `situational` / `subsystem` / `blocked`, the same
- * methodology the fighter/magus pilots validated.
+ * Spiritualist's slice of the pipeline. Spiritualist is an already-modeled
+ * class (`phantom.ts`'s tracked companion creature) — the 125 vendored
+ * archetype features across its 23 archetypes are read in full and bucketed
+ * as `numeric` / `situational` / `subsystem` / `blocked`, following the
+ * methodology in `./fighter.ts`/`./magus.ts`.
  *
- * ── Spiritualist-specific mechanical facts this pass relies on ────────────
+ * ── Spiritualist-specific mechanical facts this classification relies on ──
  *
  * 1. **The phantom is a companion creature** (`phantom.ts`), not the
  *    spiritualist herself. EVERY phantom-scoped number — its own AC, saves,
@@ -52,13 +52,14 @@
  *    formula evaluator, and a `Change`'s `target` string is fixed at
  *    authoring time — there is no mechanism in this static table to express
  *    "add X to whichever two skills the player's focus choice implies."
- *    `situational`, same shape as the fighter/magus pilots' freeform-slug
- *    skill bonuses (e.g. Master Smith's Craft specializations).
+ *    `situational`, same shape as the freeform-slug skill bonuses in
+ *    `./fighter.ts`/`./magus.ts` (e.g. Master Smith's Craft specializations).
  *
  * Only 2 of spiritualist's 125 archetype features cleared the `numeric` bar
  * — see `SPIRITUALIST_ARCHETYPE_FEATURE_CLASSIFICATION` below for the full
- * per-feature audit, done by reading every one of the 125 descriptions
- * individually (small enough to do exhaustively, same as magus's 150).
+ * per-feature classification, done by reading every one of the 125
+ * descriptions individually (small enough to do exhaustively, same as
+ * magus's 150).
  */
 
 import {
@@ -114,7 +115,7 @@ export const SPIRITUALIST_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Ectoplasmic Lash",
     level: 1,
     bucket: "subsystem",
-    note: "manifests one or two ectoplasmic melee weapons with a scaling enhancement bonus (+1 at 2nd to +5 at 18th) in place of phantom/shared consciousness/etc. — an activated, freely-reshaped (light/one-handed/two-handed) manifested weapon with no build-tracked weapon instance to attach a Change to, same posture as the magus pilot's Mindblade Psychic Pool",
+    note: "manifests one or two ectoplasmic melee weapons with a scaling enhancement bonus (+1 at 2nd to +5 at 18th) in place of phantom/shared consciousness/etc. — an activated, freely-reshaped (light/one-handed/two-handed) manifested weapon with no build-tracked weapon instance to attach a Change to, same posture as `./magus.ts`'s Mindblade Psychic Pool",
   },
   "spiritualist:ectoplasmatist:spiritual-combat:3": {
     archetypeId: "spiritualist:ectoplasmatist",
@@ -667,7 +668,7 @@ export const SPIRITUALIST_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Masterful Faith",
     level: 17,
     bucket: "subsystem",
-    note: "grants two free cleric domains with full benefits — the engine's domain system is cleric-scoped build data, not a Change-shaped grant this pipeline can attach (matches the druid pilot's Nature Bond domain-choice precedent)",
+    note: "grants two free cleric domains with full benefits — the engine's domain system is cleric-scoped build data, not a Change-shaped grant this pipeline can attach (matches `./druid.ts`'s Nature Bond domain-choice precedent)",
   },
   "spiritualist:priest-of-the-fallen:mythmaker:0": {
     archetypeId: "spiritualist:priest-of-the-fallen",
@@ -947,7 +948,7 @@ export const SPIRITUALIST_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Spirit Senses",
     level: 2,
     bucket: "situational",
-    note: "real bonus (half spiritualist level) on Perception/Sense Motive, but scoped to specific check purposes (detecting haunts/incorporeal creatures; determining possession/enchantment/curse) rather than the whole skill — a narrow task-conditioned bonus, same posture as the magus pilot's Nameless Mask entry",
+    note: "real bonus (half spiritualist level) on Perception/Sense Motive, but scoped to specific check purposes (detecting haunts/incorporeal creatures; determining possession/enchantment/curse) rather than the whole skill — a narrow task-conditioned bonus, same posture as `./magus.ts`'s Nameless Mask entry",
   },
 
   // ── spiritualist:ward-spiritualist ──
@@ -1009,11 +1010,11 @@ export const SPIRITUALIST_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
  * This table is deliberately SEPARATE from `archetype-effects.ts`'s
  * `ARCHETYPE_FEATURE_EFFECTS` (the hand-verified table) — every entry here
  * additionally carries `confidence`/`provenance` so a reviewer (or the UI)
- * can never confuse "a human read the rulebook and checked this" with "an
- * extraction pass inferred this from prose." Only 2 of spiritualist's 125
- * features cleared the `numeric` bar (see
+ * can never confuse "a human read the rulebook and checked this" with "a
+ * machine inferred this from prose." Only 2 of spiritualist's 125 features
+ * cleared the `numeric` bar (see
  * `SPIRITUALIST_ARCHETYPE_FEATURE_CLASSIFICATION` above for the full
- * per-feature audit) — spiritualist's kit is almost entirely phantom
+ * per-feature classification) — spiritualist's kit is almost entirely phantom
  * (companion)-scoped abilities, activated bonded-manifestation states, and
  * spell-like-ability grants, none of which are Change-shaped numbers this
  * pipeline extracts (see this file's header doc comment).
@@ -1024,7 +1025,7 @@ export const SPIRITUALIST_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
  *    restriction) scaling bonus.
  *  - "medium": the formula required deriving a non-obvious cadence from
  *    prose, or a real-but-partial condition is dropped and flagged.
- *  - "low": not used in this pass.
+ *  - "low": not used here.
  */
 export const SPIRITUALIST_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
   Record<string, ExtractedArchetypeFeatureEffect>

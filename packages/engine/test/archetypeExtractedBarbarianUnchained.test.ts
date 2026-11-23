@@ -13,23 +13,19 @@ import { isTargetApplied } from "../src/targets.js";
 /**
  * The barbarianUnchained slice of the prose->Change extraction pipeline.
  *
- * TEST APPROACH: this class's aggregator wiring (`archetype-extracted/
- * index.ts`) is a later integration step this pass doesn't touch, so
- * `resolveArchetypeFeatureEffect`/`compute` do NOT pick up this file's
- * tables yet through the normal production path. These fixtures therefore
- * (1) assert directly against `BARBARIAN_UNCHAINED_ARCHETYPE_EFFECTS_EXTRACTED`'s
- * exported `changes` shape, (2) hand-compute each formula via the real
- * `formula.ts` evaluator (`evaluateFormula`) at several class levels against
- * the exact published-rules numbers cited in each entry's `provenance`, and
- * (3) verify `resolveArchetypeFeatureEffect` resolves correctly when
- * explicitly given this file's tables as its override arguments (the
- * mechanism it's designed for). `loadRefData` sanity-checks that every id
- * this file references actually exists in the real vendored data slice.
+ * These fixtures assert directly against
+ * `BARBARIAN_UNCHAINED_ARCHETYPE_EFFECTS_EXTRACTED`'s exported `changes`
+ * shape, hand-compute each formula via the real `formula.ts` evaluator
+ * (`evaluateFormula`) at several class levels against the exact published-rules
+ * numbers cited in each entry's `provenance`, and verify
+ * `resolveArchetypeFeatureEffect` resolves correctly when explicitly given
+ * this file's tables as its override arguments (the mechanism it's designed
+ * for). `loadRefData` sanity-checks that every id this file references
+ * actually exists in the real vendored data slice.
  *
  * Every provenance quote is additionally re-verified below as a literal
- * (HTML-stripped, whitespace-squashed) substring of the vendored
- * description — the exact machine check this wave's brief calls for, after a
- * prior wave was caught shipping a fabricated "..." elided quote.
+ * (HTML-stripped, whitespace-squashed) substring of the vendored description,
+ * so an elided quote cannot pass.
  */
 const ref = loadRefData();
 
@@ -82,7 +78,7 @@ function makeDoc(over: {
   };
 }
 
-/** Mirror of the sweep's HTML-to-text strip, for re-verifying provenance quotes. */
+/** Mirror of the extraction's HTML-to-text strip, for re-verifying provenance quotes. */
 function stripHtml(html: string): string {
   return html
     .replace(/<br\s*\/?>/g, "\n")
@@ -112,7 +108,7 @@ describe("BARBARIAN_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION: coverage", () =>
     expect(Object.keys(BARBARIAN_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION).length).toBe(161);
   });
 
-  it("bucket counts match the audited totals (22 numeric / 37 situational / 91 subsystem / 11 blocked)", () => {
+  it("bucket counts match the classified totals (22 numeric / 37 situational / 91 subsystem / 11 blocked)", () => {
     const counts: Record<string, number> = { numeric: 0, situational: 0, subsystem: 0, blocked: 0 };
     for (const entry of Object.values(BARBARIAN_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION)) {
       counts[entry.bucket] = (counts[entry.bucket] ?? 0) + 1;

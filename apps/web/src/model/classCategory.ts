@@ -1,18 +1,18 @@
 /**
  * Class category classification, for organizing the builder's class picker into
- * Core / Base / Hybrid sections rather than one flat 31-entry alphabetical
- * chip list (which drops Fighter right next to Bloodrager) — the same shape as
+ * Core / Base / Hybrid / … sections rather than one flat alphabetical chip
+ * list (which drops Fighter right next to Bloodrager) — the same shape as
  * `model/rarity.ts` does for races.
  *
  * The tiers are the published Paizo class categories (Core Rulebook classes;
- * the APG/UM/UC/UI/UW "base" classes; the ACG "hybrid" classes). The vendored
- * Foundry entries are no help here: every one of the 31 classes carries
- * `subType: "base"` upstream (Foundry's subType only distinguishes
- * base/prestige/npc-style kinds), so — exactly like race rarity — we map by
- * class NAME, clean-room from published facts. Anything unlisted (future
- * prestige/NPC-class vendoring) falls through to `"other"`; the
- * `classCategory.test.ts` "every named class resolves" guard catches a
- * data-pipeline rename silently dropping a class to that tier.
+ * the APG/UM/UC/UI/UW "base" classes; the ACG "hybrid" classes; Unchained,
+ * alternate, and occult classes). The vendored Foundry entries are no help
+ * here: every non-prestige class carries `subType: "base"` upstream (Foundry's
+ * subType only distinguishes base/prestige/npc-style kinds), so — exactly like
+ * race rarity — we map by class NAME, clean-room from published facts.
+ * Anything unlisted falls through to `"other"`; the `classCategory.test.ts`
+ * "every named class resolves" guard catches a data-pipeline rename silently
+ * dropping a class to that tier.
  *
  * Category is purely presentational — it never touches `compute()` or any game
  * number. See `model/grouping.ts` for the reusable grouping mechanism.
@@ -56,9 +56,10 @@ export const CLASS_CATEGORY_LABEL: Record<ClassCategory, string> = {
 };
 
 /**
- * Class NAME → category. Only Core/Base/Hybrid are enumerated (the whole
- * vendored slice today); anything not listed here defaults to `"other"` via
- * `classCategory`.
+ * Class NAME → category. The ordinary classes are enumerated by name here;
+ * the hand-authored prestige classes are too, though `classCategory` resolves
+ * every `subType: "prestige"` entry before consulting this map. Anything not
+ * listed here defaults to `"other"` via `classCategory`.
  */
 const CLASS_CATEGORY: Readonly<Record<string, ClassCategory>> = {
   // Core Rulebook (11).

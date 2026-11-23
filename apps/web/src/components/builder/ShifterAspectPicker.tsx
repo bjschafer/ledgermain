@@ -32,11 +32,11 @@ interface ShifterAspectPickerProps {
  *
  * Each row previews whether its minor form clears the honesty bar for a
  * real toggleable buff (see `@pf1/engine` `shifter-aspects.ts`'s doc
- * comment) via its `contextNotes`. Major form (Wild Shape) is out of scope
- * here — deferred to the polymorph work. Browses the full vendored catalog
+ * comment) via its `contextNotes`. Major form (Wild Shape) lives in the
+ * Polymorph panel, not here. Browses the full vendored catalog
  * (`mergedShifterAspectCatalog`) — an exact 1:1 match with the 30
- * hand-authored entries (see that function's doc comment), so this only
- * ever attaches vendored prose (including the Major Form paragraph) today.
+ * hand-authored entries (see that function's doc comment), so this only ever
+ * attaches vendored prose (including the Major Form paragraph).
  */
 export function ShifterAspectPicker({ doc, refData, update }: ShifterAspectPickerProps) {
   const isShifter = doc.identity.classes.some((c) => c.tag === "shifter");

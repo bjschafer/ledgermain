@@ -5,11 +5,9 @@
  *
  * Unset `VITE_API_URL` (the default for local dev, and for anyone who
  * hasn't deployed `apps/api`) means **local-only mode**: every function in
- * `src/sync/` becomes a no-op, and the app stays local-only — Dexie is the
- * only source of truth, no network round-trip is ever made. This is the
- * "degrade silently when... no API is configured"
- * requirement, satisfied by construction: nothing downstream of this module
- * runs unless it returns a value.
+ * `src/sync/` becomes a no-op, Dexie is the only source of truth, and no
+ * network round-trip is ever made. Sync degrades silently by construction:
+ * nothing downstream of this module runs unless it returns a value.
  */
 export function apiBaseUrl(): string | undefined {
   // `ImportMetaEnv`'s default index signature is `any`; narrow it once here

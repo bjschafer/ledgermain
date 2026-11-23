@@ -11,15 +11,14 @@ import {
 } from "../src/index.js";
 
 /**
- * fixture tests for `archetype-extracted/sorcerer.ts`.
- * Unlike the bard/fighter waves, this class's extracted-effects table is
- * EMPTY (see that file's doc comment) — every sorcerer archetype feature
- * that clears the `numeric` bar is already covered by the pre-existing
- * hand-verified table. These tests instead verify (a) the classification
- * table's shape/coverage, (b) the two `blocked` bloodline-suppression-gap
- * entries the task specifically called out, and (c) that the pre-existing
+ * Fixture tests for `archetype-extracted/sorcerer.ts`. This class's
+ * extracted-effects table is EMPTY (see that file's doc comment) — every
+ * sorcerer archetype feature that clears the `numeric` bar is already covered
+ * by the pre-existing hand-verified table. These tests instead verify (a) the
+ * classification table's shape/coverage, (b) the two `blocked`
+ * bloodline-suppression-gap entries, and (c) that the pre-existing
  * hand-verified Sorcerer of Sleep / Seeker entries still resolve correctly
- * through the shared precedence module unaffected by this file existing.
+ * through the shared precedence module.
  */
 const ref = loadRefData();
 
@@ -72,7 +71,7 @@ function makeDoc(over: {
   };
 }
 
-describe("Sorcerer archetype-extraction wave (issue #45): no new numeric entries", () => {
+describe("Sorcerer archetype extraction: no new numeric entries", () => {
   it("SORCERER_ARCHETYPE_EFFECTS_EXTRACTED is empty — every numeric case is already hand-verified", () => {
     expect(Object.keys(SORCERER_ARCHETYPE_EFFECTS_EXTRACTED)).toEqual([]);
   });

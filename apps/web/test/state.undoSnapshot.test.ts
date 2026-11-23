@@ -1,9 +1,8 @@
 /**
- * `state/undoSnapshot.ts` is the pure bookkeeping extracted from
- * `useCharacter.ts`'s undo so its invariants — bounded depth, no oscillation,
- * never leaks across characters — are testable without a DOM/React harness
- * (the hook itself has no existing test coverage; see `apps/web/test/` for the
- * established "logic in model/state, tested directly" pattern this mirrors).
+ * `state/undoSnapshot.ts` is the pure bookkeeping behind `useCharacter.ts`'s
+ * undo: bounded depth, no oscillation, never leaks across characters. Keeping
+ * it in state/ makes those invariants testable without a DOM/React harness
+ * (the established "logic in model/state, tested directly" pattern).
  */
 import { describe, expect, it } from "bun:test";
 

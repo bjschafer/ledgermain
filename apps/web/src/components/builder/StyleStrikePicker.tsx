@@ -35,7 +35,7 @@ interface StyleStrikePickerProps {
  *
  * Browses the full vendored catalog (`mergedMonkStyleStrikeCatalog`) — an
  * exact 1:1 match with the 15 hand-authored entries (see that function's
- * doc comment), so this only ever attaches vendored prose today.
+ * doc comment), so this only ever attaches vendored prose.
  */
 export function StyleStrikePicker({ doc, refData, update }: StyleStrikePickerProps) {
   const isMonkUnchained = doc.identity.classes.some((c) => c.tag === "monkUnchained");

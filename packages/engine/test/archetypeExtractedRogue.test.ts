@@ -6,9 +6,8 @@ import { loadRefData } from "@pf1/data-pipeline";
 import { compute, evaluateFormula, resolveArchetypeFeatureEffect } from "../src/index.js";
 
 /**
- * hand-computed fixture tests for
- * `archetype-extracted/rogue.ts`, same posture as the fighter pilot's
- * `archetypeEffectsExtracted.test.ts` — derived straight from the published
+ * Hand-computed fixture tests for `archetype-extracted/rogue.ts`, same posture
+ * as `archetypeEffectsExtracted.test.ts` — derived straight from the published
  * PF1 rules cited (as `provenance`) in each extracted entry.
  */
 const ref = loadRefData();

@@ -251,7 +251,7 @@ export function collectVigilanteTalents(ctx: GrantedFeaturesContext): void {
 /** Slayer talents. */
 export function collectSlayerTalents(ctx: GrantedFeaturesContext): void {
   const { doc, refData, out } = ctx;
-  // Slayer talents (hand-table follow-up) — resolved through
+  // Slayer talents — resolved through
   // `resolveSlayerTalent` (hand-authored table first, vendored catalog
   // fallback — see slayer-talents.ts's doc comment). Gated on actual slayer
   // levels. Granted at a flat display level of 2 (the earliest a slayer has

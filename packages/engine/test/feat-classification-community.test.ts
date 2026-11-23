@@ -25,7 +25,7 @@ const VALID_BUCKETS = new Set([
 ]);
 
 /**
- * Mirror of the sweep's HTML-to-text strip, for re-verifying provenance
+ * Mirror of the extraction's HTML-to-text strip, for re-verifying provenance
  * quotes against the vendored descriptions. Comparison collapses whitespace
  * on both sides so tag boundaries and entity spacing can't cause false
  * mismatches.
@@ -50,7 +50,7 @@ function squash(s: string): string {
 describe("FEAT_CLASSIFICATION_COMMUNITY completeness", () => {
   const featSlugs = new Map(Object.values(ref.feats).map((f) => [featNameSlug(f.name), f]));
 
-  it("the frozen audit and the community sweep together cover every vendored feat, with no overlap", () => {
+  it("the frozen classification and the community classification together cover every vendored feat, with no overlap", () => {
     const missing = [...featSlugs.keys()].filter(
       (slug) => !(slug in FEAT_CLASSIFICATION) && !(slug in FEAT_CLASSIFICATION_COMMUNITY),
     );

@@ -51,13 +51,13 @@
  * shape for the rest, and flags Cauldron/Dark Apothecary/Ward specifically as
  * the ones worth a closer look by hand.
  *
- * Audit finding: the buff-gated-changes mechanism (`Change.activeWhenBuff`,
- * built for the rage powers' "while raging" shape — see `rage-powers.ts`)
- * does NOT unlock anything here beyond Iceplant/Flight. Neither remaining
- * near-miss above is "unconditional while a specific, id-identifiable buff is
- * active": Cauldron/Dark Apothecary are always-on but blocked by the
+ * The buff-gated-changes mechanism (`Change.activeWhenBuff`, built for the
+ * rage powers' "while raging" shape — see `rage-powers.ts`) does NOT unlock
+ * anything here beyond Iceplant/Flight. Neither remaining near-miss above is
+ * "unconditional while a specific, id-identifiable buff is active":
+ * Cauldron/Dark Apothecary are always-on but blocked by the
  * parameterized-skill targeting problem, and Ward lands on an ALLY's sheet,
- * not the witch's. Both stay deliberately deferred.
+ * not the witch's. Both stay note-only.
  */
 
 import type { Change, ContextNote, RefData, SourceRef, WitchHex } from "@pf1/schema";
@@ -1053,22 +1053,22 @@ export { witchHexDC } from "./tables.js";
  * this file's camelCase ids vs. the vendored dataset's snake_case slugs are
  * disjoint by construction.
  *
- * Collision audit (all 104 hand-authored entries, run against the pinned Pf
+ * Collision check (all 104 hand-authored entries, run against the pinned Pf
  * Data 1e slice): every one matched a vendored entry by normalized name, with NO
  * naming drift — the source's own spelling matched ours exactly
  * (case-insensitively) for every entry, so `HEX_NAME_ALIASES` is empty (kept
- * for the same reason `rage-powers.ts`'s alias map is: a FUTURE
+ * for the same reason `rage-powers.ts`'s alias map is: a future
  * hand-authored addition that drifts from the vendored spelling has
  * somewhere to record it). No vendored-catalog-internal name collisions
  * either (unlike rage powers' Guarded Stance/Stance-variant case) — every one
  * of the 104 vendored hexes has a unique normalized name.
  *
  * Tier: every matched hex's vendored `tier` field agrees with this table's
- * own `tier` for that entry (8 of the 27 are `major`, 5 are `grand`, the rest
+ * own `tier` for that entry (31 are `major`, 13 are `grand`, the other 60
  * `hex`) — verified against the vendored data, not merely assumed.
  */
 
-/** Alias map for a hand-authored id whose vendored-catalog counterpart uses a different name — see the collision note above. Empty today (no drift found); kept for a future addition. */
+/** Alias map for a hand-authored id whose vendored-catalog counterpart uses a different name — see the collision check above. Empty (no drift found); kept for a future addition. */
 const HEX_NAME_ALIASES: Record<string, string> = {};
 
 function normalizeHexName(name: string): string {
@@ -1141,7 +1141,7 @@ export function resolveWitchHex(id: string, refData: RefData): WitchHexDef | und
  * REPLACED by that hand-authored def (keeping its id and tier, but carrying
  * the vendored entry's prose/sources along for display), plus any
  * hand-authored entry with no vendored counterpart appended (none today —
- * see the collision-audit comment above; the fallback exists for a future
+ * see the collision check above; the fallback exists for a future
  * addition). `!entry.displayOnly` would mark a live-mechanics row for the
  * picker's "M" badge, same convention as `mergedRagePowerCatalog` — every hex
  * here is `displayOnly` today (see the file's top doc comment), so the badge

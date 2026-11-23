@@ -14,10 +14,10 @@
  * IMPORTANT — keep this in sync with compute.ts: whenever compute.ts starts
  * consuming a new `forTarget(...)` target (or a new target prefix), add it to
  * {@link APPLIED_TARGETS} / {@link APPLIED_TARGET_PREFIXES} in the same
- * change. This file was built by grepping every `forTarget(` call site in
- * compute.ts (plus the `skill.` prefix grouping in computeSkills and the
- * `attack.weapon.*`/`damage.weapon.*` per-group targets in
- * computeWeaponAttacks) — verify against the real call sites, don't guess.
+ * change. Check every `forTarget(` call site in compute.ts (plus the `skill.`
+ * prefix grouping in computeSkills and the `attack.weapon.*`/
+ * `damage.weapon.*` per-group targets in computeWeaponAttacks) — verify
+ * against the real call sites, don't guess.
  */
 
 import type { Change } from "@pf1/schema";

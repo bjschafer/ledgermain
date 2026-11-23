@@ -5,10 +5,10 @@
  * `numeric` ones getting a real `Change`-shaped extraction. Per the per-class
  * file convention (`index.ts`'s doc comment), this file owns BOTH of brawler's
  * pipeline artifacts — `BRAWLER_ARCHETYPE_EFFECTS_EXTRACTED` and
- * `BRAWLER_ARCHETYPE_FEATURE_CLASSIFICATION` — so a future wave working on a
- * different class never has a reason to touch this file.
+ * `BRAWLER_ARCHETYPE_FEATURE_CLASSIFICATION` — so work on a different class
+ * never has a reason to touch this file.
  *
- * ── Brawler-specific mechanical facts this pass relies on ─────────────────
+ * ── Brawler-specific mechanical facts this classification relies on ───────
  *
  * 1. **Martial Flexibility** (base L1 feature) rides a real vendored
  *    `uses.maxFormula: "3 + floor(@class.unlevel / 2)"` per day, applied
@@ -33,7 +33,7 @@
  *    `unarmedDamageDie(classLevel, size)` (the monk table, which the brawler
  *    shares). Features that shift the die by an effective size/level offset
  *    are `blocked` — no override hook exists without touching
- *    `tables.ts`/`compute.ts` (out of scope), same as unchained monk's
+ *    `tables.ts`/`compute.ts`, same as unchained monk's
  *    Softstrike precedent (`./monkUnchained.ts`).
  * 5. **Maneuver Training (BRA)** carries no vendored `changes` — its
  *    per-maneuver bonuses are scoped to player-chosen maneuvers, and the
@@ -334,7 +334,7 @@ export const BRAWLER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Sunder Training",
     level: 3,
     bucket: "numeric",
-    note: "scaling CMB/CMD bonus vs. sunder (from 3rd) and disarm (from 7th), unconditional — now expressible via Change.maneuverCategories (maneuver-categories.ts), wired in BRAWLER_ARCHETYPE_EFFECTS_EXTRACTED; alters maneuver training",
+    note: "scaling CMB/CMD bonus vs. sunder (from 3rd) and disarm (from 7th), unconditional — expressible via Change.maneuverCategories (maneuver-categories.ts), wired in BRAWLER_ARCHETYPE_EFFECTS_EXTRACTED; alters maneuver training",
   },
 
   // ── brawler:strangler ──
@@ -428,7 +428,7 @@ export const BRAWLER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Venomous Strike",
     level: 1,
     bucket: "blocked",
-    note: "shifts unarmed strike damage to one size category smaller — the die progression is tables.ts's hardcoded unarmedDamageDie(classLevel, size) with no per-feature size-offset hook, so backfilling would require touching tables.ts/compute.ts (out of scope; the softstrike-monk precedent in ./monkUnchained.ts). The Con-mod poison rider is save-based and per-hit anyway",
+    note: "shifts unarmed strike damage to one size category smaller — the die progression is tables.ts's hardcoded unarmedDamageDie(classLevel, size) with no per-feature size-offset hook, so backfilling would require touching tables.ts/compute.ts (the softstrike-monk precedent in ./monkUnchained.ts). The Con-mod poison rider is save-based and per-hit anyway",
   },
 
   // ── brawler:verdant-grappler ──
@@ -551,11 +551,11 @@ export const BRAWLER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
  * can never confuse "a human read the rulebook and checked this" with "an
  * extraction pass inferred this from prose." Only 1 of brawler's 62 features
  * cleared the `numeric` bar (see `BRAWLER_ARCHETYPE_FEATURE_CLASSIFICATION`
- * above for the full per-feature audit) — brawler's kit leans almost entirely
- * on martial-flexibility spend-options, maneuver-scoped bonuses, activated
- * states (mutagen, wraps, terrain), and restatements of base features whose
- * numbers the vendored class data already carries (AC Bonus, Bonus Combat
- * Feats), all of which fail the unconditional-numeric bar.
+ * above for the full per-feature classification) — brawler's kit leans almost
+ * entirely on martial-flexibility spend-options, maneuver-scoped bonuses,
+ * activated states (mutagen, wraps, terrain), and restatements of base
+ * features whose numbers the vendored class data already carries (AC Bonus,
+ * Bonus Combat Feats), all of which fail the unconditional-numeric bar.
  *
  * Confidence rubric (identical to fighter.ts's/magus.ts's):
  *  - "high": a literal or near-literal reflavor of an already-modeled base
@@ -563,7 +563,7 @@ export const BRAWLER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
  *  - "medium": the formula required a mild reading, or a textually-present
  *    sub-scope can't be represented and is dropped — partial honesty, flagged
  *    in `detail`.
- *  - "low": not used in this pass.
+ *  - "low": not used here.
  */
 export const BRAWLER_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
   Record<string, ExtractedArchetypeFeatureEffect>
@@ -574,7 +574,7 @@ export const BRAWLER_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
   // Pureblade/Steely Mind). Category mapping: "mind-affecting" -> mind,
   // "poison" -> poison, "stunning" -> stun, "paralysis" -> paralysis,
   // "polymorph" -> polymorph (both added once save-categories.ts grew those
-  // entries — the vocabulary now covers every named scope); "sleep" is a
+  // entries — the vocabulary covers every named scope); "sleep" is a
   // child of mind in SAVE_CATEGORIES so mind already covers it (naming it
   // separately would only print a redundant line).
   "brawler:verdant-grappler:phytological-anatomy:11": {

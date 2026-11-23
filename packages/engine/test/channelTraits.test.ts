@@ -1,12 +1,11 @@
 /**
- * Hand-computed fixtures for the two newly-promoted `abilityDC.channel`
- * community traits in `trait-effects-extracted.ts` (Flames of Hell, Student
- * of Faith), plus the non-stacking check that motivated leaving the
- * vendored Sacred Conduit duplicate unwired: both promoted entries carry a
- * `"trait"`-typed `Change` (matching the hand-authored Sacred Conduit entry
- * in `traits.ts`), and same-type bonuses don't stack (`stacking.ts`:
- * `"trait"` is not in `STACKING_TYPES`, so same-target trait bonuses resolve
- * to the highest, not a sum).
+ * Hand-computed fixtures for the two `abilityDC.channel` community traits in
+ * `trait-effects-extracted.ts` (Flames of Hell, Student of Faith), plus the
+ * non-stacking check that motivated leaving the vendored Sacred Conduit
+ * duplicate unwired: both entries carry a `"trait"`-typed `Change` (matching
+ * the hand-authored Sacred Conduit entry in `traits.ts`), and same-type bonuses
+ * don't stack (`stacking.ts`: `"trait"` is not in `STACKING_TYPES`, so
+ * same-target trait bonuses resolve to the highest, not a sum).
  */
 
 import { describe, expect, it } from "bun:test";

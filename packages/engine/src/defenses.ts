@@ -37,7 +37,7 @@
  * "untyped always sums" behavior is correct for ability/skill bonuses but
  * wrong for DR/resistance qualifiers).
  *
- * Zero-value entries (finding 2, "the dr-at-0 wart"): unlike `ac`/`skill.*`,
+ * Zero-value entries (the "dr-at-0 wart"): unlike `ac`/`skill.*`,
  * which are always-rendered running totals a zero-value component quietly
  * disappears into, this module only materializes `DerivedSheet.defenses` (and
  * the UI's whole "Defenses" stat-group) when at least one dr/resistance/sr
@@ -212,8 +212,8 @@ interface QualifiedMod {
  * stack). Losing entries stay in `components` with `applied: false`, the same
  * strike-through convention as typed-bonus stacking.
  *
- * A qualifier whose winning value is not positive is dropped entirely (finding
- * 2, "the dr-at-0 wart") — since it's the highest value in the group, every
+ * A qualifier whose winning value is not positive is dropped entirely (the
+ * "dr-at-0 wart") — since it's the highest value in the group, every
  * source for that qualifier evaluated to zero (or, in principle, negative), so
  * there is nothing real to show; a conditional `dr`/`eres` `Change` that
  * evaluates to 0 when its condition is unmet must not materialize a spurious

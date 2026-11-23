@@ -1,10 +1,10 @@
 /**
- * Ninja's slice of the pipeline (2026-08-09; see `index.ts` for the per-class
- * file convention this follows). Covers all 5 vendored ninja archetypes, 21
- * features, each read individually — small enough for the fully exhaustive
- * per-feature pass, no heuristic split.
+ * Ninja's slice of the pipeline (see `index.ts` for the per-class file
+ * convention this follows). Covers all 5 vendored ninja archetypes, 21
+ * features, each read individually — small enough to classify exhaustively,
+ * with no heuristic split.
  *
- * ── Ninja-specific mechanical facts this pass relies on ───────────────────
+ * ── Ninja-specific mechanical facts this classification relies on ─────────
  *
  * 1. **Ki Pool (NIN)** (base 2nd-level feature) rides a real vendored
  *    `uses.maxFormula: "floor(@class.unlevel / 2) + @abilities.cha.mod"`,
@@ -47,7 +47,7 @@
  *    same shape as cleric.ts's Channel Energy restatements. Their content
  *    is conditional regardless (see the entries), so nothing is lost.
  *
- * ── Rubric (same as the fighter/magus pilots) ──────────────────────────────
+ * ── Rubric (same as `./fighter.ts`/`./magus.ts`) ───────────────────────────
  *  - "numeric": an unconditional bonus, or one gated on a condition this
  *    engine can check (`@armor.type`, `@class.unlevel`), expressible via a
  *    real `targets.ts` target. No ninja feature cleared this bar.

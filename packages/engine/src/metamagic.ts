@@ -1,7 +1,7 @@
 /**
  * Clean-room PF1 Metamagic feat table: hand-authored from the published rules
  * (cross-checked against aonprd.com's metamagic-feat pages — no Foundry system
- * code consulted, per CLAUDE.md). The vendored Foundry data pack tags 84
+ * code consulted). The vendored Foundry data pack tags 84
  * feats `"Metamagic"` but carries no structured slot-level adjustment (it
  * lives only in each feat's prose), so this registry supplies the one number
  * the tracker actually needs to model: how many spell-slot levels applying the

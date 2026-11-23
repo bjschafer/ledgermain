@@ -1,10 +1,10 @@
 /**
- * Hand-computed fixtures for the content-wave CHANNEL_VARIANTS entries added
- * alongside `cleric:fiendish-vessel` (see `channel-variants.ts`'s module doc
- * comment for the mechanism, and `channelVariants.test.ts` for the
- * mechanism-level drift guards this file doesn't repeat): Blossoming Light's
- * Luminous Font, Evangelist's Sermonic Performance, Scroll Scholar's Secrets
- * Revealed, and Hospitaler's Channel Positive Energy.
+ * Hand-computed fixtures for the CHANNEL_VARIANTS entries added alongside
+ * `cleric:fiendish-vessel` (see `channel-variants.ts`'s module doc comment for
+ * the mechanism, and `channelVariants.test.ts` for the mechanism-level drift
+ * guards this file doesn't repeat): Blossoming Light's Luminous Font,
+ * Evangelist's Sermonic Performance, Scroll Scholar's Secrets Revealed, and
+ * Hospitaler's Channel Positive Energy.
  */
 
 import { describe, expect, it } from "bun:test";
@@ -82,7 +82,7 @@ describe("Hospitaler's Channel Positive Energy (Advanced Player's Guide p.62, ha
       "2d6 (DC 14 Will) · its own resource pool, separate from lay on hands",
     );
 
-    // No longer merges into lay on hands' detail line (base paladin Channel
+    // Does not merge into lay on hands' detail line (base paladin Channel
     // Positive Energy is a lay-on-hands-uses spend; hospitaler's isn't).
     const layOnHands = pools.find((p) => p.name === "Lay on Hands");
     expect(layOnHands).toBeDefined();

@@ -1,6 +1,5 @@
 /**
- * Clean-room PF1 investigator talent table (Advanced Class Guide, the
- * investigator-audit follow-up; full vendored-catalog parity added per):
+ * Clean-room PF1 investigator talent table (Advanced Class Guide):
  * hand-authored from the published rules (verified against aonprd.com's
  * Investigator Talents listing, cross-checked against d20pfsrd.com's mirror of
  * the Paizo text where a name needed disambiguating — see the "Iconoclastic
@@ -13,7 +12,7 @@
  * `RefData.investigatorTalents`) carries prose only and backs the vendored
  * catalog overlay at the bottom of this file.
  *
- * Scope: FULL vendored parity as of the last catalog sweep — all 67 published
+ * Scope: FULL vendored parity — all 67 published
  * investigator talents (Advanced Class Guide's original 28 plus every
  * later-splatbook addition the pinned data carries: Advanced Class Origins,
  * Inner Sea Intrigue, Magic Tactics Toolbox, Disciple's Doctrine, Potions &
@@ -592,12 +591,12 @@ export const INVESTIGATOR_TALENT_IDS: readonly string[] = TALENT_LIST.map((t) =>
 /* -------------------------------------------------- vendored catalog overlay -- */
 /*
  * `RefData.investigatorTalents` (see that type's doc comment) is the FULL
- * published catalog — all 67 talents above now have a hand-authored,
+ * published catalog — all 67 talents above have a hand-authored,
  * mechanics-authoritative counterpart — prose only. Same pattern as
  * `rage-powers.ts`'s `mergedRagePowerCatalog` (see that file's doc comment for
  * the general shape).
  *
- * Collision audit (all 67 hand-authored entries, run against the pinned Pf
+ * Collision check (all 67 hand-authored entries, run against the pinned Pf
  * Data 1e slice): every one matched a vendored entry by normalized name,
  * with ONE naming drift — the vendored `iconclastic_strike` entry carries a
  * typo'd name ("Iconclastic Strike", missing the second "o"); the published
@@ -607,7 +606,7 @@ export const INVESTIGATOR_TALENT_IDS: readonly string[] = TALENT_LIST.map((t) =>
  * vendored catalog itself either.
  */
 
-/** Alias map for a hand-authored id whose vendored-catalog counterpart uses a different (typo'd) name — see the collision-audit comment above. */
+/** Alias map for a hand-authored id whose vendored-catalog counterpart uses a different (typo'd) name — see the collision check above. */
 const INVESTIGATOR_TALENT_NAME_ALIASES: Record<string, string> = {
   iconoclasticStrike: "Iconclastic Strike",
 };
@@ -698,7 +697,7 @@ export function resolveInvestigatorTalent(
  * collides (by normalized name, alias-mapped) against a hand-authored entry
  * REPLACED by that hand-authored def (keeping its id and real mechanics, but
  * carrying the vendored entry's prose/sources along for display); no
- * hand-authored-only entries exist to append per the collision audit above.
+ * hand-authored-only entries exist to append per the collision check above.
  * `!entry.displayOnly` marks which rows carry real mechanics.
  */
 export function mergedInvestigatorTalentCatalog(refData: RefData): MergedInvestigatorTalentEntry[] {

@@ -10,15 +10,13 @@
  *
  * ── RANGER_ARCHETYPE_FEATURE_CLASSIFICATION ───────────────────────────────
  *
- * Classification audit: EVERY feature of EVERY vendored ranger archetype (62
+ * Classification: EVERY feature of EVERY vendored ranger archetype (62
  * archetypes, 266 features), individually read against
  * `packages/data-pipeline/data/archetype-features.json` and bucketed
  * `numeric` / `situational` / `subsystem` / `blocked` using the same bucket
- * rubric as fighter's pilot. Unlike fighter's pilot (66
- * archetypes, 378 features, which needed a heuristic-assisted pass for the
- * `situational`/`subsystem` split), ranger's 266 features were small enough
- * for this wave to individually read and reason about every single one —
- * no heuristic shortcut bucket was used here.
+ * rubric as `./fighter.ts`. Ranger's 266 features were small enough to read
+ * and reason about every single one individually — no heuristic shortcut
+ * bucket was used here.
  *
  * Ranger-specific classification notes (also flagged per-entry below):
  *
@@ -47,9 +45,9 @@
  *   shape as fighter's Armor Training/Bonus Feats (FGT). Of the 15 ranger
  *   archetype features paired to its base-feature uuid (6 already
  *   hand-verified in `archetype-effects.ts` — Bow Nomad, Horse Lord, Ilsurian
- *   Archer, Shapeshifter, Stormwalker, Toxophilite — plus 9 read fresh by
- *   this wave): 3 more are full same-schedule restricted-list reflavors
- *   (promoted to `numeric`, extracted below: Elemental Envoy, Hooded
+ *   Archer, Shapeshifter, Stormwalker, Toxophilite — plus 9 classified
+ *   here): 3 more are full same-schedule restricted-list reflavors (promoted
+ *   to `numeric`, extracted below: Elemental Envoy, Hooded
  *   Champion, Wave Warden), 3 fully replace the schedule with an unrelated
  *   resource (`subsystem`: Poison Darter's rogue talents/discoveries,
  *   Trophy Hunter's grit/deeds, Warden's Survival ability), 1 is a real but
@@ -79,9 +77,9 @@
  *   keys off the pairing alone, an active Sable Company Marine character
  *   would have the ENTIRE base Combat Style Feat formula suppressed with
  *   nothing backfilled — a real, pre-existing bug, same shape as fighter's
- *   Brawler/Armor-Training mispair. Flagged here,
- *   not fixed (would need a hand-curated exclusion mirroring
- *   `WEAPON_TRAINING_REPLACEMENTS`, out of this wave's file-scope).
+ *   Brawler/Armor-Training mispair. Flagged here, not fixed (would need a
+ *   hand-curated exclusion mirroring `WEAPON_TRAINING_REPLACEMENTS`, outside
+ *   this file).
  * - **Spell-less ranger variants** (Skirmisher's Hunter's Tricks, Trapper's
  *   Trap, Ilsurian Archer's Vicious Aim) and other spellcasting-model
  *   modifications are uniformly `subsystem` — no engine hook exists for a
@@ -1001,7 +999,7 @@ export const RANGER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Daylight",
     level: 1,
     bucket: "subsystem",
-    note: "treats daylight as a 3rd-level ranger spell — a spell-list addition, not a spell-like ability (the earlier extraction pass mislabeled it)",
+    note: "treats daylight as a 3rd-level ranger spell — a spell-list addition, not a spell-like ability",
   },
   "ranger:lantern-lighter:enhanced-vision:1": {
     archetypeId: "ranger:lantern-lighter",
@@ -1232,7 +1230,7 @@ export const RANGER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Hippogriff Companion",
     level: 2,
     bucket: "blocked",
-    note: "PAIRED to Combat Style Feat's base-feature uuid, but the archetype's own prose is purely ADDITIVE (adds one more selectable bonus-feat option, 'regardless of the style chosen') — it does not itself replace the bonus-feat count or schedule. Because the generic paired-swap suppression (activeArchetypeSwaps) keys off the pairing alone, an active character with this archetype would have the ENTIRE base Combat Style Feat formula suppressed with nothing backfilled, incorrectly zeroing their bonus feats. This is a real, pre-existing engine/vendored-data interaction bug (same shape as fighter's Brawler/Armor-Training mispair) — recorded here, not fixed (out of this wave's scope; would need a hand-curated exclusion mirroring WEAPON_TRAINING_REPLACEMENTS).",
+    note: "PAIRED to Combat Style Feat's base-feature uuid, but the archetype's own prose is purely ADDITIVE (adds one more selectable bonus-feat option, 'regardless of the style chosen') — it does not itself replace the bonus-feat count or schedule. Because the generic paired-swap suppression (activeArchetypeSwaps) keys off the pairing alone, an active character with this archetype would have the ENTIRE base Combat Style Feat formula suppressed with nothing backfilled, incorrectly zeroing their bonus feats. This is a real, pre-existing engine/vendored-data interaction bug (same shape as fighter's Brawler/Armor-Training mispair) — recorded here, not fixed (would need a hand-curated exclusion mirroring WEAPON_TRAINING_REPLACEMENTS).",
   },
   "ranger:sentinel:mugshot:1": {
     archetypeId: "ranger:sentinel",

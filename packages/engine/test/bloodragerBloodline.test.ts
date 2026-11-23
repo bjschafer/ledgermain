@@ -279,8 +279,8 @@ describe("bloodrager bloodline powers (collectGrantedFeatures / resolveClassFeat
 });
 
 /**
- * 20th-level capstone immunities/senses/DR, newly wired to real Change
- * targets (imm.<type>/immEffect.<slug>/sense*) rather than left display-only.
+ * 20th-level capstone immunities/senses/DR, wired to real Change targets
+ * (imm.<type>/immEffect.<slug>/sense*) rather than left display-only.
  * RAW citations live on each entry in `bloodrager-bloodlines.ts`; expected
  * values hand-computed from the quoted text. Every capstone says "constantly,
  * even while not bloodraging", so none of these are gated on the Bloodrage

@@ -65,11 +65,11 @@ export function collectMediumSpirit(ctx: CollectContext): void {
   // `mediumSpiritBonus`) and any flat Séance Boon apply as real untyped
   // `Change`s wherever the spirit's own `spiritBonusTargets`/
   // `seanceBoonChange` name a target this engine actually consumes — see
-  // `medium-spirits.ts`'s file doc comment for the per-spirit audit of which
-  // targets are real vs. prose-only. `abilitySkills` targets fan out to one
-  // `skill.<id>` Change per skill keyed to that ability (same pattern as the
-  // occultist Enchantment resonant power just above), since no `chaSkills`-
-  // style group target is actually consumed by `compute.ts`.
+  // `medium-spirits.ts`'s file doc comment for the per-spirit classification
+  // of which targets are real vs. prose-only. `abilitySkills` targets fan out
+  // to one `skill.<id>` Change per skill keyed to that ability (same pattern
+  // as the occultist Enchantment resonant power just above), since no
+  // `chaSkills`-style group target is actually consumed by `compute.ts`.
   const mediumLevel = doc.identity.classes.find((c) => c.tag === "medium")?.level ?? 0;
   if (mediumLevel > 0 && doc.live.mediumSpirit) {
     const spirit = MEDIUM_SPIRITS[doc.live.mediumSpirit];

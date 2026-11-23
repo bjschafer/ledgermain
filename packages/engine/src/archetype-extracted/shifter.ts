@@ -1,17 +1,15 @@
 /**
- * Shifter's slice of the pipeline. Shifter has no prior hand-authored or
- * extracted archetype content anywhere (`ARCHETYPE_FEATURE_EFFECTS` carries
- * zero `shifter:` keys), so this file establishes the class's slice from
- * scratch: every vendored shifter archetype feature (14 archetypes, 60
- * features) is read in full and bucketed as `numeric` / `situational` /
+ * Shifter's slice of the pipeline. Shifter has no hand-authored or extracted
+ * archetype content anywhere (`ARCHETYPE_FEATURE_EFFECTS` carries zero
+ * `shifter:` keys): every vendored shifter archetype feature (14 archetypes,
+ * 60 features) is read in full and bucketed as `numeric` / `situational` /
  * `subsystem` / `blocked`, and the `numeric` ones get a real `Change`-shaped
  * extraction. Per the per-class file convention (`index.ts`'s doc comment),
- * this file owns BOTH of shifter's pipeline artifacts, so a future wave
- * working on a different class never has a reason to touch this file; only
- * `index.ts` (the aggregator, a later integration step not done here) needs a
- * new import + spread line.
+ * this file owns BOTH of shifter's pipeline artifacts, so work on a different
+ * class never has a reason to touch this file; only `index.ts` (the
+ * aggregator) needs one new import + one new spread per class.
  *
- * ── Shifter-specific mechanical facts this pass relies on ─────────────────
+ * ── Shifter-specific mechanical facts this classification relies on ───────
  *
  * 1. **Shifter Aspect** (base L1) is an activated minor/major form system
  *    (minutes/day for minor forms). Any number that applies only while an
@@ -35,7 +33,7 @@
  *    reflavor tied to an activated aspect/form (fact 1 above), a player
  *    choice with no stored pick field (Adaptive Claws), or a rider (DR
  *    bypass, an attached economy) the natural-attack table's per-line shape
- *    can't express even though the base grant itself now can be.
+ *    can't express even though the base grant itself can be.
  * 4. **Defensive Instinct** (base L2) is the only base shifter feature whose
  *    vendored entry carries real `changes` (Wis mod + level/4 to ac/cmd).
  *    The one archetype feature replacing it (Wild Effigy's Heart of Earth)
@@ -527,10 +525,10 @@ export const SHIFTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
  * This table is deliberately SEPARATE from `archetype-effects.ts`'s
  * `ARCHETYPE_FEATURE_EFFECTS` (the hand-verified table) — every entry here
  * additionally carries `confidence`/`provenance` so a reviewer (or the UI)
- * can never confuse "a human read the rulebook and checked this" with "an
- * extraction pass inferred this from prose." Only 9 of shifter's 60 features
- * cleared the `numeric` bar (see `SHIFTER_ARCHETYPE_FEATURE_CLASSIFICATION`
- * above for the full per-feature audit) — shifter archetypes lean almost
+ * can never confuse "a human read the rulebook and checked this" with "a
+ * machine inferred this from prose." Only 9 of shifter's 60 features cleared
+ * the `numeric` bar (see `SHIFTER_ARCHETYPE_FEATURE_CLASSIFICATION` above
+ * for the full per-feature classification) — shifter archetypes lean almost
  * entirely on activated aspect/form stances and natural-attack profiles,
  * both of which stay classification-only (this file's header notes 1 and 3).
  *
@@ -542,7 +540,7 @@ export const SHIFTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
  *    `@attributes.encumbrance.level`) while a textually-present second
  *    condition (the nonmetal-armor material axis) can't be checked and is
  *    dropped — partial honesty, flagged in `detail`.
- *  - "low": not used in this pass (a would-be "low" is bucketed `blocked`).
+ *  - "low": not used here (a would-be "low" is bucketed `blocked`).
  */
 export const SHIFTER_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
   Record<string, ExtractedArchetypeFeatureEffect>

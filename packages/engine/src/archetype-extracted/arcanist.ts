@@ -1,45 +1,44 @@
 /**
  * Arcanist's slice of the pipeline. Per the per-class file convention
  * (documented in `index.ts`), this file owns
- * `ARCANIST_ARCHETYPE_FEATURE_CLASSIFICATION` (the full per-feature audit —
- * every feature of every vendored arcanist archetype, individually read
- * against `packages/data-pipeline/data/archetype-features.json`) plus an
- * `ARCANIST_ARCHETYPE_EFFECTS_EXTRACTED`.
+ * `ARCANIST_ARCHETYPE_FEATURE_CLASSIFICATION` (the full per-feature
+ * classification — every feature of every vendored arcanist archetype,
+ * individually read against `packages/data-pipeline/data/archetype-features.json`)
+ * plus an `ARCANIST_ARCHETYPE_EFFECTS_EXTRACTED`.
  *
  * **Result: of 15 vendored arcanist archetypes (52 features), only Elemental
  * Master's "Elemental Movement" classifies `numeric`** (a choose-one pick
  * among four flat movement grants, wired via the archetypeFeature PickChoice
  * mechanism) — every other feature classifies `subsystem`. This confirms, at
- * the individual-feature level, what the hand-verified table's audit already
- * concluded at the archetype level (`archetype-effects.ts`'s "Audited all 11
- * vendored arcanist archetypes..." comment predates 4 later-added archetypes;
- * School Savant recorded there as the representative no-Change entry): every
- * arcanist archetype reworks the arcane reservoir, arcanist exploits, or
- * spells-known/spell-list subsystems — none of which this engine models via
- * `Change` — rather than granting a flat, unconditional number. Elemental
- * Movement's own choice mechanism doesn't help the other archetypes: an
- * activated reservoir spend, a granted exploit, or a spell-list change has no
- * Change-shaped number regardless of which option a player picks.
+ * the individual-feature level, what `archetype-effects.ts`'s note on the 11
+ * vendored arcanist archetypes already concluded at the archetype level (it
+ * covers 11 of the 15 now vendored; School Savant is recorded there as the
+ * representative no-Change entry): every arcanist archetype reworks the
+ * arcane reservoir, arcanist exploits, or spells-known/spell-list subsystems —
+ * none of which this engine models via `Change` — rather than granting a
+ * flat, unconditional number. Elemental Movement's own choice mechanism
+ * doesn't help the other archetypes: an activated reservoir spend, a granted
+ * exploit, or a spell-list change has no Change-shaped number regardless of
+ * which option a player picks.
  *
  * The most common shapes seen: (1) an activated ability that spends 1+
  * points from the arcane reservoir for a scripted effect (debuff, spell
  * boost, reroll, summon, healing) — a resource + activation the engine
  * doesn't track; (2) a granted arcanist exploit (the exploit subsystem
- * itself has no engine hooks, confirmed by the pilot's round-2 note); (3) a
- * spells-known/spells-prepared/spell-list modification — no per-archetype
- * caster-model hook exists; (4) a player-choice-dependent grant (which
- * element, which bloodline, which card drawn) with no schema field to
- * record the choice, so no single Change could be selected safely even if
- * the underlying numbers were otherwise clean.
+ * itself has no engine hooks); (3) a spells-known/spells-prepared/spell-list
+ * modification — no per-archetype caster-model hook exists; (4) a
+ * player-choice-dependent grant (which element, which bloodline, which card
+ * drawn) with no schema field to record the choice, so no single Change could
+ * be selected safely even if the underlying numbers were otherwise clean.
  *
- * Roughly half this table's keys predate a later revision of the vendored
- * archetype data: most feature ids were re-slugged to drop their trailing
- * action-type tag (`eldritch-surge-su:3` -> `eldritch-surge:3`, etc.), and
- * the `arcanist:brown-fur-transmuter` archetype was removed outright. Those
- * older keys no longer match any entry in `archetype-features.json` and are
- * dead — harmlessly unreachable, since nothing looks them up — superseded by
- * the un-suffixed keys added alongside this comment. Left in place rather
- * than removed, since pruning dead keys isn't this pass's job.
+ * Roughly half this table's keys are stale ids from an earlier revision of
+ * the vendored archetype data: most feature ids were re-slugged to drop their
+ * trailing action-type tag (`eldritch-surge-su:3` -> `eldritch-surge:3`,
+ * etc.), and the `arcanist:brown-fur-transmuter` archetype is absent from the
+ * vendored data entirely. Those older keys match no entry in
+ * `archetype-features.json` and are dead — harmlessly unreachable, since
+ * nothing looks them up — with the un-suffixed keys carrying the real
+ * entries. Left in place rather than pruned.
  */
 
 import {
@@ -71,7 +70,7 @@ export const ARCANIST_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Bloodline",
     level: 1,
     bucket: "subsystem",
-    note: "grafts a full sorcerer bloodline subsystem (bloodline arcana + bloodline powers) onto the arcanist, replacing exploits at 1st/3rd/9th/15th and magical supremacy — same posture as the hand-verified table's Sorcerer of Sleep entry (archetype-effects.ts): the bloodline subsystem itself is hand-authored elsewhere (bloodlines.ts) with no archetype-swap awareness, out of scope for a single feature's Change.",
+    note: "grafts a full sorcerer bloodline subsystem (bloodline arcana + bloodline powers) onto the arcanist, replacing exploits at 1st/3rd/9th/15th and magical supremacy — same posture as the hand-verified table's Sorcerer of Sleep entry (archetype-effects.ts): the bloodline subsystem itself is hand-authored elsewhere (bloodlines.ts) with no archetype-swap awareness, so a single feature's Change can't express it.",
   },
   "arcanist:brown-fur-transmuter:powerful-change-su:3": {
     archetypeId: "arcanist:brown-fur-transmuter",
@@ -141,7 +140,7 @@ export const ARCANIST_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Elemental Attack (Su)",
     level: 3,
     bucket: "subsystem",
-    note: "grants a specific arcanist exploit tied to the chosen element — the arcanist exploit subsystem itself has no engine hooks (per the pilot's round-2 audit).",
+    note: "grants a specific arcanist exploit tied to the chosen element — the arcanist exploit subsystem itself has no engine hooks.",
   },
   "arcanist:elemental-master:powerful-exploit-su:9": {
     archetypeId: "arcanist:elemental-master",
@@ -162,7 +161,7 @@ export const ARCANIST_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Elemental Movement (Su)",
     level: 15,
     bucket: "subsystem",
-    note: "a stale, unreachable id from an earlier archetype-data revision (superseded by elemental-movement:15, which no longer matches any vendored feature under this exact key) — the wired choice lives on the canonical elemental-movement:15.",
+    note: "a stale, unreachable key: the vendored id is `elemental-movement:15`, and no vendored feature carries this `-su` key — the wired choice lives on the canonical `elemental-movement:15`.",
   },
   "arcanist:magaambyan-initiate:aura-of-good-ex:1": {
     archetypeId: "arcanist:magaambyan-initiate",
@@ -218,7 +217,7 @@ export const ARCANIST_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "School Focus (Su)",
     level: 1,
     bucket: "subsystem",
-    note: "hand-verified in archetype-effects.ts (issue #7) as a no-Change entry — the wizard-arcane-school grant would need a whole new cross-class feature-grant path, out of scope; not duplicated into this file's extracted table.",
+    note: "hand-verified in archetype-effects.ts (issue #7) as a no-Change entry — the wizard-arcane-school grant would need a whole new cross-class feature-grant path that doesn't exist; not duplicated into this file's extracted table.",
   },
   "arcanist:tarot-student:psychic-reader-ex:1": {
     archetypeId: "arcanist:tarot-student",
@@ -498,7 +497,7 @@ export const ARCANIST_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "School Focus",
     level: 1,
     bucket: "subsystem",
-    note: "hand-verified in archetype-effects.ts (issue #7) as a no-Change entry — the wizard-arcane-school grant would need a whole new cross-class feature-grant path, out of scope.",
+    note: "hand-verified in archetype-effects.ts (issue #7) as a no-Change entry — the wizard-arcane-school grant would need a whole new cross-class feature-grant path that doesn't exist.",
   },
   "arcanist:spell-specialist:dismiss-su:1": {
     archetypeId: "arcanist:spell-specialist",
@@ -610,8 +609,8 @@ export const ARCANIST_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
 /**
  * Elemental Master's "Elemental Movement" is the one arcanist feature
  * classified `numeric` — see this file's doc comment. Its vendored
- * description carries all four elements' numbers directly (no aonprd lookup
- * needed): "Air grants a fly speed of 90 feet (average maneuverability),
+ * description carries all four elements' numbers directly: "Air grants a fly
+ * speed of 90 feet (average maneuverability),
  * earth grants a burrow speed of 30 feet, fire grants a increase of 30 feet
  * to base land speed, and water grants a swim speed of 60 feet." Air/earth/
  * water are flat grants of a movement mode the character doesn't otherwise

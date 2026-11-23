@@ -94,7 +94,7 @@ export function collectWizardSchoolPowers(ctx: GrantedFeaturesContext): void {
     // still key off `schoolTag` unchanged, see `FocusedSchool` doc comment.
     // `FocusedSchool.features` is already the complete merged list (parent's
     // kept powers + its own), so it's used in place of, never alongside,
-    // `school.features`. A stale focus that no longer matches the current
+    // `school.features`. A stale focus that doesn't match the current
     // school (e.g. after `wizardSchool` changed without going through
     // `setWizardSchool`) falls back to the plain school's powers.
     const focused = doc.build.wizardFocusedSchool

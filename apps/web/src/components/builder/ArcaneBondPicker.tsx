@@ -22,8 +22,8 @@ interface ArcaneBondPickerProps {
  * default tracked familiar (`doc.build.familiar`) the first time so there's
  * one species picker, not two disagreeing ones. The familiar's master bonus
  * (hand-authored table in `@pf1/engine` familiars.ts) is applied from that
- * same tracked-familiar field (see `collect/familiars.ts`'s `collectTrackedFamiliar`) —
- * this picker no longer applies it a second time. A bonded object is recorded
+ * same tracked-familiar field (see `collect/familiars.ts`'s
+ * `collectTrackedFamiliar`), not from this picker. A bonded object is recorded
  * by name; its RAW mechanics (cast any spellbook spell 1/day; concentration DC
  * 20 + spell level when casting without it) are surfaced as text, not modeled
  * numerically.

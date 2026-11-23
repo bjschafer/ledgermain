@@ -6,7 +6,7 @@
  * (base stats: half master's HP, master's BAB, better-of saves/skills, the
  * master-level progression table) and the individual Bestiary "Animals"
  * entries this module's `BASE_FAMILIARS` table is drawn from (verified
- * against d20pfsrd.com during authoring; no Foundry source was consulted).
+ * against d20pfsrd.com; no Foundry source was consulted).
  * Foundry's GPL system code is never used as anything but a
  * behavioral oracle in tests, per the repo's clean-room discipline.
  *
@@ -95,11 +95,10 @@ export type FlyManeuverability = "clumsy" | "poor" | "average" | "good" | "perfe
 
 /**
  * Fly skill bonus granted by each maneuverability class (PF1 CRB "Fly":
- * clumsy −8, poor −4, average +0, good +4, perfect +8). The good/perfect
- * values were originally doubled (+8/+16) to make the bat's printed Fly +16
- * reconcile without ranks — a compensating error: the real decomposition is
- * RAW +4 plus the bat's own 1 invested rank (and the class-skill +3), which
- * `ownSkillRanks` now models directly.
+ * clumsy −8, poor −4, average +0, good +4, perfect +8). These are the RAW
+ * values: the bat's printed Fly +16 decomposes as +4 maneuverability, 1
+ * invested rank, and the +3 class-skill bonus, which `ownSkillRanks` models
+ * directly, so no doubling is needed here.
  */
 const FLY_MANEUVER_BONUS: Record<FlyManeuverability, number> = {
   clumsy: -8,
@@ -216,7 +215,7 @@ export interface BaseFamiliar {
    * printed stat block only reconciles with ranks — the familiar "whichever
    * is better" rule compares these against the master's ranks per skill.
    * Ranks, not totals: subtract the printed ability/size/racial/class-skill
-   * parts back out when authoring. Most standard animals carry none; every
+   * parts back out when modeling. Most standard animals carry none; every
    * improved species has its full printed allocation.
    */
   ownSkillRanks?: Record<string, number>;
@@ -231,7 +230,7 @@ export interface BaseFamiliar {
  * see the `rabbit` entry below for why that's the closest published option),
  * keyed by the same kind slugs `familiars.ts`/`build.arcaneBond.familiarKind`
  * use. Verified against d20pfsrd.com and legacy.aonprd.com's Ultimate Magic
- * "New Familiars" reference during authoring (see the module doc comment).
+ * "New Familiars" reference (see the module doc comment).
  *
  * The Ultimate Magic additions are printed as already-a-1st-level-familiar
  * stat blocks (Fort/Ref/Will already include the ability modifier); each

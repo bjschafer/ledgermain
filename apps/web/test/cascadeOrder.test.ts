@@ -48,15 +48,15 @@ describe.each(APPS)("cascade order ($name)", ({ src, css, allowed }) => {
 });
 
 /**
- * The detector is guarded too. Both earlier versions of this check returned a
- * clean sweep while blind to the bug that prompted it, and a passing run is
- * worthless if nothing proves the check can still fail.
+ * The detector is guarded too: a clean sweep is worthless unless something
+ * proves the check can still fail. The fixture below reproduces the bug this
+ * check exists for.
  */
 describe("the detector itself", () => {
   const el = (raw: string, where = "Fixture.tsx:1") => parseClassAttr(raw, where);
 
-  // The deeds defect: `.deed-row` dropped the caret gutter, but sat ~4500
-  // lines above the class it was overriding.
+  // The deeds fixture: `.deed-row` loses the caret gutter but sits ~4500
+  // lines above the class it overrides.
   const deedsElements = [el(`"cf-archetype-feature deed-row"`), el(`"cf-archetype-feature"`)];
 
   test("catches a modifier defined before its base", () => {

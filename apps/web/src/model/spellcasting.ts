@@ -81,16 +81,15 @@
  * Occultist is the one exception to every other spontaneous model here: it
  * has NO `knownProgression` at all, because the SRD publishes no generic
  * "Spells Known" table for it — an occultist's known spells are instead
- * granted entirely by her chosen implement schools (one spell per accessible
- * spell level per school), a subsystem that is NOT modeled (implements,
- * resonant powers, and focus powers — see `CASTER_MODELS.occultist`'s own
- * doc comment). Mesmerist Tricks (a resource pool) and Consummate Liar (a
- * flat Bluff bonus) ride the generic vendored `uses.maxFormula`/`changes[]`
- * pipeline for free; Painful Stare and Hypnotic Stare are hand-authored
- * display details in `tables.ts` (`painfulStareLabel`/`hypnoticStareLabel`,
- * wired into `resolveClassFeatures` in `packages/engine/src/archetypes.ts`).
- * The spiritualist's Phantom (an eidolon-like companion) is NOT modeled —
- * same deferred posture as the summoner's eidolon.
+ * granted by her chosen implement schools (one spell per accessible spell
+ * level per school), so her known-spell cap is doc-aware rather than
+ * class-level-only (see `CASTER_MODELS.occultist` and
+ * `model/occultistImplements.ts`). Mesmerist Tricks (a resource pool) and
+ * Consummate Liar (a flat Bluff bonus) ride the generic vendored
+ * `uses.maxFormula`/`changes[]` pipeline for free; Painful Stare and Hypnotic
+ * Stare are hand-authored display details in `tables.ts`
+ * (`painfulStareLabel`/`hypnoticStareLabel`, wired into
+ * `resolveClassFeatures` in `packages/engine/src/archetypes.ts`).
  */
 
 import {
@@ -1138,7 +1137,7 @@ export function bloodlineSpellsKnown(
  * These are *bonus* spells known — same "doesn't count against the cap"
  * status as {@link bloodlineSpellsKnown} — though, unlike that function's
  * caller, the current builder doesn't yet splice these into the known-spells
- * list UI (display-only preview via `BloodragerBloodlinePicker` for now).
+ * list UI (display-only preview via `BloodragerBloodlinePicker`).
  *
  * @example
  *   bloodragerBonusSpellsKnown(ref, "Abyssal", 10)

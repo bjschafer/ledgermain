@@ -1363,7 +1363,7 @@ describe("weapon/armor special abilities (Pf Data 1e import)", () => {
   });
 });
 
-describe("archetypes (Stage 11, third-party dataset — no archetype data in Foundry)", () => {
+describe("archetypes (third-party dataset — no archetype data in Foundry)", () => {
   it("vendors archetypes for all 44 sliced classes", () => {
     const tags = new Set(Object.values(ref.archetypes).map((a) => a.classTag));
     expect(tags).toEqual(

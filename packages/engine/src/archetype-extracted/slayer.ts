@@ -1,16 +1,15 @@
 /**
  * Slayer's slice of the pipeline. Every vendored archetype feature for the
  * class (26 slayer archetypes, 133 features) is read in full and bucketed as
- * `numeric` / `situational` / `subsystem` / `blocked`, following the exact
- * methodology the fighter/magus pilots validated. Per the per-class file
+ * `numeric` / `situational` / `subsystem` / `blocked`, following the
+ * methodology in `./fighter.ts`/`./magus.ts`. Per the per-class file
  * convention (`index.ts`'s doc comment), this file owns BOTH of slayer's
  * pipeline artifacts — `SLAYER_ARCHETYPE_EFFECTS_EXTRACTED` and
- * `SLAYER_ARCHETYPE_FEATURE_CLASSIFICATION` — so a future wave working on a
- * different class never has a reason to touch this file; only `index.ts` (the
- * aggregator, a later integration step not done here) needs a new import +
- * spread line.
+ * `SLAYER_ARCHETYPE_FEATURE_CLASSIFICATION` — so work on a different class
+ * never has a reason to touch this file; only `index.ts` (the aggregator)
+ * needs one new import + one new spread per class.
  *
- * ── Slayer-specific mechanical facts this pass relies on ──────────────────
+ * ── Slayer-specific mechanical facts this classification relies on ────────
  *
  * 1. **Studied Target** (the slayer's signature 1st-level ability, a scaling
  *    bonus on Bluff/Knowledge/Perception/Sense Motive/Survival checks and
@@ -42,9 +41,9 @@
  *    files were warned off of for resource pools.
  * 4. **Track/Quarry/Improved Quarry/Stalker/Swift Tracker/Slayer's
  *    Advance/Master Slayer** (the base features most of these archetypes
- *    replace) were checked directly against `class-features.json` before
- *    writing a single entry below: every one of them carries `changes: []`
- *    vendored — none is Change-shaped at all (Track and Quarry are
+ *    replace) were checked directly against `class-features.json`: every one
+ *    of them carries `changes: []` vendored — none is Change-shaped at all
+ *    (Track and Quarry are
  *    themselves narrowly scoped to "checks to follow/track" and would be
  *    `situational` near-misses if a hand-authored table ever covered the
  *    base class this way). There is therefore no risk of a replacement
@@ -67,7 +66,7 @@
  *    second textually-present detail (an accompanying ability grant, a
  *    speed-cap footnote) is dropped from the extracted Change and flagged in
  *    `detail`.
- *  - "low": not used in this pass.
+ *  - "low": not used here.
  */
 
 import {
@@ -1023,7 +1022,7 @@ export const SLAYER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Studied Witch",
     level: 0,
     bucket: "situational",
-    note: "the (unmodeled) Studied Target bonus now also applies to Spellcraft checks and saves vs. arcane magic, reduced by 1 against a non-arcane target — a real -1 modifier riding an unmodeled ability, see class note 1; alters Studied Target (changes:[])",
+    note: "the (unmodeled) Studied Target bonus also applies to Spellcraft checks and saves vs. arcane magic, reduced by 1 against a non-arcane target — a real -1 modifier riding an unmodeled ability, see class note 1; alters Studied Target (changes:[])",
   },
   "slayer:witch-killer:superstitous:0": {
     archetypeId: "slayer:witch-killer",
@@ -1076,10 +1075,10 @@ export const SLAYER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
  * This table is deliberately SEPARATE from `archetype-effects.ts`'s
  * `ARCHETYPE_FEATURE_EFFECTS` (the hand-verified table) — every entry here
  * additionally carries `confidence`/`provenance` so a reviewer (or the UI)
- * can never confuse "a human read the rulebook and checked this" with "an
- * extraction pass inferred this from prose." Only 5 of slayer's 133 features
- * cleared the `numeric` bar (see `SLAYER_ARCHETYPE_FEATURE_CLASSIFICATION`
- * above for the full per-feature audit).
+ * can never confuse "a human read the rulebook and checked this" with "a
+ * machine inferred this from prose." Only 5 of slayer's 133 features cleared
+ * the `numeric` bar (see `SLAYER_ARCHETYPE_FEATURE_CLASSIFICATION` above for
+ * the full per-feature classification).
  */
 export const SLAYER_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
   Record<string, ExtractedArchetypeFeatureEffect>

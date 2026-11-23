@@ -205,9 +205,9 @@ function TipBubble({
 /**
  * A tap-friendly info trigger: wraps `children` (the visible label/badge/icon)
  * and reveals `content` in a small popover on click/tap, Enter/Space, or
- * hover/focus. Use for load-bearing info that previously lived only in a
- * `title=` attribute on a non-interactive element (badges, chip breakdowns,
- * warning explanations) — invisible on touch devices with no hover.
+ * hover/focus. Use for load-bearing info that a `title=` attribute on a
+ * non-interactive element would hide (badges, chip breakdowns, warning
+ * explanations): a title is invisible on touch devices with no hover.
  *
  * Don't nest this inside another interactive element (e.g. a toggle
  * `<button>`) — the trigger renders `role="button"`, and nested interactive

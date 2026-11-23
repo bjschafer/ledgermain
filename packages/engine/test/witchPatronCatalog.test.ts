@@ -11,8 +11,8 @@ import {
 
 /**
  * Coverage for the vendored-catalog overlay — see `witch-patrons.ts`'s
- * "vendored catalog overlay" section doc comment for the collision-audit
- * narrative this asserts against.
+ * "vendored catalog overlay" section doc comment for the collision check this
+ * asserts against.
  */
 const ref = loadRefData();
 const spellNames = new Set(Object.values(ref.spells).map((sp) => sp.name.toLowerCase()));

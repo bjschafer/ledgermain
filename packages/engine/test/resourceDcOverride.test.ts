@@ -67,7 +67,7 @@ describe("deriveResourcePools abilityDCs override", () => {
 
     // Without the override, the pool's own detail independently evaluates the
     // vendored dcFormula and stays at the pre-modifier DC 15 (unaware of the
-    // abilityDC.channel change, same as before this wave).
+    // abilityDC.channel change).
     const withoutOverride = deriveResourcePools(doc, ref, sheet.abilities);
     expect(withoutOverride.find((p) => p.name === "Channel Energy")?.detail).toBe(
       "4d6 (DC 15 Will)",

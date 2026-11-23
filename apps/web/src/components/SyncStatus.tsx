@@ -17,11 +17,11 @@ export interface SyncStatusProps {
 }
 
 /**
- * The masthead's compact sync indicator. Renders
- * nothing when sync is disabled (no `VITE_API_URL` configured) — the
- * default, local-only experience is completely untouched by this component's
- * existence. States that need the player to act (an expired session, a
- * conflict) also get a `SyncBanner`; this only points at them.
+ * The masthead's compact sync indicator. Renders nothing when sync is disabled
+ * (no `VITE_API_URL` configured) — the default, local-only experience is
+ * completely untouched by this component's existence. States that need the
+ * player to act (an expired session, a conflict) also get a `SyncBanner`; this
+ * only points at them.
  */
 export function SyncStatus({ status, onSignIn, onSignOut }: SyncStatusProps) {
   if (status.kind === "disabled") return null;

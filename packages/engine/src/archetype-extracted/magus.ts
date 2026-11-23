@@ -1,20 +1,16 @@
 /**
- * Magus's slice of the pipeline (2026-07-06). Magus is a BRAND NEW class in
- * this repo as of this same date — there is no prior hand-authored or
- * extracted content for it anywhere, and no existing ids to avoid duplicating.
- * This file establishes magus's slice from scratch, repeating the exact
- * methodology the fighter pilot (`fighter.ts`) already validated: every
- * vendored archetype feature for the class (39 magus archetypes, 170 features)
- * is read in full and bucketed as `numeric` / `situational` / `subsystem` /
- * `blocked`, and the `numeric` ones get a real `Change`-shaped extraction. Per
- * the per-class file convention (`index.ts`'s doc comment), this file owns
- * BOTH of magus's pipeline artifacts — `MAGUS_ARCHETYPE_EFFECTS_EXTRACTED` and
- * `MAGUS_ARCHETYPE_FEATURE_CLASSIFICATION` — so a future wave working on a
- * different class never has a reason to touch this file; only `index.ts` (the
- * aggregator, a later integration step not done here) needs a new import +
- * spread line.
+ * Magus's slice of the pipeline. Every vendored archetype feature for the
+ * class (39 magus archetypes, 170 features) is read in full and bucketed as
+ * `numeric` / `situational` / `subsystem` / `blocked`, and the `numeric` ones
+ * get a real `Change`-shaped extraction, following the methodology in
+ * `./fighter.ts`. Per the per-class file convention (`index.ts`'s doc
+ * comment), this file owns BOTH of magus's pipeline artifacts —
+ * `MAGUS_ARCHETYPE_EFFECTS_EXTRACTED` and
+ * `MAGUS_ARCHETYPE_FEATURE_CLASSIFICATION` — so work on a different class
+ * never has a reason to touch this file; only `index.ts` (the aggregator)
+ * needs one new import + one new spread per class.
  *
- * ── Magus-specific mechanical facts this pass relies on ───────────────────
+ * ── Magus-specific mechanical facts this classification relies on ─────────
  *
  * 1. **Arcane Pool** (base L1 feature) rides a real vendored
  *    `uses.maxFormula: "max(1, floor(@class.unlevel / 2)) + @abilities.int.mod"`,
@@ -39,10 +35,10 @@
  *
  * Every `numeric` and `blocked` entry below carries its own reasoning either
  * inline (classification `note`) or in `MAGUS_ARCHETYPE_EFFECTS_EXTRACTED`'s
- * `provenance`. The `situational`/`subsystem` split for the bulk was done by
- * reading every one of the 150 features individually (small enough to do
- * exhaustively, unlike fighter's 383) rather than a heuristic pass — see each
- * entry's `note` for the specific reason it didn't clear the `numeric` bar.
+ * `provenance`. The `situational`/`subsystem` split for the bulk came from
+ * reading every one of the 170 features individually (small enough to read
+ * exhaustively) rather than by heuristic — see each entry's `note` for the
+ * specific reason it didn't clear the `numeric` bar.
  */
 
 import {
@@ -867,7 +863,7 @@ export const MAGUS_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Armor Mastery",
     level: 20,
     bucket: "numeric",
-    note: "DR 5/— while wearing any armor, replaces true magus — a clean @armor.type>=1 check, safe now that zero-value DR qualifiers are dropped before rendering (see the dr-at-0 fix note)",
+    note: "DR 5/— while wearing any armor, replaces true magus — a clean @armor.type>=1 check, safe because zero-value DR qualifiers are dropped before rendering (see the dr-at-0 fix note)",
   },
   "magus:myrmidarch:armor-training:8": {
     archetypeId: "magus:myrmidarch",
@@ -1336,10 +1332,10 @@ export const MAGUS_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
  * This table is deliberately SEPARATE from `archetype-effects.ts`'s
  * `ARCHETYPE_FEATURE_EFFECTS` (the hand-verified table) — every entry here
  * additionally carries `confidence`/`provenance` so a reviewer (or the UI)
- * can never confuse "a human read the rulebook and checked this" with "an
- * extraction pass inferred this from prose." Only 8 of magus's 170 features
- * cleared the `numeric` bar (see `MAGUS_ARCHETYPE_FEATURE_CLASSIFICATION`
- * above for the full per-feature audit) — magus's kit leans heavily on
+ * can never confuse "a human read the rulebook and checked this" with "a
+ * machine inferred this from prose." Only 8 of magus's 170 features cleared
+ * the `numeric` bar (see `MAGUS_ARCHETYPE_FEATURE_CLASSIFICATION` above for
+ * the full per-feature classification) — magus's kit leans heavily on
  * arcane-pool spend-options, magus arcana, and prose-only spell-combat/
  * spellstrike upgrades, all of which are deferred subsystems in this engine
  * today (see this file's header doc comment).
@@ -1354,7 +1350,7 @@ export const MAGUS_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
  *    while a second, textually-present condition (a shield, encumbrance,
  *    immobilization) can't be checked and is dropped — partial honesty,
  *    flagged in `detail`.
- *  - "low": not used in this pass.
+ *  - "low": not used here.
  */
 export const MAGUS_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
   Record<string, ExtractedArchetypeFeatureEffect>
@@ -1381,11 +1377,11 @@ export const MAGUS_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
   // dodge bonus while lightly armored or unarmored — @armor.type<=1 is
   // checkable; the shield/immobilized/helpless/overloaded exclusions are a
   // second condition the engine can't check and are dropped here (flagged
-  // in detail, same posture as Free-Hand Fighter's Elusive in the fighter
-  // pilot). Dodge-type AC bonuses auto-flow into CMD too (compute.ts's
-  // CMD_AC_TYPES includes "dodge"), so a single "ac" Change covers both
-  // halves of the prose ("+1 dodge bonus to AC and CMD") without a
-  // duplicate "cmd" entry.
+  // in detail, same posture as Free-Hand Fighter's Elusive in
+  // `./fighter.ts`). Dodge-type AC bonuses auto-flow into CMD too
+  // (compute.ts's CMD_AC_TYPES includes "dodge"), so a single "ac" Change
+  // covers both halves of the prose ("+1 dodge bonus to AC and CMD")
+  // without a duplicate "cmd" entry.
   "magus:esoteric:ac-bonus:7": {
     changes: [c("if(lte(@armor.type, 1), if(gte(@class.unlevel, 13), 2, 1), 0)", "ac", "dodge")],
     detail: (level) =>
@@ -1418,9 +1414,9 @@ export const MAGUS_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
   // modifier the sheet already applies — a clean, always-on addition to the
   // "init" target. The accompanying "may make attacks of opportunity when
   // flat-footed, and may draw as a free action" half is a distinct ability
-  // grant (not a number) and is dropped, same posture as the fighter
-  // pilot's "eldritch-armor-training" entry (a clean number kept at "high"
-  // confidence despite a secondary non-numeric grant being noted, not
+  // grant (not a number) and is dropped, same posture as
+  // `./fighter.ts`'s "eldritch-armor-training" entry (a clean number kept at
+  // "high" confidence despite a secondary non-numeric grant being noted, not
   // modeled).
   "magus:kensai:iaijutsu:7": {
     changes: [c("max(0, @abilities.int.mod)", "init")],
@@ -1434,9 +1430,9 @@ export const MAGUS_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
   // Myrmidarch's "Armor Mastery" (replacing true magus at 20th) grants a
   // flat DR 5/— whenever the myrmidarch is wearing any armor — a single,
   // checkable @armor.type>=1 condition, safe to author as a conditional dr
-  // Change now that zero-value dr/eres/spellResist qualifiers are dropped
-  // before rendering (2026-07-06 defenses.ts fix, see the fighter pilot's
-  // Warlord/Sun-Bronzed Skin entry for the precedent).
+  // Change because zero-value dr/eres/spellResist qualifiers are dropped
+  // before rendering (see `./fighter.ts`'s Warlord/Sun-Bronzed Skin entry for
+  // the precedent).
   "magus:myrmidarch:armor-mastery:20": {
     changes: [c("if(gte(@armor.type, 1), 5, 0)", "dr")],
     detail: () => "DR 5/— (while wearing armor)",
@@ -1447,7 +1443,7 @@ export const MAGUS_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
   // Myrmidarch's own "Armor Training" (replacing improved spell combat and
   // greater spell combat, both prose-only) grants the fighter ability on a
   // reduced 2-tier cadence: tier 1 at 8th, tier 2 at 14th, with no further
-  // scaling stated — same shape as the fighter pilot's Cyber-Soldier/
+  // scaling stated — same shape as `./fighter.ts`'s Cyber-Soldier/
   // Mobile-Fighter/Tactician 2-tier Armor Training reflavors.
   "magus:myrmidarch:armor-training:8": {
     changes: [

@@ -11,13 +11,11 @@ import {
 } from "../src/index.js";
 
 /**
- * fixture
- * tests for `archetype-effects-extracted.ts`, hand-computed against the real
- * vendored data slice via `loadRefData`, same posture as
+ * Fixture tests for `archetype-effects-extracted.ts`, hand-computed against the
+ * real vendored data slice via `loadRefData`, same posture as
  * `archetypeEffects.test.ts`. Each expectation is derived straight from the
- * published PF1 rules cited (as `provenance`) in the extracted table's entries
- * — these hand computations ARE this pilot's spot-verification pass for the
- * entries they cover.
+ * published PF1 rules cited (as `provenance`) in the extracted table's
+ * entries; these hand computations spot-verify the entries they cover.
  */
 const ref = loadRefData();
 
@@ -250,7 +248,7 @@ describe("Swarm Fighter (fighter): Athletic Prowess grants a general Acrobatics/
   });
 });
 
-describe("Warlord (fighter): Sun-Bronzed Skin grants conditional DR (issue #45 finding 2, promoted after the dr-at-0 fix)", () => {
+describe("Warlord (fighter): Sun-Bronzed Skin grants conditional DR", () => {
   const warlord = archetypeId("Warlord");
 
   it("DR 5/— at L19 while unarmored", () => {

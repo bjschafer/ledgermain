@@ -317,8 +317,8 @@ export interface TraitDef {
   /**
    * Limited-use resource, mirroring `Feat.uses`/`RacialTrait.uses` — a
    * once-per-day campaign/faction trait like "A Sure Thing". Vendored catalog
-   * entries only (~290 of the 1,998 `RefData.traits` carry it); the 28
-   * hand-authored entries have none.
+   * entries only (a minority carry it); the 28 hand-authored entries have
+   * none.
    */
   uses?: { maxFormula?: string; per?: string };
 }

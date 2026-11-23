@@ -26,7 +26,7 @@
  *
  * Qualifier normalization exists because the same qualifier was reachable
  * under two spellings: hand-authored engine content emits `dr.cold-iron`
- * (kebab) while the web app's Change-authoring form offered `dr.coldIron`
+ * (kebab) while the web app's Change form accepted `dr.coldIron`
  * (camel). `defenses.ts` grouped on the raw post-dot string, so a character
  * with both sources showed two DR seals instead of taking the single highest
  * — the exact stacking rule that module exists to enforce. Normalizing on

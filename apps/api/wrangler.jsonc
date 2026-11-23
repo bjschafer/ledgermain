@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  // Stage 5 persistence Worker (DESIGN.md §2.1). Dumb persistence only — never
+  // Persistence Worker. Dumb persistence only — never
   // computes or interprets game data, beyond the envelope fields
   // (ownerId/version/updatedAt) CharacterDoc already carries for optimistic
   // concurrency. See README.md for the remaining owner-side deploy step

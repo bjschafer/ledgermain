@@ -210,7 +210,7 @@ describe("Devout Visionary (deliberately partial: dazed has no category)", () =>
   });
 });
 
-describe("Blood Algorithm (Android) (newly promoted: the pain descriptor, Fortitude and Will)", () => {
+describe("Blood Algorithm (Android) (the pain descriptor, Fortitude and Will)", () => {
   const id = traitIdByName("Blood Algorithm (Android)");
   const base = compute(makeDoc(), ref);
   const withTrait = compute(makeDoc([id]), ref);
@@ -232,7 +232,7 @@ describe("Blood Algorithm (Android) (newly promoted: the pain descriptor, Fortit
   });
 });
 
-describe("Repel Sin (Tiefling; The Motherless) (newly promoted: the evil descriptor)", () => {
+describe("Repel Sin (Tiefling; The Motherless) (the evil descriptor)", () => {
   const id = traitIdByName("Repel Sin (Tiefling; The Motherless)");
   const base = compute(makeDoc(), ref);
   const withTrait = compute(makeDoc([id]), ref);
@@ -254,12 +254,12 @@ describe("Repel Sin (Tiefling; The Motherless) (newly promoted: the evil descrip
   });
 });
 
-describe("Driven By Guilt (Strange Aeons) (newly promoted: evil creatures as a source, not a type)", () => {
+describe("Driven By Guilt (Strange Aeons) (evil creatures as a source, not a type)", () => {
   const id = traitIdByName("Driven By Guilt (Strange Aeons)");
   const base = compute(makeDoc(), ref);
   const withTrait = compute(makeDoc([id]), ref);
 
-  it("promotes only the save half, on all three saves; the once-per-day attack/damage rider stays prose", () => {
+  it("covers only the save half, on all three saves; the once-per-day attack/damage rider stays prose", () => {
     // Human, no ability adjustments: Fort 2, Ref 0, Will 0 (fighter L1: good
     // Fort +2, poor Ref/Will +0). "Evil creatures" names no creature TYPE
     // (unlike "evil outsiders" or "devils"), so the plain `evil` key applies

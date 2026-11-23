@@ -66,7 +66,7 @@ describe("ROGUE_TALENTS table", () => {
     expect(ROGUE_TALENTS.finesseRogue!.grantsFeat).toBe("weapon finesse");
   });
 
-  it("the Phase 5 grantsFeat promotions carry vendored-verified feat names", () => {
+  it("the promoted grantsFeat entries carry vendored-verified feat names", () => {
     // Strong Impression (APG p.131), Unbalancing Trick (Elemental Master's
     // Handbook p.9), Thrill of the Chase (Inner Sea Intrigue p.32) — each
     // grant is unconditional, no player choice.

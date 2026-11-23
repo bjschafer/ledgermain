@@ -1,17 +1,15 @@
 /**
  * Cavalier's slice of the pipeline. Every vendored cavalier archetype (37
  * archetypes, 190 features) was read in full and bucketed as `numeric` /
- * `situational` / `subsystem` / `blocked`, following the exact methodology
- * the fighter pilot (`fighter.ts`) and magus pass (`magus.ts`) already
- * validated. Per the per-class file convention (`index.ts`'s doc comment),
- * this file owns BOTH of cavalier's pipeline artifacts —
+ * `situational` / `subsystem` / `blocked`, following the methodology in
+ * `fighter.ts` and `magus.ts`. Per the per-class file convention (`index.ts`'s
+ * doc comment), this file owns BOTH of cavalier's pipeline artifacts —
  * `CAVALIER_ARCHETYPE_EFFECTS_EXTRACTED` and
- * `CAVALIER_ARCHETYPE_FEATURE_CLASSIFICATION` — so a future wave working on
- * a different class never has a reason to touch this file; only `index.ts`
- * (the aggregator, a later integration step not done here) needs a new
- * import + spread line.
+ * `CAVALIER_ARCHETYPE_FEATURE_CLASSIFICATION` — so work on a different class
+ * never has a reason to touch this file; only `index.ts` (the aggregator)
+ * needs a new import + spread line.
  *
- * ── Cavalier-specific mechanical facts this pass relies on ────────────────
+ * ── Cavalier-specific mechanical facts this classification relies on ──────
  *
  * 1. **Mount** (base L1 feature) and every archetype's own mount/companion
  *    reflavor (drake, plant, vermin, dinosaur, ghost phantom, ...) are
@@ -20,9 +18,9 @@
  *    `situational`, never extracted — the same posture familiars/animal
  *    companions get elsewhere in this engine.
  * 2. **Order** is a modeled pick-list subsystem (`cavalier-orders.ts`),
- *    deliberately display-only per a prior audit (order skills, the
- *    Challenge rider, and the 2nd/8th/15th order abilities are all prose
- *    summaries, `displayOnly: true`, no Change anywhere). Any archetype
+ *    deliberately display-only (order skills, the Challenge rider, and the
+ *    2nd/8th/15th order abilities are all prose summaries,
+ *    `displayOnly: true`, no Change anywhere). Any archetype
  *    feature that swaps, restricts, or modifies an order (or its abilities)
  *    is `subsystem`.
  * 3. **Challenge** (base L1 feature) is per-target and per-use: the
@@ -40,8 +38,8 @@
  *    archetype that only changes WHO benefits (hunting pack only) or WHAT
  *    named feats are shared is `subsystem`; one that reschedules the
  *    resource's own daily-use cadence is `blocked` (same double-count-risk
- *    class as Arcane Pool's size — see the known traps list) since there is
- *    no Change target for a resource pool's own use-count.
+ *    class as Arcane Pool's size) since there is no Change target for a
+ *    resource pool's own use-count.
  * 5. **Banner** / **Greater Banner** are ally-only per the project's
  *    standing ruling (`class-feature-effects.ts`'s "Deliberately NOT
  *    promoted" list) — every archetype's banner reflavor (badge, crest,
@@ -197,7 +195,7 @@ export const CAVALIER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Sentence",
     level: 1,
     bucket: "subsystem",
-    note: "replaces challenge with an inquisitor-judgment grant (destruction/justice/protection/purity/smiting) — judgments are a deferred subsystem, not a Change-shaped number",
+    note: "replaces challenge with an inquisitor-judgment grant (destruction/justice/protection/purity/smiting) — judgments are an unmodeled subsystem, not a Change-shaped number",
   },
 
   // ── cavalier:constable ──
@@ -391,7 +389,7 @@ export const CAVALIER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Cavalier's charge",
     level: 9,
     bucket: "situational",
-    note: "delayed grant of the base +4-charge-attack/no-AC-penalty ability — per-charge, mounted condition; the vendored description text still says \"At 3rd level\" despite this id's own level being 9 (drake-mount's own text confirms the delay to 9th), an internally inconsistent copy-paste this pass records rather than guesses around",
+    note: "delayed grant of the base +4-charge-attack/no-AC-penalty ability — per-charge, mounted condition; the vendored description text still says \"At 3rd level\" despite this id's own level being 9 (drake-mount's own text confirms the delay to 9th), an internally inconsistent copy-paste, recorded rather than guessed around",
   },
   "cavalier:drakerider:drake-mount:1": {
     archetypeId: "cavalier:drakerider",
@@ -1501,9 +1499,9 @@ export const CAVALIER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
  * extraction pass inferred this from prose." Only 9 of cavalier's 190
  * features cleared the `numeric` bar (see
  * `CAVALIER_ARCHETYPE_FEATURE_CLASSIFICATION` above for the full per-feature
- * audit) — cavalier's kit is dominated by mount/order/banner/challenge/
- * tactician reflavors, all deliberately unmodeled subsystems in this engine
- * today (see this file's header doc comment).
+ * classification) — cavalier's kit is dominated by mount/order/banner/
+ * challenge/tactician reflavors, all deliberately unmodeled subsystems in this
+ * engine today (see this file's header doc comment).
  *
  * Confidence rubric (identical to fighter.ts's/magus.ts's):
  *  - "high": a literal or near-literal reflavor of an already-modeled base
@@ -1514,7 +1512,7 @@ export const CAVALIER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
  *    engine CAN check (`@armor.type`/`@attributes.encumbrance.level`) while
  *    a second, textually-present clause can't be checked and is dropped —
  *    partial honesty, flagged in `detail`.
- *  - "low": not used in this pass.
+ *  - "low": not used here.
  */
 export const CAVALIER_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
   Record<string, ExtractedArchetypeFeatureEffect>
@@ -1544,8 +1542,8 @@ export const CAVALIER_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
   // Constable's "Apprehend" (Ultimate Intrigue) mixes an unconditional
   // Perception bonus with a combat-maneuver-check bonus scoped to disarm/
   // grapple/trip specifically — only the Perception half is extracted (no
-  // per-maneuver CMB target exists, same mixed-feature posture the fighter
-  // pilot and magus pass both used).
+  // per-maneuver CMB target exists, the same mixed-feature posture
+  // `fighter.ts` and `magus.ts` use).
   "cavalier:constable:apprehend:1": {
     changes: [c("if(gte(@class.unlevel, 2), 1 + floor((@class.unlevel - 2) / 5), 0)", "skill.per")],
     detail: (level) =>

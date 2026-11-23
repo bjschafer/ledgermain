@@ -6,15 +6,15 @@ import { loadRefData } from "@pf1/data-pipeline";
 import { compute } from "../src/index.js";
 
 /**
- * Fixture tests for this wave's `CLASS_FEATURE_NATURAL_ATTACKS`/
+ * Fixture tests for the `CLASS_FEATURE_NATURAL_ATTACKS`/
  * `ARCHETYPE_FEATURE_NATURAL_ATTACKS` entries (`pc-natural-attacks/
  * class-archetype.ts`), run end-to-end through `compute()` against the real
  * vendored data slice (`pcNaturalAttacks.test.ts` already covers the
  * resolver's own math with synthetic tables — this file exercises the real
- * content). Also covers this wave's two adjacent fixes that ride the same
- * `compute()` harness: Storm Caller's Storm's Wings (an archetype-extracted
- * `flySpeed` Change, not a natural-attack grant) and one `immEffect.
- * polymorph` bloodline-power fixture.
+ * content). Also covers two adjacent fixes that ride the same `compute()`
+ * harness: Storm Caller's Storm's Wings (an archetype-extracted `flySpeed`
+ * Change, not a natural-attack grant) and one `immEffect.polymorph`
+ * bloodline-power fixture.
  */
 const ref = loadRefData();
 

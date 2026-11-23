@@ -2,9 +2,9 @@
  * `targets.ts` is a hand-maintained allowlist of the `Change.target` strings
  * `compute()` actually consumes. A change aimed at anything else is collected
  * by `collectModifiers` and then dropped on the floor: no number reaches the
- * sheet, no error, no test failure. The Wasting curse shipped a `chaSkills`
- * target that did nothing for months, and the shifter Mantis aspect shipped a
- * `reach` one; both were found by reading, not by a check.
+ * sheet, no error, no test failure. Past examples: the Wasting curse's
+ * `chaSkills` target and the shifter Mantis aspect's `reach` target both did
+ * nothing until someone read the code.
  *
  * This walks every hand-authored `Change` literal in `src/` with oxc's
  * parser and fails on any target the allowlist doesn't cover. The

@@ -14,7 +14,7 @@
  *
  * Both tables are hand-verified against the vendored `racial-traits.json`/
  * `races.json` description text (or, for the seven core races' own
- * `RACIAL_TRAITS` alternates, that hand table's own text) during authoring —
+ * `RACIAL_TRAITS` alternates, that hand table's own text) —
  * dice sizes and the primary/secondary call are quoted, not assumed, because
  * the standard "1d4 claw" guess is wrong about as often as it's right (a 1d3
  * bite is common on Small-adjacent or minor-natural-weapon races).
@@ -84,7 +84,7 @@ export const RACE_NATURAL_ATTACKS: Readonly<Record<string, readonly RaceNaturalA
   // attacks (1d4 points of damage each)". Suppressed by the vendored "Hag
   // Magic (AoE)" trait, whose own `replacedTraitNames` names `"Claws"`
   // exactly (already documented as prose-only in `racial-traits.ts`'s own
-  // suppression audit — this is its numeric half).
+  // suppression mapping — this is its numeric half).
   Changeling: [
     {
       slug: "claws",

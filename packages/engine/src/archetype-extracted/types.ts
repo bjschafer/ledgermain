@@ -1,7 +1,7 @@
 /**
  * Shared types + a tiny `Change`-building helper for the per-class
- * extracted-effects / classification-audit files in this directory (pipeline).
- * Kept separate from any single class's file so a wave agent adding a new
+ * extracted-effects / classification files in this directory (pipeline).
+ * Kept separate from any single class's file so adding a new
  * class never has to touch this file — only `index.ts` (the aggregator) needs
  * a line per new class. See `index.ts`'s doc comment for the full per-class
  * file convention.
@@ -14,7 +14,7 @@ import type { ArchetypeFeatureEffect } from "../archetype-effects.js";
 export type ExtractionConfidence = "high" | "medium" | "low";
 
 export interface ExtractedArchetypeFeatureEffect extends ArchetypeFeatureEffect {
-  /** How confident the extraction pass is in this entry — see each class file's rubric. */
+  /** How confident the extraction is in this entry — see each class file's rubric. */
   confidence: ExtractionConfidence;
   /** The exact source sentence(s) the number(s) were extracted from. */
   provenance: string;

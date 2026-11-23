@@ -51,9 +51,8 @@ export interface ChannelVariantDef {
 }
 
 /**
- * See the module doc comment. Entries beyond the seeded first one are
- * authored by the channel content wave; the fiendish vessel is the
- * coordinator-authored pattern entry.
+ * See the module doc comment. Entries beyond the seeded first one follow the
+ * fiendish vessel's pattern.
  */
 export const CHANNEL_VARIANTS: Readonly<Record<string, ChannelVariantDef>> = {
   // Channel Evil (Cheliax, Empire of Devils p.21, verified via aonprd): d4s

@@ -18,22 +18,18 @@ import {
 /**
  * The brawler slice of the prose->Change extraction pipeline.
  *
- * TEST APPROACH: this class's aggregator wiring (`archetype-extracted/index.ts`)
- * is a later integration step this pass doesn't touch, so
- * `resolveArchetypeFeatureEffect`/`compute` do NOT pick up this file's tables
- * yet through the normal production path. These fixtures therefore (1) assert
- * directly against `BRAWLER_ARCHETYPE_EFFECTS_EXTRACTED`'s exported `changes`
- * shape, (2) hand-compute each formula via the real `formula.ts` evaluator
+ * These fixtures assert directly against
+ * `BRAWLER_ARCHETYPE_EFFECTS_EXTRACTED`'s exported `changes` shape,
+ * hand-compute each formula via the real `formula.ts` evaluator
  * (`evaluateFormula`) against the exact published-rules numbers cited in each
- * entry's `provenance`, and (3) verify `resolveArchetypeFeatureEffect`
- * resolves correctly when explicitly given this file's tables as its override
+ * entry's `provenance`, and verify `resolveArchetypeFeatureEffect` resolves
+ * correctly when explicitly given this file's tables as its override
  * arguments. `loadRefData` sanity-checks that every id this file references
- * actually exists in the real vendored data slice, same posture as
- * `archetypeExtractedMagus.test.ts`.
+ * actually exists in the real vendored data slice.
  */
 const ref = loadRefData();
 
-/** The same normalization the sweep's batch files used: tags out, whitespace squashed. */
+/** The same normalization the extraction used: tags out, whitespace squashed. */
 function strippedDescription(html: string): string {
   return html
     .replace(/<[^>]+>/g, " ")
@@ -76,16 +72,15 @@ describe("BRAWLER_ARCHETYPE_FEATURE_CLASSIFICATION: coverage", () => {
     expect(audited.size).toBe(19);
   });
 
-  it("bucket counts match this pass's audit: 3 numeric, 16 situational, 39 subsystem, 4 blocked", () => {
+  it("bucket counts match the classification: 3 numeric, 16 situational, 39 subsystem, 4 blocked", () => {
     const counts = { numeric: 0, situational: 0, subsystem: 0, blocked: 0 };
     for (const entry of Object.values(BRAWLER_ARCHETYPE_FEATURE_CLASSIFICATION)) {
       counts[entry.bucket]++;
     }
-    // +1 numeric vs. the prior audit: Winding Path Renegade's School Focus (the
-    // canonical id for the archetype's choose-one mystery pick) promoted once
-    // the archetypeFeature PickChoice mechanism existed to record which
-    // mystery was taken. The three mystery sibling ids move from situational
-    // to subsystem (the pick and any wired branch live on School Focus now).
+    // School Focus (the canonical id for the archetype's choose-one mystery
+    // pick) is numeric because the archetypeFeature PickChoice mechanism
+    // records which mystery was taken. The three mystery sibling ids are
+    // subsystem (the pick and any wired branch live on School Focus).
     expect(counts).toEqual({ numeric: 3, situational: 16, subsystem: 39, blocked: 4 });
   });
 
@@ -307,7 +302,7 @@ describe("blocked bucket: base-feature double-count and copy-paste traps, record
     expect(entry?.bucket).toBe("blocked");
     const feature = ref.archetypeFeatures["brawler:snakebite-striker:opportunist:11"];
     expect(feature?.level).toBe(11);
-    // The internal inconsistency this pass recorded: an 11th-level feature
+    // An internal inconsistency in the vendored data: an 11th-level feature
     // whose text opens with the 3rd-level maneuver-training boilerplate.
     expect(
       strippedDescription(feature!.description ?? "").startsWith(

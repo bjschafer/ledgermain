@@ -12,10 +12,9 @@ import {
 /**
  * Coverage for the vendored-catalog overlay — see `psychic-disciplines.ts`'s
  * "vendored catalog overlay" section doc comment. A discipline is a CHASSIS
- * (bonus spells/Discipline Powers/pool ability); now that all 23 published
- * disciplines are hand-authored, the merge produces zero `vendoredOnly: true`
- * rows in practice, but the shape stays covered for the (hypothetical)
- * unmatched case.
+ * (bonus spells/Discipline Powers/pool ability); all 23 published disciplines
+ * are hand-authored, so the merge produces zero `vendoredOnly: true` rows in
+ * practice, but the shape stays covered for the (hypothetical) unmatched case.
  */
 const ref = loadRefData();
 
@@ -58,7 +57,7 @@ describe("resolvePsychicDiscipline", () => {
     expect(entry?.name).toBe("Abomination");
   });
 
-  it("resolves a formerly-vendored-only splatbook discipline through the hand-authored table now", () => {
+  it("resolves a vendored-only splatbook discipline through the hand-authored table", () => {
     const entry = resolvePsychicDiscipline("mindtech", ref);
     expect(entry?.vendoredOnly).toBe(false);
     expect(entry?.name).toBe("Mindtech");

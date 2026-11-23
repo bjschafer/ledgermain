@@ -37,7 +37,7 @@ describe("mergedRogueTalentCatalog", () => {
   });
 
   it("no vendored-only talents remain — the fallback path only exists for a future data bump", () => {
-    // Full hand-table parity as of the last catalog extension.
+    // Full hand-table parity.
     for (const entry of merged) {
       expect(ROGUE_TALENTS[entry.id], entry.id).toBeDefined();
     }

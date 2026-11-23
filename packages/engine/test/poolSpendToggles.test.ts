@@ -6,15 +6,13 @@ import { loadRefData } from "@pf1/data-pipeline";
 import { compute, deriveResourcePools } from "../src/index.js";
 
 /**
- * Mechanism-only fixture: with every ki/arcane/grit/panache/
- * sacred-weapon/mental-focus pool-spend table still empty (content lands in a
- * later wave — see ki-spends.ts/arcane-spends.ts/grit-panache-spends.ts/
- * sacred-weapon-spends.ts/mental-focus-spends.ts), a pool wired to one of
- * these tags must derive with `tableOptions` left `undefined`, not `[]` — the
- * tracker's resources panel renders a toggle section only when `tableOptions`
- * is present, so an attached empty array would show a blank section. Content
- * agents extend this file with their own fixture tests once the tables carry
- * real entries.
+ * Mechanism contract for the ki/arcane/grit/panache/sacred-weapon/mental-focus
+ * pool-spend tables (see ki-spends.ts/arcane-spends.ts/grit-panache-spends.ts/
+ * sacred-weapon-spends.ts/mental-focus-spends.ts): a pool wired to one of these
+ * tags must derive with real `tableOptions`; a factory with nothing to offer
+ * must leave `tableOptions` `undefined`, not `[]` — the tracker's resources
+ * panel renders a toggle section only when `tableOptions` is present, so an
+ * attached empty array would show a blank section.
  */
 const ref = loadRefData();
 

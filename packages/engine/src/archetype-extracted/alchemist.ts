@@ -1,12 +1,12 @@
 /**
- * Alchemist's slice of the pipeline (2026-08-08). 219 vendored archetype
+ * Alchemist's slice of the pipeline. 219 vendored archetype
  * features across every alchemist archetype in the data pull, read
  * individually and bucketed as `numeric` / `situational` / `subsystem` /
  * `blocked` per the per-class file convention (`index.ts`'s doc comment).
  * This file owns BOTH `ALCHEMIST_ARCHETYPE_EFFECTS_EXTRACTED` and
  * `ALCHEMIST_ARCHETYPE_FEATURE_CLASSIFICATION`.
  *
- * ── Alchemist-specific mechanical facts this pass relies on ───────────────
+ * ── Alchemist-specific mechanical facts this classification relies on ─────
  *
  * 1. **Discoveries** are a modeled pick-list subsystem
  *    (`alchemist-discoveries.ts`). Any feature that adds, swaps, or
@@ -1368,7 +1368,7 @@ export const ALCHEMIST_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Ooze resistance",
     level: 2,
     bucket: "blocked",
-    note: "real, scaling save bonus, but scoped to \"the extraordinary and supernatural abilities of oozes\" — a creature-type-scoped bonus with no SAVE_CATEGORIES axis for the attacker's type (same gap as the community feat sweep's Vengeful Banisher/Witchbreaker precedent)",
+    note: "real, scaling save bonus, but scoped to \"the extraordinary and supernatural abilities of oozes\" — a creature-type-scoped bonus with no SAVE_CATEGORIES axis for the attacker's type (same gap as `feat-save-categories.ts`'s Vengeful Banisher/Witchbreaker precedent)",
   },
   "alchemist:oozemaster:ooze-toxin:1": {
     archetypeId: "alchemist:oozemaster",
@@ -1784,10 +1784,10 @@ export const ALCHEMIST_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
  * extraction pass inferred this from prose." Only 13 of alchemist's 219
  * features cleared the `numeric` bar (see
  * `ALCHEMIST_ARCHETYPE_FEATURE_CLASSIFICATION` above for the full
- * per-feature audit) — alchemist's kit leans overwhelmingly on bombs,
+ * per-feature classification) — alchemist's kit leans overwhelmingly on bombs,
  * mutagen, discoveries, and the formula book, all of which are either
  * vendored-formula pools this pipeline must not double-count against, or
- * deferred subsystems with no `Change` hook at all (see this file's header
+ * unmodeled subsystems with no `Change` hook at all (see this file's header
  * doc comment).
  *
  * Confidence rubric (identical to fighter.ts's/magus.ts's):
@@ -1799,7 +1799,7 @@ export const ALCHEMIST_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
  *    rests on one reasonable default assumption the text itself flags as
  *    variable (Energist Resistance's "whichever would naturally harm him",
  *    assumed to mean "a living, non-undead character").
- *  - "low": not used in this pass.
+ *  - "low": not used here.
  */
 export const ALCHEMIST_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
   Record<string, ExtractedArchetypeFeatureEffect>

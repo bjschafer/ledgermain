@@ -148,7 +148,7 @@ export function collectWitchHexes(ctx: CollectContext): void {
   // character actually having witch levels. Nearly every hex is `displayOnly`
   // with `changes: []` — only the handful whose benefit is unconditional and
   // lands on the witch's own sheet carries a real Change (see that file's doc
-  // comment for the bar and the deferred near-misses).
+  // comment for the bar and the note-only near-misses).
   const witchLevel = doc.identity.classes.find((c) => c.tag === "witch")?.level ?? 0;
   if (witchLevel > 0) {
     for (const hexId of doc.build.witchHexes ?? []) {

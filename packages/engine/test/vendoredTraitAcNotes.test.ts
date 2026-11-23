@@ -221,7 +221,7 @@ describe("Dwarf-Trained (Giantslayer) (+2 dodge AC vs. giants, attack half stays
   });
 });
 
-describe("Elf Vigilance (newly promoted: dodge AC vs. chaotic creatures, an alignment rather than a type)", () => {
+describe("Elf Vigilance (dodge AC vs. chaotic creatures, an alignment rather than a type)", () => {
   it("leaves headline AC alone and prints a chaotic conditional", () => {
     const id = vendoredTraitId("Vigilance", "Elf");
     const sheet = compute(makeDoc("Elf", [id]), ref);

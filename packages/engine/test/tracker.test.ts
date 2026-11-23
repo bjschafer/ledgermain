@@ -419,12 +419,12 @@ describe("feats that raise a derived resource pool's max (feat-effects.ts FEAT_P
     expect(pools.find((p) => p.name === "Channel Energy")?.max).toBe(5);
   });
 
-  // The multi-target follow-up: `FeatPoolEffect.featureTag` can now
-  // be an array, so one feat can raise whichever of several class features
-  // the character actually has. Extra Lay On Hands is the first (and, per
-  // the vendored data audit, only unambiguous) case — see
-  // `feat-effects.ts`'s `extra-lay-on-hands` entry doc comment for the
-  // verbatim vendored Touch of Corruption text this is built from.
+  // The multi-target case: `FeatPoolEffect.featureTag` can be an array, so one
+  // feat can raise whichever of several class features the character actually
+  // has. Extra Lay On Hands is the first (and, per the vendored data check,
+  // only unambiguous) case — see `feat-effects.ts`'s `extra-lay-on-hands`
+  // entry doc comment for the verbatim vendored Touch of Corruption text this
+  // is built from.
   it("Extra Lay On Hands (multi-target): boosts a PALADIN's Lay on Hands pool", () => {
     const doc: CharacterDoc = {
       ...makeDoc(),

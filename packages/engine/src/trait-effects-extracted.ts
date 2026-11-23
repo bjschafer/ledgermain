@@ -1,12 +1,11 @@
 /**
  * Machine-extracted effects for vendored character traits whose upstream
  * `changes` array is empty — the trait counterpart to
- * `feat-effects-extracted-community.ts`, produced the same way: parallel
- * classification agents over the full prose-only catalog (1,547 entries),
- * every draft machine-verified (provenance must be a verbatim substring of
- * the vendored description; targets/types/formulas against a fixed
- * vocabulary) and hand-reviewed against the full published text before
- * landing.
+ * `feat-effects-extracted-community.ts`. Covers the full prose-only catalog
+ * (1,547 entries); every entry is machine-verified (provenance must be a
+ * verbatim substring of the vendored description; targets/types/formulas
+ * against a fixed vocabulary) and hand-reviewed against the full published
+ * text.
  *
  * Keyed by vendored trait id (`RefData.traits` key), folded in by
  * `traits.ts`'s `vendoredTraitToDef` — so the picker, `collectModifiers`,
@@ -21,9 +20,9 @@
  * Craft/Profession/Perform instance ("Profession (sailor) is always a
  * class skill for you") wires the same as any other fixed skill target —
  * `skill.<prefix>.<slug>` for the bonus, `<prefix>.<slug>` in `classSkills`
- * for the grant — since `compute.ts` has targeted individual parameterized
- * instances since 2026-07. A bare-family `classSkills` id (e.g. `prf`) is
- * used only for whole-family grants ("Perform is always a class skill for
+ * for the grant — `compute.ts` targets individual parameterized instances.
+ * A bare-family `classSkills` id (e.g. `prf`) is used only for whole-family
+ * grants ("Perform is always a class skill for
  * you") — compute()'s baseId fallback then covers every instance. What
  * still stays prose is a player-CHOSEN Craft/Perform/Profession subskill
  * ("one Perform skill of your choice"): the trait text names no fixed
@@ -48,7 +47,7 @@ export interface ExtractedTraitEntry {
 }
 
 export const TRAIT_EFFECTS_EXTRACTED: Readonly<Record<string, ExtractedTraitEntry>> = {
-  // Abendego Pilot (Eye of Abendego; Sylph): Promoted the unconditional +2 Profession (sailor) trait bonus; the wind-force perception benefit stays prose (not a numeric target).
+  // Abendego Pilot (Eye of Abendego; Sylph): Wires the unconditional +2 Profession (sailor) trait bonus; the wind-force perception benefit stays prose (not a numeric target).
   ggGeZU7iH0vmOunL: {
     changes: [{ target: "skill.pro.sailor", type: "trait", formula: "2" }],
     provenance: "You gain a +2 trait bonus on Profession (sailor) checks",
@@ -98,7 +97,7 @@ export const TRAIT_EFFECTS_EXTRACTED: Readonly<Record<string, ExtractedTraitEntr
     classSkills: ["hea"],
     provenance: "Heal becomes a class skill for you",
   },
-  // Brastlewark Businessman (Gnome): Promoted the unconditional +2 Craft (alchemy) trait bonus (the compendium description's own "update the target" authoring note is what this promotion does).
+  // Brastlewark Businessman (Gnome): Wires the unconditional +2 Craft (alchemy) trait bonus (the compendium description's own "update the target" note is what this entry implements).
   KzD0s3ZhLGxc3I1X: {
     changes: [{ target: "skill.crf.alchemy", type: "trait", formula: "2" }],
     provenance: "You gain a +2 trait bonus on all Craft (alchemy) checks.",
@@ -185,18 +184,18 @@ export const TRAIT_EFFECTS_EXTRACTED: Readonly<Record<string, ExtractedTraitEntr
     changes: [{ target: "skill.crf.traps", type: "trait", formula: "1" }],
     provenance: "You gain a +1 trait bonus on Craft (traps) checks",
   },
-  // Fixer of Odds (Second Darkness): Promoted the unconditional +1 Profession (gambling) trait bonus; the hidden-object search benefit and starting gear stay prose (no target).
+  // Fixer of Odds (Second Darkness): Wires the unconditional +1 Profession (gambling) trait bonus; the hidden-object search benefit and starting gear stay prose (no target).
   u9yVXpe9U8Ysxaiv: {
     changes: [{ target: "skill.pro.gambling", type: "trait", formula: "1" }],
     provenance: "You gain a +1 trait bonus on Profession (gambling) checks",
   },
-  // Flames of Hell (Any Archdevil): Promoted the unconditional +1 channel-energy save DC trait bonus onto abilityDC.channel (ability-dcs.ts); previously blocked on a stale claim that no channel-DC target exists.
+  // Flames of Hell (Any Archdevil): Wires the unconditional +1 channel-energy save DC trait bonus onto abilityDC.channel (ability-dcs.ts).
   TfCzuODwDA5uUD1F: {
     changes: [{ target: "abilityDC.channel", type: "trait", formula: "1" }],
     provenance:
       "Add 1 to the DC of saving throws made to resist the effects of your channel energy ability.",
   },
-  // Folgrit's Bounty (Folgrit): Promoted the unconditional +1 Profession (cook) trait bonus; the nourishing-meal ability stays prose (not a numeric target).
+  // Folgrit's Bounty (Folgrit): Wires the unconditional +1 Profession (cook) trait bonus; the nourishing-meal ability stays prose (not a numeric target).
   ZkmQ9OBNeWLFHLNA: {
     changes: [{ target: "skill.pro.cook", type: "trait", formula: "1" }],
     provenance: "You gain a +1 trait bonus on Profession (cook) checks",
@@ -407,7 +406,7 @@ export const TRAIT_EFFECTS_EXTRACTED: Readonly<Record<string, ExtractedTraitEntr
     classSkills: ["int"],
     provenance: "Intimidate becomes a class skill for you.",
   },
-  // The Newlyweds: Class skill grant promoted; the +2 Diplomacy bonus stays prose (scoped to romantically-attracted targets).
+  // The Newlyweds: Wires the class skill grant; the +2 Diplomacy bonus stays prose (scoped to romantically-attracted targets).
   IxmTohfeXP7fUaom: {
     classSkills: ["dip"],
     provenance: "Diplomacy becomes a class skill for you",
@@ -1444,8 +1443,8 @@ export const TRAIT_CHOICES: Readonly<Record<string, TraitChoiceEntry>> = {
 };
 
 /**
- * Prose-only traits the sweep found to carry a genuinely unconditional
- * published number that still cannot be promoted — each value names the
+ * Prose-only traits that carry a genuinely unconditional published number
+ * that still cannot be promoted — each value names the
  * missing axis, so future mechanism work can find its candidates here
  * (the same inline-blocker convention the class-subsystem tables use). A
  * fixed skill-vs-skill choice, or an own-instance Craft/Perform/Profession

@@ -1,27 +1,27 @@
 /**
- * Machine-extracted feat effects for the community pf1-content pack — the
- * companion table to feat-effects-extracted.ts, produced by the community
- * classification sweep (see feat-classification-community.ts's header for
- * the full methodology). Same ExtractedFeatEntry shape and the same
- * precedence rule: resolveFeatEffect consults the hand-verified FEAT_EFFECTS
- * first, then FEAT_EFFECTS_EXTRACTED, then this table, so a hand-authored
- * entry for any slug here always wins and double-application is impossible.
+ * Machine-extracted feat effects for the community pf1-content pack: the
+ * companion table to feat-effects-extracted.ts. See
+ * feat-classification-community.ts's header for the classification
+ * methodology. Same ExtractedFeatEntry shape and the same precedence rule:
+ * resolveFeatEffect consults the hand-verified FEAT_EFFECTS first, then
+ * FEAT_EFFECTS_EXTRACTED, then this table, so a hand-authored entry for any
+ * slug here always wins and double-application is impossible.
  *
  * Every entry's provenance is a verbatim contiguous substring of the vendored
- * feat description (machine-checked), and every draft was hand-reviewed
- * against the full description before landing. "high" confidence throughout:
- * each is an unconditional published number whose shape already exists in the
+ * feat description (machine-checked), and every entry was hand-reviewed
+ * against the full description. "high" confidence throughout: each is an
+ * unconditional published number whose shape already exists in the
  * hand-verified tables (flat/rank-gated skill bonuses, energy resistance,
  * immunity, speeds, carry capacity, CMD, initiative, SR, natural armor).
  *
- * Two shapes added by the speed/class-value/natural-armor re-sweep: a "gains
- * a swim/climb/burrow/fly speed equal to X" grant is wired as a `base`-type,
- * `set`-operator Change on `@attributes.speed.land.total` (the character's
- * race-base land speed — matching `bloodrager-bloodlines.ts`'s Serpentine
- * Swim), never additive (double-count trap); and a bonus keyed to the fighter
- * Bravery class feature reuses that hand-verified entry's own progression
- * formula (`class-feature-effects.ts`) with `@classes.fighter.level` in place
- * of the class-feature context's `@class.unlevel`.
+ * Two shapes in this table: a "gains a swim/climb/burrow/fly speed equal to
+ * X" grant is wired as a `base`-type, `set`-operator Change on
+ * `@attributes.speed.land.total` (the character's race-base land speed —
+ * matching `bloodrager-bloodlines.ts`'s Serpentine Swim), never additive
+ * (double-count trap); and a bonus keyed to the fighter Bravery class feature
+ * reuses that hand-verified entry's own progression formula
+ * (`class-feature-effects.ts`) with `@classes.fighter.level` in place of the
+ * class-feature context's `@class.unlevel`.
  *
  * Style feats: the printed style rules only stance-gate clauses prefixed
  * "While using this style" (and follow-up feats that list a style feat as a

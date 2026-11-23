@@ -7,11 +7,10 @@
  * `lyle-ledgermain.json` file the owner imports from the UI.
  *
  * Every number here is transcribed from the owner's Hero Lab Online PDF
- * export (see the scratchpad spec this was built from) — the PDF was
- * exported with Mage Armor + Bless active, so this fixture builds the
- * BUFF-FREE base document; the integration test layers the two buffs on
- * top for the "with buffs" assertions, and the exported JSON stays
- * buff-free (a fresh import should start with nothing active).
+ * export — the PDF was exported with Mage Armor + Bless active, so this
+ * fixture builds the BUFF-FREE base document; the integration test layers the
+ * two buffs on top for the "with buffs" assertions, and the exported JSON
+ * stays buff-free (a fresh import should start with nothing active).
  */
 import type { CharacterDoc, RefData } from "@pf1/schema";
 
@@ -100,7 +99,7 @@ const SPELLBOOK_1ST_2ND = [
   "Stone Call",
 ];
 
-/** Prepared cantrips today (0th, 6 — the L4 arcanist prepared-cantrip cap). */
+/** Prepared cantrips (0th, 6 — the L4 arcanist prepared-cantrip cap). */
 const PREPARED_CANTRIPS = [
   "Detect Magic",
   "Light",
@@ -110,10 +109,10 @@ const PREPARED_CANTRIPS = [
   "Read Magic",
 ];
 
-/** Prepared 1st-level spells today (3 — the L4 arcanist prepared cap at 1st). */
+/** Prepared 1st-level spells (3 — the L4 arcanist prepared cap at 1st). */
 const PREPARED_1ST = ["Burning Hands", "Expeditious Retreat", "Magic Missile"];
 
-/** Prepared 2nd-level spells today (1 — the L4 arcanist prepared cap at 2nd). */
+/** Prepared 2nd-level spells (1 — the L4 arcanist prepared cap at 2nd). */
 const PREPARED_2ND = ["Create Pit"];
 
 /**
@@ -257,7 +256,7 @@ export function buildLyleDoc(ref: RefData): CharacterDoc {
     doc = toggleKnownSpell(doc, ref, idByName(ref.spells, name), "arcanist");
   }
 
-  // --- prepared today (per PDF) --------------------------------------------------
+  // --- prepared (per PDF) ---------------------------------------------------------
   for (const name of [...PREPARED_CANTRIPS, ...PREPARED_1ST, ...PREPARED_2ND]) {
     doc = prepareSpell(doc, idByName(ref.spells, name));
   }

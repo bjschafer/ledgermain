@@ -12,15 +12,7 @@
  * of the 243 uniquely-named rage powers in the pinned Pf Data 1e catalog
  * (`packages/data-pipeline/data/rage-powers.json`, 244 raw rows — see the
  * "vendored catalog overlay" section below for why 244 raw rows collapse to
- * 243 unique names). Started from a 29-entry seed (the 23 Core Rulebook rage
- * powers plus 6 commonly-taken Advanced Player's Guide additions:
- * Superstition, Witch Hunter, Good For What Ails You, Internal Fortitude,
- * Spell Sunder, Swift Foot) and closed the remaining ~215-entry gap (Totem
- * chains, Bloodrager-shared powers, Ultimate-line additions, the Linnorm Death
- * Curses,...) across three batches (same posture as
- * `witch-hexes.ts`'s/`alchemist-discoveries.ts`'s own sweeps): batch 1
- * (A-F, +70), batch 2 (G-R, +106), batch 3 (S-Z, +38). A former 30th seed
- * entry, "Sixth Sense", was removed (see the note below) rather than counted.
+ * 243 unique names).
  *
  * Shared by BOTH `barbarian` (chained) and `barbarianUnchained` — Pathfinder
  * Unchained's own "Rage Powers" class feature restates rather than replaces
@@ -35,23 +27,21 @@
  * Renewed Vigor, Strength Surge, Surprise Accuracy, Guarded Stance, Rolling
  * Dodge,...) or a bonus that only applies WHILE RAGING specifically
  * (Superstition's save bonus vs. spells, the Raging Climber/Leaper/Swimmer
- * skill bonuses, Low-Light Vision, Scent,...). The WHILE-RAGING shape used to
- * need a "gate this build choice's Change by whether a specific buff is
- * currently active" mechanism the engine didn't have (unlike a genuinely
- * always-on class feature or feat, or a buff's OWN `changes[]`, which
- * naturally only apply while that buff instance is active) — adds exactly that
- * mechanism (`Change.activeWhenBuff`, gated at collect-time by `@pf1/engine`
- * `collect/shared.ts`'s `buffGateSatisfied`), so a clean subset of the while-raging
- * entries below is now promoted off `displayOnly`:
+ * skill bonuses, Low-Light Vision, Scent,...). The WHILE-RAGING shape needs a
+ * "gate this build choice's Change by whether a specific buff is currently
+ * active" mechanism (unlike a genuinely always-on class feature or feat, or a
+ * buff's OWN `changes[]`, which naturally only apply while that buff instance
+ * is active) — `Change.activeWhenBuff`, gated at collect-time by
+ * `@pf1/engine` `collect/shared.ts`'s `buffGateSatisfied`, provides it, so a
+ * clean subset of the while-raging entries below carries a real Change:
  *
  *   - **Raging Climber** / **Raging Swimmer**: RAW is an ENHANCEMENT bonus
- *     equal to barbarian level on Climb / Swim checks respectively — NOT the
- *     flat "+4 competence" this file's `contextNotes` used to (incorrectly)
- *     claim before this change (verified against d20pfsrd.com's Raging
+ *     equal to barbarian level on Climb / Swim checks respectively — NOT a
+ *     flat "+4 competence" (verified against d20pfsrd.com's Raging
  *     Climber/Raging Swimmer entries, both stating "adds her level as an
- *     enhancement bonus" verbatim). Promoted to a real gated `Change`
- *     targeting the whole skill (Climb/Swim have no partial-use-case split
- *     the way Acrobatics does), typed `enhancement` (so it correctly does
+ *     enhancement bonus" verbatim). A real gated `Change` targets the whole
+ *     skill (Climb/Swim have no partial-use-case split the way Acrobatics
+ *     does), typed `enhancement` (so it correctly does
  *     NOT stack with another enhancement source on the same skill, per RAW).
  *   - **Swift Foot**: RAW is a flat +5 ft. ENHANCEMENT bonus to land speed
  *     while raging (confirmed unscaled — d20pfsrd.com), takeable up to 3 times
@@ -83,63 +73,67 @@
  *     rule; `contextNotes` corrected to state the enhancement (not
  *     competence) bonus type and level-equal scaling.
  *
- * Sense grants (Low-Light Vision, Scent) were NOT promoted at this point in
- * the sweep, on the theory that beneficial "set"-change grants are a
- * documented engine hazard (`compute.ts` resolves competing "set" changes on
- * a SPEED target by LOWEST value, which is tuned for penalties like Slow,
- * not beneficial grants). Batch 2 (G-R) found this reasoning didn't actually
- * apply to senses — `senses.ts`'s sense resolver is bespoke and takes the
- * HIGHEST value per sense kind regardless of operator — and batch 3 (S-Z)
- * finished the job by promoting Low-Light Vision and Scent themselves (see
- * that batch's writeup below); this paragraph is kept for the historical
- * record of how the original (incorrect) call was reached.
+ * Sense grants resolve through `senses.ts`'s bespoke `computeSenses`, which
+ * takes the single HIGHEST value per sense kind regardless of operator —
+ * unlike speed "set" targets, which `compute.ts` resolves by LOWEST value
+ * (tuned for penalties like Slow, not beneficial grants). Flat flag-style
+ * sense grants are therefore safe: Low-Light Vision, Scent, Night Vision
+ * (darkvision 60 ft. while raging), and Lesser Moon Totem (darkvision 30 ft.
+ * while raging) carry `sensell`/`sensesc`/`sensedv` Changes with
+ * `activeWhenBuff`, and a grant correctly does nothing when a better source
+ * is already present. `vigilante-talents.ts`'s Shadow's Sight and
+ * `shifter-aspects.ts`'s aspects establish the same shape.
  *
  * `contextNotes` carries the exact numbers/scaling/activation-cost for every
  * still-display-only entry, and `minLevel` gates soft-warn (never block) the
  * same way `WitchHexDef.minLevel`/`MagusArcanaDef.minLevel` do.
  *
- * A follow-up audit (re-checking every remaining entry against
- * aonprd.com/d20pfsrd.com for a promotable Change) found no further
- * candidates that clear the bar, but did turn up both new near-misses worth
- * recording and — separately — several entries whose `summary`/
- * `contextNotes` didn't match verified RAW at all (now corrected below,
- * same "factually wrong, fix it" posture as everywhere else in this repo):
+ * Other while-raging numeric grants follow the same bar: fixed-type,
+ * qualifier-scoped resistances and DR carry real Changes (Greater Abyssal
+ * Blood: acid/cold/fire 5; Infernal Blood and Lesser Sun Totem: fire 5;
+ * Greater Sun Totem: fire 20; Sun Totem: fire 10; Greater Undead Blood: cold
+ * 10, its DR 10/- vs. nonlethal staying note-only as a different mechanic
+ * than the engine's qualifier-bypass `dr.<qualifier>` targets; Greater Chaos
+ * Totem: DR/lawful equal to half barbarian level, unlike Lesser Chaos Totem's
+ * alignment-scoped deflection AC; Raging Flyer: enhancement bonus equal to
+ * barbarian level on Fly checks; Ice Linnorm Death Curse's ungated +1 cold
+ * damage, matching its Cairn/Crag/Fjord siblings). **Unrestrained Rage**
+ * (immune to paralysis while raging) uses the closed `immEffect.*`
+ * vocabulary's exact `paralysis` slug — the same one
+ * `alchemist-discoveries.ts`'s Cognatogen uses unconditionally — and unlike
+ * Fearless Rage's over-broad `immEffect.fear`, "immune to paralysis" IS the
+ * whole effect the power grants.
  *
- *   - **Fearless Rage**: real RAW (CRB, verified against both
- *     legacy.aonprd.com's Core Rulebook page and d20pfsrd.com) is "immune to
- *     the shaken and frightened conditions" only — not "the fear condition"
- *     generically, and with no below-0-HP/unconsciousness clause (that
- *     clause doesn't exist in the actual power; this file's old summary
- *     fabricated it). Even corrected, it's still a near-miss for promotion:
- *     the engine's only fear-adjacent target, `immEffect.fear` ("fear
- *     effects"), reads as the whole fear family INCLUDING panicked, which
- *     Fearless Rage does not grant immunity to — same over-broad-target
- *     shape as Superstition, so it stays displayOnly.
- *   - **Witch Hunter** and **Spell Sunder**: both `summary`/`contextNotes`
- *     described a different mechanic than the real rage power (Witch
- *     Hunter's bonus targets creatures with spells/SLAs, not "hexes", and
- *     has no save-bonus clause; Spell Sunder requires the Witch Hunter power
- *     at barbarian level 6, not a standalone level-8 pick, and is a combat
- *     maneuver check against a spell effect, not an attack-of-opportunity
- *     dispel) — corrected below, verified against d20pfsrd.com's dedicated
- *     page for each. Neither is a promotion candidate regardless (both
- *     target-scoped/once-per-rage, same as before).
- *   - **Good For What Ails You**: corrected — real RAW (d20pfsrd.com) is
- *     "drink alcohol while raging to re-attempt a save against one of a
- *     listed set of conditions, or against an active poison"; this file's
- *     old summary described an unrelated Renewed-Vigor-gated cure that
- *     isn't the power's actual text. Still not a promotion candidate
- *     (triggered, situational, no flat number).
+ * Near-misses, kept display-only for stated reasons (verified against
+ * aonprd.com/d20pfsrd.com where cited):
+ *
+ *   - **Fearless Rage**: real RAW (CRB) is "immune to the shaken and
+ *     frightened conditions" only — not "the fear condition" generically, and
+ *     with no below-0-HP/unconsciousness clause. Still a near-miss: the
+ *     engine's only fear-adjacent target, `immEffect.fear` ("fear effects"),
+ *     reads as the whole fear family INCLUDING panicked, which Fearless Rage
+ *     does not grant immunity to — same over-broad-target shape as
+ *     Superstition.
+ *   - **Witch Hunter** and **Spell Sunder**: Witch Hunter's bonus targets
+ *     creatures with spells/SLAs, not "hexes", and has no save-bonus clause;
+ *     Spell Sunder requires the Witch Hunter power at barbarian level 6, not
+ *     a standalone level-8 pick, and is a combat maneuver check against a
+ *     spell effect, not an attack-of-opportunity dispel (verified against
+ *     d20pfsrd.com's dedicated page for each). Neither is a promotion
+ *     candidate (both target-scoped/once-per-rage).
+ *   - **Good For What Ails You**: real RAW (d20pfsrd.com) is "drink alcohol
+ *     while raging to re-attempt a save against one of a listed set of
+ *     conditions, or against an active poison"; triggered and situational,
+ *     with no flat number.
  *   - **Increased Damage Reduction**: "+1/— while raging, stacks up to 3
  *     times" (d20pfsrd.com) looks identical in shape to Raging
  *     Climber/Swift Foot, but `defenses.ts`'s `groupByQualifier` resolves
- *     competing `dr` modifiers by taking the HIGHEST value per qualifier,
- *     not summing them (DR generally doesn't stack in PF1, unlike a typed
- *     bonus) — a separate gated Change here would be silently swallowed by
- *     the barbarian's own (larger) base DR entry rather than adding to it,
- *     which is a WRONG number, not an honestly-partial one. Correctly
- *     representing this needs a `defenses.ts`-side change (out of this
- *     file's scope), not a rage-powers.ts Change.
+ *     competing `dr` modifiers by taking the HIGHEST value per qualifier, not
+ *     summing them (DR generally doesn't stack in PF1, unlike a typed bonus) —
+ *     a separate gated Change here would be silently swallowed by the
+ *     barbarian's own (larger) base DR entry rather than adding to it, which
+ *     is a WRONG number, not an honestly-partial one. Correctly representing
+ *     this needs a `defenses.ts`-side change (out of this file's scope).
  *   - **Internal Fortitude**: immunity to sickened/nauseated while raging
  *     would otherwise be a clean `immEffect`-gated Change, but neither
  *     condition is in `defenses.ts`'s `EFFECT_IMMUNITY_LABELS` closed
@@ -150,93 +144,23 @@
  *     activation with its own Con-modifier-round duration (verified:
  *     d20pfsrd.com) — not simply "on while raging" the way Swift Foot is.
  *     Shape-matches the toggle-buff-pool pattern (`judgments.ts`'s
- *     `ToggleBuffOption`) better than the `activeWhenBuff` gate; flagged as
- *     a toggle-buff candidate, not implemented (needs `resources.ts`
- *     plumbing beyond this file).
- *   - **Sixth Sense**: REMOVED. An audit could not corroborate it as a
- *     real barbarian rage power in any Paizo source — aonprd.com and
- *     d20pfsrd.com's full Paizo rage-power index both lack it, and it never
- *     matched the vendored catalog under any key. The only published
- *     "Sixth Sense" is the Superstitious archetype's own class feature,
- *     with different numbers and no raging gate. A stale `sixthSense` pick
- *     in a saved doc resolves to nothing, same as any unknown id.
+ *     `ToggleBuffOption`) better than the `activeWhenBuff` gate; a
+ *     toggle-buff candidate, not implemented (needs `resources.ts` plumbing
+ *     beyond this file).
+ *   - **Undead Blood** (the non-Lesser, non-Greater tier): verified
+ *     (d20pfsrd.com) to grant only the ghost touch weapon quality on melee
+ *     attacks while raging — no numeric resistance/DR at all, so there is
+ *     nothing to promote.
+ *   - **Water Sense**, **Sharpened Accuracy**, and **Spiritual Awareness**:
+ *     respectively a conditional cover/range-penalty reduction (not a sense
+ *     grant — no fixed-range tremorsense/blindsense involved), an ability
+ *     conditioned on activating the (unmodeled) Surprise Accuracy, and a rider
+ *     on an existing Trap Sense bonus rather than a flat number of its own —
+ *     all three stay displayOnly.
  *
- * The remaining ~20 entries in this table were spot-checked, not
- * exhaustively re-verified line-by-line against source in this pass — the
- * error rate found above (4 of the 7 APG additions this file's own scope
- * note calls out by name) suggests a fuller correctness audit of the CRB
- * portion is worth doing as a follow-up, separate from this promotion sweep.
- *
- * Batch 2 (G-R) of the catalog sweep added 106 entries and, along the
- * way, corrected a claim from the batch-1 promotion-bar writeup above: senses
- * (`sensedv`/`sensell`/...) do NOT share the beneficial-"set"-grant hazard
- * `landSpeed`/`flySpeed`/... have (`compute.ts`'s `applySpeedTarget` really
- * does resolve competing "set" changes by lowest value) — `senses.ts`'s
- * `computeSenses` is a separate, bespoke resolver that takes the single
- * HIGHEST value per sense kind, confirmed by reading it directly and by
- * `shifter-aspects.ts`'s Bat/Wolf aspects, which already promote flat
- * `sensedv`/`sensesc` grants on exactly that basis. This batch promotes
- * **Night Vision** (flat darkvision 60 ft. while raging) and **Lesser Moon
- * Totem** (flat darkvision 30 ft. while raging, with a note that the "+30 to
- * darkvision you already have" alternate wording isn't modeled — same
- * documented gap as shifter-aspects.ts's Bat) on this corrected understanding.
- * The existing Low-Light Vision/Scent entries are untouched by this batch
- * (out of scope — they're original-29-entry rows, not G-R), so their own
- * displayOnly status is left for a future pass to revisit against this
- * corrected understanding rather than changed here as a side effect.
- *
- * Also promoted this batch, all fixed-type/qualifier and unconditional while
- * raging, same bar as Celestial Blood: **Greater Abyssal Blood** (acid/cold/
- * fire resistance 5), **Infernal Blood** and **Lesser Sun Totem** (fire
- * resistance 5 each), **Greater Sun Totem** (fire resistance 20), **Greater
- * Undead Blood** (cold resistance 10 — its DR 10/- vs. nonlethal damage stays
- * note-only, a different mechanic than this engine's qualifier-bypass
- * `dr.<qualifier>` targets), **Raging Flyer** (enhancement bonus equal to
- * barbarian level on Fly checks, the same shape as Raging Climber/Swimmer),
- * and **Greater Chaos Totem** (DR/lawful equal to half barbarian level — a
- * genuinely qualifier-scoped DR entry, unlike Lesser Chaos Totem's
- * alignment-scoped deflection AC, which stays displayOnly). Ice Linnorm Death
- * Curse's +1 cold damage is ungated, matching its Cairn/Crag/Fjord siblings.
- *
- * Batch 3 (S-Z) of the catalog sweep added the final 38 entries, closing
- * the table out to full vendored parity, plus a two-entry LEGACY revisit:
- *
- *   - **Sun Totem** (fire resistance 10 while raging) is the middle tier of
- *     the Lesser (5, batch 2) / Sun Totem (10) / Greater (20, batch 2)
- *     fire-resistance chain — promoted the same `eres.fire`-while-raging way
- *     as its siblings, verified against d20pfsrd.com. Its 1d6-round,
- *     flame-contact-triggered +10 ft. speed bonus stays note-only.
- *   - **Unrestrained Rage** (immune to paralysis while raging) is a new
- *     promotable shape for this table: the engine's closed `immEffect.*`
- *     vocabulary (`defenses.ts`) has an exact `paralysis` slug — unlike
- *     Fearless Rage's `immEffect.fear` (over-broad: reads as the whole fear
- *     family, including panicked, which Fearless Rage doesn't grant immunity
- *     to), "immune to paralysis" IS the whole, exact effect this power
- *     grants, so an unconditional gated `immEffect.paralysis` Change doesn't
- *     overstate anything. Same slug `alchemist-discoveries.ts`'s Cognatogen
- *     already uses unconditionally.
- *   - **Low-Light Vision** / **Scent** (the two original-29-entry rows batch
- *     2 flagged as a legacy revisit once senses were confirmed to resolve
- *     highest-wins, not lowest) are now promoted, using the same
- *     `sensell`/`sensesc` flag-Change shape `vigilante-talents.ts`'s Shadow's
- *     Sight and `shifter-aspects.ts`'s aspects already establish. Re-verifying
- *     Low-Light Vision's RAW against both the vendored prose and
- *     d20pfsrd.com in the process turned up a fabrication in its old
- *     `summary`: "(or double existing range)" is not real text anywhere in
- *     the published rage power (RAW is simply "gains low-light vision while
- *     raging," no doubling clause, no prerequisite) — corrected.
- *
- * Undead Blood (the non-Lesser, non-Greater tier) was checked as a promotion
- * candidate on the same basis as Greater Undead Blood's cold resistance, but
- * verified (d20pfsrd.com) to grant only the ghost touch weapon quality on
- * melee attacks while raging — no numeric resistance/DR at all — so there is
- * nothing to promote; stays displayOnly. Water Sense, Sharpened Accuracy, and
- * Spiritual Awareness were also close-read as candidates and found to be,
- * respectively: a conditional cover/range-penalty reduction (not a sense
- * grant — no fixed-range tremorsense/blindsense involved), an ability
- * conditioned on activating the (unmodeled) Surprise Accuracy, and a rider on
- * an existing Trap Sense bonus rather than a flat number of its own — all
- * three stay displayOnly.
+ * The remaining ~20 entries were spot-checked, not exhaustively re-verified
+ * line-by-line against source; a fuller correctness review of the CRB portion
+ * is still worth doing.
  */
 
 import type { BuffGate, Change, ContextNote, RagePower, RefData, SourceRef } from "@pf1/schema";
@@ -254,7 +178,7 @@ export interface RagePowerDef {
   editions: readonly RagePowerEdition[];
   /**
    * Typed modifiers this power grants — empty for most entries (see file doc
-   * comment). The handful promoted by carry a real `Change` gated by
+   * comment). The handful that carry a real `Change` gate it by
    * `activeWhenBuff` (see `WHILE_RAGING`), applied only while the character
    * has the (chained or Unchained) Rage buff active.
    */
@@ -263,11 +187,10 @@ export interface RagePowerDef {
   contextNotes?: ContextNote[];
   /**
    * True when this power has no live `Change` at all — a pure per-round
-   * activated ability, or one of the two conditional-target near-misses
-   * (Superstition, Raging Leaper) deliberately left note-only even though
-   * the while-raging gate mechanism exists (see file doc comment). False
-   * for the small set of unconditional-while-raging entries promoted to a
-   * real gated `Change`.
+   * activated ability, or a conditional-target near-miss deliberately left
+   * note-only even though the while-raging gate mechanism exists (Raging
+   * Leaper, see file doc comment). False for entries with a real gated
+   * `Change`.
    */
   displayOnly: boolean;
   /**
@@ -449,7 +372,7 @@ const RAGE_POWER_LIST: RagePowerDef[] = build([
     changes: [{ formula: "1", target: "sensell", type: "untyped", activeWhenBuff: WHILE_RAGING }],
     contextNotes: [
       note(
-        "Batch 3 legacy revisit: the old summary's '(or double existing range)' clause was a fabrication — verified against both the vendored prose and d20pfsrd.com, RAW is simply 'gains low-light vision while raging', no doubling clause and no prerequisite. Flag-only grant (senses.ts resolves sensell highest-source-wins, mirroring shifter-aspects.ts's Bat/Wolf and vigilante-talents.ts's Shadow's Sight), so it correctly does nothing when a race already has low-light vision.",
+        "Verified against both the vendored prose and d20pfsrd.com: RAW is simply 'gains low-light vision while raging', no doubling clause and no prerequisite. Flag-only grant (senses.ts resolves sensell highest-source-wins, mirroring shifter-aspects.ts's Bat/Wolf and vigilante-talents.ts's Shadow's Sight), so it correctly does nothing when a race already has low-light vision.",
         "sensell",
       ),
     ],
@@ -571,7 +494,7 @@ const RAGE_POWER_LIST: RagePowerDef[] = build([
     changes: [{ formula: "1", target: "sensesc", type: "untyped", activeWhenBuff: WHILE_RAGING }],
     contextNotes: [
       note(
-        "Batch 3 legacy revisit: unconditional while-raging grant, no prerequisite (verified against both the vendored prose and d20pfsrd.com) — flag-only, same shape and highest-source-wins resolution as Low-Light Vision above.",
+        "Unconditional while-raging grant, no prerequisite (verified against both the vendored prose and d20pfsrd.com) — flag-only, same shape and highest-source-wins resolution as Low-Light Vision above.",
         "sensesc",
       ),
     ],
@@ -683,7 +606,7 @@ const RAGE_POWER_LIST: RagePowerDef[] = build([
     ],
   },
 
-  /* ---------------------------------------------------------- catalog sweep, batch 1 (A-F) -- */
+  /* --------------------------------------------------------------- catalog A-F -- */
 
   {
     id: "abyssalBlood",
@@ -1439,7 +1362,7 @@ const RAGE_POWER_LIST: RagePowerDef[] = build([
     ],
   },
 
-  /* ---------------------------------------------------------- catalog sweep, batch 2 (G-R) -- */
+  /* --------------------------------------------------------------- catalog G-R -- */
 
   {
     id: "ghostRager",
@@ -1466,7 +1389,7 @@ const RAGE_POWER_LIST: RagePowerDef[] = build([
     ],
     contextNotes: [
       note(
-        "Requires Abyssal Blood and barbarian level 10; three fixed energy types, the same promotable shape as Celestial Blood.",
+        "Requires Abyssal Blood and barbarian level 10; three fixed energy types, the same shape as Celestial Blood.",
       ),
     ],
   },
@@ -1917,7 +1840,7 @@ const RAGE_POWER_LIST: RagePowerDef[] = build([
     ],
     contextNotes: [
       note(
-        "Requires Sun Totem and barbarian level 10; the fire resistance is unconditional and fixed-type, promoted the same way as Celestial Blood — but the retaliatory halo damage (hits an attacker) and the +1d6 fire on her own attacks are dice-based/targeted and aren't modeled.",
+        "Requires Sun Totem and barbarian level 10; the fire resistance is unconditional and fixed-type, modeled the same way as Celestial Blood — but the retaliatory halo damage (hits an attacker) and the +1d6 fire on her own attacks are dice-based/targeted and aren't modeled.",
         "eres.fire",
       ),
     ],
@@ -1943,7 +1866,7 @@ const RAGE_POWER_LIST: RagePowerDef[] = build([
     ],
     contextNotes: [
       note(
-        "Requires Undead Blood and barbarian level 10; the cold resistance is unconditional and fixed-type, promoted the same way as Celestial Blood. The nonlethal-only DR is a different mechanic than this engine's qualifier-bypass dr.<qualifier> targets (which reduce damage unless the attack has a specific quality, not 'only applies against one damage category') — no matching target, so it stays note-only.",
+        "Requires Undead Blood and barbarian level 10; the cold resistance is unconditional and fixed-type, modeled the same way as Celestial Blood. The nonlethal-only DR is a different mechanic than this engine's qualifier-bypass dr.<qualifier> targets (which reduce damage unless the attack has a specific quality, not 'only applies against one damage category') — no matching target, so it stays note-only.",
         "eres.cold",
       ),
     ],
@@ -2098,7 +2021,7 @@ const RAGE_POWER_LIST: RagePowerDef[] = build([
     changes: [{ formula: "5", target: "eres.fire", type: "untyped", activeWhenBuff: WHILE_RAGING }],
     contextNotes: [
       note(
-        "Requires Lesser Infernal Blood and barbarian level 6; the fire resistance is unconditional and fixed-type (promoted the same way as Celestial Blood). The poison-save bonus is scoped to poison only, not whole Fortitude — the engine has no 'saves vs. poison' target, so it stays note-only (same over-broad-target issue as Fierce Fortitude).",
+        "Requires Lesser Infernal Blood and barbarian level 6; the fire resistance is unconditional and fixed-type (modeled the same way as Celestial Blood). The poison-save bonus is scoped to poison only, not whole Fortitude — the engine has no 'saves vs. poison' target, so it stays note-only (same over-broad-target issue as Fierce Fortitude).",
         "fort",
       ),
     ],
@@ -2406,7 +2329,7 @@ const RAGE_POWER_LIST: RagePowerDef[] = build([
     changes: [{ formula: "5", target: "eres.fire", type: "untyped", activeWhenBuff: WHILE_RAGING }],
     contextNotes: [
       note(
-        "The fire resistance is unconditional and fixed-type (promoted the same way as Celestial Blood). The environmental-heat immunity and the extreme-heat Fortitude bonus have no matching targets — a whole-Fortitude Change would overstate the latter onto every save.",
+        "The fire resistance is unconditional and fixed-type (modeled the same way as Celestial Blood). The environmental-heat immunity and the extreme-heat Fortitude bonus have no matching targets — a whole-Fortitude Change would overstate the latter onto every save.",
         "eres.fire",
       ),
     ],
@@ -2632,7 +2555,7 @@ const RAGE_POWER_LIST: RagePowerDef[] = build([
     ],
     contextNotes: [
       note(
-        "Same shape as Raging Climber/Raging Swimmer: an enhancement bonus equal to barbarian level on one whole skill, with no partial-use-case split — promoted the same way.",
+        "Same shape as Raging Climber/Raging Swimmer: an enhancement bonus equal to barbarian level on one whole skill, with no partial-use-case split — modeled the same way.",
         "skill.fly",
       ),
     ],
@@ -2739,7 +2662,7 @@ const RAGE_POWER_LIST: RagePowerDef[] = build([
     ],
   },
 
-  /* ---------------------------------------------------------- catalog sweep, batch 3 (S-Z) -- */
+  /* --------------------------------------------------------------- catalog S-Z -- */
 
   {
     id: "savageDirtyTrick",
@@ -2947,7 +2870,7 @@ const RAGE_POWER_LIST: RagePowerDef[] = build([
     ],
     contextNotes: [
       note(
-        "Requires Lesser Sun Totem and barbarian level 6 — the middle tier of the Lesser (5) / Sun Totem (10) / Greater (20) fire-resistance chain, promoted the same way as its siblings (verified against d20pfsrd.com: 'She gains fire resistance 10 when raging'). The 1d6-round, flame-contact-triggered +10 ft. speed bonus is dice-duration and conditional — not modeled.",
+        "Requires Lesser Sun Totem and barbarian level 6 — the middle tier of the Lesser (5) / Sun Totem (10) / Greater (20) fire-resistance chain, modeled the same way as its siblings (verified against d20pfsrd.com: 'She gains fire resistance 10 when raging'). The 1d6-round, flame-contact-triggered +10 ft. speed bonus is dice-duration and conditional — not modeled.",
         "eres.fire",
       ),
     ],
@@ -3061,7 +2984,7 @@ const RAGE_POWER_LIST: RagePowerDef[] = build([
     summary: "While raging, all melee attacks count as though made with a ghost touch weapon.",
     contextNotes: [
       note(
-        "Requires Lesser Undead Blood and barbarian level 6. Verified against d20pfsrd.com: unlike Greater Undead Blood (cold resistance 10, promoted in batch 2), this base tier grants only the ghost touch weapon quality — no numeric resistance or DR at all, so there's nothing here to promote.",
+        "Requires Lesser Undead Blood and barbarian level 6. Verified against d20pfsrd.com: unlike Greater Undead Blood (cold resistance 10, modeled), this base tier grants only the ghost touch weapon quality — no numeric resistance or DR at all, so there's nothing here to promote.",
       ),
     ],
   },
@@ -3174,7 +3097,7 @@ const RAGE_POWER_LIST: RagePowerDef[] = build([
       "While raging, +1 insight bonus to AC against outsiders and aberrations, scaling +1 per other World Serpent power known. Requires the Totem Warrior archetype; mutually exclusive with every other totem family.",
     contextNotes: [
       note(
-        "Creature-type-scoped AC bonus (outsiders/aberrations only), not a general AC bonus — same never-promote rule as Lesser Chaos Totem's alignment-scoped deflection AC.",
+        "Creature-type-scoped AC bonus (outsiders/aberrations only), not a general AC bonus — same over-broad-target rule as Lesser Chaos Totem's alignment-scoped deflection AC.",
         "ac",
       ),
     ],
@@ -3261,8 +3184,8 @@ export function ragePowersForEdition(edition: RagePowerEdition): RagePowerDef[] 
 /**
  * Alias map for a hand-authored id whose vendored-catalog counterpart uses a
  * different name than ours (misspelling/wording drift) — matched instead of
- * this file's own `name`. Empty today: the full 243-entry audit found no
- * drift (see the collision-audit comment above) — kept so a FUTURE
+ * this file's own `name`. Empty: all 243 entries match a vendored entry by
+ * normalized name (see the collision check above) — kept so a future
  * hand-authored addition that DOES drift from the vendored spelling has
  * somewhere to record it instead of silently going unmatched.
  */
@@ -3287,7 +3210,7 @@ function plainTextPreview(html: string, max = 200): string {
   return text.length > max ? `${text.slice(0, max - 1).trimEnd()}…` : text;
 }
 
-/** A catalog entry the picker can browse — either the hand-authored def (matched or Sixth-Sense-style unmatched) with the vendored prose attached, or a vendored-only entry rendered display-only. */
+/** A catalog entry the picker can browse — either the hand-authored def with the vendored prose attached, or a vendored-only entry rendered display-only. */
 export interface MergedRagePowerEntry extends RagePowerDef {
   /** Ability-type suffix as published, e.g. "(Ex)" — undefined for a hand-authored entry with no vendored counterpart (none today). */
   nameSuffix?: string;
@@ -3342,7 +3265,7 @@ export function resolveRagePower(id: string, refData: RefData): RagePowerDef | u
  * REPLACED by that hand-authored def (keeping its id and real mechanics, but
  * carrying the vendored entry's prose/sources along for display), plus any
  * hand-authored entry with no vendored counterpart appended (none today —
- * see the collision-audit comment above). `!entry.displayOnly` marks which rows have
+ * see the collision check above). `!entry.displayOnly` marks which rows have
  * live mechanics, for the picker's "M" badge (same convention as
  * `archetypeModeledEffectTier`/`ArchetypePicker`'s `badge-modeled`).
  */

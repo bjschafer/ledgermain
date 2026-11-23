@@ -23,8 +23,7 @@ function raceId(name: string): string {
  * `foldEidolonGrantDefenses` is pure and works off the `EidolonSubtypeGrant`
  * interface alone — these fixtures are inline literals, deliberately not
  * pulled from any real `EIDOLON_SUBTYPES` entry, since most subtype data
- * doesn't carry the structured defense fields yet (a parallel content pass
- * is filling those in).
+ * doesn't carry the structured defense fields yet.
  */
 describe("foldEidolonGrantDefenses", () => {
   it("only counts unlocked grants (grant.level <= level)", () => {

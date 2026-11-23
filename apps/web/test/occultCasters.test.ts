@@ -1,10 +1,9 @@
 /**
- * Occult Adventures caster wiring (17-class expansion follow-up wave):
- * psychic + medium caster models and — the known per-class gotcha — the
- * FULL_CASTER_TAGS regression (a prior class shipped with the Sheet header
- * showing CL 0 because caster-level.ts wasn't updated; see
- * lyle.integration.test.ts's arcanist regression note). Kineticist casts no
- * spells and must stay out of every caster surface.
+ * Occult Adventures caster wiring: psychic + medium caster models and the
+ * known per-class gotcha, FULL_CASTER_TAGS (a class missing from it ships
+ * with the Sheet header showing CL 0; see lyle.integration.test.ts's arcanist
+ * regression note). Kineticist casts no spells and must stay out of every
+ * caster surface.
  */
 import { describe, expect, it } from "bun:test";
 

@@ -9,13 +9,10 @@
  * a knockout").
  *
  * Natural healing: PF1 RAW heals 1 point of ability damage per ability per day
- * of rest. This is now wired into the single "new day" action (`model/rest.ts`
- * `restNewDay`) via {@link restAbilityDamage} below — previously this module
- * deliberately left it unwired because "rest" was fragmented across
- * independent panel buttons with no single new-day event to hook. Players can
- * still adjust ability damage by hand via the per-ability stepper for anything
- * `restNewDay` doesn't cover (e.g. multiple recoveries at once, or correcting
- * a value).
+ * of rest, wired into the single "new day" action (`model/rest.ts`
+ * `restNewDay`) via {@link restAbilityDamage} below. Players can still adjust
+ * ability damage by hand via the per-ability stepper for anything `restNewDay`
+ * doesn't cover (e.g. multiple recoveries at once, or correcting a value).
  */
 import { ABILITY_IDS } from "@pf1/schema";
 import type { AbilityId, CharacterDoc, DerivedSheet } from "@pf1/schema";

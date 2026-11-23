@@ -32,7 +32,7 @@
  *   - No Name's grit-spent Disguise clause (community feat): the feat's
  *     unconditional +2 Bluff half is already wired in
  *     `feat-classification-community.ts`; this adds the activated
- *     grit-for-Disguise half that entry's note used to disclaim.
+ *     grit-for-Disguise half that entry's note marks as not modeled.
  *   - Swashbuckler Initiative (3rd): +2 initiative while she holds at least
  *     1 panache point. The vendored data only carries a "Swashbuckler Deeds"
  *     stub, so unlike Gunslinger Initiative there is no dead upstream Change

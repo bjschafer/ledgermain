@@ -159,14 +159,13 @@ describe("spellLevelUnlockClassLevel() — the gate SpellManager's Add button re
   });
 });
 
-describe("the bug this closes: a not-yet-reached spell level used to have no known-limit entry at all", () => {
+describe("a not-yet-reached spell level has no known-limit entry at all", () => {
   it("sorcerer at class level 1 has no known-limit entry for 2nd-level spells (the `?? Infinity` trap)", () => {
     const m = casterModelFor("sorcerer")!;
     const limits = new Map(spellsKnownLimitsByLevel(m, 1).map((l) => [l.level, l.limit]));
-    // This is exactly the condition the old `knownLimits.get(level) ?? Infinity`
-    // formula mishandled: no entry here read as "no limit" (freely addable)
-    // instead of "not accessible yet" (must be blocked). The fix keys off
-    // `knownLimits.has(level)` instead, backed by spellLevelUnlockClassLevel
+    // A missing entry must read as "not accessible yet" (blocked), not "no
+    // limit" (freely addable) — hence `knownLimits.has(level)` rather than
+    // `knownLimits.get(level) ?? Infinity`, backed by spellLevelUnlockClassLevel
     // above for the player-facing "unlocks at level N" hint.
     expect(limits.has(1)).toBe(true);
     expect(limits.has(2)).toBe(false);

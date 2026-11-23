@@ -31,7 +31,7 @@
  * ("Exhausted... must have the fatigue cruelty before selecting";
  * "Frightened... must have the shaken cruelty"; "Nauseated... must have the
  * sickened cruelty") — noted via `contextNotes`, never hard-blocked (this
- * project's hybrid soft-prereq posture; see CLAUDE.md).
+ * project's hybrid soft-prereq posture).
  *
  * Modelling posture (mirrors witch-hexes.ts/oracle-revelations.ts's honesty
  * bar): every cruelty here inflicts a condition on a TARGET the antipaladin

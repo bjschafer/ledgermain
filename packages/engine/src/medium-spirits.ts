@@ -4,9 +4,7 @@
  * "Spirits - Medium" index, cross-checked against d20pfsrd.com's per- spirit
  * pages), NOT from the vendored data pack.
  *
- * Data provenance — audited before authoring, per this project's "audit
- * vendored data first" discipline (`shaman-spirits.ts`/`psychic-
- * disciplines.ts` precedent): unlike shaman spirits or psychic disciplines
+ * Data provenance: unlike shaman spirits or psychic disciplines
  * (individually vendored as standalone `class-abilities` entries, just not
  * linked from their class def), the Medium's 6 legendary spirits (Archmage,
  * Champion, Guardian, Hierophant, Marshal, Trickster) carry NO vendored
@@ -41,7 +39,7 @@
  * ability-score-increase `Change`s in `collect.ts`).
  *
  * Which spirits' Spirit Bonus targets are real, unconditional `Change`s vs.
- * situational/unmodeled prose (audited against `targets.ts`'s
+ * situational/unmodeled prose (checked against `targets.ts`'s
  * `APPLIED_TARGETS` — the single source of truth for what `compute` actually
  * consumes):
  *   - "Concentration checks" (Archmage, Hierophant's "Wisdom checks" via
@@ -103,8 +101,8 @@
  * reference unmodeled stats like Constitution/Wisdom checks; the few that
  * DO reference modeled stats, e.g. Guardian's damage penalty, are still
  * conditional on the "always fights/casts defensively" behavioral
- * restriction this app can't adjudicate) — matches the task's explicit
- * "soft, not hard-modeled" instruction.
+ * restriction this app can't adjudicate) — matches the "soft, not
+ * hard-modeled" posture.
  *
  * TABOO: PF1 RAW's 2nd-level "Taboo" class feature (accept a spirit-specific
  * personal restriction each séance; keeping it all day waives spirit
@@ -500,7 +498,7 @@ export const MEDIUM_SPIRIT_TAGS: readonly string[] = SPIRIT_LIST.map((s) => s.ta
  * branch (`vendoredOnly: false`, vendored prose attached) and a vendored-only
  * stub branch (`vendoredOnly: true`, name + prose only).
  *
- * Collision audit: all 6 hand-authored spirits (Archmage, Champion, Guardian,
+ * Collision check: all 6 hand-authored spirits (Archmage, Champion, Guardian,
  * Hierophant, Marshal, Trickster) matched a vendored entry by normalized name
  * — zero misses, zero aliases needed. The 34 vendored-only entries are a mix
  * of 12 outsider-type spirits (Psychic Anthology: Aeon, Agathion, Angel,

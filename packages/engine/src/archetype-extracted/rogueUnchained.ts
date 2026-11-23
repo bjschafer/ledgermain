@@ -3,7 +3,7 @@
  * file convention this follows). Covers all 76 vendored `rogueUnchained:*`
  * archetypes, 251 features, read individually.
  *
- * ── Class-specific mechanical facts this pass relies on ───────────────────
+ * ── Class-specific mechanical facts this classification relies on ─────────
  *
  * 1. **Rogue talents** are a modeled pick-list subsystem
  *    (`packages/engine/src/rogue-talents.ts`, shared with the chained Rogue).
@@ -50,12 +50,11 @@
  *    category that vocabulary actually carries. A descriptor list partly
  *    outside that vocabulary promotes the fitting part only: Planar Sneak's
  *    Planar Sense names eight descriptors, four elemental (no matching
- *    category) and four alignment (evil/good/lawful/chaotic, now in
- *    vocabulary), so only the alignment half is wired below. A
- *    creature-type-scoped save like Sylvan Trickster's Resist Nature's Lure
- *    stays `situational` — no matching axis, same posture
- *    `class-feature-effects.ts`'s own doc comment documents for its declined
- *    candidates.
+ *    category) and four alignment (evil/good/lawful/chaotic, in vocabulary),
+ *    so only the alignment half is wired below. A creature-type-scoped save
+ *    like Sylvan Trickster's Resist Nature's Lure stays `situational` — no
+ *    matching axis, same posture `class-feature-effects.ts`'s own doc
+ *    comment documents for its declined candidates.
  * 5. **Darkvision/blindsight grants** are expressible as a `sense*` target
  *    (`senses.ts`'s `SENSE_TARGET_IDS`, in `targets.ts`'s applied set) —
  *    resolution is highest-wins across sources. Two features here (Shadow
@@ -68,7 +67,7 @@
  *    with the initial rider dropped and noted (medium confidence), matching
  *    that module's documented precedent for Bat/Shadow's Sight-shaped cases.
  *
- * ── Rubric (same as the chained Rogue file / fighter pilot) ────────────────
+ * ── Rubric (same as the chained Rogue file / `./fighter.ts`) ───────────────
  *  - "numeric": an unconditional bonus (or one gated on a condition this
  *    engine can check, `@armor.type`), expressible via a real
  *    `packages/engine/src/targets.ts` target. Mixed features: the
@@ -158,7 +157,7 @@ export const ROGUE_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Abductor",
     level: 3,
     bucket: "numeric",
-    note: 'scaling CMB bonus to grapple plus a CMD bonus resisting a grapple/an escape from her own grapple, unconditional from 3rd — now expressible via Change.maneuverCategories (maneuver-categories.ts), wired in ROGUE_UNCHAINED_ARCHETYPE_EFFECTS_EXTRACTED. The defensive half is written cmd (the vocabulary\'s own resisting/defending side) even though the source text says "combat maneuver bonus" for it too.',
+    note: 'scaling CMB bonus to grapple plus a CMD bonus resisting a grapple/an escape from her own grapple, unconditional from 3rd — expressible via Change.maneuverCategories (maneuver-categories.ts), wired in ROGUE_UNCHAINED_ARCHETYPE_EFFECTS_EXTRACTED. The defensive half is written cmd (the vocabulary\'s own resisting/defending side) even though the source text says "combat maneuver bonus" for it too.',
   },
   "rogueUnchained:bekyar-kidnapper:clean-capture:1": {
     archetypeId: "rogueUnchained:bekyar-kidnapper",
@@ -905,7 +904,7 @@ export const ROGUE_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Uncanny Aim",
     level: 4,
     bucket: "subsystem",
-    note: "range-increment increase (10 ft. at 4th) + a damage-die-step increase (at 8th) for specific pistols — range increment now displays but has no Change target to increase it, and die-step increases remain inexpressible",
+    note: "range-increment increase (10 ft. at 4th) + a damage-die-step increase (at 8th) for specific pistols — range increment displays but has no Change target to increase it, and die-step increases remain inexpressible",
   },
   "rogueUnchained:gun-smuggler:weapon-and-armor-proficiency:1": {
     archetypeId: "rogueUnchained:gun-smuggler",
@@ -2047,14 +2046,14 @@ export const ROGUE_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
  * `ARCHETYPE_FEATURE_EFFECTS` (the hand-verified table, which has no
  * `rogueUnchained:*` entries at all today) — every entry here additionally
  * carries `confidence`/`provenance` so a reviewer (or the UI) can never
- * confuse "a human read the rulebook and checked this" with "an extraction
- * pass inferred this from prose." Only 30 of Rogue (Unchained)'s 251 features
- * cleared the `numeric` bar (see
+ * confuse "a human read the rulebook and checked this" with "a
+ * machine inferred this from prose." Only 33 of Rogue (Unchained)'s 251
+ * features cleared the `numeric` bar (see
  * `ROGUE_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION` above for the full
- * per-feature audit) — this kit leans heavily on rogue-talent substitutions,
- * activated/resource-gated abilities, and skill/save bonuses scoped to a
- * narrow use-case, all of which stay below the "unconditional, always-on"
- * bar this pipeline uses.
+ * per-feature classification) — this kit leans heavily on rogue-talent
+ * substitutions, activated/resource-gated abilities, and skill/save bonuses
+ * scoped to a narrow use-case, all of which stay below the "unconditional,
+ * always-on" bar this pipeline uses.
  */
 export const ROGUE_UNCHAINED_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
   Record<string, ExtractedArchetypeFeatureEffect>

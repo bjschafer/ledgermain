@@ -3,7 +3,7 @@
  * `class-feature-classification/reachable3.ts` / `reachable4.ts`. See
  * `types.ts` for what belongs in this table and `index.ts` for the merge.
  *
- * RAW sources (verified against aonprd.com's live class pages, 2026-08-16):
+ * RAW sources (verified against aonprd.com's live class pages):
  *   - Sacred Armor (warpriest, Advanced Class Guide): "This power grants the
  *     armor a +1 enhancement bonus. For every 3 levels beyond 7th, this bonus
  *     increases by 1 (to a maximum of +5 at 19th level)." Modeled the same

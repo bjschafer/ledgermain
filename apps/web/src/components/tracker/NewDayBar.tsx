@@ -4,20 +4,21 @@ import { showToast } from "../../state/toast.js";
 import type { BuilderProps } from "../builder/types.js";
 
 /**
- * One-click "new day" rest. Composes the HP/ability-damage/
- * resource-pool/prepared-and-spontaneous-spell resets that used to live behind
- * independent panel buttons — those buttons stay put (a solo top-off
- * mid-session, e.g. just draining a wand, doesn't warrant a full rest).
+ * One-click "new day" rest. Composes the HP, ability-damage, resource-pool,
+ * and prepared/spontaneous-spell resets. The independent panel buttons (HP's
+ * Rest, Resources' Refill all, each caster's Refresh slots) stay put for a
+ * solo top-off mid-session, e.g. just draining a wand, which doesn't warrant
+ * a full rest.
  *
  * Temporary negative levels are never auto-cleared by rest (PF1 RAW requires
  * a Fortitude save 24h after each was gained, rolled at the table) — while
  * any are present this bar shows a standing reminder, not just right after
  * clicking "New day".
  *
- * Feedback (UX audit: "feedback: toasts + undo") — a full New Day silently
- * resets HP/slots/pools/buffs with no receipt of what changed, and no way back
- * from a fat-fingered click. `restNewDay`'s `summary` gives the receipt; the
- * toast's Undo action restores the pre-rest doc via `undoLast`.
+ * A full New Day would otherwise reset HP/slots/pools/buffs with no receipt of
+ * what changed and no way back from a fat-fingered click. `restNewDay`'s
+ * `summary` gives the receipt; the toast's Undo action restores the pre-rest
+ * doc via `undoLast`.
  */
 export function NewDayBar({ doc, sheet, refData, update, undoLast }: BuilderProps) {
   const tempNegLevels = getNegativeLevels(doc).temporary;

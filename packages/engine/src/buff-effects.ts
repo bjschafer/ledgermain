@@ -93,7 +93,7 @@ const RAGE_UNCHAINED_TEMP_HP: Change = {
  *     opportunity"
  * `Change.acCategories` gives the AC half a real `aoo` slice (see
  * `ac-categories.ts`), so this patches that half in; the attack half stays
- * prose, since `attack` has no such slice — the buff no longer belongs in
+ * prose, since `attack` has no such slice — the buff doesn't belong in
  * `BUFF_PROSE_RULINGS` (it now has a wired route), but its attack-vs-AoO
  * remainder still needs the reminder note the vendored contextNote carries.
  * Formula mirrors the buff's own scaling (`@item.level` is the
@@ -141,7 +141,8 @@ const ANGELIC_ASPECT_EVIL_SAVE: Change = {
  * (see `save-categories.ts`).
  *
  * Only promoted where the whole bonus is a standing modifier that fits the
- * vocabulary. All 190 vendored buffs were read for this sweep; left as prose:
+ * vocabulary. All 190 vendored buffs were read for this classification; left
+ * as prose:
  * - Angelic Aspect (all three tiers): the "+2 Morale vs existing Enchantment
  *   [charm] and [compulsion] effects" note looks like a fit but isn't one —
  *   Protection from Evil (which Angelic Aspect grants) only ever offers that

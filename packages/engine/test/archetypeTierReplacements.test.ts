@@ -332,7 +332,7 @@ describe("suppress-plus-backfill archetypes are untouched by the tier table", ()
   });
 });
 
-describe("Bravery mispairings neutralized: bonus-feat trades no longer strike Bravery", () => {
+describe("Bravery mispairings neutralized: bonus-feat trades do not strike Bravery", () => {
   it("Corsair keeps Bravery (Deck Fighting trades a feat slot, not Bravery)", () => {
     const corsair = archetypeId("Corsair", "fighter");
     const doc = makeDoc({ classes: [{ tag: "fighter", level: 6 }], archetypes: [corsair] });

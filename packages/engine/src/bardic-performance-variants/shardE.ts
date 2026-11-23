@@ -21,7 +21,7 @@
  * get no def, only the `removesTags` entry.
  *
  * None of this shard's archetypes have a legitimate self-facing target (no
- * "himself or a single ally" wording anywhere in this batch), so every
+ * "himself or a single ally" wording anywhere in these entries), so every
  * authored def below is note-tier with `changes: []`.
  */
 

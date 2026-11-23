@@ -103,11 +103,11 @@ export function buildRollData(
   // Worn-armor weight class for `@armor.type` (0 none, 1 light, 2 med, 3 heavy),
   // and the equivalent for `@shield.type`.
   //
-  // `@shield.type` was previously absent from roll data entirely. Missing paths
-  // resolve to 0 (Foundry behavior, see `formula.ts`), so every vendored
-  // formula gated on `lt(@shield.type, 1)` — monk's AC Bonus and its Wis-to-AC
-  // among them — silently passed while a shield was equipped, granting a bonus
-  // the rules withhold from a shield-using monk.
+  // `@shield.type` must be populated. Missing paths resolve to 0 (Foundry
+  // behavior, see `formula.ts`), so a vendored formula gated on
+  // `lt(@shield.type, 1)` — monk's AC Bonus and its Wis-to-AC among them —
+  // would silently pass while a shield was equipped, granting a bonus the
+  // rules withhold from a shield-using monk.
   let armorType = 0;
   let shieldType = 0;
   for (const item of doc.build.gear ?? []) {
@@ -174,10 +174,10 @@ export function buildRollData(
     armor: { type: armorType },
     shield: { type: shieldType },
     item: { level: 0 },
-    // `@details.level.value` was previously absent from roll data entirely.
-    // Missing paths resolve to 0 (Foundry behavior, see formula.ts), so Drow
-    // Noble's vendored spell resistance formula (`11 + @details.level.value`)
-    // silently evaluated as a flat 11 regardless of character level.
+    // `@details.level.value` must be populated. Missing paths resolve to 0
+    // (Foundry behavior, see formula.ts), so Drow Noble's vendored spell
+    // resistance formula (`11 + @details.level.value`) would silently evaluate
+    // as a flat 11 regardless of character level.
     details: { level: { value: level } },
     level,
   };

@@ -4,9 +4,8 @@ import { useEffect, useRef, useState } from "react";
  * Tracks a displayed value across renders and bumps a counter whenever it
  * changes, for a one-shot CSS "flash" the caller re-triggers by keying an
  * element on the returned number (see `StatSeal`'s `.seal-flash` overlay and
- * Sheet.tsx's skill-total rows — the "recompute shimmer" cue from the living-
- * sheet UX audit: the engine recomputes the whole sheet on every doc change,
- * but nothing showed a number had actually changed).
+ * Sheet.tsx's skill-total rows: the engine recomputes the whole sheet on every
+ * doc change, so the flash is what shows a number actually changed).
  *
  * Returns 0 on mount and stays 0 until the first real change, so nothing
  * flashes on initial render. Pass `resetKey` (e.g. `doc.id`) to resync the

@@ -23,9 +23,9 @@ import { NINJA_TRICKS } from "../src/ninja-tricks.js";
  *   `floor(@class.unlevel / 2) + @abilities.cha.mod`. This rides the fully
  *   generic `uses.maxFormula` pipeline with zero hand-authoring.
  *
- * Ninja Tricks / Master Tricks (sweep for Wall Climber): hand-authored
+ * Ninja Tricks / Master Tricks (including Wall Climber): hand-authored
  * clean-room menu table (`@pf1/engine` `ninja-tricks.ts`), mostly
- * `displayOnly` — see that file's doc comment for the honesty-bar audit —
+ * `displayOnly` — see that file's doc comment for the honesty-bar notes —
  * except Wall Climber's flat `climbSpeed` grant. Wired into
  * `collectGrantedFeatures`/`resolveClassFeatures` (`archetypes.ts`) exactly
  * like witch hexes are for the classFeatures DISPLAY list; covered below.
@@ -140,7 +140,7 @@ describe("ninja L20 — capstone", () => {
   });
 });
 
-describe("ninja L12 — ninja tricks wiring (issue #65 wave B)", () => {
+describe("ninja L12 — ninja tricks wiring", () => {
   const doc: CharacterDoc = {
     schemaVersion: 1,
     id: "test",
@@ -195,7 +195,7 @@ describe("ninja L12 — ninja tricks wiring (issue #65 wave B)", () => {
   });
 });
 
-describe("Wall Climber (issue #74 sweep) — the sole ninja trick with a live Change", () => {
+describe("Wall Climber — the sole ninja trick with a live Change", () => {
   it("carries a flat, unconditional climbSpeed Change — d20pfsrd's 'Wall Climber (Su)' page and legacy.aonprd.com's Ultimate Combat ninja listing both read: 'gains a climb speed of 20 feet, but only on vertical surfaces'", () => {
     expect(NINJA_TRICKS.wallClimber?.changes).toEqual([
       { formula: "20", target: "climbSpeed", type: "untyped" },

@@ -1,11 +1,10 @@
 /**
  * Hand-computed fixture tests for the per-class-scoped `CLASS_FEATURE_CHANGE_
- * PATCHES` entries wired this wave — every one keyed as `"<classTag>:<Feature
- * Name>"` because the bare name is unsafe (a different bearer shares it with
- * a genuinely different progression or mechanic). Mirrors `trapSense.test.ts`
- * and `classFeaturePatches.test.ts`'s fixture style: a bare `CharacterDoc`
- * through `compute()`, hand-verified numbers cited against the published
- * rule.
+ * PATCHES` entries — every one keyed as `"<classTag>:<Feature Name>"` because
+ * the bare name is unsafe (a different bearer shares it with a genuinely
+ * different progression or mechanic). Mirrors `trapSense.test.ts` and
+ * `classFeaturePatches.test.ts`'s fixture style: a bare `CharacterDoc` through
+ * `compute()`, hand-verified numbers cited against the published rule.
  *
  * Every fixture uses a Human with all abilities at 10 (no ability-mod or
  * racial contribution) unless noted otherwise, so a granted bonus reads as

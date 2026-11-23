@@ -1,6 +1,6 @@
 /**
  * Hand-computed fixture tests for `CLASS_FEATURE_CHANGE_PATCHES`
- * (`class-feature-effects.ts`) — category-scoped save bonuses promoted from
+ * (`class-feature-effects.ts`) — category-scoped save bonuses built from
  * vendored class-feature description text that ships no `Change` of its own.
  * Mirrors `saveCategories.test.ts`'s fixture style (a bare `CharacterDoc`
  * through `compute()`, hand-verified numbers cited against the published

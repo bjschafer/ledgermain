@@ -1,12 +1,11 @@
 /**
- * Unit tests for `setAlignment()`'s label/code normalization (copy &
- * readability audit): a real bug where `IdentitySection`'s alignment
- * `<select>` only matches two-letter codes ("NG"), so a full-label value
- * (e.g. "Neutral Good" — what the Lyle fixture stores, and what an external
- * import may produce) stored verbatim showed as "—" in the dropdown even
- * though the sheet displayed the label fine. `setAlignment` now normalizes
- * either shape to the stored code; unrecognized strings still store as-is
- * (the sheet already falls back to raw text for those).
+ * Unit tests for `setAlignment()`'s label/code normalization:
+ * `IdentitySection`'s alignment `<select>` matches two-letter codes ("NG"),
+ * so a full-label value (e.g. "Neutral Good" — what the Lyle fixture stores,
+ * and what an external import may produce) would otherwise show as "—" in
+ * the dropdown even though the sheet displays the label fine. `setAlignment`
+ * normalizes either shape to the stored code; unrecognized strings still
+ * store as-is (the sheet already falls back to raw text for those).
  */
 import { describe, expect, it } from "bun:test";
 

@@ -11,10 +11,9 @@ import {
 } from "../src/index.js";
 
 /**
- * fixture tests for
- * `archetype-extracted/druid.ts`, hand-computed against the real vendored data
- * slice via `loadRefData`, same posture as `archetypeEffectsExtracted.test.ts`
- * (the fighter pilot's fixture file).
+ * Fixture tests for `archetype-extracted/druid.ts`, hand-computed against the
+ * real vendored data slice via `loadRefData`, with the same posture as
+ * `archetypeEffectsExtracted.test.ts`.
  */
 const ref = loadRefData();
 

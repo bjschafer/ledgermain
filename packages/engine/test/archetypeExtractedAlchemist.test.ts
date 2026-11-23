@@ -16,25 +16,22 @@ import { isTargetApplied } from "../src/targets.js";
 /**
  * The alchemist slice of the prose->Change extraction pipeline.
  *
- * TEST APPROACH: alchemist's aggregator wiring (`archetype-extracted/index.ts`)
- * is a later integration step this pass doesn't touch, so
- * `resolveArchetypeFeatureEffect`/`compute` do NOT pick up this file's tables
- * yet through the normal production path. These fixtures therefore (1) assert
- * directly against `ALCHEMIST_ARCHETYPE_EFFECTS_EXTRACTED`'s exported
- * `changes` shape, (2) hand-compute each formula via the real `formula.ts`
- * evaluator (`evaluateFormula`) at several class levels against the exact
- * published-rules numbers cited in each entry's `provenance`, (3) verify
+ * These fixtures assert directly against
+ * `ALCHEMIST_ARCHETYPE_EFFECTS_EXTRACTED`'s exported `changes` shape,
+ * hand-compute each formula via the real `formula.ts` evaluator
+ * (`evaluateFormula`) at several class levels against the exact published-rules
+ * numbers cited in each entry's `provenance`, verify
  * `resolveArchetypeFeatureEffect` resolves correctly when explicitly given
- * this file's tables as its override arguments, and (4) verify every
- * `provenance` string is a verbatim substring of the vendored description
- * after HTML-stripping and whitespace-squashing (the same compare
+ * this file's tables as its override arguments, and verify every `provenance`
+ * string is a verbatim substring of the vendored description after
+ * HTML-stripping and whitespace-squashing (the same compare
  * `traitEffectsExtracted.test.ts` uses). `loadRefData` sanity-checks that
  * every id this file references actually exists in the real vendored data
- * slice, same posture as `archetypeEffectsExtracted.test.ts`.
+ * slice.
  */
 const ref = loadRefData();
 
-/** The same normalization the sweep's batch files used: tags out, whitespace squashed. */
+/** The same normalization the extraction used: tags out, whitespace squashed. */
 function strippedDescription(html: string): string {
   return html
     .replace(/<[^>]+>/g, " ")
@@ -61,7 +58,7 @@ describe("ALCHEMIST_ARCHETYPE_FEATURE_CLASSIFICATION: coverage", () => {
     expect(Object.keys(ALCHEMIST_ARCHETYPE_FEATURE_CLASSIFICATION).length).toBe(219);
   });
 
-  it("bucket counts match the audited totals (numeric 15 / situational 8 / subsystem 157 / blocked 39)", () => {
+  it("bucket counts match the classified totals (numeric 15 / situational 8 / subsystem 157 / blocked 39)", () => {
     const counts: Record<string, number> = {};
     for (const entry of Object.values(ALCHEMIST_ARCHETYPE_FEATURE_CLASSIFICATION)) {
       counts[entry.bucket] = (counts[entry.bucket] ?? 0) + 1;

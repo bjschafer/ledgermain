@@ -32,7 +32,7 @@
  * Entries are only promoted when the whole bonus fits the
  * `MANEUVER_CATEGORIES` vocabulary and applies with no gate the static sheet
  * can't detect. Excluded, same bar as the save tables and the
- * `racial-trait-classification/` audit:
+ * `racial-trait-classification/` classification:
  *   - scoped to a target creature type or subtype (an opponent property, not
  *     a property of the roll itself);
  *   - scoped to an equipped weapon type or a specific weapon a player must

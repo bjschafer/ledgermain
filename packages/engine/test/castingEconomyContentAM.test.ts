@@ -1,6 +1,6 @@
 /**
- * Hand-computed fixtures for the #132 casting-economy content wave, classes
- * A-M (`archetypesAM.ts` / `bonus-knownAM.ts`). Drift guards and the generic
+ * Hand-computed fixtures for the casting-economy content tables, classes A-M
+ * (`archetypesAM.ts` / `bonus-knownAM.ts`). Drift guards and the generic
  * resolution-path mechanics already live in `castingEconomy.test.ts`; this
  * file only exercises the real wired tables against real vendored data.
  */

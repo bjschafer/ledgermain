@@ -1,6 +1,6 @@
 /**
  * Druid + ranger + paladin + antipaladin archetype features that modify the
- * tracked companion/mount — one wave shard of
+ * tracked companion/mount — one shard of
  * `COMPANION_EFFECT_ARCHETYPE_FEATURES` (see `index.ts`). Keys are
  * archetype-feature classification keys; verify every number against the
  * vendored description before wiring.

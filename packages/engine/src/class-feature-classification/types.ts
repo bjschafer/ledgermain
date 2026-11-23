@@ -3,11 +3,11 @@
  * in this directory. Kept separate so an agent adding entries to a shard never
  * touches this file — only `index.ts` merges shards.
  *
- * What this audit is: a per-entry triage verdict over the vendored
+ * What this classification is: a per-entry triage verdict over the vendored
  * `RefData.classFeatures` catalog, mirroring `racial-trait-classification/`
- * and `archetype-extracted/`'s convention. It is an audit artifact — nothing
- * in `compute`/`collect.ts` reads it; `scripts/mech-coverage.ts` consumes it
- * to separate reviewed backlog from undiscovered backlog.
+ * and `archetype-extracted/`'s convention. It is a classification artifact —
+ * nothing in `compute`/`collect.ts` reads it; `scripts/mech-coverage.ts`
+ * consumes it to separate reviewed backlog from undiscovered backlog.
  *
  * Bucket rubric (the archetype rubric, adapted):
  *  - "numeric"     — an unconditional, always-on number the sheet should

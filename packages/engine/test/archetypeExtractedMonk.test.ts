@@ -83,7 +83,7 @@ function sheetWithout(level: number) {
  * Body/Timeless Body's disease/poison/magicalAging immunities aren't
  * suppressed by these archetypes' replacement text — a pre-existing engine
  * behavior, out of scope here — so a plain read of `effectImmunities` would
- * pick up grants this pass never added).
+ * pick up vanilla grants).
  */
 function newEffectImmunitiesAt(archetypeName: string, level: number): string[] {
   const withSet = new Set(
@@ -120,8 +120,8 @@ describe("Monk archetype classification: full coverage of every vendored feature
     for (const entry of Object.values(MONK_ARCHETYPE_FEATURE_CLASSIFICATION)) {
       counts[entry.bucket]++;
     }
-    // +1 numeric / -1 situational vs. the prior audit: Karmic Monk's
-    // Balanced Mind promoted once SAVE_CATEGORIES gained an alignment axis.
+    // Karmic Monk's Balanced Mind is numeric because SAVE_CATEGORIES has an
+    // alignment axis.
     expect(counts).toEqual({ numeric: 28, situational: 36, subsystem: 259, blocked: 5 });
   });
 
@@ -314,7 +314,7 @@ describe("Terra-Cotta Monk: Trap Dodge (Wis modifier bonus on ALL saves vs. trap
   });
 });
 
-describe("Karmic Monk: Balanced Mind (newly promoted: all four alignment keys at once)", () => {
+describe("Karmic Monk: Balanced Mind (all four alignment keys at once)", () => {
   it("+2 on fort/ref/will vs. chaotic/evil/good/lawful at 3rd level, headlines untouched", () => {
     // "At 3rd level, a karmic monk receives a +2 bonus on saving throws
     // against effects with the chaos, evil, good, or law subtype. He also

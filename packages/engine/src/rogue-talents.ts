@@ -1909,14 +1909,14 @@ export const ROGUE_TALENT_IDS: readonly string[] = TALENT_LIST.map((t) => t.id);
  * overlay" section (matching by NORMALIZED NAME, hand-authored wins the
  * collision).
  *
- * Collision audit (all 234 hand-authored entries, run against the pinned Pf
+ * Collision check (all 234 hand-authored entries, run against the pinned Pf
  * Data 1e slice): every entry matches a vendored row — no `NAME_ALIASES`
  * needed, and the vendored-only fallback path only exists for future data
  * bumps. Three vendored SAME-NAME pairs can't be told apart by name and are
  * paired explicitly by vendored id instead (`ROGUE_TALENT_VENDORED_IDS`).
  */
 
-/** Alias map for a hand-authored id whose vendored-catalog counterpart uses a different name — see `rage-powers.ts`'s identical map. Empty: the full-catalog audit found no drift. */
+/** Alias map for a hand-authored id whose vendored-catalog counterpart uses a different name — see `rage-powers.ts`'s identical map. Empty: the full-catalog check found no drift. */
 const ROGUE_TALENT_NAME_ALIASES: Record<string, string> = {};
 
 /**

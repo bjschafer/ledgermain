@@ -1,6 +1,6 @@
 /**
  * Cavalier + hunter archetype features that modify the tracked mount /
- * companion — one wave shard of `COMPANION_EFFECT_ARCHETYPE_FEATURES` (see
+ * companion — one shard of `COMPANION_EFFECT_ARCHETYPE_FEATURES` (see
  * `index.ts`). Keys are archetype-feature classification keys; verify every
  * number against the vendored description before wiring.
  */

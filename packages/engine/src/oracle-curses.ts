@@ -10,7 +10,7 @@
  * `lame-curse.u9KUlA4J4xUm8Wj8.yaml`) — just, like the mysteries, not linked
  * from the Oracle class def's `links.supplements` (only the generic
  * "Oracle's Curse" stub is), so `RefData.classFeatures` never picks them up
- * and they need hand-authoring here the same way.
+ * and they need hand-authored entries here the same way.
  *
  * Modelling posture (mirrors bloodlines.ts / traits.ts):
  *   - `changes` holds ONLY the two curses with a genuinely unconditional,
@@ -61,7 +61,7 @@ export interface OracleCurseDef {
   /**
    * True for a curse read end-to-end and deliberately left prose-only (no
    * unconditional number anywhere in its tree). The merged catalog surfaces
-   * this as its acknowledged flag so the coverage audit counts the ruling
+   * this as its acknowledged flag so the coverage inventory counts the ruling
    * as reviewed triage instead of undiscovered backlog.
    */
   displayOnly?: boolean;
@@ -198,7 +198,7 @@ export const ORACLE_CURSE_TAGS: readonly string[] = CURSE_LIST.map((cu) => cu.ta
  * 6-base-curse table above stays authoritative for mechanics; this section
  * merges the two for browsing.
  *
- * Matching is by NORMALIZED NAME. Collision audit (all 6 hand-authored
+ * Matching is by NORMALIZED NAME. Collision check (all 6 hand-authored
  * curses): all 6 matched a vendored entry by normalized name (`Clouded
  * Vision`, `Deaf`, `Haunted`, `Lame`, `Tongues`, `Wasting` all present
  * verbatim in the vendored dictionary) — no aliasing needed.

@@ -14,13 +14,13 @@ import {
 
 /**
  * Fixture coverage for mesmerist Tricks + Bold Stares — the "trick MENU + bold
- * stares" slice the task brief calls for on top of the already-vendored
- * Mesmerist Tricks resource pool (`uses.maxFormula`, unaffected by this
- * table). Both tables are clean-room, hand-authored (see
- * `mesmerist-tricks.ts`/`mesmerist-bold-stares.ts`), `displayOnly` in their
- * entirety, mirroring `monkKiPowersStyleStrikes.test.ts`'s pattern: prove the
- * tables are internally consistent, chosen picks surface in `classFeatures`,
- * and bold stares additionally enrich the Hypnotic Stare `detail` line.
+ * stares" slice on top of the already-vendored Mesmerist Tricks resource pool
+ * (`uses.maxFormula`, unaffected by this table). Both tables are clean-room,
+ * hand-authored (see `mesmerist-tricks.ts`/`mesmerist-bold-stares.ts`),
+ * `displayOnly` in their entirety, mirroring
+ * `monkKiPowersStyleStrikes.test.ts`'s pattern: prove the tables are
+ * internally consistent, chosen picks surface in `classFeatures`, and bold
+ * stares additionally enrich the Hypnotic Stare `detail` line.
  */
 const ref = loadRefData();
 
@@ -62,7 +62,7 @@ function makeDoc(
 }
 
 describe("MESMERIST_TRICKS table", () => {
-  it("has all 44 vendored tricks (30 regular + 14 masterful, full parity, issue #74), all displayOnly with no changes", () => {
+  it("has all 44 vendored tricks (30 regular + 14 masterful, full parity), all displayOnly with no changes", () => {
     expect(MESMERIST_TRICK_IDS.length).toBe(44);
     for (const id of MESMERIST_TRICK_IDS) {
       const trick = MESMERIST_TRICKS[id]!;
@@ -78,7 +78,7 @@ describe("MESMERIST_TRICKS table", () => {
 });
 
 describe("MESMERIST_BOLD_STARES table", () => {
-  it("has all 24 vendored bold stare options (full parity, issue #74), all displayOnly with no changes", () => {
+  it("has all 24 vendored bold stare options (full parity), all displayOnly with no changes", () => {
     expect(MESMERIST_BOLD_STARE_IDS.length).toBe(24);
     for (const id of MESMERIST_BOLD_STARE_IDS) {
       const stare = MESMERIST_BOLD_STARES[id]!;

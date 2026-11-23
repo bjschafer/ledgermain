@@ -1,8 +1,7 @@
 /**
  * Spell-save-DC bonuses and caster-level-check bonuses — the two caster-facing
- * modifier families that previously had no `Change.target` to land on (Spell
- * Focus and Spell Penetration sat in `feat-classification.ts` as "blocked" for
- * exactly this reason).
+ * modifier families these targets exist for (Spell Focus and Spell
+ * Penetration sat in `feat-classification.ts` as "blocked" without them).
  *
  * Unlike `ability-dcs.ts` (which computes ABSOLUTE DC lines for seven class
  * abilities), there is no headline number to compute here: a spell's DC is

@@ -312,8 +312,8 @@ describe("resolveClassFeatures: Maneuver Master (monk archetype) swaps Evasion f
   // Monk — Monk.csv archetypes are vendored alongside the base class. (Note:
   // the vendored CSV's row prose for this archetype describes itself as
   // "ironskin monk" throughout, though the `Archetype` column name is
-  // "Maneuver Master" — a quirk of the source dataset, not something this pass
-  // fixes; asserting on the mechanical swap only, not the prose.)
+  // "Maneuver Master" — a quirk of the source dataset; asserting on the
+  // mechanical swap only, not the prose.)
   const maneuverMaster = byName(ref.archetypes, "Maneuver Master");
   const doc = makeDoc({
     classes: [{ tag: "monk", level: 5 }],
@@ -460,14 +460,14 @@ describe("Brawler (fighter archetype, issue #46: vendored pairedBaseFeatureUuid 
   const weaponTrainingUuid = fighterDef.features.find((f) => f.name === "Weapon Training")!.uuid;
   const braveryUuid = fighterDef.features.find((f) => f.name === "Bravery")!.uuid;
 
-  it("archetypeSwappedUuids no longer claims Bravery or Armor Training (Heavy Armor)", () => {
+  it("archetypeSwappedUuids does not claim Bravery or Armor Training (Heavy Armor)", () => {
     const swapped = archetypeSwappedUuids(ref, brawler.id);
     expect(swapped.has(braveryUuid)).toBe(false);
     expect(swapped.has(armorTrainingUuid)).toBe(true);
     expect(swapped.has(weaponTrainingUuid)).toBe(true);
   });
 
-  it("L2: Bravery stays applied (Close Control no longer wrongly suppresses it)", () => {
+  it("L2: Bravery stays applied (Close Control does not suppress it)", () => {
     const doc = makeDoc({ classes: [{ tag: "fighter", level: 2 }], archetypes: [brawler.id] });
     const { classFeatures } = resolveClassFeatures(doc, ref);
     const bravery = classFeatures.find((f) => f.name === "Bravery")!;
@@ -486,7 +486,7 @@ describe("Brawler (fighter archetype, issue #46: vendored pairedBaseFeatureUuid 
     expect(armorTraining.replacedBy).toBe("Close Control");
   });
 
-  it("L7+: Armor Training stays struck through (now via Menacing Stance) alongside Close Control", () => {
+  it("L7+: Armor Training stays struck through (via Menacing Stance) alongside Close Control", () => {
     const doc = makeDoc({ classes: [{ tag: "fighter", level: 7 }], archetypes: [brawler.id] });
     const { classFeatures } = resolveClassFeatures(doc, ref);
     const armorTraining = classFeatures.find((f) => f.name === "Armor Training")!;
@@ -657,8 +657,8 @@ describe("Maneuver Master / Nornkith (monk archetypes, issue #47: spurious Evasi
 describe("Archetype-feature level-field corrections (issue #47)", () => {
   // Vendored `.level` corrected via `SUPPLEMENTAL_ARCHETYPE_FEATURE_LEVEL`
   // (packages/data-pipeline/src/supplements.ts) to match each feature's own
-  // prose; `id`/`uuid` intentionally keep their original (now
-  // level-mismatched) suffix — see that map's doc comment.
+  // prose; `id`/`uuid` intentionally keep their original (level-mismatched)
+  // suffix — see that map's doc comment.
 
   // An archetype's OWN features (as opposed to base-class features it swaps
   // out) surface under `activeArchetypes[].features`, gated by

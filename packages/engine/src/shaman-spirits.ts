@@ -6,8 +6,8 @@
  * takes levels in another class that grants a mystery (such as the oracle),
  * the spirit and mystery must match"), but its SPIRIT MAGIC spell list is NOT
  * byte-identical to the matching oracle mystery's bonus-spell list (verified
- * during authoring — e.g. Waves' 1st spirit-magic spell is Hydraulic Push, not
- * the Waves mystery's Touch of the Sea), so it is hand-copied from the
+ * — e.g. Waves' 1st spirit-magic spell is Hydraulic Push, not the Waves
+ * mystery's Touch of the Sea), so it is hand-copied from the
  * shaman-specific vendored YAML rather than reused from `ORACLE_MYSTERIES`.
  *
  * Scope: all 18 published shaman spirits — the 8 Advanced Class Guide "core"
@@ -45,8 +45,8 @@
  *     party-buff (Battle Spirit's ally aura), or a save-forcing debuff
  *     (Heavens' Stardust, Nature's Storm Burst, Life's Channel) — none of
  *     which has a flat always-on number this engine's `changes[]` pipeline
- *     could apply. Verified against aonprd.com's per-spirit pages during
- *     authoring (Battle's ability additionally matches the vendored
+ *     could apply. Verified against aonprd.com's per-spirit pages
+ *     (Battle's ability additionally matches the vendored
  *     `battle-spirit-ability.QGEEtV5NqZbomKE6.yaml`'s `uses.maxFormula: "3 +
  *     @abilities.cha.mod"` — cited in `summary` as prose only, since the
  *     other 7 spirits' per-day formulas aren't independently vendored and
@@ -79,11 +79,7 @@
  *     +4 CMD vs. bull rush/trip only applies "as long as she is standing on
  *     the ground" — a situational condition this table has no state for,
  *     so an unconditional Change would overstate it while flying/swimming/
- *     prone). A prior authoring pass had gotten five Battle hexes, one
- *     Bones hex, and one Heavens hex factually wrong (describing mechanics
- *     that don't match the published text at all, e.g. Battle Master's
- *     "grant an ally a bonus feat" vs. RAW's actual extra attack of
- *     opportunity) — corrected in place; see each entry's inline citation.
+ *     prone).
  *   - `spiritAnimalNote` is the spirit's "Spirit Animal" flavor bonus prose
  *     (display-only — the shaman's "spirit animal" is a familiar-like
  *     conduit for preparing spells, not a trackable creature this app models
@@ -194,8 +190,8 @@ export interface ShamanSpiritDef {
    * True for a spirit whose entire tree (spirit ability, greater/true
    * abilities, manifestation) was read and deliberately left prose-only:
    * nothing anywhere in it is an unconditional number. The merged catalog
-   * surfaces this as its acknowledged flag so the coverage audit counts the
-   * ruling as reviewed triage instead of undiscovered backlog.
+   * surfaces this as its acknowledged flag so the coverage inventory counts
+   * the ruling as reviewed triage instead of undiscovered backlog.
    */
   displayOnly?: boolean;
   spiritMagicSpells: ShamanSpiritMagicSpell[];
@@ -298,8 +294,7 @@ const SPIRIT_LIST: ShamanSpiritDef[] = [
         // extra-AoO/round grant has no engine target (not a flat number),
         // and the bonus feats are specific named grants (no Change target
         // for that either, same gap `shaman-hexes.ts` documents for
-        // Fetish/Secret). Corrected from a prior description ("grant an
-        // ally a bonus combat feat") that didn't match published text at all.
+        // Fetish/Secret).
         "Gain an extra attack of opportunity each round (stacks with Combat Reflexes); a bonus Weapon Specialization feat at 8th level, and Greater Weapon Focus (same weapon) at 16th, ignoring prerequisites.",
       ),
       hex(
@@ -309,8 +304,8 @@ const SPIRIT_LIST: ShamanSpiritDef[] = [
         // RAW: a touched creature gets a ward that activates on the NEXT
         // attack against it (+3 deflection, dropping by 1 per subsequent hit
         // to +2 then +1; +4/+5 starting bonus at 8th/16th), fading at +0 or
-        // after 24 hours - not "for a number of rounds" as previously
-        // described. Single-use-per-trigger ward on a touched creature
+        // after 24 hours - not "for a number of rounds". Single-use-per-trigger
+        // ward on a touched creature
         // (possibly not the shaman), no unconditional self number.
         "Touch a willing creature (including yourself): the next attack against it gets a +3 deflection bonus to AC, dropping by 1 each subsequent hit (+4 at 8th level, +5 at 16th), until the ward expires or 24 hours pass.",
       ),
@@ -321,8 +316,7 @@ const SPIRIT_LIST: ShamanSpiritDef[] = [
         // RAW: "the shaman causes a creature within 30 feet to take more
         // damage from bleed effects... an additional 1 point of bleed
         // damage... effects that restore hit points restore only half the
-        // normal amount." Not a crit-multiplier reduction - corrected from a
-        // prior description that didn't match published text.
+        // normal amount." Not a crit-multiplier reduction.
         "Curse a creature so it takes an extra point of bleed damage and heals only half as much from any source, for a number of rounds equal to the shaman's level.",
       ),
       hex(
@@ -333,8 +327,7 @@ const SPIRIT_LIST: ShamanSpiritDef[] = [
         // Perception checks to notice/pinpoint invisible creatures within 30
         // ft. for 1 round, OR ignore cover/partial cover on her next attack;
         // usable a number of times/day equal to shaman level. Not an ally
-        // buff on initiative/AoOs - corrected from a prior description that
-        // didn't match published text.
+        // buff on initiative/AoOs.
         "Swift action: gain a +10 insight bonus on your own Perception checks to spot invisible creatures within 30 ft. for 1 round, or ignore cover on your next attack instead. Usable a number of times/day equal to your shaman level.",
       ),
       hex(
@@ -343,8 +336,7 @@ const SPIRIT_LIST: ShamanSpiritDef[] = [
         "Hampering Hex",
         // RAW: "-2 penalty to AC and CMD for a number of rounds equal to the
         // shaman's level... At 8th level, the penalty becomes -4." AC/CMD,
-        // not speed - corrected from a prior description that named the
-        // wrong stat entirely.
+        // not speed.
         "Curse a creature within 30 ft. with a -2 penalty to AC and CMD (-4 at 8th level) for a number of rounds equal to the shaman's level; a Will save shortens this to 1 round.",
       ),
     ],
@@ -406,8 +398,7 @@ const SPIRIT_LIST: ShamanSpiritDef[] = [
         // staggered 1 round. A successful Fortitude saving throw negates
         // this effect. At 8th level, the duration increases to a number of
         // rounds equal to her shaman level..." Not an undead-binding
-        // ability - corrected from a prior description that didn't match
-        // published text at all (no undead-control theme in RAW).
+        // ability (no undead-control theme in RAW).
         "Curse a creature within 30 ft. with stiff joints, staggering it for 1 round (Fortitude negates); scales to a save-each-round duration at 8th level and a no-further-saves duration at 16th.",
       ),
       hex(
@@ -417,7 +408,7 @@ const SPIRIT_LIST: ShamanSpiritDef[] = [
         // RAW: "+2 deflection bonus to AC for a number of rounds equal to
         // the shaman's level. At 8th level, the bonus increases to +3 and
         // lasts for 1 minute. At 16th level, the bonus increases to +4 and
-        // lasts for 1 hour." Deflection, not armor - corrected bonus type.
+        // lasts for 1 hour." Deflection, not armor.
         "Grant a touched creature a +2 deflection bonus to AC (+3 at 8th level, +4 at 16th) for a number of rounds equal to the shaman's level, extending to 1 minute at 8th and 1 hour at 16th.",
       ),
       hex(
@@ -499,9 +490,9 @@ const SPIRIT_LIST: ShamanSpiritDef[] = [
         // receives Acrobatic Steps as a bonus feat." Constant (Ex), no
         // action to activate, no per-day limit - genuinely unconditional,
         // unlike this file's touch-attack/curse/ward hexes. No bonus type
-        // named (not "enhancement" - corrected from a prior description
-        // that guessed a type), so `c()` defaults to untyped, same posture
-        // as `racial-traits.ts`'s Sylph "Like the Wind" (+5 ft, untyped).
+        // named (not "enhancement"), so `c()` defaults to untyped, same
+        // posture as `racial-traits.ts`'s Sylph "Like the Wind" (+5 ft,
+        // untyped).
         // The two bonus feats (Nimble Moves, Acrobatic Steps) are specific
         // named grants with no Change target (`targets.ts`'s `bonusFeats`
         // only tracks the free-choice budget count) - left as prose.
@@ -608,8 +599,7 @@ const SPIRIT_LIST: ShamanSpiritDef[] = [
         // modifier and her Charisma modifier on all Charisma-based skill
         // checks. In addition, once per night while outdoors, she can cast
         // one spell as if modified by Empower/Extend/Silent/Still Spell..."
-        // No Survival-check bonus in RAW at all - corrected from a prior
-        // description that didn't match published text. Situationally
+        // No Survival-check bonus in RAW at all. Situationally
         // conditional (open sky at night) and targets an unsupported
         // aggregate ("Cha-based skill checks" has no discrete engine
         // target) - blocked for promotion regardless.
@@ -698,8 +688,7 @@ const SPIRIT_LIST: ShamanSpiritDef[] = [
         "Curse of Suffering",
         // RAW: identical text to Battle's own Curse of Suffering hex (see
         // that entry's citation) - extra bleed damage, half-effective
-        // healing. Not a crit-multiplier reduction - corrected from a prior
-        // description that didn't match published text.
+        // healing. Not a crit-multiplier reduction.
         "Curse a creature so it takes an extra point of bleed damage and heals only half as much from any source, for a number of rounds equal to the shaman's level.",
       ),
       hex(
@@ -1882,7 +1871,7 @@ export function findShamanHex(hexId: string): ShamanSpiritHex | undefined {
  * place for any future spirit a later splatbook pack adds that this table
  * hasn't caught up to yet).
  *
- * Matching is by NORMALIZED NAME. Collision audit (all 18 hand-authored
+ * Matching is by NORMALIZED NAME. Collision check (all 18 hand-authored
  * spirits): all 18 matched a vendored entry by normalized name (the vendored
  * dictionary keys ARE this table's own `tag`s, verified) — no aliasing
  * needed.

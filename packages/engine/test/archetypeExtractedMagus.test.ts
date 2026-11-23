@@ -11,28 +11,23 @@ import {
 /**
  * The magus slice of the prose->Change extraction pipeline.
  *
- * TEST APPROACH: magus's aggregator wiring (`archetype-extracted/index.ts`) is
- * a later integration step this pass doesn't touch, so
- * `resolveArchetypeFeatureEffect`/`compute` do NOT pick up this file's tables
- * yet through the normal production path. These fixtures therefore (1) assert
- * directly against `MAGUS_ARCHETYPE_EFFECTS_EXTRACTED`'s exported `changes`
- * shape, (2) hand-compute each formula via the real `formula.ts` evaluator
- * (`evaluateFormula`) at several class levels against the exact
- * published-rules numbers cited in each entry's `provenance`, and (3) verify
- * `resolveArchetypeFeatureEffect` resolves correctly when explicitly given
- * this file's tables as its override arguments (the mechanism it's designed
- * for — see its doc comment). `loadRefData` is used to sanity-check that every
- * archetypeId/name this file references actually exists in the real vendored
- * data slice, same posture as `archetypeEffectsExtracted.test.ts`.
+ * These fixtures assert directly against
+ * `MAGUS_ARCHETYPE_EFFECTS_EXTRACTED`'s exported `changes` shape, hand-compute
+ * each formula via the real `formula.ts` evaluator (`evaluateFormula`) at
+ * several class levels against the exact published-rules numbers cited in each
+ * entry's `provenance`, and verify `resolveArchetypeFeatureEffect` resolves
+ * correctly when explicitly given this file's tables as its override arguments
+ * (the mechanism it's designed for — see its doc comment). `loadRefData` is
+ * used to sanity-check that every archetypeId/name this file references
+ * actually exists in the real vendored data slice.
  *
  * Magus has NO suppression-composition case analogous to fighter's Armor
- * Training reflavors: every magus archetype feature this pass extracted a
- * Change for is either unpaired (Iron-Ring Striker's Bonus Feat) or paired
- * to a base feature that itself carries zero vendored `changes` (Magus
- * Arcana, Improved/Greater Spell Combat, True Magus — all confirmed
- * `changes: []` in class-features.json), so there's nothing to suppress and
- * no `applied: false` to observe. This is noted explicitly rather than
- * forcing an artificial case.
+ * Training reflavors: every magus archetype feature with an extracted Change
+ * is either unpaired (Iron-Ring Striker's Bonus Feat) or paired to a base
+ * feature that itself carries zero vendored `changes` (Magus Arcana,
+ * Improved/Greater Spell Combat, True Magus — all confirmed `changes: []` in
+ * class-features.json), so there's nothing to suppress and no `applied: false`
+ * to observe. This is noted explicitly rather than forcing an artificial case.
  */
 const ref = loadRefData();
 
@@ -45,12 +40,10 @@ function archetypeId(name: string): string {
 }
 
 // The archetypes MAGUS_ARCHETYPE_FEATURE_CLASSIFICATION covers (its own
-// archetypeId values) — all 39 vendored magus archetypes as of this pass;
-// the 8 "-arcana"/race-restricted archetypes (Greensting Slayer, Hexbreaker,
-// Hexcrafter, Jistkan Artificer, and Kapenia Dancer's own arcana lists, plus
-// Spellblade's arcana list and Suli/Tiefling's race-restricted arcana) that
-// the archetype data source repoint (config.ts ARCHETYPE_REPO/ARCHETYPE_SHA)
-// originally left uncovered are now included.
+// archetypeId values): all 39 vendored magus archetypes, including the 8
+// "-arcana"/race-restricted archetypes (Greensting Slayer, Hexbreaker,
+// Hexcrafter, Jistkan Artificer, Kapenia Dancer's own arcana lists, plus
+// Spellblade's arcana list and Suli/Tiefling's race-restricted arcana).
 const AUDITED_MAGUS_ARCHETYPE_IDS = new Set(
   Object.values(MAGUS_ARCHETYPE_FEATURE_CLASSIFICATION).map((e) => e.archetypeId),
 );
@@ -189,9 +182,9 @@ describe("Spell Dancer: Dance of Avoidance / Greater Dance of Avoidance insight 
   it("both entries share the 'insight' stacking type, so typed-bonus stacking (highest-within-type) naturally yields +4 total once both are active — not +6", () => {
     // This is a documentation-level assertion about the stacking contract
     // (verified generically by stacking.test.ts's typed-bonus-stacking
-    // suite); recorded here so a future aggregator-wiring pass can see why
-    // two independent flat Changes for the "same" progressive bonus are
-    // safe without extra arithmetic.
+    // suite); recorded here so the reason two independent flat Changes for
+    // the "same" progressive bonus are safe without extra arithmetic stays
+    // visible.
     const l7 = MAGUS_ARCHETYPE_EFFECTS_EXTRACTED["magus:spell-dancer:dance-of-avoidance:7"]!;
     const l13 =
       MAGUS_ARCHETYPE_EFFECTS_EXTRACTED["magus:spell-dancer:greater-dance-of-avoidance:13"]!;
@@ -235,7 +228,7 @@ describe("Magus arcana sub-archetypes: every pick is subsystem (arcana list, def
     expect(archetypeId("Tiefling")).toBe("magus:tiefling");
   });
 
-  it("none of the newly-covered arcana picks cleared the numeric bar", () => {
+  it("none of the covered arcana picks cleared the numeric bar", () => {
     const arcanaEntries = Object.values(MAGUS_ARCHETYPE_FEATURE_CLASSIFICATION).filter((e) =>
       e.archetypeId.includes("-arcana"),
     );

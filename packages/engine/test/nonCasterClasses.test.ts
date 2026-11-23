@@ -381,7 +381,7 @@ describe("shifter L4 (BAB high, Fort/Ref good, Will poor, d10)", () => {
     expect(wildShape?.per).toBe("day");
   });
 
-  it("Shifter Aspect derives no pool — the vendored feature carries no uses.maxFormula at all (see follow-up note)", () => {
+  it("Shifter Aspect derives no pool — the vendored feature carries no uses.maxFormula at all", () => {
     const pools = deriveResourcePools(doc, ref, sheet.abilities);
     expect(pools.find((p) => p.name === "Shifter Aspect")).toBeUndefined();
   });

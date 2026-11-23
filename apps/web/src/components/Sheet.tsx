@@ -53,7 +53,7 @@ import { Caret } from "./Caret.js";
  * call (one hook instance per skill; the list length can change between
  * renders, so the hook can't live in the `.map()` callback directly). Mirrors
  * `StatSeal`'s recompute shimmer at a smaller scale — no baseline tint here
- * (skills aren't in the audited tint set), just the "something changed" flash.
+ * (skills aren't tinted), just the "something changed" flash.
  *
  * Expands to a `Provenance` breakdown, the same reveal AC/saves/attacks use
  * (`StatSeal`'s button+caret pattern, at row scale — mirrors

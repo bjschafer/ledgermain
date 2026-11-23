@@ -1,7 +1,6 @@
 /**
- * Local persistence for character documents via Dexie (IndexedDB). Online-first
- * but local-only; the doc already carries `ownerId`/`version`/`updatedAt` for
- * cross-device sync. No server here.
+ * Local persistence for character documents via Dexie (IndexedDB). This module
+ * never talks to the server; `src/sync/` reconciles with it separately.
  *
  * `save()` bumps the optimistic-concurrency `version` and `updatedAt` so the
  * server can reject stale writes without changing the storage shape.

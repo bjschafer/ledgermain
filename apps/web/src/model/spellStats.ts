@@ -15,8 +15,7 @@ import type { Spell, SpellAction } from "@pf1/schema";
  *
  * This is the counterpart to the DC/concentration math in `spellcasting.ts`:
  * everything here reads straight off the vendored spell data (`SpellAction`'s
- * `range`/`duration`/`area`/`damage`, plus `Spell.components`), which the
- * tracker's `SpellDetail` had until now left unshown.
+ * `range`/`duration`/`area`/`damage`, plus `Spell.components`).
  *
  * Every formatter takes an optional {@link MetamagicSpellEffects} and applies
  * it to the number it prints: Extend doubles the duration, Enlarge and Reach

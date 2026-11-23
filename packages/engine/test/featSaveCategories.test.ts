@@ -1,6 +1,6 @@
 /**
  * Hand-computed fixture tests for `FEAT_SAVE_CATEGORY_CHANGES`
- * (`feat-save-categories.ts`) — category-scoped save bonuses promoted from
+ * (`feat-save-categories.ts`) — category-scoped save bonuses built from
  * vendored feat description text that ships no `Change` of its own. Mirrors
  * `classFeatureSaves.test.ts`'s fixture style (a bare `CharacterDoc` through
  * `compute()`, hand-verified numbers cited against the feat's own vendored
@@ -266,7 +266,7 @@ describe("Steel Soul (a feat that REPLACES a racial bonus of the same type)", ()
   });
 });
 
-describe("Angelic Blood (newly promoted: the evil descriptor, all three saves)", () => {
+describe("Angelic Blood (the evil descriptor, all three saves)", () => {
   it("+2 untyped vs. evil at 1st level, Con-check and adjacent-damage riders unmodeled", () => {
     // "You gain a +2 bonus on saving throws against effects with the evil
     // descriptor and on Constitution checks to stabilize..." Only the save

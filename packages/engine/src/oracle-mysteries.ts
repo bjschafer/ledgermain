@@ -4,20 +4,20 @@
  * and BONUS SPELLS are the only parts of "Mystery" that are structured/tabular
  * upstream; REVELATIONS (the mystery's menu of choosable powers, gained at 1st,
  * 3rd, and every 4 levels thereafter) are prose-heavy, per-mystery, and
- * genuinely choice-bearing content — out of scope here, same as Arcanist
- * Exploits/Greater Exploits.
+ * genuinely choice-bearing content — handled separately in
+ * `oracle-revelations.ts`.
  *
  * Scope: ALL 34 vendored mysteries — the 10 Advanced Player's Guide "core"
  * ones (Battle, Bones, Flame, Heavens, Life, Lore, Nature, Stone, Waves,
- * Wind), Solar, and the 23 splatbook mysteries authored in the content pass
- * (Ancestor through Wood; see the banner in `MYSTERY_LIST`).
+ * Wind), Solar, and the 23 splatbook mysteries (Ancestor through Wood; see
+ * the banner in `MYSTERY_LIST`).
  *
  * Data provenance — an unusual case where the vendored Foundry pack DOES carry
  * real structured content for this, just not linked from the Oracle class def
  * (the class only links the generic "Mystery" stub feature, not each of the
  * 10+ actual mysteries — same "not linked via `links.supplements`" situation
- * as sorcerer bloodline powers, hence hand-authoring instead of a normal
- * `RefData.classFeatures` derivation):
+ * as sorcerer bloodline powers, hence a hand-authored table instead of a
+ * normal `RefData.classFeatures` derivation):
  *   - `classSkills` below is copied VERBATIM from each mystery's vendored
  *     `system.classSkills` array (real Foundry skill ids, e.g. "han", "kna",
  *     "sur" for Life) — already the same vocabulary as this engine's
@@ -671,11 +671,11 @@ export const ORACLE_MYSTERY_TAGS: readonly string[] = MYSTERY_LIST.map((m) => m.
  * bonus spells) — this section only merges the two for BROWSING (the picker:
  * the vendored side contributes each mystery's DISPLAY prose) and for
  * resolving a picked tag back to a definition, mirroring `rage-powers.ts`'s
- * `mergedRagePowerCatalog`/`resolveRagePower`. Since the catalog content pass
- * authored all 34, the vendored-only fallback path only fires for a future
- * data bump that vendors a mystery this table hasn't caught up with.
+ * `mergedRagePowerCatalog`/`resolveRagePower`. All 34 are hand-authored, so
+ * the vendored-only fallback path only fires for a future data bump that
+ * vendors a mystery this table hasn't caught up with.
  *
- * Matching is by NORMALIZED NAME. Collision audit (all hand-authored mysteries
+ * Matching is by NORMALIZED NAME. Collision check (all hand-authored mysteries
  * against the pinned Pf Data 1e slice): every one matched a vendored entry by
  * normalized name (the vendored dictionary keys ARE this table's own `tag`s,
  * verified — e.g. `battle`, `dark_tapestry`,...) — no aliasing needed.

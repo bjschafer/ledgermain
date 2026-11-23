@@ -1,14 +1,13 @@
 /**
  * Clean-room PF1 bard Bardic Performance table, hand-authored from the
  * published Core Rulebook rules (verified against aonprd.com's live Bard
- * class page, "Bardic Performance" and each performance-type sub-entry,
- * 2026-08-15).
+ * class page, "Bardic Performance" and each performance-type sub-entry).
  *
  * Bardic Performance itself (the rounds/day pool everything below draws
  * from) is ALREADY fully vendored — `RefData.classFeatures`'s "Bardic
  * Performance" entry carries the `4 + Cha modifier at 1st, +2/level
  * thereafter` uses formula, so `deriveResourcePools` derives the pool with
- * zero hand-authoring needed there. Inspire Courage, the flagship 1st-level
+ * zero hand-authored entries there. Inspire Courage, the flagship 1st-level
  * performance type, is ALSO already vendored as a real linked buff (see
  * `resources.ts`'s `FEATURE_BUFF_POOL_TAG` / `linkedBuffIds` resolution
  * against `RefData.buffs`) — it is deliberately NOT duplicated in this table,
@@ -29,9 +28,9 @@
  *   - Fascinate (1st) is purely enemy-facing (a Will save DC to avoid being
  *     fascinated) — no target on the bard's own sheet, so note-tier with the
  *     DC formula and creature-count scaling spelled out in words.
- *   - Inspire Competence is gained at 3rd level, not 2nd — the task
- *     survey listed 2nd, but both aonprd.com's class table and the vendored
- *     ability description ("A bard of 3rd level or higher...") independently
+ *   - Inspire Competence is gained at 3rd level, not 2nd — both aonprd.com's
+ *     class table and the vendored ability description ("A bard of 3rd level
+ *     or higher...") independently
  *     confirm 3rd; this table uses the verified level. It's also RAW
  *     ally-only ("A bard can't inspire competence in himself"), so there is
  *     genuinely no self-facing number to model — note-tier with the +2 base

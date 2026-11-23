@@ -3,7 +3,7 @@
  * repeatedly. Without them, resolving one class definition is a linear scan of
  * 163 classes and resolving one archetype's features a scan of 6,007
  * archetype features — both at several call sites per `compute()`, and both
- * growing with every content wave.
+ * growing with every data bump.
  *
  * The index is memoized per `RefData` object rather than built by the loader,
  * because RefData reaches the engine three different ways (the data-pipeline
@@ -41,7 +41,8 @@ const CACHE = new WeakMap<RefData, RefDataIndex>();
 
 function byTag<T extends { tag?: string }>(rec: Record<string, T> | undefined): Map<string, T> {
   const map = new Map<string, T>();
-  // First entry wins, matching the `find` the call sites used to run.
+  // First entry wins, matching the linear `find` the call sites would
+  // otherwise run.
   for (const entry of Object.values(rec ?? {})) {
     if (entry.tag !== undefined && !map.has(entry.tag)) map.set(entry.tag, entry);
   }

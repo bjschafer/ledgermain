@@ -725,7 +725,7 @@ export function classSpellsByLevel(
  * cantrips are never pruned by another's.
  *
  * Cantrips are derived from the class spell list instead of stored in the
- * spellbook, so any previously-stored cantrip ids in `known` are orphans.
+ * spellbook, so any cantrip ids sitting in `known` are orphans.
  * Prepared cantrips do take slots and survive — but a cantrip cast at will
  * never needs more than one slot, so duplicate prepared instances are collapsed
  * to the first occurrence (per class — the same spell id prepared for two

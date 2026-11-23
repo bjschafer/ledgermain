@@ -8,11 +8,11 @@ import { loadMonsters, loadMonsterTemplates, loadRefData } from "../src/index.js
  * verbatim, so it reaches the reader as `::prereq{l=8 c=alchemist}` where the
  * book prints "Prerequisite: alchemist 8".
  *
- * Several collections carried a guard like this of their own and several did
- * not, which is exactly how 231 leaks came to ship: the directives that only
- * appear in an unguarded collection had nothing watching them. This sweeps
- * every prose field of every collection instead, so the next time the dataset
- * changes its authoring format the failure lands here rather than on screen.
+ * Several collections carry a guard like this of their own and several do
+ * not, so a directive that only appears in an unguarded collection has nothing
+ * watching it. This sweeps every prose field of every collection instead, so
+ * the next time the dataset changes its authoring format the failure lands
+ * here rather than on screen.
  *
  * Matching is deliberately narrow: `::name{` / `::name[` is directive syntax
  * (and `~~~`, a prop value's paragraph break), while a bare `::` is not (the archetype module has a genuine "Bonus Feat::"
@@ -22,8 +22,8 @@ const DIRECTIVE_RE = /::[a-z][a-zA-Z0-9]*[[{]|~~~/;
 /** The dataset's angle-quote cross-ref system, and its inline link directives. */
 const CROSS_REF_RE = /[‹›«»]/;
 // Two forms. Every inline directive has a bracketed one; only the link family
-// also has a bracket-less `@HLfree_action`, which the bracketed-only pattern
-// missed entirely (1,592 occurrences upstream). The bare form is deliberately
+// also has a bracket-less `@HLfree_action`, which a bracketed-only pattern
+// would miss entirely (1,592 occurrences upstream). The bare form is deliberately
 // NOT extended to `b`/`i`/`em`/`span`: Foundry roll data is full of
 // `@item.level` and `@abilities.str.mod`, which such a pattern would read as a
 // leaked `@i`/`@b` directive.

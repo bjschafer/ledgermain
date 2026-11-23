@@ -17,10 +17,10 @@ function isPatronCategory(value: string | undefined): value is "basic" | "unique
 
 /**
  * Maps one `json/class_ability_patrons.json` dictionary entry to a
- * `WitchPatron`. Unlike the mystery/curse/spirit/bloodline imports in this
- * same wave, this file's entries carry no leading `## Name`/`‹SOURCE ...›`
- * header lines — a "basic" patron's `description` is just its bare 9-spell
- * progression line — so no `pfDataBodyLines` stripping is needed here.
+ * `WitchPatron`. Unlike the mystery/curse/spirit/bloodline imports, this
+ * file's entries carry no leading `## Name`/`‹SOURCE ...›` header lines — a
+ * "basic" patron's `description` is just its bare 9-spell progression line —
+ * so no `pfDataBodyLines` stripping is needed here.
  */
 function transformWitchPatron(id: string, entry: PfDataEntry): WitchPatron {
   return {

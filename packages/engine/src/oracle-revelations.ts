@@ -10,11 +10,11 @@
  * stubs), so there is no upstream JSON to normalize.
  *
  * Scope: revelations for ALL 34 modeled mysteries — the 10 Advanced Player's
- * Guide "core" ones, Solar (Inner Sea Gods), and the 23 splatbook mysteries
- * authored in the content pass — each with its full published revelation list
- * plus its 20th-level Final Revelation. Most publish exactly 10 revelations;
- * Ascetic (8), Juju (9), and Streets (9) genuinely have fewer RAW. Every
- * mystery here has a matching entry in `ORACLE_MYSTERY_TAGS`.
+ * Guide "core" ones, Solar (Inner Sea Gods), and the 23 splatbook mysteries —
+ * each with its full published revelation list plus its 20th-level Final
+ * Revelation. Most publish exactly 10 revelations; Ascetic (8), Juju (9), and
+ * Streets (9) genuinely have fewer RAW. Every mystery here has a matching
+ * entry in `ORACLE_MYSTERY_TAGS`.
  *
  * IDs are mystery-scoped (`<mysteryTag>:<camelCaseName>`) because a handful
  * of revelations share a name across mysteries with identical text (e.g.
@@ -54,12 +54,12 @@
  * is deliberate rather than an oversight.
  *
  * A small, deliberately narrow set of revelations DO carry a real `changes[]`
- * (the same promotion, same bar as `rage-powers.ts`'s WHILE_RAGING
- * promotions): a genuinely unconditional, always-on flat number with a named
- * (or explicitly untyped) bonus, scaling only on the character's own oracle
- * level via `@classes.oracle.level` — never on a player pick this table
- * doesn't carry. See each entry's inline comment for its RAW citation. The
- * promoted set, as of this pass:
+ * (the same bar as `rage-powers.ts`'s WHILE_RAGING entries): a genuinely
+ * unconditional, always-on flat number with a named (or explicitly untyped)
+ * bonus, scaling only on the character's own oracle level via
+ * `@classes.oracle.level` — never on a player pick this table doesn't carry.
+ * See each entry's inline comment for its RAW citation. The set carrying real
+ * `changes[]`:
  *
  *   - `metal:ironConstitution` — flat Fortitude bonus (+1/+2/+3 at 1st/7th/14th).
  *   - `elemental:elementalResistance` — energy resistance to all four core
@@ -84,7 +84,7 @@
  *     (senses.ts's additive-sense convention): RAW "gain darkvision 60
  *     feet; if you already have darkvision, increase your existing
  *     darkvision by 60 feet instead" is exactly `existing + 60`, so the
- *     dwarf/tiefling case that once blocked this entry now computes right.
+ *     dwarf/tiefling case computes right.
  *     Perfect darkness sight at 11th (`sensesid`), like pierceTheVeil.
  *   - `outer_rifts:telepathy` — telepathy 100 ft. (`sensetele`, this
  *     engine's synthetic sense target — see `senses.ts`), self-gated on the
@@ -100,7 +100,7 @@
  *     activated and stays a reminder; see the entry's disclosed reading).
  *
  * Everything else stays deliberately display-only, including several
- * near-misses worth naming so a future pass doesn't re-litigate them:
+ * near-misses, each blocked by a missing engine target:
  *
  *   - `bones:nearDeath` / `apocalypse:nearDeath` and `spellscar:mysticNull` —
  *     an insight bonus scoped to a save-CATEGORY ("against disease,
@@ -115,7 +115,7 @@
  * The buff-gated-changes mechanism (`Change.activeWhenBuff`, built for the
  * rage powers' "while raging" shape — see `rage-powers.ts`) does NOT unlock
  * anything here — nothing in this table is conditioned on a separate buff
- * being active. The near-misses above stay deferred for reasons that
+ * being active. The near-misses above stay note-only for reasons that
  * mechanism can't address either way: take-level-dependent scaling with no
  * numeric hook (Mental Acuity), a save-category the engine can't target
  * (nearDeath/mysticNull), or a skill-scoped ability substitution with no

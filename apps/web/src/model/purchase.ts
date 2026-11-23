@@ -1,12 +1,12 @@
 /**
  * What an add costs, so every "+ Add ..." in the build can offer to pay for it.
  *
- * The purse (`live.money`) was previously spent only by the consumables
- * crafting flow; everything else appeared for free, which reads as a bug the
- * first time a player buys a potion. This module is the one place that answers
- * "what would that cost?", for each of the five things a build can gain:
- * a vendored item, a kit, a generated consumable, a free-text custom entry,
- * and a configured armor/shield or weapon.
+ * The purse (`live.money`) pays for every build addition, not just the
+ * consumables crafting flow: an addition that appeared for free would read as
+ * a bug the first time a player buys a potion. This module is the one place
+ * that answers "what would that cost?", for each of the five things a build
+ * can gain: a vendored item, a kit, a generated consumable, a free-text custom
+ * entry, and a configured armor/shield or weapon.
  *
  * ### Pricing (PF1 Core Rulebook, Magic Items)
  *

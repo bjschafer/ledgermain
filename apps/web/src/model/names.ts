@@ -154,10 +154,10 @@ export function normalizeAlignmentCode(raw: string): string | undefined {
 
 /**
  * Human labels for the engine's flat (non-prefixed) `Change`/`ContextNote`
- * targets — see `packages/engine/src/targets.ts` for the canonical
- * vocabulary (`APPLIED_TARGETS` plus the unapplied-only ones formerly listed
- * separately in `UNAPPLIED_TARGET_LABELS`). Covers both targets `compute()`
- * consumes and ones it doesn't — a raw buff/gear row can show either.
+ * targets — `APPLIED_TARGETS` in `packages/engine/src/targets.ts` is the
+ * canonical applied vocabulary, and `UNAPPLIED_TARGET_LABELS` there names the
+ * common unapplied ones. Covers both targets `compute()` consumes and ones it
+ * doesn't — a raw buff/gear row can show either.
  */
 const CHANGE_TARGET_LABELS: Record<string, string> = {
   // saves

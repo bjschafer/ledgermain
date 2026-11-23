@@ -1016,8 +1016,7 @@ export {
   // Per-class slices, re-exported directly for callers that want one class's
   // table without importing the merged aggregator (e.g. fixture tests
   // spot-checking a single class) — consistently exported for every class in
-  // `archetype-extracted/`, not just the wave that happened to add them first
-  // (cosmetic cleanup).
+  // `archetype-extracted/`, not just the classes added first.
   ARCANIST_ARCHETYPE_EFFECTS_EXTRACTED,
   ARCANIST_ARCHETYPE_FEATURE_CLASSIFICATION,
   BARBARIAN_ARCHETYPE_EFFECTS_EXTRACTED,

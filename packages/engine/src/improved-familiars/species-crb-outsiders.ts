@@ -2,7 +2,7 @@
  * The CRB Improved Familiar table's CL 7 rows other than the mephits: imp,
  * quasit, homunculus, pseudodragon. Hand-authored clean-room from the
  * published Bestiary stat blocks (aonprd.com / d20pfsrd.com) — see
- * `types.ts` for the authoring rules (reverse-derived `baseSaves`/
+ * `types.ts` for the modeling rules (reverse-derived `baseSaves`/
  * `ownSkillRanks`, printed prereqs, defenses as display strings, SLA slugs
  * frozen once shipped).
  */

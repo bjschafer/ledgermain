@@ -4,7 +4,7 @@
  * psychopomp, cacodaemon, arbiter inevitable, paracletus aeon, voidworm
  * protean, brownie, and faerie dragon. Hand-authored clean-room from the
  * published Bestiary 2/3/4 stat blocks (aonprd.com / d20pfsrd.com) — see
- * `types.ts` for the authoring rules. Each entry's `prereq` comes from the
+ * `types.ts` for the modeling rules. Each entry's `prereq` comes from the
  * published expanded Improved Familiar table (alignment + caster level),
  * not guessed from the creature's own alignment line — the brownie is the
  * one surprise: the table lists it at 5th level, not the 7th its own book

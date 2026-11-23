@@ -4,9 +4,9 @@
  * `scripts/mech-coverage.ts`) consume, and builds each surfaced pool row's
  * `ToggleBuffOption`s from it. See `types.ts` for the table's charter.
  *
- * Shard membership mirrors `class-feature-classification/`'s wave-assigned
- * split (see that directory's `index.ts` for why class features have no
- * clean segmentation axis); entries are keyed by pack id, the
+ * Shard membership mirrors `class-feature-classification/`'s assigned split
+ * (see that directory's `index.ts` for why class features have no clean
+ * segmentation axis); entries are keyed by pack id, the
  * `perDayActivations.test.ts` drift guards assert the merge is
  * collision-free, and new entries may go in any shard whose doc comment fits.
  */

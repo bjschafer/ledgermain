@@ -220,7 +220,7 @@ describe("Note-tier performance types: empty changes, non-empty notes", () => {
 });
 
 describe("RAGING_SONG_DETAIL reflects multiple toggle options", () => {
-  it("no longer names Inspired Rage exclusively", () => {
+  it("does not name Inspired Rage", () => {
     expect(RAGING_SONG_DETAIL).not.toContain("Inspired Rage");
   });
 });

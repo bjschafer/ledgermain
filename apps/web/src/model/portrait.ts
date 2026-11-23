@@ -59,8 +59,8 @@ export function portraitSrc(portrait: string | undefined): string | undefined {
 
 /**
  * The source rectangle to draw for a centered square crop: the largest square
- * that fits inside a `width` x `height` image. Split out from the canvas work
- * so the arithmetic is testable without a DOM.
+ * that fits inside a `width` x `height` image. Pure so the arithmetic is
+ * testable without a DOM.
  */
 export function squareCrop(width: number, height: number): { x: number; y: number; size: number } {
   const size = Math.min(width, height);

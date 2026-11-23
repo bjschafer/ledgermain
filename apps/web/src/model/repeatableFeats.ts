@@ -32,8 +32,8 @@
  *
  * Keyed by `featNameSlug` (stable across data re-vendors, same posture as
  * `@pf1/engine`'s `FEAT_EFFECTS`/`FEAT_EFFECTS_EXTRACTED`/`FEAT_POOL_EFFECTS`
- * tables). See the implementation notes for the full per-feat source-text
- * audit this list was drawn from.
+ * tables). Each entry below was hand-verified against its published source
+ * text.
  */
 
 import { featNameSlug } from "@pf1/engine";

@@ -1,16 +1,14 @@
 /**
- * Occultist's slice of the pipeline (2026-08-08). Every vendored archetype
- * feature for the class (20 occultist archetypes, 100 features) was read in
- * full and bucketed as `numeric` / `situational` / `subsystem` / `blocked`.
- * Per the per-class file convention (`index.ts`'s doc comment), this file
- * owns BOTH of occultist's pipeline artifacts —
- * `OCCULTIST_ARCHETYPE_EFFECTS_EXTRACTED` and
- * `OCCULTIST_ARCHETYPE_FEATURE_CLASSIFICATION` — so a future wave working on
- * a different class never has a reason to touch this file; only `index.ts`
- * (the aggregator, a later integration step not done here) needs a new
- * import + spread line.
+ * Occultist's slice of the pipeline. Every vendored archetype feature for the
+ * class (20 occultist archetypes, 100 features) was read in full and bucketed
+ * as `numeric` / `situational` / `subsystem` / `blocked`. Per the per-class
+ * file convention (`index.ts`'s doc comment), this file owns BOTH of
+ * occultist's pipeline artifacts — `OCCULTIST_ARCHETYPE_EFFECTS_EXTRACTED`
+ * and `OCCULTIST_ARCHETYPE_FEATURE_CLASSIFICATION` — so work on a different
+ * class never has a reason to touch this file; only `index.ts` (the
+ * aggregator) needs one new import + one new spread per class.
  *
- * ── Occultist-specific mechanical facts this pass relies on ──────────────
+ * ── Occultist-specific mechanical facts this classification relies on ────
  *
  * 1. **Implements + Mental Focus** are a modeled LIVE subsystem
  *    (`occultist-implements.ts`, driven by `build.occultistImplements` —
@@ -23,12 +21,12 @@
  *    Any archetype feature that changes the pool's SIZE, its stat basis
  *    (Int → something else), or its formula/cadence is `blocked` (would
  *    double-count or conflict with the vendored formula) — same posture as
- *    the magus pilot's Arcane Pool cases. A feature that only changes which
+ *    `./magus.ts`'s Arcane Pool cases. A feature that only changes which
  *    implement schools are available, how many are known, or what a school's
  *    focus can be spent on is `subsystem` — a pick-list/spend-option change,
  *    no baseline number to model.
  * 2. **Focus Powers and Resonant Powers** are entirely pick-list/subsystem
- *    territory in this pass, full stop — including the FOUR resonant powers
+ *    territory here, full stop — including the FOUR resonant powers
  *    (`allSavingThrows`, `skill.per`, Cha-skill `competence`, one physical
  *    ability `enhancement`) that `occultist-implements.ts`/`collect.ts` DO
  *    apply as real sheet `Change`s for the base class. That application is
@@ -54,8 +52,8 @@
  *    shields") — a restriction of an existing effect this engine can't
  *    express (there's no per-item-type breakdown of UMD), so those stay
  *    classification-only rather than risk under- or over-applying.
- * 4. **Two vendored copy-paste errors** surfaced in this pass (documented
- *    per-entry below rather than guessed at):
+ * 4. **Two vendored copy-paste errors** are documented per-entry below rather
+ *    than guessed at:
  *    - The entire `occultist:naturalist` archetype (8 features) is,
  *      verbatim, Summoner's own "Naturalist" archetype — every feature
  *      references an eidolon, a summoner level, or replaces a summoner base
@@ -134,7 +132,7 @@ export const OCCULTIST_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Bonus Feat",
     level: 4,
     bucket: "numeric",
-    note: "flat bonus-feat count on a 4-level cadence (4th/8th/12th/16th, capped at 4 total); replaces shift focus, magic circles, binding circles, and fast circles (paired to shift focus), all confirmed changes:[] in class-features.json — no double-count risk. The restriction to combat feats isn't modeled, only the count, same posture as the hand-verified/magus-pilot bonus-feat entries",
+    note: "flat bonus-feat count on a 4-level cadence (4th/8th/12th/16th, capped at 4 total); replaces shift focus, magic circles, binding circles, and fast circles (paired to shift focus), all confirmed changes:[] in class-features.json — no double-count risk. The restriction to combat feats isn't modeled, only the count, same posture as the hand-verified and `./magus.ts` bonus-feat entries",
   },
   "occultist:battle-host:heroic-splendor:6": {
     archetypeId: "occultist:battle-host",
@@ -268,7 +266,7 @@ export const OCCULTIST_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Transformative Resonance",
     level: 1,
     bucket: "situational",
-    note: "real, scaling enhancement bonus (+1 at 1st, +1 every 4 levels to +5 at 17th) to attack/damage, but scoped to whatever item is currently being used as an improvised weapon for a 1-minute activated duration — same posture as Jistkan Artificer's Empowered Arm (magus pilot): no stable weapon-group target for a freely-rechosen makeshift weapon",
+    note: "real, scaling enhancement bonus (+1 at 1st, +1 every 4 levels to +5 at 17th) to attack/damage, but scoped to whatever item is currently being used as an improvised weapon for a 1-minute activated duration — same posture as Jistkan Artificer's Empowered Arm (`./magus.ts`): no stable weapon-group target for a freely-rechosen makeshift weapon",
   },
   "occultist:extemporaneous-channeler:weapon-and-armor-proficiency:1": {
     archetypeId: "occultist:extemporaneous-channeler",
@@ -453,7 +451,7 @@ export const OCCULTIST_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Crumbling Strike",
     level: 12,
     bucket: "subsystem",
-    note: "standalone once-per-day (plus more at 16th/20th) melee attack dealing its own dice-scaled damage total on a hit — a self-contained special attack, not a modifier stacked onto normal damage, same posture as Kensai's Perfect Strike in the magus pilot",
+    note: "standalone once-per-day (plus more at 16th/20th) melee attack dealing its own dice-scaled damage total on a hit — a self-contained special attack, not a modifier stacked onto normal damage, same posture as Kensai's Perfect Strike in `./magus.ts`",
   },
   "occultist:occult-historian:ruin-reading:2": {
     archetypeId: "occultist:occult-historian",
@@ -511,7 +509,7 @@ export const OCCULTIST_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Panoptic Harmony",
     level: 8,
     bucket: "situational",
-    note: "real +2 caster-level bonus, but conditioned on having used a focus power or cast a spell with a DIFFERENT panoply implement on the previous turn — a specific-action condition the engine can't check, and there is no 'cl' engine target regardless (targets.ts unapplied list), same posture as the magus pilot's Deep Marshal Miner's Focus",
+    note: "real +2 caster-level bonus, but conditioned on having used a focus power or cast a spell with a DIFFERENT panoply implement on the previous turn — a specific-action condition the engine can't check, and there is no 'cl' engine target regardless (targets.ts unapplied list), same posture as `./magus.ts`'s Deep Marshal Miner's Focus",
   },
 
   // ── occultist:planar-harmonizer ──
@@ -585,7 +583,7 @@ export const OCCULTIST_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Trophies",
     level: 1,
     bucket: "subsystem",
-    note: "grants a specific named feat (Harvest Parts) plus a monster-part-implement mechanic — a named-feat grant isn't a 'bonusFeats' count (same distinction the magus pilot draws for Kapenia Dancer's Weapon Focus grant)",
+    note: "grants a specific named feat (Harvest Parts) plus a monster-part-implement mechanic — a named-feat grant isn't a 'bonusFeats' count (same distinction `./magus.ts` draws for Kapenia Dancer's Weapon Focus grant)",
   },
 
   // ── occultist:reliquarian ──
@@ -601,7 +599,7 @@ export const OCCULTIST_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Divine Focus",
     level: 1,
     bucket: "subsystem",
-    note: "swaps the mental focus pool's stat basis from Intelligence to Wisdom — the same Int-to-X stat-basis swap the magus pilot's Eldritch Scion Eldritch Pool leaves unmodeled: resource-pool sizing is a vendored uses.maxFormula, not a Change target, so nothing to extract; a known resource-formula gap, not a double-count risk",
+    note: "swaps the mental focus pool's stat basis from Intelligence to Wisdom — the same Int-to-X stat-basis swap `./magus.ts`'s Eldritch Scion Eldritch Pool leaves unmodeled: resource-pool sizing is a vendored uses.maxFormula, not a Change target, so nothing to extract; a known resource-formula gap, not a double-count risk",
   },
   "occultist:reliquarian:domain:1": {
     archetypeId: "occultist:reliquarian",
@@ -844,23 +842,23 @@ export const OCCULTIST_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
  * This table is deliberately SEPARATE from `archetype-effects.ts`'s
  * `ARCHETYPE_FEATURE_EFFECTS` (the hand-verified table) — every entry here
  * additionally carries `confidence`/`provenance` so a reviewer (or the UI)
- * can never confuse "a human read the rulebook and checked this" with "an
- * extraction pass inferred this from prose." Only 4 of occultist's 100
- * features cleared the `numeric` bar (see
+ * can never confuse "a human read the rulebook and checked this" with "a
+ * machine inferred this from prose." Only 4 of occultist's 100 features
+ * cleared the `numeric` bar (see
  * `OCCULTIST_ARCHETYPE_FEATURE_CLASSIFICATION` above for the full
- * per-feature audit) — occultist's kit is overwhelmingly implement/
+ * per-feature classification) — occultist's kit is overwhelmingly implement/
  * mental-focus/focus-power subsystem territory, all of which is deferred
  * (see this file's header doc comment), plus a large volume of standalone
  * spell-like/resource-gated abilities that aren't shaped like a stacking
  * bonus at all.
  *
- * Confidence rubric (identical to the magus pilot's):
+ * Confidence rubric (identical to `./magus.ts`'s):
  *  - "high": a single, clearly-worded, fully general (no scope restriction)
  *    scaling bonus, or a literal reflavor of an already-modeled mechanism.
  *  - "medium": the formula required deriving a non-obvious cadence from
  *    prose, or a real-but-partial condition is dropped and flagged.
- *  - "low": not used in this pass (a `low`-confidence read is bucketed
- *    `blocked` instead, per the wave brief).
+ *  - "low": not used here (a `low`-confidence read is bucketed `blocked`
+ *    instead).
  */
 export const OCCULTIST_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
   Record<string, ExtractedArchetypeFeatureEffect>
@@ -870,7 +868,7 @@ export const OCCULTIST_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
   // (Shift Focus, Magic Circles, Binding Circles, Fast Circles) — all four
   // are confirmed changes:[] in class-features.json, so this is a safe
   // additive grant with nothing to double-count. The restriction to combat
-  // feats isn't modeled, only the count (same posture as the magus pilot's
+  // feats isn't modeled, only the count (same posture as `./magus.ts`'s
   // Iron-Ring Striker Bonus Feat entry).
   "occultist:battle-host:bonus-feat:4": {
     changes: [c("clamp(floor(@class.unlevel / 4), 0, 4)", "bonusFeats")],

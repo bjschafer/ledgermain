@@ -10,12 +10,11 @@
  *
  * ── ORACLE_ARCHETYPE_FEATURE_CLASSIFICATION ───────────────────────────────
  *
- * Classification audit: EVERY feature of EVERY vendored oracle archetype (26
- * archetypes, 79 features), read individually and bucketed `numeric` /
+ * Classification: EVERY feature of EVERY vendored oracle archetype (29
+ * archetypes, 87 features), read individually and bucketed `numeric` /
  * `situational` / `subsystem` / `blocked` per the same bucket definitions
- * as `archetype-extracted/fighter.ts`'s doc comment. Oracle is a
- * brand-new class in this repo (2026-07-06) whose mystery/curse/revelation
- * machinery is ENTIRELY hand-authored (`oracle-mysteries.ts`/
+ * as `archetype-extracted/fighter.ts`'s doc comment. Oracle's mystery/curse/
+ * revelation machinery is ENTIRELY hand-authored (`oracle-mysteries.ts`/
  * `oracle-curses.ts`), unlike fighter's vendored `RefData.classFeatures`
  * `changes[]` — this shape drove almost every non-`numeric` bucket call:
  *
@@ -43,13 +42,13 @@
  *    with zero `activeArchetypeSwaps`/`pairedBaseFeatureUuid` awareness. An
  *    archetype feature that wholesale REPLACES the oracle's curse with a
  *    custom (non-hand-tabled) mechanic — Black-Blooded Oracle's Curse of
- *    Black Blood is the one case this wave found — can't be safely composed
- *    against a player's independently-set `build.oracleCurse`: `blocked`,
- *    citing this gap explicitly, per the task's instruction. Features that
- *    merely RESTRICT the curse CHOICE to a subset of the existing 6 hand-
- *    tabled tags (Cyclopean Seer, Possessed Oracle, Psychic Searcher,
- *    Reincarnated Oracle) don't hit this gap — the underlying curse (if
- *    chosen from the restricted list) still applies normally — `subsystem`.
+ *    Black Blood is the only such case — can't be safely composed against a
+ *    player's independently-set `build.oracleCurse`: `blocked`, citing this
+ *    gap explicitly. Features that merely RESTRICT the curse CHOICE to a
+ *    subset of the existing 6 hand-tabled tags (Cyclopean Seer, Possessed
+ *    Oracle, Psychic Searcher, Reincarnated Oracle) don't hit this gap — the
+ *    underlying curse (if chosen from the restricted list) still applies
+ *    normally — `subsystem`.
  * 3. **Mystery bonus spells and class-skill grants aren't Change-shaped at
  *    all** (`OracleMysteryDef` has no `changes` field — see
  *    `oracle-mysteries.ts`'s doc comment) — every "these bonus spells replace
@@ -88,7 +87,7 @@ export const ORACLE_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Black Blood Revelation",
     level: 1,
     bucket: "subsystem",
-    note: "bundle of activated, resource-gated abilities (touch attack, save-reroll, darkvision) — no unconditional Change-shaped number; darkvision isn't a sheet stat this engine models",
+    note: "bundle of activated, resource-gated abilities (touch attack, save-reroll, darkvision) — no unconditional Change-shaped number; the darkvision half is modeled separately by `oracle:oracle-black-blood-power:darkvision:15`",
   },
   "oracle:black-blooded-oracle:curse-of-black-blood:1": {
     archetypeId: "oracle:black-blooded-oracle",
@@ -664,7 +663,7 @@ export const ORACLE_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Darkvision",
     level: 15,
     bucket: "numeric",
-    note: "darkvision 90 ft. at 15th — a base archetype feature, not gated on the curse-selection gap that blocks curse-of-black-blood:1 above (this feature never touches build.oracleCurse) — extracted via the sensedv target (see ORACLE_ARCHETYPE_EFFECTS_EXTRACTED below); collect.ts's own level-gate means the id's earlier 60 ft. clause can't apply below 15th (it's bundled into the already-classified black-blood-revelation:1 sibling entry instead, an under-count below 15th, not a double-count). The sibling entry's own note calling darkvision unmodeled predates this file's sense-target extraction; not corrected there (out of scope), but not repeated here",
+    note: "darkvision 90 ft. at 15th — a base archetype feature, not gated on the curse-selection gap that blocks curse-of-black-blood:1 above (this feature never touches build.oracleCurse) — extracted via the sensedv target (see ORACLE_ARCHETYPE_EFFECTS_EXTRACTED below); collect.ts's own level-gate means the id's earlier 60 ft. clause can't apply below 15th (it's bundled into the black-blood-revelation:1 sibling entry instead, an under-count below 15th, not a double-count)",
   },
   "oracle:oracle-cyclopean-seer-power:doomsaying:1": {
     archetypeId: "oracle:oracle-cyclopean-seer-power",
@@ -722,7 +721,7 @@ export const ORACLE_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
  * literal/near-literal reflavor of an already-established mechanism or a
  * single, clearly-worded, fully-general scaling bonus; "medium" = a
  * non-obvious cadence or a level-substituted formula; "low" = reserved,
- * unused this wave.
+ * unused.
  */
 export const ORACLE_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
   Record<string, ExtractedArchetypeFeatureEffect>

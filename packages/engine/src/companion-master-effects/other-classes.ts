@@ -1,7 +1,7 @@
 /**
  * Archetype features from every other class (barbarian, bloodrager, brawler,
  * fighter, inquisitor, vigilante, ...) that modify the tracked
- * companion/mount — one wave shard of `COMPANION_EFFECT_ARCHETYPE_FEATURES`
+ * companion/mount — one shard of `COMPANION_EFFECT_ARCHETYPE_FEATURES`
  * (see `index.ts`). Keys are archetype-feature classification keys; verify
  * every number against the vendored description before wiring.
  */

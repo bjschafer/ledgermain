@@ -296,7 +296,7 @@ describe("deriveFamiliar (Mortlach the cat, hand-computed fixture)", () => {
     // Flat-footed AC never includes Dex, so it's untouched.
     expect(buffedFamiliar.ac.flatFooted).toBe(familiar!.ac.flatFooted);
     expect(buffedFamiliar.saves.ref).toBe(familiar!.saves.ref + 2);
-    // Attack now uses the (higher) Dex mod instead of Str for the better-of.
+    // Attack uses the (higher) Dex mod instead of Str for the better-of.
     const bite = buffedFamiliar.attacks.find((a) => a.name === "Bite");
     expect(bite?.attack).toBe(familiar!.attacks.find((a) => a.name === "Bite")!.attack + 2);
     expect(buffedFamiliar.skills.ste!.total).toBe(familiar!.skills.ste!.total + 2);

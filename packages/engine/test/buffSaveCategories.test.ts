@@ -197,7 +197,7 @@ describe("Animal Focus (Snake) (+2 dodge AC vs. attacks of opportunity)", () => 
   });
 });
 
-describe("Angelic Aspect, Lesser (newly promoted: +2 deflection AC and +2 resistance save vs. evil)", () => {
+describe("Angelic Aspect, Lesser (+2 deflection AC and +2 resistance save vs. evil)", () => {
   it("leaves headline AC and saves alone and prints an evil conditional on both", () => {
     const sheet = compute(makeDoc([activate("Angelic Aspect, Lesser")]), ref);
     // Fighter L1, all 10s: AC 10, Fort +2, Ref +0, Will +0.

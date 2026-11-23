@@ -33,7 +33,7 @@ import type { BaseFamiliar } from "../familiar.js";
  * that kept improved familiars out; see also #129's companion residue, which
  * names the same missing block). Display-shaped on purpose: nothing on a
  * PC-side sheet computes AGAINST a familiar's DR, so strings keep the
- * authoring honest ("5/good or silver") instead of forcing a bypass
+ * modeling honest ("5/good or silver") instead of forcing a bypass
  * vocabulary nothing consumes.
  */
 export interface CreatureDefenses {

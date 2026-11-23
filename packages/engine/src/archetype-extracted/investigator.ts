@@ -2,9 +2,9 @@
  * Investigator's slice of the pipeline. Covers all 153 vendored archetype
  * features across the 36 investigator archetypes that carry any (a 37th,
  * Dread Investigator, has zero linked features in the vendored pack — nothing
- * to classify there, not a gap in this pass).
+ * to classify there, not a gap here).
  *
- * ── Investigator-specific mechanical facts this pass relies on ────────────
+ * ── Investigator-specific mechanical facts this classification relies on ──
  *
  * 1. **Investigator Talents** are a modeled pick-list subsystem
  *    (`investigator-talents.ts`) — every talent entry there is
@@ -36,10 +36,10 @@
  * carrying the growing bonus, and a later one (paired to replace the base
  * Poison Immunity class feature) carrying the IDENTICAL full text. Since
  * neither id replaces the other, both would be live simultaneously past
- * 11th; extracting the same untyped bonus from both would double it. This
- * pass extracts the earlier (unpaired) id as `numeric` when the text and
- * name agree, and classifies the later duplicate `blocked`, noting the
- * shared text. Where no `SAVE_CATEGORIES` entry matches the named effect at
+ * 11th; extracting the same untyped bonus from both would double it. The
+ * earlier (unpaired) id is extracted as `numeric` when the text and name
+ * agree, and the later duplicate is classified `blocked`, noting the shared
+ * text. Where no `SAVE_CATEGORIES` entry matches the named effect at
  * all (drug addiction, teleportation, "psychic" spells, language-dependent
  * effects, lie-detection), both ids are `blocked` regardless.
  *
@@ -56,7 +56,7 @@
  *    plus a dropped secondary clause), or a real secondary clause in the
  *    same feature (an immunity, a doubled bonus, a resource-spend
  *    alternative) is dropped and flagged in `detail`.
- *  - "low": not used in this pass.
+ *  - "low": not used here.
  */
 
 import {
@@ -1179,7 +1179,7 @@ export const INVESTIGATOR_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Hidden Meaning",
     level: 2,
     bucket: "numeric",
-    note: "unconditional, unqualified save bonus vs. language-dependent effects (a real SAVE_CATEGORIES entry now that `languageDependent` exists); scales +2/+4/+6 through 8th, then the text claims immunity at 11th — dropped, no Change target expresses categorical save immunity",
+    note: "unconditional, unqualified save bonus vs. language-dependent effects (a real SAVE_CATEGORIES entry via `languageDependent`); scales +2/+4/+6 through 8th, then the text claims immunity at 11th — dropped, no Change target expresses categorical save immunity",
   },
   "investigator:tekritanin-arbiter:poison-resistance:5": {
     archetypeId: "investigator:tekritanin-arbiter",
@@ -1225,14 +1225,14 @@ export const INVESTIGATOR_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
  * This table is deliberately SEPARATE from `archetype-effects.ts`'s
  * `ARCHETYPE_FEATURE_EFFECTS` (the hand-verified table) — every entry here
  * additionally carries `confidence`/`provenance` so a reviewer (or the UI)
- * can never confuse "a human read the rulebook and checked this" with "an
- * extraction pass inferred this from prose." Only 29 of investigator's 153
+ * can never confuse "a human read the rulebook and checked this" with "a
+ * machine inferred this from prose." Only 29 of investigator's 153
  * features cleared the `numeric` bar (see
  * `INVESTIGATOR_ARCHETYPE_FEATURE_CLASSIFICATION` above for the full
- * per-feature audit) — investigator's kit leans heavily on the inspiration
- * pool's spend-options, investigator talents, Studied Combat/Strike
- * reflavors, and alchemy/extract mechanics, all deferred subsystems in this
- * engine today (see this file's header doc comment).
+ * per-feature classification) — investigator's kit leans heavily on the
+ * inspiration pool's spend-options, investigator talents, Studied
+ * Combat/Strike reflavors, and alchemy/extract mechanics, all deferred
+ * subsystems in this engine today (see this file's header doc comment).
  */
 export const INVESTIGATOR_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
   Record<string, ExtractedArchetypeFeatureEffect>

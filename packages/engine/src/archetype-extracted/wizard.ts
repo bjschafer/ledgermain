@@ -1,14 +1,13 @@
 /**
- * Wizard's slice of the pipeline (prose→Change extraction wave, 2026-07-06),
- * mechanically repeating the Fighter pilot (`fighter.ts`) for wizard's 31
- * vendored archetypes / 108 archetype features. Per the per-class file
- * convention (documented in `index.ts`), this file owns BOTH of wizard's
- * pipeline artifacts — `WIZARD_ARCHETYPE_EFFECTS_EXTRACTED` (the
- * machine-extracted `Change`-shaped effects table) and
- * `WIZARD_ARCHETYPE_FEATURE_CLASSIFICATION` (the full per-feature audit) — so
- * a future wave working on a different class never has a reason to touch this
- * file; only `index.ts` (the aggregator) needs one new import + one new spread
- * per class.
+ * Wizard's slice of the pipeline, following the methodology in
+ * `./fighter.ts` for wizard's 31 vendored archetypes / 108 archetype
+ * features. Per the per-class file convention (documented in `index.ts`),
+ * this file owns BOTH of wizard's pipeline artifacts —
+ * `WIZARD_ARCHETYPE_EFFECTS_EXTRACTED` (the machine-extracted `Change`-shaped
+ * effects table) and `WIZARD_ARCHETYPE_FEATURE_CLASSIFICATION` (the full
+ * per-feature classification) — so work on a different class never has a
+ * reason to touch this file; only `index.ts` (the aggregator) needs one new
+ * import + one new spread per class.
  *
  * ── WIZARD_ARCHETYPE_FEATURE_CLASSIFICATION ───────────────────────────────
  *
@@ -33,8 +32,8 @@
  *    multi-tier base grant.
  *
  * Two wizard-specific mechanical facts drive most of the bucketing below
- * (verified against the vendored data and `archetypes.ts`/`targets.ts`
- * before this pass started, not re-derived per feature):
+ * (verified against the vendored data and `archetypes.ts`/`targets.ts`, not
+ * re-derived per feature):
  *
  * 1. **Arcane School is unsuppressible.** The actual school POWERS (Hand of
  *    the Apprentice, elemental blasts, etc.) are granted through
@@ -67,19 +66,18 @@
  *    gained at Nth level" — since NONE of them can be paired/suppressed, the
  *    base Bonus Feats (WIZ) formula keeps granting that tier's feat in full
  *    regardless, making every one of these a `blocked` composition trap
- *    (the atomic-partial-tier trap called out in the task brief), not a
- *    `numeric` extraction. This turned out to be wizard's dominant `blocked`
- *    pattern — one root cause (Bonus Feats (WIZ)'s un-suppressible atomic
- *    formula), not ~20 independent bespoke traps. Arcane Bond and Cantrips
- *    both carry NO vendored `changes` at all, so archetypes that swap those
- *    out (the large majority of "replaces arcane bond"/"replaces cantrips"
- *    entries) have nothing to double-count against and are ordinary
- *    `subsystem` grants instead. A named-feat swap (e.g. "gains Siege
- *    Engineer instead of Scribe Scroll") does NOT trip this trap either: the
- *    engine's `bonusFeats` target is an abstract count of freed-up feat
- *    slots, indifferent to which specific feat fills them, so trading one
- *    named feat for another leaves the count correct with nothing to
- *    suppress.
+ *    (the atomic-partial-tier trap), not a `numeric` extraction. This is
+ *    wizard's dominant `blocked` pattern — one root cause (Bonus Feats
+ *    (WIZ)'s un-suppressible atomic formula), not ~20 independent bespoke
+ *    traps. Arcane Bond and Cantrips both carry NO vendored `changes` at
+ *    all, so archetypes that swap those out (the large majority of "replaces
+ *    arcane bond"/"replaces cantrips" entries) have nothing to double-count
+ *    against and are ordinary `subsystem` grants instead. A named-feat swap
+ *    (e.g. "gains Siege Engineer instead of Scribe Scroll") does NOT trip
+ *    this trap either: the engine's `bonusFeats` target is an abstract count
+ *    of freed-up feat slots, indifferent to which specific feat fills them,
+ *    so trading one named feat for another leaves the count correct with
+ *    nothing to suppress.
  *
  * `wizard:spell-sage:focused-spells:1` is intentionally classified here
  * (`subsystem`, matching its true mechanical shape) without a corresponding
@@ -330,7 +328,7 @@ export const WIZARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Arcane Reservoir",
     level: 1,
     bucket: "subsystem",
-    note: "replaces arcane bond with the arcanist's arcane reservoir subsystem — grants an unrelated resource pool, no exploitable number (same posture as the Arcanist archetypes audited in the hand-verified table)",
+    note: "replaces arcane bond with the arcanist's arcane reservoir subsystem — grants an unrelated resource pool, no exploitable number (same posture as the Arcanist archetypes classified in the hand-verified table)",
   },
   "wizard:exploiter-wizard:exploiter-exploit:1": {
     archetypeId: "wizard:exploiter-wizard",
@@ -659,7 +657,7 @@ export const WIZARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Focused Spells",
     level: 1,
     bucket: "subsystem",
-    note: "1-3/day +4 caster-level boost for a single spell — an activated, resource-gated ability with no baseline number; already recorded (with empty `changes`, notes-only) in the hand-verified ARCHETYPE_FEATURE_EFFECTS table per the wizard-slice task instructions, so it is intentionally NOT duplicated in WIZARD_ARCHETYPE_EFFECTS_EXTRACTED",
+    note: "1-3/day +4 caster-level boost for a single spell — an activated, resource-gated ability with no baseline number; already recorded (with empty `changes`, notes-only) in the hand-verified ARCHETYPE_FEATURE_EFFECTS table, so it is intentionally NOT duplicated in WIZARD_ARCHETYPE_EFFECTS_EXTRACTED",
   },
   "wizard:spell-sage:spell-study:2": {
     archetypeId: "wizard:spell-sage",
@@ -899,8 +897,8 @@ export const WIZARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
  * This table is deliberately SEPARATE from `archetype-effects.ts`'s
  * `ARCHETYPE_FEATURE_EFFECTS` (the hand-verified table) — every entry here
  * additionally carries `confidence`/`provenance` so a reviewer (or the UI)
- * can never confuse "a human read the rulebook and checked this" with "an
- * extraction pass inferred this from prose." Both tables resolve through
+ * can never confuse "a human read the rulebook and checked this" with "a
+ * machine inferred this from prose." Both tables resolve through
  * `resolveArchetypeFeatureEffect`, which always checks the hand-verified
  * table FIRST. `wizard:spell-sage:focused-spells:1` already lives in the
  * hand-verified table (with an empty `changes` array — notes-only) and is

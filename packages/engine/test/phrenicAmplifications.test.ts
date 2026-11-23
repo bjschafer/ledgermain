@@ -7,8 +7,8 @@ import { compute, PHRENIC_AMPLIFICATION_IDS, PHRENIC_AMPLIFICATIONS } from "../s
 
 /**
  * Fixture coverage for psychic Phrenic Amplifications
- * (`psychic-disciplines.ts` shipped bonus spells/phrenic pool ability and
- * explicitly deferred amplifications). Clean-room, hand-authored (see
+ * (`psychic-disciplines.ts` covers bonus spells and phrenic pool ability;
+ * amplifications live here). Clean-room, hand-authored (see
  * `phrenic-amplifications.ts`), `displayOnly` in its entirety (every
  * amplification is a cast-time rider on a linked spell, no standing Change
  * this engine's stacking pipeline could safely apply), mirroring

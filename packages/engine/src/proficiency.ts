@@ -31,7 +31,7 @@
  *     text, see `model/alignment.ts`'s identical gap). Unpicked, the token
  *     grants nothing rather than guessing a weapon.
  *
- * Deliberately NOT modeled (CLAUDE.md's warn-don't-block posture):
+ * Deliberately NOT modeled (the warn-don't-block posture):
  *  - Archetype proficiency swaps (many archetypes trade an armor/weapon
  *    proficiency) — class grants here are always the BASE class's.
  *  - Monk's/druid's "restricted weapon list" flavor rule — that's an oath/

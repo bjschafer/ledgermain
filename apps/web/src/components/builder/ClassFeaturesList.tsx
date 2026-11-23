@@ -105,15 +105,15 @@ export function FeatureDescription({ html }: { html: string }) {
 
 /**
  * Lets a click anywhere on a class-feature row toggle its description,
- * instead of only the (previously invisible) chevron cell — the row already
- * hover-highlighted as if the whole thing were a click target. A click
- * inside `<summary>` is left alone since the browser already toggles the
- * `<details>` from that (and Enter/Space on it, unchanged); toggling it again
- * here would just flip it right back. A click inside the description body
- * while it's open is also left alone, and any drag-selection is respected,
- * so reading or copying the prose doesn't collapse it out from under you.
- * Anything with its own click handling (InfoTip's badges/warnings) already
- * stops the event from bubbling this far, so it needs no special case.
+ * instead of only the chevron cell — the row already hover-highlighted as if
+ * the whole thing were a click target. A click inside `<summary>` is left
+ * alone since the browser already toggles the `<details>` from that (and
+ * Enter/Space on it, unchanged); toggling it again here would just flip it
+ * right back. A click inside the description body while it's open is also
+ * left alone, and any drag-selection is respected, so reading or copying the
+ * prose doesn't collapse it out from under you. Anything with its own click
+ * handling (InfoTip's badges/warnings) already stops the event from bubbling
+ * this far, so it needs no special case.
  */
 function toggleFeatureDescription(e: ReactMouseEvent<HTMLDivElement>) {
   const target = e.target as HTMLElement;

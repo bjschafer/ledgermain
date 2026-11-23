@@ -45,9 +45,8 @@ export const ARCHETYPE_SLA_GRANTS: Readonly<Record<string, readonly SlaGrantDef[
 };
 
 /**
- * All five source tables, overridable for tests (the class-feature/archetype/
- * feat paths ship empty until their content wave lands, so unit tests inject
- * small tables to exercise them — same posture as
+ * All five source tables, overridable for tests (unit tests inject small
+ * tables to exercise them — same posture as
  * `resolveArchetypeFeatureEffect`'s table params).
  */
 export interface SlaSourceTables {

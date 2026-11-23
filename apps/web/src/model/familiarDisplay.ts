@@ -97,9 +97,9 @@ function formatSpeeds(speeds: Record<string, number>): string[] {
 
 /**
  * One clean summary line: species/size, speeds, senses — separated with the
- * app's own "·" convention (matches the masthead tagline) instead of the
- * sentence-period joins that previously produced "Speed 30 ft.. low-light
- * vision, scent." (a double period, and senses/size left lowercased).
+ * app's own "·" convention (matches the masthead tagline) instead of
+ * sentence-period joins, which would double up after "30 ft." and leave
+ * senses/size lowercased.
  */
 export function formatFamiliarSummary(familiar: DerivedFamiliar): string {
   const speedParts = formatSpeeds(familiar.speeds);

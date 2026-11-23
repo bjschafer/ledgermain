@@ -9,9 +9,9 @@
  *
  * ── DRUID_ARCHETYPE_FEATURE_CLASSIFICATION ────────────────────────────────
  *
- * Classification audit: EVERY feature of EVERY vendored druid archetype (75
+ * Classification: EVERY feature of EVERY vendored druid archetype (75
  * archetypes, 387 features), read and bucketed as `numeric` / `situational` /
- * `subsystem` / `blocked` — see the fighter pilot's rubric for the full
+ * `subsystem` / `blocked` — see the rubric in `./fighter.ts` for the full
  * bucket definitions this was applied against; summarized:
  *  - "numeric": an unconditional (or armor-state-gated, matching the
  *    hand-verified table's `@armor.type` precedent) bonus expressible via a
@@ -35,14 +35,14 @@
  *    Totemic Summons are activated/resource-gated or summon-list tweaks with
  *    no baseline Change, and Wild Shape's cadence/available-forms tweaks
  *    have no per-archetype modification hook (uses/day still rides the base
- *    Wild Shape class feature's own vendored `uses.maxFormula` unmodified,
- *    per the task's own guidance). Per-class base-feature audit: unlike
- *    fighter's Armor Training / Bonus Feats (FGT), which are each a single
- *    atomic multi-tier formula, druid's base progression carries a few
- *    real, whole-feature `Change` grants of its own — Nature Sense
- *    (`class-features.json` id `UJPlPj3RUKLvmKzM`: +2 `skill.sur`/`skill.kna`),
- *    Venom Immunity (`yzmKDxR63yS5fqlc`: `immEffect.poison`), and Timeless
- *    Body (`5JlthJkVGEHPZypG`: `immEffect.magicalAging`) — but each is a
+ *    Wild Shape class feature's own vendored `uses.maxFormula` unmodified).
+ *    Per-class base-feature check: unlike fighter's Armor Training / Bonus
+ *    Feats (FGT), which are each a single atomic multi-tier formula, druid's
+ *    base progression carries a few real, whole-feature `Change` grants of
+ *    its own — Nature Sense (`class-features.json` id `UJPlPj3RUKLvmKzM`: +2
+ *    `skill.sur`/`skill.kna`), Venom Immunity (`yzmKDxR63yS5fqlc`:
+ *    `immEffect.poison`), and Timeless Body (`5JlthJkVGEHPZypG`:
+ *    `immEffect.magicalAging`) — but each is a
  *    single-shot, un-tiered grant, not a multi-tier atomic formula. An
  *    archetype feature that cleanly replaces the WHOLE feature (verified via
  *    the vendored `pairedBaseFeatureUuid` pointing at that exact uuid, e.g.
@@ -64,37 +64,35 @@
  *    a composition trap this table needs to record specially; classified
  *    `subsystem` like every other Wild Shape cadence tweak.
  *
- * Methodology note (disclosed, not hidden — same posture as the fighter
- * pilot): the `numeric` bucket (24 new entries + 1 pre-existing hand-verified
- * overlap, Menhir Savant's Spirit Sense) was individually hand-verified
- * against the vendored prose, each carrying its own `provenance` sentence
- * below. The `situational` bucket (47 entries) was likewise individually
- * flagged during the full read — every entry's note states the specific
- * narrow scope (terrain, save-vs-category, maneuver, or companion-target)
- * that keeps it off the `numeric` list. The large `subsystem` bulk (288
- * entries) was heuristic-assisted for its generic notes (regex over the
- * prose for "grants an immunity" / "activated, resource-gated ability" /
- * "proficiency change" / "removes a penalty" shapes, cross-checked against
- * every archetype this agent read in full) — the boundary within
- * `subsystem` doesn't affect engine correctness (no bucket in `subsystem`
- * emits a `Change`), only audit-file clarity, so this is a deliberate,
- * disclosed scoping choice for the wave rather than an oversight.
+ * Methodology: the `numeric` bucket (24 new entries + 1 pre-existing
+ * hand-verified overlap, Menhir Savant's Spirit Sense) was individually
+ * hand-verified against the vendored prose, each carrying its own
+ * `provenance` sentence below. The `situational` bucket (47 entries) was
+ * likewise individually flagged during the full read — every entry's note
+ * states the specific narrow scope (terrain, save-vs-category, maneuver, or
+ * companion-target) that keeps it off the `numeric` list. The large
+ * `subsystem` bulk (288 entries) was heuristic-assisted for its generic
+ * notes (regex over the prose for "grants an immunity" / "activated,
+ * resource-gated ability" / "proficiency change" / "removes a penalty"
+ * shapes, cross-checked against every archetype read in full) — the boundary
+ * within `subsystem` doesn't affect engine correctness (no bucket in
+ * `subsystem` emits a `Change`), only classification-file clarity, so this is
+ * a deliberate scoping choice rather than an oversight.
  *
- * **Composition-safety finding worth carrying into future waves**: Aquatic
- * Druid's Natural Swimmer (3rd level, swim speed = half land speed) and
- * Seaborn (9th level, swim speed = full land speed) are two features of the
- * SAME archetype describing an evolving single number, not two independent
- * additive bonuses — `swimSpeed`/`landSpeed` targets are untyped and SUM, so
- * extracting both as separate Changes would over-grant 1.5x land speed at
- * 9th+. Folded into one conditional formula on Natural Swimmer's own entry;
- * Seaborn's classification note explains why it doesn't also get a
- * `swimSpeed` Change. Worth checking for on every future within-archetype
- * "upgrades an earlier feature's own number" pattern (distinct from the
- * cross-feature `pairedBaseFeatureUuid` swap machinery, which only
- * suppresses a BASE class feature, not a sibling archetype feature).
+ * **Composition-safety finding:** Aquatic Druid's Natural Swimmer (3rd level,
+ * swim speed = half land speed) and Seaborn (9th level, swim speed = full
+ * land speed) are two features of the SAME archetype describing an evolving
+ * single number, not two independent additive bonuses — `swimSpeed`/`landSpeed`
+ * targets are untyped and SUM, so extracting both as separate Changes would
+ * over-grant 1.5x land speed at 9th+. Folded into one conditional formula on
+ * Natural Swimmer's own entry; Seaborn's classification note explains why it
+ * doesn't also get a `swimSpeed` Change. Worth checking for on any future
+ * within-archetype "upgrades an earlier feature's own number" pattern
+ * (distinct from the cross-feature `pairedBaseFeatureUuid` swap machinery,
+ * which only suppresses a BASE class feature, not a sibling archetype
+ * feature).
  *
- * **Suspected vendored-data bugs found (not fixed here, per the task's
- * "report suspects, don't fix" instruction — flagged in the relevant
+ * **Suspected vendored-data bugs (not fixed; flagged in the relevant
  * classification entries' notes too):**
  *  - `druid:feral-child:favored-terrain-upgrade:13` — description is a
  *    byte-for-byte duplicate of `favored-terrain:3`'s text; the real
@@ -104,8 +102,8 @@
  *    a DIFFERENT archetype's (Swamp Druid's) Wild Shape text, including a
  *    mismatched "6th level" clause on a feature keyed to level 4.
  *  - `druid:urban-druid:a-thousand-faces:6` — description says "At 13th
- *    level" but the feature's own `level` field is 6. A later fix corrected the
- *    gating level to 13 via `SUPPLEMENTAL_ARCHETYPE_FEATURE_LEVEL`
+ *    level" but the feature's own `level` field is 6. The gating level is
+ *    corrected to 13 via `SUPPLEMENTAL_ARCHETYPE_FEATURE_LEVEL`
  *    (`packages/data-pipeline/src/supplements.ts`).
  *  - `druid:jungle-druid:wild-shape:6` — description duplicates its own
  *    opening sentence verbatim (minor, cosmetic).
@@ -154,7 +152,7 @@
  *    this table yet), or (Aquatic Druid's Natural Swimmer) folding a
  *    same-archetype composition-safety fix (see the finding above) into one
  *    formula spanning two feature levels.
- *  - "low": not used this wave, same as the fighter pilot.
+ *  - "low": not used here.
  */
 
 import {
@@ -466,7 +464,7 @@ export const DRUID_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Venom Immunity",
     level: 0,
     bucket: "subsystem",
-    note: "the druid simply does not gain this ability. The real base Venom Immunity (gained at 9th) carries a vendored immEffect.poison Change, but this archetype feature grants nothing of its own — nothing for this table to extract; whether that base grant is actually suppressed for an ashvawg tamer is the swap machinery's concern, not this classification pass's",
+    note: "the druid simply does not gain this ability. The real base Venom Immunity (gained at 9th) carries a vendored immEffect.poison Change, but this archetype feature grants nothing of its own — nothing for this table to extract; whether that base grant is actually suppressed for an ashvawg tamer is the swap machinery's concern, not this classification's",
   },
   "druid:ashvawg-tamer:wild-shape:0": {
     archetypeId: "druid:ashvawg-tamer",
@@ -676,7 +674,7 @@ export const DRUID_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Phantom",
     level: 1,
     bucket: "subsystem",
-    note: "grants the spiritualist's phantom (plus etheric tether at 1st, bonded manifestation at 4th, spiritual bond at 14th), effective spiritualist level equal to druid level 1:1. Phantom internals are out of scope for the companion table and stay unwired here",
+    note: "grants the spiritualist's phantom (plus etheric tether at 1st, bonded manifestation at 4th, spiritual bond at 14th), effective spiritualist level equal to druid level 1:1. Phantom internals aren't modeled by the companion table and stay unwired here",
   },
   "druid:death-druid:soul-magic:1": {
     archetypeId: "druid:death-druid",

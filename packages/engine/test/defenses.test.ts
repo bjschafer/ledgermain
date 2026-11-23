@@ -216,12 +216,12 @@ describe("compute: defenses (issue #21)", () => {
     expect(sheet.defenses!.sr).toBeUndefined();
   });
 
-  it("a conditional dr Change that evaluates to 0 does NOT materialize a spurious Defenses line (issue #45 finding 2, the dr-at-0 wart)", () => {
+  it("a conditional dr Change that evaluates to 0 does NOT materialize a spurious Defenses line", () => {
     // Reproduces the exact shape of Warlord's Sun-Bronzed Skin: DR 5/- gated
-    // on being unarmored (@armor.type == 0). An armored character with no
-    // other DR/resistance/SR source used to still get a "DR/— 0" seal,
-    // because the conditional Change is collected even when it evaluates to
-    // 0 (only ac/skill-shaped always-rendered totals safely absorb a zero
+    // on being unarmored (@armor.type == 0). Without the guard, an armored
+    // character with no other DR/resistance/SR source still gets a "DR/— 0"
+    // seal, because the conditional Change is collected even when it evaluates
+    // to 0 (only ac/skill-shaped always-rendered totals safely absorb a zero
     // component; defenses.ts only materializes the section at all when a
     // dr/resistance/sr entry exists).
     const doc = makeDoc({

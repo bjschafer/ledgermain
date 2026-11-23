@@ -82,7 +82,7 @@ export function Panel({
     : undefined;
 
   // The caret is the real toggle; the header's click handler is a mouse/touch
-  // convenience on top of it. The header used to BE the button, but several
+  // convenience on top of it. The header can't itself be the button: several
   // panels put their own buttons ("Rest", "Advance round") in that header, and
   // a control nested inside a control is a WCAG 4.1.2 failure that leaves the
   // inner button unreachable to assistive tech (axe `nested-interactive`, see

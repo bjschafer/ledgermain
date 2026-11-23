@@ -204,7 +204,7 @@ export const RACE_SLA_GRANTS: Readonly<Record<string, readonly RaceSlaGrantDef[]
   // ARG Gathlain, Spell-Like Abilities: "1/day—entangle, feather step
   // (caster level equals the gathlain's character level)." Most vendored
   // alternates replace the plural "Spell-Like Abilities", but Natural
-  // Bounty (the one this content wave also wires) replaces it under the
+  // Bounty (also wired here) replaces it under the
   // singular "Spell-Like Ability" instead; the singular is used here so
   // that specific, tested interaction suppresses correctly, at the cost of
   // the plural-named alternates not suppressing this grant.

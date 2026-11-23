@@ -1,8 +1,7 @@
 /**
  * Form-state <-> `Race`/`Feat`/`TraitDef`/`HomebrewClassFeature` mapping for
- * the homebrew authoring
- * UI (phase 2 of homebrew content support — see `model/homebrew.ts` for the
- * phase-1 doc-embedded storage + `RefData` overlay this builds on top of).
+ * the homebrew authoring UI (see `model/homebrew.ts` for the doc-embedded
+ * storage + `RefData` overlay this builds on top of).
  *
  * Kept pure and DOM-free so the mapping (in particular the ability-modifier
  * encoding, which must match the vendored data bit-for-bit — see

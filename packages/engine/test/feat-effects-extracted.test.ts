@@ -1,5 +1,5 @@
 /**
- * Fixture tests for the feat batch-extraction pass: a representative sample of
+ * Fixture tests for the feat extraction tables: a representative sample of
  * `FEAT_EFFECTS_EXTRACTED` entries (feat-effects-extracted.ts), hand-computed
  * against the real vendored data slice (loadRefData), plus the
  * hand-vs-extracted precedence rule (feat-effects-resolve.ts). Mirrors the

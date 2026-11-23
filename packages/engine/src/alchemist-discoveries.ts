@@ -24,7 +24,7 @@
  * `resolveGrantsBuffs`, which already surfaces it as a toggleable buff for
  * free (the vendored Mutagen `ClassFeature`'s `grantsBuffs` UUIDs resolve
  * against 3 real vendored buffs — "Mutagen, Str"/"Mutagen, Dex"/"Mutagen,
- * Con" — audited before writing this file; no new mechanism needed).
+ * Con" — verified against the vendored data; no new mechanism needed).
  *
  * Cognatogen (Ultimate Magic) shares Mutagen's EXACT numeric shape (+4/-2/+2
  * natural armor, same duration, "only one mutagen-family effect active at a
@@ -1591,14 +1591,14 @@ export const ALCHEMIST_DISCOVERY_IDS: readonly string[] = DISCOVERY_LIST.map((d)
  * of definitions" pattern `rage-powers.ts`'s `mergedRagePowerCatalog`
  * documents in full.
  *
- * Collision audit (all 168 hand-authored entries, run against the pinned Pf
+ * Collision check (all 168 hand-authored entries, run against the pinned Pf
  * Data 1e slice): every one matched a vendored entry by normalized name — no
  * drift, no alias needed, no orphan, and the vendored-only fallback path
  * only exists for future data bumps. No name collides within the vendored
  * catalog itself either.
  */
 
-/** Empty — see the collision-audit comment above; kept for the same reason `rage-powers.ts`'s alias map is kept empty. */
+/** Empty — see the collision check above; kept for the same reason `rage-powers.ts`'s alias map is kept empty. */
 const ALCHEMIST_DISCOVERY_NAME_ALIASES: Record<string, string> = {};
 
 function normalizeDiscoveryName(name: string): string {
@@ -1622,7 +1622,7 @@ function plainTextPreview(html: string, max = 200): string {
 
 /** A catalog entry the picker can browse — either the hand-authored def (matched) with vendored prose attached, or a vendored-only entry rendered display-only. */
 export interface MergedAlchemistDiscoveryEntry extends AlchemistDiscoveryDef {
-  /** Ability-type suffix as published — absent for most entries (see `AlchemistDiscovery.nameSuffix`'s doc comment) and for the hand-authored-only case (none exist here — see the collision audit above). */
+  /** Ability-type suffix as published — absent for most entries (see `AlchemistDiscovery.nameSuffix`'s doc comment) and for the hand-authored-only case (none exist here — see the collision check above). */
   nameSuffix?: string;
   /** Grouping tag from the source, e.g. "Primary Bomb Discoveries", "Grand Discoveries". */
   category?: string;
@@ -1673,7 +1673,7 @@ export function resolveAlchemistDiscovery(
  * collides (by normalized name, alias-mapped) against a hand-authored entry
  * REPLACED by that hand-authored def (keeping its id and real mechanics, but
  * carrying the vendored entry's prose/sources along for display); no
- * hand-authored-only entries exist to append per the collision audit above.
+ * hand-authored-only entries exist to append per the collision check above.
  * `!entry.displayOnly` marks which rows carry real mechanics, for the
  * picker's "M" badge.
  */

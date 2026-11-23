@@ -2,7 +2,7 @@
  * Rogue's slice of the pipeline (see `index.ts` for the per-class file
  * convention this follows). Covers all 78 vendored rogue archetypes, 251
  * features, read individually (rogue's archetype count is small enough to
- * afford the exhaustive per-feature pass; no heuristic-assisted
+ * afford the exhaustive per-feature classification; no heuristic-assisted
  * situational/subsystem split here).
  *
  * ── Key finding that shapes this file's `blocked` bucket ──────────────────
@@ -18,12 +18,12 @@
  * (`class-features.json` id `pEODJDoTk7uhCZY7`, confirmed as rogue's actual
  * 1st-level grant via `classes.json`), which carries a real
  * `max(1, floor(@class.unlevel / 2)) skill.dev` Change already applied to
- * every rogue. It's still safe to
- * fully replace: it's a single, un-tiered, whole-feature grant (not a
- * multi-tier atomic formula like fighter's Armor Training), so any
- * archetype feature that cleanly swaps out the WHOLE thing — verified via
- * the vendored `pairedBaseFeatureUuid` pointing at that exact uuid, e.g.
- * Escapologist's Elusive or Spy's Skilled Liar — is a safe full swap, not
+ * every rogue. It's still safe to fully replace: it's a single, un-tiered,
+ * whole-feature grant (not a multi-tier atomic formula like fighter's Armor
+ * Training), so any archetype feature that cleanly swaps out the WHOLE
+ * thing — verified via the vendored `pairedBaseFeatureUuid` pointing at that
+ * exact uuid, e.g. Escapologist's Elusive or Spy's Skilled Liar — is a safe
+ * full swap, not
  * the atomic-partial-tier trap `blocked` exists for. Separately, of all the
  * base features, only **Sneak Attack's die count** is modeled at all beyond
  * a flat zero or Trapfinding's `skill.dev` bonus, and only as a display
@@ -49,11 +49,10 @@
  *    rogue — none of its base features carry a multi-tier scaling formula).
  *  - The ONE genuine trap is a feature that claims to modify **Sneak
  *    Attack's own die-count progression** — since that's hardcoded and
- *    unconditional in `tables.ts`/`archetypes.ts` (both out of this file's
- *    scope: only `archetype-extracted/rogue.ts` and this directory's
- *    `index.ts` may be touched by this wave), no per-archetype override is
- *    possible without engine work. See the `blocked` entries below — all
- *    three are "Sneak Attack" feature rows that turn out to be byte-
+ *    unconditional in `tables.ts`/`archetypes.ts` (both outside this file),
+ *    no per-archetype override is possible without engine work. See the
+ *    `blocked` entries below — all three are "Sneak Attack" feature rows
+ *    that turn out to be byte-
  *    identical reprints of the UNMODIFIED base Sneak Attack description
  *    (no stated change, no "this ability replaces/alters..." language) —
  *    a suspected vendored-data artifact, not a real mechanical change. Left
@@ -66,7 +65,7 @@
  *    type" Change target that doesn't exist in `targets.ts` at all. No
  *    composition risk, just nothing to extract.
  *
- * ── Rubric (same as the fighter pilot) ─────────────────────────────────────
+ * ── Rubric (same as `./fighter.ts`) ────────────────────────────────────────
  *  - "numeric": an unconditional bonus, or one gated on a condition this
  *    engine can check (`@armor.type`), expressible via a real
  *    `packages/engine/src/targets.ts` target.
@@ -78,10 +77,10 @@
  *    variant) — same honesty bar as `traits.ts`/the hand-verified table.
  *  - "subsystem": grants an unrelated ability, resource, proficiency,
  *    choice-list (including anything that substitutes for or expands the
- *    rogue-talent list — talents are out of scope for this wave per the
- *    brief), applies a debuff/effect to a TARGET rather than a bonus to the
- *    rogue's own sheet, is an action/roll-substitution mechanic, or grants a
- *    sense (darkvision range, blindsight, etc.) — declined here even where a
+ *    rogue-talent list — talents are out of scope here), applies a
+ *    debuff/effect to a TARGET rather than a bonus to the rogue's own sheet,
+ *    is an action/roll-substitution mechanic, or grants a sense (darkvision
+ *    range, blindsight, etc.) — declined here even where a
  *    technically-real but permanently-UNAPPLIED target exists (`sensedv`),
  *    since emitting a Change that moves no number on the sheet would badge
  *    the archetype as "modeled" dishonestly.
@@ -93,7 +92,7 @@
  * worded. "medium" = a real ability with a second component this table
  * drops (an unmodelable rider, an armor/load double-condition where only the
  * armor half is checkable, or a modest interpretive read of "these bonuses"
- * scaling language). "low" unused, same as fighter's pass.
+ * scaling language). "low" unused, same as `./fighter.ts`.
  *
  * Knife Master and Scout already have entries in the hand-verified table
  * (`archetype-effects.ts` — Hidden Blade and Scout's Charge
@@ -115,7 +114,7 @@ const BLOCKED_SNEAK_ATTACK_REPRINT =
   "byte-identical reprint of the UNMODIFIED base Sneak Attack description under an archetype " +
   "'feature' row — no stated change, no 'this ability replaces/alters...' language at all. " +
   "Suspected vendored-data artifact (a duplicate/mistagged CSV row), not a real archetype " +
-  "modification — see this wave's report. Left unmodeled rather than risk anything touching " +
+  "modification. Left unmodeled rather than risk anything touching " +
   "the hardcoded, atomic sneakAttackDice() progression (tables.ts, out of this file's scope).";
 
 /** Keyed by the archetype feature's own `RefEntity.id` (same key `archetype-effects.ts` uses). */
@@ -171,7 +170,7 @@ export const ROGUE_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Abductor",
     level: 3,
     bucket: "numeric",
-    note: 'scaling CMB bonus to grapple plus a CMD bonus resisting a grapple/an escape from her own grapple, unconditional from 3rd — now expressible via Change.maneuverCategories (maneuver-categories.ts), wired in ROGUE_ARCHETYPE_EFFECTS_EXTRACTED. The defensive half is written cmd (the vocabulary\'s own resisting/defending side) even though the source text says "combat maneuver bonus" for it too.',
+    note: 'scaling CMB bonus to grapple plus a CMD bonus resisting a grapple/an escape from her own grapple, unconditional from 3rd — expressible via Change.maneuverCategories (maneuver-categories.ts), wired in ROGUE_ARCHETYPE_EFFECTS_EXTRACTED. The defensive half is written cmd (the vocabulary\'s own resisting/defending side) even though the source text says "combat maneuver bonus" for it too.',
   },
 
   // ── Bellflower Irrigator ───────────────────────────────────────────────
@@ -926,7 +925,7 @@ export const ROGUE_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Uncanny Aim",
     level: 4,
     bucket: "subsystem",
-    note: "range-increment increase (10 ft. at 4th) + a damage-die-step increase (at 8th) for specific pistols — range increment now displays but has no Change target to increase it, and die-step increases remain inexpressible",
+    note: "range-increment increase (10 ft. at 4th) + a damage-die-step increase (at 8th) for specific pistols — range increment displays but has no Change target to increase it, and die-step increases remain inexpressible",
   },
 
   // ── Heister ────────────────────────────────────────────────────────────

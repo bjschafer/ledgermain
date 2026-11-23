@@ -1,9 +1,9 @@
 /**
  * Unit tests for `changeTargetLabel()`, the shared humanizer for raw
- * `Change`/`ContextNote` target strings (issue: copy & readability audit).
- * Covers the flat vocabulary in `packages/engine/src/targets.ts` plus the
- * prefixed forms (`skill.`, `attack.weapon.`, `damage.weapon.`, `dr.`,
- * `eres.`) and the unmapped-target fallback.
+ * `Change`/`ContextNote` target strings. Covers the flat vocabulary in
+ * `packages/engine/src/targets.ts` plus the prefixed forms (`skill.`,
+ * `attack.weapon.`, `damage.weapon.`, `dr.`, `eres.`) and the unmapped-target
+ * fallback.
  */
 import { describe, expect, it } from "bun:test";
 

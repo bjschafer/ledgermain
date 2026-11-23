@@ -25,13 +25,12 @@ export type SyncAction =
 
 /**
  * Decide what one character id needs: each device pulls the latest on open
- * and pushes on change. `version` is a monotonic counter
- * bumped on every local edit, and `syncedVersion` is the server version this
- * device last pushed or pulled: the common ancestor. Comparing both sides to
- * it is what tells "only one side moved" from "both did". Comparing the two
- * versions to each other can't: a device that made more edits offline would
- * look "ahead" and silently overwrite the other device's work, or be
- * silently overwritten by it.
+ * and pushes on change. `version` is a monotonic counter bumped on every local
+ * edit, and `syncedVersion` is the server version this device last pushed or
+ * pulled: the common ancestor. Comparing both sides to it is what tells "only
+ * one side moved" from "both did". Comparing the two versions to each other
+ * can't: a device that made more edits offline would look "ahead" and
+ * silently overwrite the other device's work, or be silently overwritten by it.
  *
  * - `tombstoned` (the server holds a delete record for this id) → the deletion
  *   wins: drop any local copy, and never pull it back. This is a deliberate
@@ -95,11 +94,10 @@ export function sameContent(a: CharacterDoc, b: CharacterDoc): boolean {
 
 /**
  * A push attempt's server-reported conflict: the server rejects a stale write
- * and the client prompts "a newer version exists on another device — reload?".
- * This module only models the two possible
- * resolutions; the UI decides which one the user picked (`useCharacter.ts`
- * exposes both, never auto-picks one — the client requires a prompt, not a
- * silent merge).
+ * and the client asks whether to take the newer version from another device.
+ * This module only models the two possible resolutions; the UI decides which
+ * one the user picked (`useCharacter.ts` exposes both and never auto-picks
+ * one: a conflict always prompts, never silently merges).
  */
 export interface SyncConflict {
   local: CharacterDoc;

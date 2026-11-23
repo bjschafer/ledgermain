@@ -1,9 +1,9 @@
 /**
- * Warpriest's slice of the pipeline (2026-08-08). 16 archetypes, 78 features
- * — small enough that every feature was read individually rather than
- * heuristically, same posture as the magus pilot.
+ * Warpriest's slice of the pipeline. 16 archetypes, 78 features — small
+ * enough that every feature was read individually rather than heuristically,
+ * same posture as `./magus.ts`.
  *
- * ── Warpriest-specific mechanical facts this pass relies on ────────────────
+ * ── Warpriest-specific mechanical facts this classification relies on ─────
  *
  * 1. **Fervor** (base 2nd-level feature, `Rzexvt4z8taA8dCu`) rides a real
  *    vendored `uses.maxFormula: "floor(@class.unlevel / 2) + @abilities.wis.mod"`,
@@ -41,8 +41,8 @@
  *    is untouched, nothing to extract. A feature that grants a completely
  *    unpaired, ADDITIONAL bonus-feat count (its own cadence, not tied to the
  *    class's slot progression) is `numeric` — no warpriest archetype feature
- *    in this audit does this (all touches to bonus feats here either restrict
- *    the list or divert a specific numbered slot to a different ability).
+ *    here does this (all touches to bonus feats here either restrict the
+ *    list or divert a specific numbered slot to a different ability).
  *    **Focus Weapon** (base 1st-level feature, `bXznpN0piipekXTH`) is a
  *    second, separate bonus-feat source — it grants the single, specific,
  *    named feat Weapon Focus via its own `changes: [{formula: "1", target:
@@ -52,13 +52,13 @@
  *    one fixed feat outright is a different shape than the open "pick a
  *    combat feat" slots `bonusFeats` represents, and the vendored data's own
  *    choice to model Focus Weapon's fixed grant via `bonusFeats` doesn't
- *    change that — same posture the magus pilot used for Kensai/Kapenia
+ *    change that — same posture `./magus.ts` used for Kensai/Kapenia
  *    Dancer's "bonus feat (Weapon Focus) grant" entries.
  * 6. **Sneak attack** and **flurry of blows** grants (Cult Leader, Mantis
  *    Zealot, Sacred Fist) have no Change target in this engine (sneak attack
  *    dice are hardcoded per-class in `tables.ts`, not vendored-Change-driven;
  *    flurry's extra-attack mechanic has no target at all) — `subsystem`,
- *    matching the magus pilot's unarmed-strike-damage precedent.
+ *    matching `./magus.ts`'s unarmed-strike-damage precedent.
  * 7. **AC Bonus** (Sacred Fist, replacing Channel Energy) is a near-verbatim
  *    restatement of the vendored Monk "AC Bonus (MNK)" class feature
  *    (`4zVndIJ8NMWWzl1T`), which itself carries a real `changes[]` gated on
@@ -130,7 +130,7 @@ export const WARPRIEST_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Detect Alignment",
     level: 3,
     bucket: "subsystem",
-    note: "grants a detect-alignment move action, replacing the 3rd-level bonus feat (unpaired — the base Bonus Feats (WAR) count is untouched by this pass either way, class note 5) — no Change-shaped number",
+    note: "grants a detect-alignment move action, replacing the 3rd-level bonus feat (unpaired — the base Bonus Feats (WAR) count is untouched either way, class note 5) — no Change-shaped number",
   },
   "warpriest:champion-of-the-faith:sacred-weapon:1": {
     archetypeId: "warpriest:champion-of-the-faith",
@@ -181,7 +181,7 @@ export const WARPRIEST_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Sneak Attack",
     level: 3,
     bucket: "subsystem",
-    note: "grants rogue-style sneak attack dice (stacking with other sneak-attack sources), replacing the bonus feats gained at 3rd/9th/15th (unpaired — the base Bonus Feats (WAR) count is unaffected by this pass either way, class note 5) — sneak attack dice have no Change target (class note 6)",
+    note: "grants rogue-style sneak attack dice (stacking with other sneak-attack sources), replacing the bonus feats gained at 3rd/9th/15th (unpaired — the base Bonus Feats (WAR) count is unaffected either way, class note 5) — sneak attack dice have no Change target (class note 6)",
   },
   "warpriest:cult-leader:weapon-and-armor-proficiency:0": {
     archetypeId: "warpriest:cult-leader",
@@ -301,7 +301,7 @@ export const WARPRIEST_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Sacred Claws",
     level: 0,
     bucket: "subsystem",
-    note: "redirects sacred weapon's damage-by-level table onto natural claw attacks instead of a wielded weapon — sacred weapon carries no vendored changes to begin with (class note 2), so there's still no baseline number to redirect, even though nattack/ndamage are real targets now",
+    note: "redirects sacred weapon's damage-by-level table onto natural claw attacks instead of a wielded weapon — sacred weapon carries no vendored changes to begin with (class note 2), so there's still no baseline number to redirect, even though nattack/ndamage are real targets",
   },
   "warpriest:feral-champion:wild-shape:7": {
     archetypeId: "warpriest:feral-champion",
@@ -685,13 +685,13 @@ export const WARPRIEST_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
  * This table is deliberately SEPARATE from `archetype-effects.ts`'s
  * `ARCHETYPE_FEATURE_EFFECTS` (the hand-verified table) — every entry here
  * additionally carries `confidence`/`provenance` so a reviewer (or the UI)
- * can never confuse "a human read the rulebook and checked this" with "an
- * extraction pass inferred this from prose." Only 4 of warpriest's 78
- * features cleared the `numeric` bar (see
+ * can never confuse "a human read the rulebook and checked this" with "a
+ * machine inferred this from prose." Only 4 of warpriest's 78 features
+ * cleared the `numeric` bar (see
  * `WARPRIEST_ARCHETYPE_FEATURE_CLASSIFICATION` above for the full per-feature
- * audit).
+ * classification).
  *
- * Confidence rubric (identical to the magus pilot's):
+ * Confidence rubric (identical to `./magus.ts`'s):
  *  - "high": a literal or near-literal reflavor of an already-modeled base
  *    mechanism, or a single, clearly-worded, fully general (no scope
  *    restriction) scaling bonus.
@@ -699,7 +699,7 @@ export const WARPRIEST_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
  *    quoted provenance itself (e.g. the base class's skill-ranks-per-level
  *    value, from `classes.json`), or the entry required deriving more than
  *    one Change from a single passage.
- *  - "low": not used in this pass.
+ *  - "low": not used here.
  */
 export const WARPRIEST_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
   Record<string, ExtractedArchetypeFeatureEffect>
@@ -732,7 +732,7 @@ export const WARPRIEST_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
   // Forgepriest's "Heat of the Forge" is a flat, unconditional energy
   // resistance grant with no scoping condition at all — 5 at 6th, 10 at
   // 13th. Replaces the 6th-level bonus feat (unpaired; the base Bonus Feats
-  // (WAR) count is unaffected by this pass either way, class note 5).
+  // (WAR) count is unaffected either way, class note 5).
   "warpriest:forgepriest:heat-of-the-forge:6": {
     changes: [c("if(gte(@class.unlevel, 13), 10, 5)", "eres.fire")],
     detail: (level) => `fire resistance ${level >= 13 ? 10 : 5}`,

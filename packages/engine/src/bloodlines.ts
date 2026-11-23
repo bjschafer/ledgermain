@@ -97,7 +97,7 @@ export interface BloodlineDef {
    * True for a bloodline whose entire tree (arcana, every power) was read
    * and deliberately left prose-only: nothing anywhere in it is an
    * unconditional number. The merged catalog surfaces this as its
-   * acknowledged flag so the coverage audit counts the ruling as reviewed
+   * acknowledged flag so the coverage inventory counts the ruling as reviewed
    * triage instead of undiscovered backlog.
    */
   displayOnly?: boolean;
@@ -2490,7 +2490,7 @@ const BLOODLINE_LIST: BloodlineDef[] = [
   },
   // ---- Kobold Sorcerer ---- (source: https://aonprd.com/BloodlineDisplay.aspx?ItemName=Kobold%20Sorcerer)
   // AoN's own page title is "Kobold Sorcerer Bloodline" (Advanced Race Guide) —
-  // no name mismatch versus the vendored tag, despite the brief's heads-up.
+  // no name mismatch versus the vendored tag.
   {
     // Tag is the `bloodlineSpellLists` spelling ("Kobold"), which is what the
     // picker stores; the vendored prose catalog names it "Kobold Sorcerer",
@@ -3433,7 +3433,7 @@ const BLOODLINE_LIST: BloodlineDef[] = [
       },
     ],
   },
-  // Sorcerer bloodline batch 4: Phoenix, Possessed, Protean, Psychic, Rakshasa,
+  // Sorcerer bloodlines: Phoenix, Possessed, Protean, Psychic, Rakshasa,
   // Salamander, Scorpion, Serpentine. Assembler provides `c`, `feats`,
   // `POOL_3_CHA`, `burstPool` in scope; this module is the entry array only.
 
@@ -4994,12 +4994,12 @@ export function bloodlineVariantLabel(
  * `RefData.sorcererBloodlines` is the FULL published catalog (51 entries after
  * junk filtering), prose only — same "catalog from data, mechanics as overlay"
  * pattern as `rage-powers.ts`'s `mergedRagePowerCatalog`. The hand-verified
- * table above (now the whole published catalog) stays authoritative for
+ * table above (the whole published catalog) stays authoritative for
  * arcana/powers/bonus feats; this section attaches each vendored entry's prose
  * description and sources for browsing.
  *
  * Matching is by NORMALIZED NAME (this table's `tag` doubles as its display
- * `name`, e.g. `"Aberrant"`). Collision audit: every hand-authored
+ * `name`, e.g. `"Aberrant"`). Collision check: every hand-authored
  * bloodline matches a vendored entry by normalized name except "Kobold"
  * (vendored as "Kobold Sorcerer"), bridged by the alias map below. The
  * vendored-only fallback path below is retained for future data bumps that

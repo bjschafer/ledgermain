@@ -23,12 +23,12 @@ interface DisciplinePickerProps {
  * project's hybrid-prereqs philosophy — mirrors `MysteryPicker` exactly.
  *
  * Browses the FULL published discipline catalog (`mergedPsychicDisciplineCatalog`
- * — 12 core Occult Adventures disciplines hand-verified with bonus spells/
- * Discipline Powers/phrenic pool ability, plus 11 vendored-only splatbook
- * disciplines from later sourcebooks) — a vendored-only pick is honestly
- * marked "not modeled" below: no bonus spells, no Discipline Powers, no
- * phrenic pool ability resolution (see `@pf1/engine`
- * `psychic-disciplines.ts`'s doc comment for the collision audit).
+ * — all 23 published disciplines, 12 core Occult Adventures and 11 later
+ * splatbook ones, each hand-verified with bonus spells/Discipline Powers/
+ * phrenic pool ability). A vendored-only entry would be honestly marked "not
+ * modeled" below: no bonus spells, no Discipline Powers, no phrenic pool
+ * ability resolution (see `@pf1/engine` `psychic-disciplines.ts`'s doc
+ * comment for that branch).
  *
  * The chosen discipline (when hand-verified) grants one bonus spell known at
  * psychic level 1, 4th level, and every 2 levels thereafter (see

@@ -94,10 +94,9 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
 
   // Spell levels actually reachable at the current class level, PLUS whatever
   // the early-bonus-spells homebrew (`build.settings.earlyBonusSpells`)
-  // unlocks early — used to hide the not-yet-accessible tail of the reference
-  // lists below (levels 0/1 are always shown once any caster level is
-  // reached; e.g. a level-3 cleric has no business browsing level 5+ spells
-  // yet).
+  // unlocks early; the reference lists below hide the not-yet-accessible tail
+  // (levels 0/1 are always shown once any caster level is reached; e.g. a
+  // level-3 cleric has no business browsing level 5+ spells yet).
   const unlockedLevels = useMemo(
     () =>
       model

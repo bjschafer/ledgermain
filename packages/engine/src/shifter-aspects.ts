@@ -16,8 +16,8 @@
  * different formula shape than shifter's Wolf aspect. This file is
  * deliberately self-contained (its own table, its own toggle model, no
  * shared module with any hunter code) per this project's convention of
- * keeping concurrently-developed class subsystems isolated until a later
- * unification pass, if any.
+ * keeping concurrently developed class subsystems isolated until a later
+ * unification, if any.
  *
  * Scope: all 30 Blood of the Beast aspects.
  *

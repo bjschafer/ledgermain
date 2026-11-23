@@ -1,13 +1,13 @@
 /**
- * Vigilante's slice of the pipeline (2026-08-08): 27 vigilante archetypes, 143
- * archetype features, read individually and bucketed `numeric` / `situational`
- * / `subsystem` / `blocked` (same methodology the fighter/magus pilots
- * validated). Per the per-class file convention (`index.ts`'s doc comment),
- * this file owns BOTH of vigilante's pipeline artifacts —
+ * Vigilante's slice of the pipeline: 27 vigilante archetypes, 143 archetype
+ * features, read individually and bucketed `numeric` / `situational` /
+ * `subsystem` / `blocked`, following the methodology in
+ * `./fighter.ts`/`./magus.ts`. Per the per-class file convention (`index.ts`'s
+ * doc comment), this file owns BOTH of vigilante's pipeline artifacts —
  * `VIGILANTE_ARCHETYPE_EFFECTS_EXTRACTED` and
  * `VIGILANTE_ARCHETYPE_FEATURE_CLASSIFICATION`.
  *
- * ── Vigilante-specific mechanical facts this pass relies on ────────────────
+ * ── Vigilante-specific mechanical facts this classification relies on ─────
  *
  * 1. **Vigilante Talents** and **Social Talents** (`vigilante-talents.ts`'s
  *    `VIGILANTE_TALENTS`/`VIGILANTE_SOCIAL_TALENTS`) are both modeled
@@ -52,13 +52,13 @@
  *
  * Every `numeric` and `blocked` entry below carries its own reasoning either
  * inline (classification `note`) or in
- * `VIGILANTE_ARCHETYPE_EFFECTS_EXTRACTED`'s `provenance`. Only 4 of
+ * `VIGILANTE_ARCHETYPE_EFFECTS_EXTRACTED`'s `provenance`. Only 8 of
  * vigilante's 143 features cleared the `numeric` bar — the kit leans heavily
  * on identity-gated transformations, vigilante/social talent picks, and
  * assassin/witch/occultist/druid sub-ability grants, none of which are
  * Change-shaped in this engine today.
  *
- * ── Rubric (same as the fighter/magus pilots) ───────────────────────────────
+ * ── Rubric (same as `./fighter.ts`/`./magus.ts`) ────────────────────────────
  *  - "numeric": an unconditional bonus, or one gated on a condition this
  *    engine can check (`@armor.type`, `@class.unlevel`), expressible via a
  *    real `packages/engine/src/targets.ts` target.
@@ -406,7 +406,7 @@ export const VIGILANTE_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     level: 6,
     bucket: "subsystem",
     note:
-      "gains a gore natural attack (nattack/ndamage are applied targets now, via the PC natural-" +
+      "gains a gore natural attack (nattack/ndamage are applied targets, via the PC natural-" +
       "attack table), but " +
       NOTE_IDENTITY_GATED +
       "; replaces the 6th-level vigilante talent",
@@ -989,7 +989,7 @@ export const VIGILANTE_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
       "11th/15th) plus Armor Mastery (DR 5/- while armored) at 19th, using vigilante level as " +
       "fighter level — both named by their base-ability name only (no restated numbers), so the " +
       "formula is composed from the already-known fighter Armor Training/Armor Mastery values, " +
-      "same posture as the magus pilot's Armored Battlemage/Myrmidarch entries; replaces the " +
+      "same posture as `./magus.ts`'s Armored Battlemage/Myrmidarch entries; replaces the " +
       "vigilante's social talents gained at 3rd/7th/11th/15th/19th",
   },
   "vigilante:masked-maiden:imperfect-control:0": {
@@ -1386,7 +1386,7 @@ export const VIGILANTE_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     note:
       "real, scaling natural armor bonus (+1 at 12th/16th/20th), but " +
       NOTE_IDENTITY_GATED +
-      "; the claw/bite natural attacks are a real PC natural-attack grant now (nattack/ndamage " +
+      "; the claw/bite natural attacks are a real PC natural-attack grant (nattack/ndamage " +
       "are applied targets), but the same identity gate blocks wiring them too, and the " +
       "18th-level bear-form shapechange is unmodeled",
   },
@@ -1482,15 +1482,16 @@ export const VIGILANTE_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
  * This table is deliberately SEPARATE from any hand-verified table — every
  * entry here additionally carries `confidence`/`provenance` so a reviewer
  * (or the UI) can never confuse "a human read the rulebook and checked this"
- * with "an extraction pass inferred this from prose." Only 4 of vigilante's
- * 143 features cleared the `numeric` bar (see
+ * with "a machine inferred this from prose." Only 8 of vigilante's 143
+ * features cleared the `numeric` bar (see
  * `VIGILANTE_ARCHETYPE_FEATURE_CLASSIFICATION` above for the full per-feature
- * audit) — vigilante's kit leans heavily on identity-gated transformations,
- * vigilante/social talent picks, and other classes' sub-abilities grafted on
- * wholesale, none of which are Change-shaped in this engine today.
+ * classification) — vigilante's kit leans heavily on identity-gated
+ * transformations, vigilante/social talent picks, and other classes'
+ * sub-abilities grafted on wholesale, none of which are Change-shaped in this
+ * engine today.
  *
- * Confidence rubric (identical to the fighter/magus pilots'): see this file's
- * header doc comment.
+ * Confidence rubric (identical to `./fighter.ts`/`./magus.ts`'s): see this
+ * file's header doc comment.
  */
 export const VIGILANTE_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
   Record<string, ExtractedArchetypeFeatureEffect>
@@ -1545,8 +1546,8 @@ export const VIGILANTE_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
   // Gunmaster Initiative (Ultimate Intrigue) is a flat, unconditional +2 to
   // initiative checks — the accompanying free-action-firearm-draw rider
   // (gated on having Quick Draw) is a distinct action-economy grant, not a
-  // number, and is dropped, same posture as Kensai's Iaijutsu entry in the
-  // magus pilot (a clean number kept even though a secondary non-numeric
+  // number, and is dropped, same posture as Kensai's Iaijutsu entry in
+  // `./magus.ts` (a clean number kept even though a secondary non-numeric
   // grant is noted, not modeled).
   "vigilante:gunmaster:gunmaster-initiative:4": {
     changes: [c("2", "init")],
@@ -1559,11 +1560,11 @@ export const VIGILANTE_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
   // Armor Training class feature on the fighter's normal 4-level cadence
   // (3rd/7th/11th/15th, capping at +4) plus Armor Mastery (DR 5/- while
   // wearing armor) at 19th, using vigilante level as fighter level — the
-  // text names both abilities without restating their numbers (unlike the
-  // magus pilot's Myrmidarch, which explicitly wrote "DR 5/-"), so this
+  // text names both abilities without restating their numbers (unlike
+  // `./magus.ts`'s Myrmidarch, which explicitly wrote "DR 5/-"), so this
   // extraction composes the vendored text's level-equivalence with the
   // already-known Fighter Armor Training/Armor Mastery formulas, same
-  // "named ability reference" posture as the magus pilot's Armored
+  // "named ability reference" posture as `./magus.ts`'s Armored
   // Battlemage/Myrmidarch Armor Training entries.
   "vigilante:masked-maiden:armor-training:0": {
     changes: [

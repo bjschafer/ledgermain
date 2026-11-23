@@ -225,7 +225,7 @@ describe("prepared-instance metamagic transitions", () => {
     expect(preparedSpells(doc)[0]!.metamagic).toEqual([{ slug: "empower-spell" }]);
 
     doc = togglePreparedMetamagic(doc, 0, "empower-spell");
-    // Removing the last one drops the field entirely (the earlier shape).
+    // Removing the last one drops the field entirely.
     expect(preparedSpells(doc)[0]).toEqual({ spellId: "fireball", expended: false });
   });
 

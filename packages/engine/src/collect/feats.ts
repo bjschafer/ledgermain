@@ -13,9 +13,9 @@ export function collectFeats(ctx: CollectContext): void {
   // doc.build.feats holds feat ids (keys into RefData.feats). We resolve each id
   // to a name slug and look it up via resolveFeatEffect, which checks the
   // hand-verified FEAT_EFFECTS table first and falls back to the
-  // machine-extracted FEAT_EFFECTS_EXTRACTED table (feat
-  // batch-extraction pass — see feat-effects-resolve.ts for the precedence
-  // rule and feat-classification.ts for the full per-feat audit).
+  // machine-extracted FEAT_EFFECTS_EXTRACTED table (see
+  // feat-effects-resolve.ts for the precedence rule and feat-classification.ts
+  // for the full per-feat classification).
   //   Static entries: emit their changes when any optional live-buff gate is open.
   //   Choice entries: read doc.build.featChoices[featId]; if a choice is set,
   //     call entry.build(choiceId) and emit the resulting changes. If no choice

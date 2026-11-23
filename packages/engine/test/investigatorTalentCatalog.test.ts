@@ -37,7 +37,7 @@ describe("mergedInvestigatorTalentCatalog", () => {
   });
 
   it("no vendored-only entries remain — the fallback path only exists for a future data bump", () => {
-    // Full hand-table parity as of the last catalog sweep.
+    // Full hand-table parity.
     for (const entry of merged) {
       expect(INVESTIGATOR_TALENTS[entry.id], entry.id).toBeDefined();
     }
@@ -55,7 +55,7 @@ describe("resolveInvestigatorTalent", () => {
     expect(talent).toBe(INVESTIGATOR_TALENTS.blindingStrike);
   });
 
-  it("falls back to the vendored catalog for the vendored snake_case id (not indexed under that string in the hand table, even though the name now matches)", () => {
+  it("falls back to the vendored catalog for the vendored snake_case id (not indexed under that string in the hand table, even though the name matches)", () => {
     const talent = resolveInvestigatorTalent("domino_effect", ref);
     expect(talent?.displayOnly).toBe(true);
     expect(talent?.name).toBe("Domino Effect");

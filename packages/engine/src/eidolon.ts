@@ -13,17 +13,17 @@
  * "Scope/deferrals" section below for exactly how the two branches share this
  * file's data tables. Clean-room from the published PF1 rules (Advanced
  * Player's Guide "Summoner"/"Eidolon"/"Evolutions", Pathfinder Unchained
- * "Eidolons (Unchained)") — paraphrased from aonprd.com/d20pfsrd.com during
- * authoring (groundwork for the future full-stat-block companion work;
- * unchained subtype system added); no Foundry source was consulted (see DESIGN
- * §6). Foundry's GPL system code is never used as anything but a behavioral
+ * "Eidolons (Unchained)") — paraphrased from aonprd.com/d20pfsrd.com
+ * (groundwork for the future full-stat-block companion work; the unchained
+ * subtype system is included); no Foundry source was consulted.
+ * Foundry's GPL system code is never used as anything but a behavioral
  * oracle in tests, per the repo's clean-room discipline.
  *
  * Eidolon Basics (PF1 APG "Eidolon"):
  *   - The eidolon has its OWN Hit Dice, BAB, and saves. Its BAB is FULL
  *     (equal to its Hit Dice — `babForLevels("high", hd)`), unlike an animal
  *     companion's 3/4 BAB — verified row-by-row against aonprd.com/
- *     d20pfsrd.com's "Table: Eidolon Base Statistics" during authoring (HD
+ *     d20pfsrd.com's "Table: Eidolon Base Statistics" (HD
  *     and BAB columns are identical at every row, 1st through 20th). Two of
  *     its three saves are "good" (`saveForLevels("high", hd)`) and one
  *     "poor" (`saveForLevels("low", hd)`), with WHICH two determined by its
@@ -66,7 +66,7 @@
  *     as `companion.ts`'s `bonusTricks`/`bonusFeats` — an eidolon has EVERY
  *     skill as a class skill (unlike the companion's fixed six-skill set or
  *     the phantom's exactly-two), so a full per-skill picker is out of scope
- *     for this v1 pass; the "Skilled" evolution (+8 racial to one skill) is
+ *     here; the "Skilled" evolution (+8 racial to one skill) is
  *     therefore left `displayOnly` rather than wired to a skill this module
  *     doesn't track.
  *   - Attacks: the base form's own free natural attacks (`baseAttacks`, e.g.
@@ -277,7 +277,7 @@ export interface EidolonBaseForm {
 
 /**
  * The three core PF1 APG eidolon base forms (verified against aonprd.com/
- * d20pfsrd.com's "Base Forms" section during authoring), Aquatic (Ultimate
+ * d20pfsrd.com's "Base Forms" section), Aquatic (Ultimate
  * Magic p.74, aonprd.com's "Base Forms - Eidolon" page: "Size Medium; Speed
  * 20 ft., swim 40 ft.; AC +4 natural armor ...; Saves Fort (good), Ref
  * (good), Will (bad); Attack bite (1d6); ... Str 16, Dex 12, Con 13 ...;
@@ -405,9 +405,9 @@ export interface EidolonProgressionRow {
  * Table: Eidolon Base Statistics (PF1 APG "Eidolon"), indexed by summoner
  * level 1–20. `hd`/BAB (`babForLevels("high", hd)`) and both saves
  * (`saveForLevels("high"|"low", hd)`) reproduce the published table exactly
- * (verified by hand against every row during authoring — see module doc
+ * (verified by hand against every row — see module doc
  * comment). `armorBonus`/`strDexBonus` verified against two independent
- * transcriptions of the table during authoring.
+ * transcriptions of the table.
  */
 export const EIDOLON_PROGRESSION: readonly EidolonProgressionRow[] = [
   {
@@ -673,7 +673,7 @@ export const EIDOLON_SPECIAL_ABILITY_DETAIL: Readonly<Record<string, string>> = 
 /**
  * The summoner's effective level for eidolon purposes — the sum of
  * `summoner` (chained) and `summonerUnchained` class levels (see module doc
- * comment for why both draw from the SAME table in this v1 pass). Additive
+ * comment for why both draw from the SAME table here). Additive
  * multiclass stacking mirrors `companion.ts`'s `baseCompanionEffectiveLevel`
  * precedent for a character with more than one companion-granting source.
  */
@@ -1838,7 +1838,7 @@ export function deriveEidolon(
   // pre-existing Small-vs-Large exclusion right below) WITHOUT this
   // derivation retroactively charging the implied 2-point Medium spend for
   // a build that set the "large" evolution without also setting this flag;
-  // a soft simplification, not a promise of fully-audited evolution-point
+  // a soft simplification, not a promise of fully verified evolution-point
   // bookkeeping (matches `minLevel`'s own soft-noted-only posture elsewhere
   // in this file).
   const isAvianOrTauric = build.baseForm === "avian" || build.baseForm === "tauric";

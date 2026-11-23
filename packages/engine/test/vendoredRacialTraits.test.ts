@@ -79,7 +79,7 @@ function withFlexibleAbility(doc: CharacterDoc, ability: AbilityId): CharacterDo
   return { ...doc, identity: { ...doc.identity, flexibleAbility: ability } };
 }
 
-describe("Oread Granite Skin (vendored, +1 racial natural armor, issue #74 Phase 6)", () => {
+describe("Oread Granite Skin (vendored, +1 racial natural armor)", () => {
   // Verified against the source: "Rocky growths cover the skin of oreads
   // with this racial trait. They gain a +1 racial bonus to natural armor.
   // This racial trait replaces energy resistance." (replacedTraitNames:
@@ -157,7 +157,7 @@ describe("Half-Elf Kindred-Raised open change (issue #102)", () => {
   });
 });
 
-describe("Half-Elf / Half-Orc flexible +2 suppression (Ability Score Modifiers key, issue #35 follow-up)", () => {
+describe("Half-Elf / Half-Orc flexible +2 suppression (Ability Score Modifiers key)", () => {
   it("Half-Elf Kindred-Raised retires the flexible +2 and drops adaptability/elven immunities/keen senses", () => {
     // Kindred-Raised: "This racial trait replaces the half-elf's usual
     // racial ability score modifiers, as well as adaptability, elven
@@ -170,7 +170,7 @@ describe("Half-Elf / Half-Orc flexible +2 suppression (Ability Score Modifiers k
     expect(base.defenses?.effectImmunities?.some((i) => i.qualifier === "magicSleep")).toBe(true);
 
     const picked = compute(withFlexibleAbility(makeDoc("Half-Elf", [kindredRaised]), "str"), ref);
-    // The flexible +2 to Str no longer applies...
+    // The flexible +2 to Str does not apply...
     expect(picked.abilities.str.total).toBe(10);
     // ...but Kindred-Raised's own fixed +2 Cha still lands.
     expect(picked.abilities.cha.total).toBe(base.abilities.cha.total + 2);
@@ -197,7 +197,7 @@ describe("Half-Elf / Half-Orc flexible +2 suppression (Ability Score Modifiers k
       withFlexibleAbility(makeDoc("Half-Orc", [orcAtavism], { [orcAtavism]: ["wis"] }), "dex"),
       ref,
     );
-    // The flexible +2 to Dex no longer applies...
+    // The flexible +2 to Dex does not apply...
     expect(picked.abilities.dex.total).toBe(10);
     // ...but Orc Atavism's own fixed +2 Str and chosen -2 Wis still land.
     expect(picked.abilities.str.total).toBe(base.abilities.str.total + 2);
@@ -241,7 +241,7 @@ describe("Half-Elf / Half-Orc flexible +2 suppression (Ability Score Modifiers k
       withFlexibleAbility(makeDoc("Human", [dualTalent], { [dualTalent]: ["str", "wis"] }), "dex"),
       ref,
     );
-    // The flexible +2 to Dex no longer applies...
+    // The flexible +2 to Dex does not apply...
     expect(picked.abilities.dex.total).toBe(10);
     // ...while Dual Talent's own chosen +2 Str / +2 Wis both land.
     expect(picked.abilities.str.total).toBe(base.abilities.str.total + 2);
@@ -293,11 +293,11 @@ describe("guards", () => {
 /**
  * Featured-race suppression (6): for the six races in
  * `VENDORED_STANDARD_TRAIT_TARGETS`, a vendored alternate that names a
- * structured standard trait in `replacedTraitNames` now DROPS that trait's
+ * structured standard trait in `replacedTraitNames` drops that trait's
  * `Race.changes` while active — expected values verified against the ARG race
  * write-ups and the vendored `races.json` change lists.
  */
-describe("featured-race vendored suppression (issue #74 Phase 6)", () => {
+describe("featured-race vendored suppression", () => {
   it("Aasimar Deathless Spirit (Blood of Angels): Celestial Resistance's acid/cold/electricity 5 disappears", () => {
     const base = compute(makeDoc("Aasimar"), ref);
     for (const q of ["acid", "cold", "electricity"]) {
@@ -566,7 +566,7 @@ describe("featured-race vendored suppression (issue #74 Phase 6)", () => {
   });
 });
 
-describe("Skinwalker / Changeling / Gathlain suppression (issue #74, messy-race round)", () => {
+describe("Skinwalker / Changeling / Gathlain suppression", () => {
   it("Skinwalker Fanglord's Alternate Skill Modifiers retires Animal-Minded's Handle Animal bonus", () => {
     // Standard Animal-Minded: +2 Handle Animal (the wild-empathy half is
     // prose). Fanglord's replacement: +2 Acrobatics/+2 Perception.
@@ -645,7 +645,7 @@ describe("Skinwalker / Changeling / Gathlain suppression (issue #74, messy-race 
   });
 });
 
-describe("uncommon-race vendored suppression (issue #74)", () => {
+describe("uncommon-race vendored suppression", () => {
   it("Vanara Acrobatic: Nimble's +2 Stealth drops, its own Acrobatics/Escape Artist land", () => {
     // Standard Nimble: +2 Acrobatics/+2 Stealth. Acrobatic re-supplies the
     // +2 Acrobatics itself, so the net effect is Stealth for Escape Artist.

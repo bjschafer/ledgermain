@@ -137,10 +137,10 @@ describe("checkArchetypeConflict()", () => {
 
 describe("archetypeConflictWarnings() — cleric/wizard soft-warning fallback (issue #5)", () => {
   it("confirms the data gap this warning exists to cover: Cloistered Cleric/Crusader/Spellslinger/Runesage carry no structured replacement data at all", () => {
-    // Not every cleric archetype feature is data-blind any more (e.g. Appeaser's
-    // Aura/Channel Utility now carry a real pairing) — the warning's premise is
-    // per-ARCHETYPE, not per-class, so this checks the specific four archetypes
-    // the tests below exercise rather than the whole class.
+    // Some cleric archetype features do carry structured data (e.g. Appeaser's
+    // Aura/Channel Utility pairing) — the warning's premise is per-ARCHETYPE,
+    // not per-class, so this checks the specific four archetypes the tests
+    // below exercise rather than the whole class.
     const hasStructuredData = (f: {
       pairedBaseFeatureUuid?: string;
       replacesSlot?: unknown;

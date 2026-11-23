@@ -8,14 +8,14 @@ import { RotateIcon } from "../icons.js";
 import type { BuilderProps } from "../builder/types.js";
 
 /**
- * Sticky compact stat strip — the "what's your AC" fix (UX audit, Play-tab
- * cockpit slice). Below the 940px breakpoint (styles.css:44-56) `.sheet-col`
- * stops being sticky and drops below the entire tracker column, so AC/saves/
- * init can be thousands of pixels down the page. This strip surfaces the same
- * numbers as `Sheet.tsx`'s seals, pinned under the viewport top while the
- * player scrolls the tracker. Desktop (>940px) already has the sheet sticky
- * alongside the tracker, so this is hidden there via CSS (`display: none`)
- * rather than a JS media-query check, to avoid a resize-driven remount.
+ * Sticky compact stat strip — the "what's your AC" answer. Below the 940px
+ * breakpoint (styles.css:44-56) `.sheet-col` stops being sticky and drops
+ * below the entire tracker column, so AC/saves/init can be thousands of
+ * pixels down the page. This strip surfaces the same numbers as `Sheet.tsx`'s
+ * seals, pinned under the viewport top while the player scrolls the tracker.
+ * Desktop (>940px) already has the sheet sticky alongside the tracker, so
+ * this is hidden there via CSS (`display: none`) rather than a JS media-query
+ * check, to avoid a resize-driven remount.
  *
  * Mirrors the sheet seals' baseline tint (model/baseline.ts): values that
  * differ from the unconditioned baseline tint sage (higher) / oxblood (lower),

@@ -6,9 +6,9 @@
  * granting a themed set of free evolutions/resistances/immunities as the
  * eidolon's HD increase, in place of the chained (APG) eidolon's flat,
  * subtype-less pool. Clean-room, paraphrased from d20pfsrd.com's "Eidolons
- * (Unchained)" page during authoring — no Foundry source was consulted.
- * Aberrant (Pathfinder Campaign Setting: Horror Realms) was added
- * later, cross-checked against aonprd.com's "Subtypes - Eidolon (Unchained)"
+ * (Unchained)" page — no Foundry source was consulted.
+ * Aberrant (Pathfinder Campaign Setting: Horror Realms) is cross-checked
+ * against aonprd.com's "Subtypes - Eidolon (Unchained)"
  * page and the raw OGL dataset's `aberrant` entry.
  *
  * `deriveEidolon` (`eidolon.ts`) owns the actual derivation branch; this
@@ -17,8 +17,8 @@
  *
  * Table: Eidolon Base Statistics (Unchained) — every column EXCEPT
  * `evolutionPool`/`special` is numerically IDENTICAL to the chained
- * {@link EIDOLON_PROGRESSION} (verified row-by-row against d20pfsrd.com
- * during authoring), so {@link eidolonUnchainedProgressionRow} reuses
+ * {@link EIDOLON_PROGRESSION} (verified row-by-row against d20pfsrd.com), so
+ * {@link eidolonUnchainedProgressionRow} reuses
  * {@link eidolonProgressionRow} rather than re-transcribing HD/BAB/saves/
  * armor/Str-Dex bonus/max attacks/skill points/bonus feats.
  *
@@ -35,14 +35,14 @@
  *
  * Only Biped/Quadruped/Serpentine/Aberrant appear in any subtype's
  * `baseForms` below — verified against aonprd.com's "Subtypes - Eidolon
- * (Unchained)" page during the Aquatic/Avian/Tauric authoring pass: RAW's own
- * "Base Form(s)" line for every one of the 28 modeled subtypes (including
- * every Elemental element, e.g. Elemental (Water) — the one subtype where
+ * (Unchained)" page: RAW's own "Base Form(s)" line for every one of the 28
+ * modeled subtypes (including every Elemental element, e.g. Elemental
+ * (Water) — the one subtype where
  * Aquatic would seem like an obvious fit) lists only some subset of those
  * four; NONE of them ever lists Aquatic, Avian, or Tauric, even though
- * {@link EIDOLON_BASE_FORMS} models all three as of that pass. A doc with one
- * of those three forms and an unchained subtype set therefore always falls
- * through to the chained form's own `baseAttacks` (see this module's
+ * {@link EIDOLON_BASE_FORMS} models all three. A doc with one of those three
+ * forms and an unchained subtype set therefore always falls through to the
+ * chained form's own `baseAttacks` (see this module's
  * "Base forms" paragraph above) — the same soft fallback an unmodeled
  * subtype+form combination already gets, not a new gap. Elemental is split
  * into four separate subtype ids (air/earth/fire/water) since the eidolon's
@@ -998,7 +998,7 @@ const CORE_SUBTYPES: Readonly<Record<string, EidolonSubtypeDef>> = {
       },
     ],
   },
-  // ---- splatbook subtypes (content pass; see each entry's
+  // ---- splatbook subtypes (see each entry's
   // source comment). Tapestry-Warped is deliberately absent: it is
   // third-party (non-Paizo) content with no vendored or AoN counterpart
   // to verify against, so it fails the provenance bar. --------------
@@ -1605,7 +1605,7 @@ const CORE_SUBTYPES: Readonly<Record<string, EidolonSubtypeDef>> = {
   },
 };
 
-/** All 28 modeled Pathfinder Unchained eidolon subtypes: 12 Unchained core + Aberrant + the 12 splatbook subtypes from the catalog content pass, with Elemental split into 4 element ids (see module doc comment). Tapestry-Warped is deliberately absent — third-party, no verifiable source. */
+/** All 28 modeled Pathfinder Unchained eidolon subtypes: 12 Unchained core + Aberrant + the 12 splatbook subtypes from the catalog, with Elemental split into 4 element ids (see module doc comment). Tapestry-Warped is deliberately absent — third-party, no verifiable source. */
 export const EIDOLON_SUBTYPES: Readonly<Record<string, EidolonSubtypeDef>> = {
   ...CORE_SUBTYPES,
   ...Object.fromEntries(ELEMENTAL_VARIANTS.map((v) => [v.id, elementalSubtype(v)])),

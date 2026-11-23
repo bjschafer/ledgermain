@@ -101,7 +101,7 @@ export interface RoutedSharedBuffs {
 /**
  * True if {@link routeSharedBuffs} lands a change with this target anywhere
  * on the creature's sheet; every other target is silently dropped there. Lets
- * an authoring form offer only the targets that will actually do something.
+ * a form offer only the targets that will actually do something.
  * Must stay in step with the branches below.
  */
 export function isSharedCreatureTarget(target: string): boolean {

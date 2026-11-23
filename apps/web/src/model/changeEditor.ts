@@ -1,11 +1,10 @@
 /**
- * Shared "typed modifier" (`Change`) authoring model — the door BuffsPanel's
- * custom-buff form opened first (a single target/type/value row) generalized
- * to an editable LIST, reused by the homebrew race/feat editors (`model/
- * homebrewEditor.ts`) for their "additional typed bonuses" section. Pure and
+ * Shared "typed modifier" (`Change`) authoring model — a single
+ * target/type/value row generalized to an editable LIST. Pure and
  * framework-agnostic so it's unit-testable without a DOM; the `TARGETS`/
- * `TYPES` option lists were previously duplicated locally inside
- * `BuffsPanel.tsx`'s `CustomBuffForm` — kept here as the one source now.
+ * `TYPES` option lists are the one source behind `ChangeListEditor`'s selects
+ * (which `BuffsPanel.tsx`'s `CustomBuffForm` also uses) and the homebrew
+ * race/feat/trait editors' typed-bonus rows (`model/homebrewEditor.ts`).
  *
  * Option labels are written to stand alone when the `<select>` is closed and
  * only the chosen row shows: "Fire resistance", not "Fire" under a group

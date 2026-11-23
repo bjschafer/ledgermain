@@ -358,7 +358,7 @@ export const WITCH_PATRON_TAGS: readonly string[] = PATRON_LIST.map((p) => p.tag
  * entry then just falls back to plain display-only prose, same tolerance
  * posture the file doc comment above describes for spell-name resolution.
  *
- * Matching is by NORMALIZED NAME. Collision audit (all 17 hand-authored
+ * Matching is by NORMALIZED NAME. Collision check (all 17 hand-authored
  * patrons): all 17 matched a vendored `"basic"` entry by normalized name (the
  * vendored dictionary keys ARE this table's own `tag`s, verified) — no
  * aliasing needed.

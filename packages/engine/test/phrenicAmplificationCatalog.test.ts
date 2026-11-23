@@ -12,8 +12,8 @@ import {
 /**
  * Coverage for the vendored-catalog overlay — see
  * `phrenic-amplifications.ts`'s "vendored catalog overlay" section doc comment
- * for the collision-audit narrative this asserts against: a clean 1:1 match,
- * the only subsystem in this wave with zero vendored-only rows.
+ * for the collision check this asserts against: a clean 1:1 match, the only
+ * subsystem with zero vendored-only rows.
  */
 const ref = loadRefData();
 

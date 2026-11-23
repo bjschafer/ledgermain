@@ -1,15 +1,15 @@
 /**
- * Machine-extracted feat effects — the feat batch-extraction pass, sibling to
- * `feat-effects.ts`'s hand-verified `FEAT_EFFECTS`/`FEAT_POOL_EFFECTS` and
- * mirroring `archetype-extracted/`'s `ExtractedArchetypeFeatureEffect` shape
- * (`confidence` + `provenance`). See `feat-classification.ts` for the full
- * per-feat audit this table was drawn from, and `feat-effects-resolve.ts` for
- * the precedence rule between this table and the hand-verified one.
+ * Machine-extracted feat effects, sibling to `feat-effects.ts`'s hand-verified
+ * `FEAT_EFFECTS`/`FEAT_POOL_EFFECTS` and mirroring `archetype-extracted/`'s
+ * `ExtractedArchetypeFeatureEffect` shape (`confidence` + `provenance`). See
+ * `feat-classification.ts` for the full per-feat classification this table
+ * was drawn from, and `feat-effects-resolve.ts` for the precedence rule
+ * between this table and the hand-verified one.
  *
  * Every entry here was individually read against the vendored feat
  * `description` (this repo's own OGL data slice) and cross-checked against
- * the published PF1 rules — clean-room, no Foundry system code consulted
- * (CLAUDE.md licensing). All entries are `"high"` confidence (except Master
+ * the published PF1 rules — clean-room, no Foundry system code consulted.
+ * All entries are `"high"` confidence (except Master
  * Craftsman, see below): each is a literal, unconditional CRB rule with an
  * exact textual match to an already-hand-verified shape elsewhere in this
  * codebase (the "+2/+2 skill pair, +4 at 10 ranks" family matches the

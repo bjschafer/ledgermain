@@ -1,32 +1,30 @@
 /**
- * Barbarian's slice of the pipeline (2026-07-06), repeating the fighter
- * pilot's exact methodology (`./fighter.ts`) for the 40 vendored barbarian
- * archetypes / 149 archetype features. Per the per-class file convention
- * (`./index.ts`'s doc comment), this file owns BOTH of barbarian's pipeline
- * artifacts — `BARBARIAN_ARCHETYPE_EFFECTS_EXTRACTED` (the machine-extracted
- * `Change`-shaped effects table) and
- * `BARBARIAN_ARCHETYPE_FEATURE_CLASSIFICATION` (the full per-feature audit) —
- * so a future wave working on a different class never has a reason to touch
- * this file; only `index.ts` (the aggregator, out of scope for this wave — see
- * below) needs one new import + one new spread per class.
+ * Barbarian's slice of the pipeline, using the methodology in `./fighter.ts`
+ * for the 40 vendored barbarian archetypes / 149 archetype features. Per the
+ * per-class file convention (`./index.ts`'s doc comment), this file owns BOTH
+ * of barbarian's pipeline artifacts — `BARBARIAN_ARCHETYPE_EFFECTS_EXTRACTED`
+ * (the machine-extracted `Change`-shaped effects table) and
+ * `BARBARIAN_ARCHETYPE_FEATURE_CLASSIFICATION` (the full per-feature
+ * classification) — so work on a different class never has a reason to touch
+ * this file; only `index.ts` (the aggregator) needs one new import + one new
+ * spread per class.
  *
- * The archetype data source repoint (`ARCHETYPE_REPO`/`ARCHETYPE_SHA`,
- * `packages/data-pipeline/src/config.ts`) mechanically renamed most of this
- * file's ids: the retired CSV dataset baked an ability-type or bonus-tier
- * suffix into a lot of barbarian feature names (`"Invulnerability (Ex)"`,
- * `"Natural Toughness (+1)"`) that the current YAML-pack source's plain names
- * (`"Invulnerability"`, `"Natural Toughness"`) don't carry — so e.g.
- * `invulnerability-ex:2` became `invulnerability:2`. Content/mechanics are
+ * Most of this file's ids drop the ability-type or bonus-tier suffix the
+ * older CSV archetype dataset baked into barbarian feature names
+ * (`"Invulnerability (Ex)"`, `"Natural Toughness (+1)"`); the current
+ * YAML-pack source (`ARCHETYPE_REPO`/`ARCHETYPE_SHA`,
+ * `packages/data-pipeline/src/config.ts`) carries the plain names
+ * (`"Invulnerability"`, `"Natural Toughness"`), so e.g.
+ * `invulnerability-ex:2` is now `invulnerability:2`. Content/mechanics are
  * unaffected; only id suffixes and (one case, `feral-gnasher`'s "Improvised
- * Weapon Mastery", noted at its entry below) a level number changed.
+ * Weapon Mastery", noted at its entry below) a level number differ.
  *
  * ── BARBARIAN_ARCHETYPE_FEATURE_CLASSIFICATION ────────────────────────────
  *
- * Every feature of every vendored barbarian archetype, read in full (not
- * heuristically, unlike the fighter pilot's 383-feature bulk pass — 149
- * features is small enough to read exhaustively) and bucketed as `numeric` /
- * `situational` / `subsystem` / `blocked` per the same rubric fighter.ts
- * established:
+ * Every feature of every vendored barbarian archetype, read in full (149
+ * features is small enough to read exhaustively rather than heuristically)
+ * and bucketed as `numeric` / `situational` / `subsystem` / `blocked` per the
+ * rubric in `./fighter.ts`:
  *  - "numeric": an unconditional (or armor-state-gated, `@armor.type`-style)
  *    bonus expressible via a real `packages/engine/src/targets.ts` target.
  *  - "situational": a REAL number scoped to a specific maneuver, weapon,
@@ -38,8 +36,7 @@
  *    difficulty, grapple penalties, hardness, reach, crit-confirm — none of
  *    these have an `APPLIED_TARGET`) — no Change-shaped number to extract.
  *  - "blocked": a genuine composition trap, recorded rather than guessed at.
- *    Two shapes occur in this class's data (see the barbarian-specific
- *    mechanical notes this wave was briefed with):
+ *    Two shapes occur in this class's data:
  *      1. A feature that changes barbarian Rage's ROUNDS/DAY count or
  *         cadence (a flat reduction, an effective-level shift, or a
  *         triggered per-kill/per-hit "gain N rounds" mechanic) — any of
@@ -52,21 +49,21 @@
  *         language at all and a `level` field that contradicts its own
  *         prose (Jungle Rager's "Damage reduction" entry) — extracting a
  *         number risks sitting on top of a base grant this table has no way
- *         to confirm is actually suppressed. See the report notes for the
- *         specific ids.
+ *         to confirm is actually suppressed. Jungle Rager's entry below is
+ *         the one case.
  *
- * Precedent this pass leaned on:
+ * Precedents:
  *  - Fast Movement (base L1) carries a real vendored Change (`landSpeed`,
  *    type "base", gated on `@armor.type<=1` and not encumbered) but is a
  *    SINGLE flat grant at ONE level (not tiered like fighter's Armor
  *    Training) — a clean 1:1 `pairedBaseFeatureUuid` swap is already
- *    suppressed for free by `activeArchetypeSwaps`/`collect.ts`, so this
- *    pass never needed a `blocked` entry purely for "replaces fast
- *    movement" the way fighter needed one for partial-tier Armor Training.
- *    Most "replaces fast movement" features in this data are themselves
- *    `situational`/`subsystem` (maneuver/enemy-state-scoped, or a whole
- *    unrelated ability), so there was nothing to extract that could clash
- *    with the base grant either way — noted per-entry where relevant.
+ *    suppressed for free by `activeArchetypeSwaps`/`collect.ts`, so no
+ *    `blocked` entry is needed purely for "replaces fast movement" the way
+ *    fighter needed one for partial-tier Armor Training. Most "replaces fast
+ *    movement" features in this data are themselves `situational`/`subsystem`
+ *    (maneuver/enemy-state-scoped, or a whole unrelated ability), so nothing
+ *    extractable here can clash with the base grant either way — noted
+ *    per-entry where relevant.
  *  - Trap Sense (base L3) carries an EMPTY vendored `changes: []` — nothing
  *    to suppress, ever, so a Trap-Sense-replacing feature's own bucket is
  *    decided purely on its own textual merits (most land on `situational`
@@ -77,11 +74,10 @@
  *    features are exactly that — Cave Dweller, Superstitious, Untamed
  *    Rager, Pack Rager all pair cleanly to "Damage Reduction" and grant
  *    something with no number to extract, so the base DR just disappears,
- *    correctly, with no table entry needed here). The already-hand-curated
- *    `AMBIGUOUS_DR_REPLACEMENTS` map (`archetypes.ts`) only covers
- *    Invulnerable Rager today; this pass found one more UNPAIRED candidate
- *    worth flagging (Jungle Rager, see above) but did not add it (out of
- *    scope — `archetypes.ts` is owned by the integration step).
+ *    correctly, with no table entry needed here). The hand-curated
+ *    `AMBIGUOUS_DR_REPLACEMENTS` map (`archetypes.ts`) covers only
+ *    Invulnerable Rager; Jungle Rager (see above) is a further UNPAIRED
+ *    candidate the map does not cover.
  *  - Rage's ability-score bonuses (Str/Con/Dex) are NOT auto-applied
  *    anywhere in this engine (a manual player-toggled buff, same posture as
  *    ki/grit/panache) — confirmed via the existing Urban Barbarian hand
@@ -92,14 +88,13 @@
  *    no per-power Change modeling in this engine at all, so any feature that
  *    swaps/grants/restricts rage powers is also `subsystem`.
  *
- * Methodology note (disclosed, same posture as fighter.ts): every one of the
- * 149 features was read in full against its vendored `description` prose
- * (HTML tags stripped mentally, never transcribed) — no heuristic bulk pass
- * was used for this class, so the `situational`/`subsystem` split carries the
+ * Every one of the 149 features was classified from its vendored
+ * `description` prose (HTML tags stripped mentally, never transcribed), not
+ * by a name heuristic, so the `situational`/`subsystem` split carries the
  * same individual-judgment weight as the `numeric`/`blocked` buckets do.
  *
- * NOT re-added here: the four barbarian ids already hand-verified in
- * `archetype-effects.ts` (`barbarian:urban-barbarian:controlled-rage:1`,
+ * The four barbarian ids already hand-verified in `archetype-effects.ts`
+ * (`barbarian:urban-barbarian:controlled-rage:1`,
  * `barbarian:invulnerable-rager:invulnerability:2`,
  * `barbarian:savage-barbarian:natural-toughness:7`,
  * `barbarian:wildborn:damage-reduction:7`) still get a classification entry
@@ -108,15 +103,6 @@
  * `BARBARIAN_ARCHETYPE_EFFECTS_EXTRACTED` — `resolveArchetypeFeatureEffect`
  * already prefers the hand-verified table, and a second, different-shaped
  * entry here would just be confusing, not additive.
- *
- * Wiring note: per the task boundary for this wave, `./index.ts` (the
- * aggregator) is NOT touched by this file — a later integration pass wires
- * `BARBARIAN_ARCHETYPE_EFFECTS_EXTRACTED`/`BARBARIAN_ARCHETYPE_FEATURE_CLASSIFICATION`
- * into the merged production tables the same one-import-one-spread way
- * fighter's are wired in today. Until that happens, `compute` does not yet
- * apply this file's `changes` (see this class's fixture test file for how it
- * verifies the extracted formulas directly instead of via the full
- * `collect.ts` pipeline).
  */
 
 import {
@@ -619,7 +605,7 @@ export const BARBARIAN_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Extreme Endurance",
     level: 3,
     bucket: "numeric",
-    note: "fire OR cold energy resistance, wired via the archetypeFeature pick-choice mechanism (build.pickChoices) now that a generic way to record the player's build-time energy-type choice exists.",
+    note: "fire OR cold energy resistance, wired via the archetypeFeature pick-choice mechanism (build.pickChoices) because a generic way to record the player's build-time energy-type choice exists.",
   },
   "barbarian:invulnerable-rager:invulnerability:2": {
     archetypeId: "barbarian:invulnerable-rager",
@@ -635,7 +621,7 @@ export const BARBARIAN_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Damage reduction",
     level: 8,
     bucket: "blocked",
-    note: 'suspected vendored-data issue: restates the base Damage Reduction progression verbatim (1/— at 7th, +1 every 3 levels) with NO "this ability replaces…" language and an unpaired uuid, and its own `level` field (8) contradicts its own prose ("At 7th level…"). Jungle Rager\'s other 3 features swap uncanny dodge/improved uncanny dodge/trap sense, never damage reduction, so this reads as a vendored duplicate/reminder of the unchanged base feature rather than a real swap. Extracting a second DR number here would sit on top of the already-unsuppressed hardcoded barbarianDamageReduction table (barbarianDamageReductionReplaced returns false for this archetype) — recorded, not modeled. See report for a suggested follow-up.',
+    note: 'suspected vendored-data issue: restates the base Damage Reduction progression verbatim (1/— at 7th, +1 every 3 levels) with NO "this ability replaces…" language and an unpaired uuid, and its own `level` field (8) contradicts its own prose ("At 7th level…"). Jungle Rager\'s other 3 features swap uncanny dodge/improved uncanny dodge/trap sense, never damage reduction, so this reads as a vendored duplicate/reminder of the unchanged base feature rather than a real swap. Extracting a second DR number here would sit on top of the already-unsuppressed hardcoded barbarianDamageReduction table (barbarianDamageReductionReplaced returns false for this archetype) — recorded, not modeled.',
   },
   "barbarian:jungle-rager:home-ground-advantage:2": {
     archetypeId: "barbarian:jungle-rager",
@@ -856,7 +842,7 @@ export const BARBARIAN_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Crack Shot",
     level: 5,
     bucket: "situational",
-    note: "Dex-to-damage with firearms while raging (confirmed on aonprd: 'while raging', replaces improved uncanny dodge) — the firearms weapon-group half now has a Dex-to-damage mechanism (gun-training.ts / per-weapon damageAbility), but the rage gate has no seam in this archetype-extracted route, so it stays unwired; a player can approximate it with a per-weapon damageAbility: 'dex' override while raging",
+    note: "Dex-to-damage with firearms while raging (confirmed on aonprd: 'while raging', replaces improved uncanny dodge) — the firearms weapon-group half has a Dex-to-damage mechanism (gun-training.ts / per-weapon damageAbility), but the rage gate has no seam in this archetype-extracted route, so it stays unwired; a player can approximate it with a per-weapon damageAbility: 'dex' override while raging",
   },
   "barbarian:savage-technologist:primal-magnetism:3": {
     archetypeId: "barbarian:savage-technologist",
@@ -1159,7 +1145,7 @@ export const BARBARIAN_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Dishonorable",
     level: 7,
     bucket: "numeric",
-    note: "scaling CMB/CMD bonus vs. dirty trick, unconditional from 7th — now expressible via Change.maneuverCategories (maneuver-categories.ts), wired in BARBARIAN_ARCHETYPE_EFFECTS_EXTRACTED; paired 1:1 to Damage Reduction so the base DR grant is already cleanly suppressed",
+    note: "scaling CMB/CMD bonus vs. dirty trick, unconditional from 7th — expressible via Change.maneuverCategories (maneuver-categories.ts), wired in BARBARIAN_ARCHETYPE_EFFECTS_EXTRACTED; paired 1:1 to Damage Reduction so the base DR grant is already cleanly suppressed",
   },
   "barbarian:untamed-rager:feral-appearance:3": {
     archetypeId: "barbarian:untamed-rager",

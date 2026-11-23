@@ -10,9 +10,9 @@
  * Scope: FULL vendored parity — all 64 vendored
  * arcana: the 20 base Ultimate Magic ones plus every later-book addition the
  * pinned data carries (Ultimate Combat's Enduring Blade and Arcane
- * Redoubt/Bane Blade — vendored `sources` attribute those two to UC p. 54,
- * correcting this comment's former Weapon Master's Handbook claim — plus Magic
- * Tactics Toolbox, Heroes of Golarion, race-restricted arcana, and the rest).
+ * Redoubt/Bane Blade, which the vendored `sources` attribute to UC p. 54,
+ * plus Magic Tactics Toolbox, Heroes of Golarion, race-restricted arcana, and
+ * the rest).
  *
  * Level gating (PF1 RAW: "starting at 3rd level, a magus gains an arcana...
  * at 3rd level and every 3 levels thereafter"): `minLevel` is the earliest
@@ -73,7 +73,7 @@ export interface MagusArcanaDef {
    * Optional pool-spend toggle for this arcana — surfaced on the Arcane Pool
    * resource row (`arcane-spends.ts`'s `arcanePoolToggleOptions`) the same
    * way `bardic-performances.ts`'s table surfaces performance types. Absent
-   * for every entry until a later content wave populates it.
+   * for arcana with no pool-spend toggle.
    */
   spendToggle?: { name?: string; changes: Change[]; contextNotes?: ContextNote[] };
 }
@@ -921,15 +921,15 @@ export const MAGUS_ARCANA_IDS: readonly string[] = ARCANA_LIST.map((a) => a.id);
  * Matching is by NORMALIZED NAME, never id — same rationale as rage
  * powers/hexes.
  *
- * Collision audit (all 64 hand-authored entries, run against the pinned Pf
- * Data 1e slice): all 20 matched a vendored entry by normalized name, with NO
+ * Collision check (all 64 hand-authored entries, run against the pinned Pf
+ * Data 1e slice): all 64 matched a vendored entry by normalized name, with NO
  * naming drift, so `ARCANA_NAME_ALIASES` is empty (kept for a future
  * hand-authored addition that DOES drift). No vendored-catalog-internal name
  * collisions either — every one of the 64 vendored arcana has a unique
  * normalized name.
  */
 
-/** Alias map for a hand-authored id whose vendored-catalog counterpart uses a different name — see the collision-audit comment above. Empty today (no drift found); kept for a future addition. */
+/** Alias map for a hand-authored id whose vendored-catalog counterpart uses a different name — see the collision check above. Empty (no drift found); kept for a future addition. */
 const ARCANA_NAME_ALIASES: Record<string, string> = {};
 
 function normalizeArcanaName(name: string): string {
@@ -1003,7 +1003,7 @@ export function resolveMagusArcanum(id: string, refData: RefData): MagusArcanaDe
  * REPLACED by that hand-authored def (keeping its id and mechanics, but
  * carrying the vendored entry's prose/sources along for display), plus any
  * hand-authored entry with no vendored counterpart appended (none today —
- * see the collision-audit comment above). `!entry.displayOnly` marks which
+ * see the collision check above). `!entry.displayOnly` marks which
  * rows have live mechanics, for the picker's "M" badge — every base arcana
  * here is `displayOnly` (see the file's top doc comment), so the badge never
  * actually appears yet.

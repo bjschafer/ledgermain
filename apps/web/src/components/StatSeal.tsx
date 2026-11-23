@@ -15,9 +15,9 @@ import { Caret } from "./Caret.js";
  * Pass `className` to append extra classes to the `.seal` element (e.g.
  * `"seal--compact"` for de-emphasised secondary stats).
  *
- * Two "living sheet" cues layer on top of the static seal (the point:
- * recompute is invisible today — toggling a condition changes AC but nothing
- * *shows* it changed):
+ * Two "living sheet" cues layer on top of the static seal. Without them,
+ * recompute is invisible: toggling a condition changes AC but nothing *shows*
+ * it changed.
  *
  * 1. **Recompute shimmer** — whenever `value` changes after mount, a brief
  *    gold wash plays once and fades. Tracked via a ref against the previous

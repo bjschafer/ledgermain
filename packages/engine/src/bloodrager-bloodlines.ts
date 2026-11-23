@@ -1,9 +1,9 @@
 /**
  * Clean-room PF1 bloodrager bloodline table (Advanced Class Guide) — the
- * bloodrager-specific sibling of `bloodlines.ts` (sorcerer). Hand- authored
- * from published rules text (AoN/d20pfsrd — CLAUDE.md licensing: Foundry
- * source was never consulted) since bloodline powers/bonus-feat
- * lists/bonus-spell lists are prose-only in the vendored Foundry pack (only
+ * bloodrager-specific sibling of `bloodlines.ts` (sorcerer). Hand-authored
+ * from published rules text (AoN/d20pfsrd — Foundry source was never
+ * consulted) since bloodline powers/bonus-feat lists/bonus-spell lists are
+ * prose-only in the vendored Foundry pack (only
  * the base "Bloodrage"/"Bloodrager Bloodline"/"Bloodline Feat (BLO)"/
  * "Bloodline Spells (BLO)" class features are vendored — see `class-
  * features.json`; the per-bloodline content itself is NOT).
@@ -27,8 +27,8 @@
  *     `RefData.bloodlineSpellLists` (which assumes the sorcerer cadence), so
  *     `bonusSpells` here is a small hand-authored NAME-ONLY list (no vendored
  *     spell-id resolution attempted — same "acceptable degradation" posture
- *     the task brief green-lit for patron/mystery-style content still lacking
- *     a full vendored mapping) resolved by name against `refData.spells` at
+ *     used for patron/mystery-style content still lacking a full vendored
+ *     mapping) resolved by name against `refData.spells` at
  *     read time — see `model/spellcasting.bloodragerBonusSpellsKnown`.
  *
  * Modelling posture (mirrors `bloodlines.ts` exactly): `changes`/
@@ -50,8 +50,8 @@
  * applies to the sorcerer version of these exact named powers (Abyssal/
  * Celestial/Infernal "Resistances" are modeled as unconditional Changes
  * there too) for consistency, but acknowledges the primary sourcebook text
- * (not available to this session) is the only way to fully resolve whether
- * these are genuinely always-on for a BLOODRAGER specifically or, like most
+ * is the only way to fully resolve whether these are genuinely always-on
+ * for a BLOODRAGER specifically or, like most
  * of this class's powers, gated to the bloodrage state. If that turns out
  * to be wrong, the fix is narrowly scoped to this file's `changes` arrays.
  */
@@ -1488,7 +1488,7 @@ const BLOODRAGER_BLOODLINE_LIST: BloodragerBloodlineDef[] = [
         // RAW states no bloodraging qualifier at all for either tier of this
         // power; the chains are described as covering the bloodrager's body
         // outright. Modeled unconditionally, matching Abnormal Reach's
-        // treatment elsewhere in this batch.
+        // treatment elsewhere in this group.
         changes: [
           c("if(gte(@classes.bloodrager.level, 9), 8, 4)", "skill.clm", "untyped"),
           c(
@@ -1967,7 +1967,7 @@ const BLOODRAGER_BLOODLINE_LIST: BloodragerBloodlineDef[] = [
         // RAW (aonprd.com, BloodragerBloodlineDisplay.aspx?ItemName=Shadow):
         // unlike Shadow Vision and Shades of Rage above, this power's own
         // text carries no "while bloodraging" qualifier, and this bloodline
-        // (unlike the other five in this batch) has no umbrella
+        // (unlike the other five in this group) has no umbrella
         // while-bloodraging intro sentence either — modeled unconditionally
         // on the same no-qualifier-found basis bloodlines.ts/bloodrager-
         // bloodlines.ts already apply to the Abyssal/Celestial/Infernal
@@ -2017,9 +2017,9 @@ const BLOODRAGER_BLOODLINE_LIST: BloodragerBloodlineDef[] = [
         // RAW gives no explicit "while bloodraging" restriction for this
         // capstone and no "constantly, even while not bloodraging"
         // boilerplate either (unlike every other bloodline's capstone in
-        // this batch) — judged unconditional on the same no-qualifier-found
-        // basis as Strength of Shadows above; flagged in the report as the
-        // shakiest call in this batch. The Strength-damage rider has no
+        // this group) — judged unconditional on the same no-qualifier-found
+        // basis as Strength of Shadows above; flagged as the shakiest call in
+        // this group. The Strength-damage rider has no
         // matching Change target (no "extra ability damage dealt on a hit"
         // target exists) and stays a contextNote regardless.
         changes: [c("1", "sensesid", "untyped", "set")],
@@ -2449,12 +2449,12 @@ export function bloodragerBloodlineVariantLabel(
  * `RefData.bloodragerBloodlines` is the FULL published catalog (24 entries
  * after junk filtering), prose only — same "catalog from data, mechanics as
  * overlay" pattern as `rage-powers.ts`'s `mergedRagePowerCatalog`. The
- * hand-verified table above (now the whole published catalog) stays
+ * hand-verified table above (the whole published catalog) stays
  * authoritative for powers/bonus feats/bonus spells; this section attaches
  * each vendored entry's prose description and sources for browsing.
  *
  * Matching is by NORMALIZED NAME (this table's `tag` doubles as its display
- * `name`). Collision audit: every hand-authored bloodline matches a
+ * `name`). Collision check: every hand-authored bloodline matches a
  * vendored entry by normalized name — no aliasing needed. The vendored-only
  * fallback path below is retained for future data bumps that add bloodlines
  * before a hand entry exists.

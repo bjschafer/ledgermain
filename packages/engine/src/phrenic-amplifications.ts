@@ -1,10 +1,7 @@
 /**
- * Clean-room PF1 psychic Phrenic Amplification table (Occult Adventures,
- * follow-through — `psychic-disciplines.ts` shipped bonus spells/phrenic pool
- * ability and explicitly deferred amplifications as "prose-heavy, genuinely
- * choice-bearing content"), hand-authored from the published rules (verified
- * against aonprd.com's Phrenic Amplifications index and each entry's own page,
- * 2026-07-08).
+ * Clean-room PF1 psychic Phrenic Amplification table (Occult Adventures):
+ * hand-authored from the published rules (verified against aonprd.com's
+ * Phrenic Amplifications index and each entry's own page).
  *
  * Cadence (PF1 OA RAW, "Phrenic Amplification": gained at 1st level, then
  * "at 3rd level, and every 4 levels thereafter" — verified against
@@ -26,10 +23,10 @@
  * splatbooks), this list mixes Occult Adventures core (pg. 60-64) with a
  * handful of Pathfinder Player Companion entries (Heroes of Golarion, Occult
  * Origins) — there is no OA-core-only subset large enough to usefully separate
- * (only 12 of the 22 basic amplifications are OA-core proper), and the task
- * brief's own worked example explicitly names a Player-Companion-sourced entry
- * (Biokinetic Healing, Occult Origins pg. 16) alongside OA-core ones — so this
- * table takes the full union rather than fragmenting by source book.
+ * (only 12 of the 22 basic amplifications are OA-core proper), and
+ * Biokinetic Healing (Occult Origins pg. 16) is a Player-Companion-sourced
+ * entry alongside OA-core ones — so this table takes the full union rather
+ * than fragmenting by source book.
  *
  * Modelling posture (mirrors witch-hexes.ts/oracle-revelations.ts's honesty
  * bar): every amplification is a spend-points, CAST-TIME RIDER applied to a
@@ -39,7 +36,7 @@
  * persistent Change the stacking engine could safely apply. So EVERY entry
  * here is `displayOnly: true` with `changes: []`; the pool-point cost is
  * carried inline in `costLabel` and repeated in the summary, same "pool-cost
- * honesty line" posture the task brief calls for.
+ * honesty line" posture as the rest of the catalog work.
  */
 
 import type { Change, PhrenicAmplification, RefData, SourceRef } from "@pf1/schema";
@@ -322,11 +319,11 @@ export function amplificationsForTier(tier: PhrenicAmplificationTier): PhrenicAm
  * mirroring `rage-powers.ts`'s `mergedRagePowerCatalog`/`resolveRagePower`
  * exactly.
  *
- * Collision audit: ALL 31 hand-authored entries matched a vendored entry by
+ * Collision check: ALL 31 hand-authored entries matched a vendored entry by
  * normalized name — a clean 1:1 match (including "Space-Rending Spell" vs.
  * the source's "Space-rending Spell", a case-only difference the normalizer
  * already ignores) — zero orphans, zero vendored-only entries, zero aliases
- * needed. The only subsystem in this wave where that's true.
+ * needed.
  */
 
 const PHRENIC_AMPLIFICATION_NAME_ALIASES: Record<string, string> = {};
@@ -383,7 +380,7 @@ export function resolvePhrenicAmplification(
   return vendored ? vendoredToDef(vendored) : undefined;
 }
 
-/** The full picker-browsable catalog — mirrors `mergedRagePowerCatalog`. Never actually produces a vendored-only row today (see file doc comment's collision audit) — kept for the shared picker convention and future-proofing against a later vendored-source update. */
+/** The full picker-browsable catalog — mirrors `mergedRagePowerCatalog`. Never actually produces a vendored-only row today (see file doc comment's collision check) — kept for the shared picker convention and future-proofing against a later vendored-source update. */
 export function mergedPhrenicAmplificationCatalog(
   refData: RefData,
 ): MergedPhrenicAmplificationEntry[] {

@@ -11,11 +11,11 @@ import {
 } from "../src/index.js";
 
 /**
- * Psychic disciplines (Occult Adventures, issue: 17-class expansion follow-up
- * wave) — hand-authored table validation against the real vendored data slice
- * plus the Phrenic Pool resource derivation, mirroring
- * `oracleMysteryCurse.test.ts` / `sorcererBloodline.test.ts`'s patterns.
- * Lookups are scoped by classTag (never bare name).
+ * Psychic disciplines (Occult Adventures) — hand-authored table validation
+ * against the real vendored data slice plus the Phrenic Pool resource
+ * derivation, mirroring `oracleMysteryCurse.test.ts` /
+ * `sorcererBloodline.test.ts`'s patterns. Lookups are scoped by classTag
+ * (never bare name).
  */
 const ref = loadRefData();
 
@@ -237,7 +237,7 @@ describe("Discipline Powers grant collection (issue #65 follow-through)", () => 
 });
 
 /**
- * Promotion audit (2026-07-29): the handful of Discipline Powers that are
+ * Promotion check: the handful of Discipline Powers that are
  * genuinely unconditional and always-on once gained, verified against
  * aonprd.com's individual discipline pages and hand-computed here the same
  * way `sorcererBloodline.test.ts` / `bloodragerBloodline.test.ts` verify
@@ -391,10 +391,10 @@ describe("promoted discipline power: Self-Perfection's AC Bonus (1st)", () => {
 });
 
 /**
- * Splatbook disciplines (later Occult Adventures-adjacent books, verified
- * 2026-08-07): the same fixture coverage as the core-12 promotion audit
- * above, spot-checking bonus spell cadence, phrenic pool ability resolution,
- * and the two promoted (unconditional, always-on) powers this batch adds.
+ * Splatbook disciplines (later Occult Adventures-adjacent books): the same
+ * fixture coverage as the core-12 promotions above, spot-checking bonus spell
+ * cadence, phrenic pool ability resolution, and the two promoted
+ * (unconditional, always-on) powers.
  */
 describe("splatbook discipline: bonus spells and phrenic pool ability", () => {
   it("Bleaching (Wisdom): 1st-level bonus spell is Decrepit Disguise, 18th is Energy Drain", () => {

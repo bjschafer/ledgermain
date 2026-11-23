@@ -1,5 +1,5 @@
 /**
- * Structural guards for the vendored-racial-trait classification audit
+ * Structural guards for the vendored-racial-trait classification
  * (`src/racial-trait-classification/`): every verdict must still describe a
  * real vendored entry (a refdata bump that rekeys or renames fails loudly,
  * same posture as the data-pipeline supplement guards), shards must not

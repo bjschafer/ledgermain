@@ -1,5 +1,5 @@
 /**
- * Kineticist's slice of the pipeline (2026-08-08). Kineticist carries the
+ * Kineticist's slice of the pipeline. Kineticist carries the
  * deepest bespoke engine support of any class in this repo — kinetic blasts
  * (`kinetic-blast.ts`), form/substance infusions and their burn/DC math
  * (`kineticist-infusions.ts`, `INFUSION_BLAST_EFFECTS`), elemental defense's
@@ -17,9 +17,9 @@
  * naming the specific file/function that would need a hook. This is by far
  * the largest blocked category in this file, and is expected: it is exactly
  * the surface the class's bespoke support was built for, not a gap in this
- * pass's effort.
+ * classification.
  *
- * ── Kineticist-specific mechanical facts this pass relies on ──────────────
+ * ── Kineticist-specific mechanical facts this classification relies on ────
  *
  * 1. **Wild talents are a modeled pick-list** (`kineticist-wild-talents.ts`,
  *    `INFUSION_BLAST_EFFECTS`). A feature that merely GRANTS or SWAPS a known
@@ -757,11 +757,11 @@ export const KINETICIST_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
  * This table is deliberately SEPARATE from `archetype-effects.ts`'s
  * `ARCHETYPE_FEATURE_EFFECTS` (the hand-verified table) — every entry here
  * additionally carries `confidence`/`provenance` so a reviewer (or the UI)
- * can never confuse "a human read the rulebook and checked this" with "an
- * extraction pass inferred this from prose." Only 5 of kineticist's 86
+ * can never confuse "a human read the rulebook and checked this" with "a
+ * machine inferred this from prose." Only 5 of kineticist's 86
  * features cleared the `numeric` bar (see
  * `KINETICIST_ARCHETYPE_FEATURE_CLASSIFICATION` above for the full
- * per-feature audit) — two of the five are partial extractions of a
+ * per-feature classification) — two of the five are partial extractions of a
  * multi-clause feature, with the unextractable clause dropped and noted
  * rather than guessed at.
  *
@@ -773,7 +773,7 @@ export const KINETICIST_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
  *    several immunities with no matching closed-vocabulary slug) while
  *    keeping the clause that DOES clear the bar — partial honesty, flagged
  *    in `detail`/the classification note.
- *  - "low": not used in this pass.
+ *  - "low": not used here.
  */
 export const KINETICIST_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
   Record<string, ExtractedArchetypeFeatureEffect>

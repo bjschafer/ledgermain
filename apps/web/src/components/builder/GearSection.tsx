@@ -99,7 +99,7 @@ function PartialBadge({ changes }: { changes: readonly Change[] }) {
 
 /**
  * The `badge-modeled` "M" every other picker uses, here marking an item whose
- * `changes[]` the sheet actually applies. It earns its place now that the
+ * `changes[]` the sheet actually applies. It earns its place because the
  * picker browses the full published catalog: most of that catalog is imported
  * display-only, so without the badge there's nothing to distinguish a Cloak of
  * Resistance the sheet adds up from a Deck of Many Things it merely lists.

@@ -12,29 +12,24 @@ import { isTargetApplied } from "../src/targets.js";
 /**
  * The summonerUnchained slice of the prose->Change extraction pipeline.
  *
- * TEST APPROACH: this class's aggregator wiring (`archetype-extracted/
- * index.ts`) is a later integration step this pass doesn't touch, so
- * `resolveArchetypeFeatureEffect`/`compute` do NOT pick up this file's
- * tables yet through the normal production path. These fixtures assert
- * directly against the exported tables and verify
+ * These fixtures assert directly against the exported tables and verify
  * `resolveArchetypeFeatureEffect` behaves correctly when explicitly given
  * this file's tables as its override arguments. `loadRefData` sanity-checks
  * that every id this file references actually exists in the real vendored
  * data slice.
  *
- * Unlike the magus/barbarianUnchained waves, this class's extracted-effects
- * table is EMPTY (see that file's doc comment): none of the 17 vendored
- * features clears the `numeric` bar — every one lands on the eidolon (an
- * unhooked derived-creature subsystem), the summon monster/gate SLA, or a
- * cross-class subsystem grant, and `archetype-effects.ts` (the hand-verified
- * table) carries zero `summonerUnchained:` keys, so there is no numeric
- * coverage to defer to either. There are therefore no formula fixtures to
+ * This class's extracted-effects table is EMPTY (see that file's doc comment):
+ * none of the 17 vendored features clears the `numeric` bar — every one lands
+ * on the eidolon (an unhooked derived-creature subsystem), the summon
+ * monster/gate SLA, or a cross-class subsystem grant, and `archetype-effects.ts`
+ * (the hand-verified table) carries zero `summonerUnchained:` keys, so there is
+ * no numeric coverage there either. There are therefore no formula fixtures to
  * evaluate; the provenance/applied-target loops below run over the (empty)
  * table anyway so they immediately guard any future entry added to it.
  */
 const ref = loadRefData();
 
-/** Mirror of the sweep's HTML-to-text strip, for re-verifying provenance quotes. */
+/** Mirror of the extraction's HTML-to-text strip, for re-verifying provenance quotes. */
 function stripHtml(html: string): string {
   return html
     .replace(/<br\s*\/?>/g, "\n")
@@ -80,7 +75,7 @@ describe("SUMMONER_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION: coverage", () => 
     expect(classified).toEqual(vendored);
   });
 
-  it("bucket counts match the audited totals (0 numeric / 1 situational / 16 subsystem / 0 blocked)", () => {
+  it("bucket counts match the classified totals (0 numeric / 1 situational / 16 subsystem / 0 blocked)", () => {
     const counts: Record<string, number> = { numeric: 0, situational: 0, subsystem: 0, blocked: 0 };
     for (const entry of Object.values(SUMMONER_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION)) {
       counts[entry.bucket] = (counts[entry.bucket] ?? 0) + 1;

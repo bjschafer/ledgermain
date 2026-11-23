@@ -21,13 +21,13 @@
  * A feat classified "situational" in `feat-classification.ts` is a CANDIDATE
  * here, not a disqualification: most were classified that way precisely
  * because the bonus applies only against a kind of effect, which is the gap
- * `Change.saveCategories` exists to close. Those classification tables are an
- * audit record of what was read, not a live gate, and are left alone.
+ * `Change.saveCategories` exists to close. Those classification tables record
+ * what was read; they are not a live gate and are left alone.
  *
  * Clean-room from each feat's vendored `description` text and the published
  * PF1 rules — no Foundry source consulted, matching `feat-effects.ts`.
  *
- * Deliberately NOT promoted, and why (the description-text sweep surfaced 157
+ * Deliberately NOT promoted, and why (a description-text scan surfaced 157
  * candidates; most fail one of these):
  * - Scoped to a property of the ATTACKER rather than the effect, which the
  *   vocabulary has no axis for: Vengeful Banisher ("spells or effects
