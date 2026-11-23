@@ -1,5 +1,5 @@
 /**
- * Clean-room PF1 oracle revelation table (DESIGN §6): hand-authored from the
+ * Clean-room PF1 oracle revelation table: hand-authored from the
  * published Advanced Player's Guide rules (verified against public SRD
  * text/AoN), mirroring `arcanist-exploits.ts`'s posture. As
  * `oracle-mysteries.ts`'s doc comment already notes, revelations (unlike a

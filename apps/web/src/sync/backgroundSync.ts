@@ -40,8 +40,8 @@ export interface OpenSyncResult {
 }
 
 /**
- * A full reconcile pass: DESIGN.md §2.1's "each device pulls the latest on
- * open", also re-run whenever the app regains focus or connectivity so a tab
+ * A full reconcile pass: each device pulls the latest on open, and this also
+ * re-runs whenever the app regains focus or connectivity so a tab
  * left open for days catches up, and so edits a failed push left behind go
  * out. Never await this before rendering the UI (the app must stay fully
  * usable offline/before this resolves).
@@ -132,7 +132,7 @@ export type PushOutcome =
   | { kind: "error"; message: string };
 
 /**
- * DESIGN §2.1's "and pushes on change" half — call after every local save.
+ * The push-on-change half: call after every local save.
  * Never throws: a flaky connection, a stale-version 409, and a rejected
  * session all resolve to a `PushOutcome` for the caller to inspect, rather
  * than bubbling into the doc-editing path. This is what makes sync genuinely

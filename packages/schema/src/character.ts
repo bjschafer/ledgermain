@@ -54,14 +54,12 @@ export interface HomebrewClassFeature extends ClassFeature {
 
 /**
  * The character document is the single source of truth: it holds build choices
- * and live session state, but NEVER derived values. Fleshed out in Stage 2 to
- * the extent the rules engine needs as input; the builder (Stage 3) will add the
- * remaining choice/option detail. Mirrors DESIGN.md §3.1.
+ * and live session state, but NEVER derived values.
  */
 export interface CharacterDoc {
   schemaVersion: number;
   id: string;
-  /** sync (DESIGN §2.1): whose document this is. Set in Stage 5. */
+  /** sync: whose document this is. */
   ownerId: string;
   /** sync: optimistic-concurrency counter, bumped on each save. */
   version: number;
@@ -455,7 +453,7 @@ export interface CharacterDoc {
      * Back-compat: documents without this field show no bonus languages.
      */
     bonusLanguages?: string[];
-    /** Bonus-feat picks, etc. — typed in Stage 3. */
+    /** Bonus-feat picks, etc. */
     classFeatureChoices: unknown[];
     /**
      * Spells the character *knows*. For a prepared caster (wizard) this is the
@@ -1474,7 +1472,7 @@ export interface CharacterDoc {
      */
     castingAdvancement?: Record<string, (string | null)[]>;
     /**
-     * User-authored homebrew reference entities. The Stage 5 server is a
+     * User-authored homebrew reference entities. The server is a
      * dumb blob store, so homebrew content lives inside the doc itself
      * rather than a separate store: it travels for free through
      * sync/export/import with zero server changes, and an optional field
@@ -1531,7 +1529,7 @@ export interface CharacterDoc {
      * re-activation would inherit a stale countdown.
      */
     conditionRounds?: Record<string, number>;
-    /** Active buffs with remaining duration + the changes they apply (Stage 4). */
+    /** Active buffs with remaining duration + the changes they apply. */
     activeBuffs: ActiveBuff[];
     /**
      * The combat round the table is currently on — a passive clock, not an
@@ -2755,8 +2753,8 @@ export type SavedRollSource =
  * A buff currently affecting the character at the table. It carries its own
  * `changes` (a snapshot of the source buff's typed modifiers, or user-authored
  * ones), so the document is self-contained and the engine can evaluate it without
- * re-reading `RefData`. Mirrors DESIGN.md §3.1's `{ sourceId, remainingRounds,
- * changes }` sketch, with display + caster-level context for formula evaluation.
+ * re-reading `RefData`. Mirrors the live-state shape `{ sourceId, remainingRounds,
+ * changes }`, with display + caster-level context for formula evaluation.
  */
 export interface ActiveBuff {
   /** Unique instance id (multiple copies of the same buff can coexist). */

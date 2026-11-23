@@ -12,8 +12,8 @@ export function collectArchetypeFeatureEffects(ctx: CollectContext): void {
   const { doc, refData, rollData, out } = ctx;
   // Hand-authored numeric effects for the small slice of archetype features
   // that grant an unconditional bonus (see `archetype-effects.ts`'s doc
-  // comment for the audit/scope rationale), extended by the machine-extracted
-  // table (`archetype-effects-extracted.ts`, the fighter pilot) —
+  // comment for the scope rationale), extended by the machine-extracted
+  // table (`archetype-effects-extracted.ts`, the fighter table) —
   // `resolveArchetypeFeatureEffect` checks the hand-verified table first, so
   // an id present in both is never double-applied. Gated the same way base
   // class features are: the granting class's level must reach the feature's

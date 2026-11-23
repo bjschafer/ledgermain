@@ -15,8 +15,8 @@
  *     doubled.
  *
  * Dice counts stay display strings — the formula DSL cannot evaluate a dice
- * term (engine cookbook §2.2), and this engine never rolls. Only the numeric
- * addends land in `damageBonus`.
+ * term, and this engine never rolls. Only the numeric addends land in
+ * `damageBonus`.
  *
  * Blasts are weapon-LIKE, not weapons ("Kinetic blasts count as a type of
  * weapon for the purpose of feats such as Weapon Focus"), so these lines pull

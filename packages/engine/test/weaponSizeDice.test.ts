@@ -13,10 +13,9 @@
  * doc comment in `compute.ts` for how that's applied per size category.
  *
  * Enlarge Person, Reduce Person, and an active polymorph form all change
- * effective size but previously left `ResolvedWeaponAttack.damageDice`
- * untouched — this only rewrites the DISPLAYED dice string; the numeric
- * `damageBonus.total` never contained a dice term to begin with (formula.ts
- * can't evaluate one — see the engine cookbook §2.2).
+ * effective size, so this rewrites the DISPLAYED dice string; the numeric
+ * `damageBonus.total` never contains a dice term (formula.ts can't evaluate
+ * one).
  */
 
 import { describe, expect, it } from "bun:test";

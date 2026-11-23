@@ -142,7 +142,7 @@ export function buildRollData(
     // `@class` is the "current class" context; defaults to the whole character
     // and is overridden per class-feature when its changes are evaluated.
     class: { level, unlevel: level },
-    // Caster level (single-class assumption for Stage 2) — `maxCasterLevel`
+    // Caster level (single-class assumption) — `maxCasterLevel`
     // applies the paladin/ranger/antipaladin `-3` offset (via
     // `casterLevelForRollData` above) so e.g. Divine Favor's
     // `min(3, floor(@cl/3))` reads a paladin 9's CL as 6, not her raw class

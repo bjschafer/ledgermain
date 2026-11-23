@@ -4,7 +4,7 @@
  * evaluating each change's formula to a number against the roll-data context.
  * Dice-bearing change formulas (none target static stats in the slice) are
  * skipped. Buffs and conditions flow through the same evaluator + stacker as
- * passive changes (Stage 4).
+ * passive changes.
  *
  * The work itself lives one subsystem per function under `collect/`; this file
  * only builds the shared context and runs them in order. Adding a subsystem

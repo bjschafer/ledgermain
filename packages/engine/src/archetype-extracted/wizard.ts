@@ -12,11 +12,10 @@
  *
  * ── WIZARD_ARCHETYPE_FEATURE_CLASSIFICATION ───────────────────────────────
  *
- * Classification audit for the wizard slice: EVERY feature of EVERY vendored
- * wizard archetype (31 archetypes, 108 features), read in full (not
- * heuristic-sampled — small enough class to read exhaustively) and bucketed as
- * `numeric` / `situational` / `subsystem` / `blocked`, applying the exact same
- * rubric fighter's pilot used:
+ * Classification of every feature in every vendored wizard archetype
+ * (31 archetypes, 108 features), read in full (not heuristic-sampled, since
+ * the class is small enough to read exhaustively) and bucketed as
+ * `numeric` / `situational` / `subsystem` / `blocked`:
  *
  *  - "numeric": an unconditional bonus, or one gated on a condition the
  *    engine can actually check, expressible via a real
@@ -892,10 +891,10 @@ export const WIZARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
 /**
  * ── WIZARD_ARCHETYPE_EFFECTS_EXTRACTED ────────────────────────────────────
  *
- * Machine-extracted mechanical effects for wizard archetype class features
- * (wizard slice). Clean-room from the published PF1 rules — the vendored prose
+ * Machine-extracted mechanical effects for wizard archetype class features.
+ * Clean-room from the published PF1 rules — the vendored prose
  * this was extracted from (`archetype-features.json`) is OGL, so reading it is
- * fine; no Foundry source was consulted (DESIGN.md §6).
+ * fine; no Foundry source was consulted.
  *
  * This table is deliberately SEPARATE from `archetype-effects.ts`'s
  * `ARCHETYPE_FEATURE_EFFECTS` (the hand-verified table) — every entry here

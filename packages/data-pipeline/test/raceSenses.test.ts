@@ -11,7 +11,7 @@ import { SUPPLEMENTAL_RACE_SENSES } from "../src/supplements.js";
  * from either source genuinely have no Senses racial trait rather than having
  * been forgotten.
  *
- * The second half is the audit trap: a race whose sense prose loses its
+ * The second half is the trap: a race whose sense prose loses its
  * change upstream, or one skipped by a typo, fails here instead of silently
  * showing a sightless dwarf.
  */

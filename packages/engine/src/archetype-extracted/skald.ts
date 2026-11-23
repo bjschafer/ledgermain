@@ -871,7 +871,7 @@ export const SKALD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
  * (the prose->Change extraction pipeline, skald slice). Clean-room from the
  * published PF1 rules — the vendored prose this was extracted from
  * (`archetype-features.json`) is OGL, so reading it is fine; no Foundry
- * source was consulted (DESIGN.md §6).
+ * source was consulted.
  *
  * This table is deliberately SEPARATE from any hand-verified table — every
  * entry here additionally carries `confidence`/`provenance` so a reviewer

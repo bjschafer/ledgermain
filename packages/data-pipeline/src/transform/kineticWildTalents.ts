@@ -15,7 +15,7 @@ import {
 const SKIP_KEYS = new Set(["not_found"]);
 
 /**
- * Unlike every other Phase 3 subsystem file, `class_ability_kinetic_talents
+ * Unlike every other subsystem file, `class_ability_kinetic_talents
  * .json` carries NO `category`/`level`/`compilationSources` dictionary
  * fields at all (confirmed: every catalog entry has exactly `name`/
  * `sources`/`topLink`/`description`) — the structured fields live in a

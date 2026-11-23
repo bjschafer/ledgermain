@@ -4,7 +4,7 @@
  * `settings.xpEnabled`). The carrying-capacity table, size multipliers, and
  * load-tier thresholds are hand-authored clean-room from the published PF1 CRB
  * "Table: Carrying Capacity" and "Table: Speed" (Open Game Content / Paizo
- * Community Use — see DESIGN.md §6); the load-tier gating
+ * Community Use); the load-tier gating
  * (`@attributes.encumbrance.level`) is likewise not something Foundry's own
  * system computes numerically. `carryAdjustments`'s `carryStr`/`carryMult`
  * combination rule is the one piece here cross-checked against Foundry's GPL

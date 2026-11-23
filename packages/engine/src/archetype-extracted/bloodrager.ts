@@ -577,11 +577,11 @@ export const BLOODRAGER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
  * features (the prose→Change extraction pipeline, bloodrager slice).
  * Clean-room from the published PF1 rules — the vendored prose this was
  * extracted from (`archetype-features.json`) is OGL, so reading it is fine;
- * no Foundry source was consulted (DESIGN.md §6).
+ * no Foundry source was consulted.
  *
  * Only 3 of bloodrager's 61 features cleared the `numeric` bar (see
  * `BLOODRAGER_ARCHETYPE_FEATURE_CLASSIFICATION` above for the full
- * per-feature audit) — bloodrager's kit is dominated by the deferred
+ * per-feature classification) — bloodrager's kit is dominated by the deferred
  * bloodline pick-list machinery, spells-known/spell-list edits, live
  * bloodrage-state conditions, an unmodeled natural-attack subsystem, and
  * resource-spend activated abilities, none of which clear the bar (see this

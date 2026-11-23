@@ -1,8 +1,8 @@
 /**
- * Discord OAuth login (DESIGN.md §2.1: "GitHub OAuth or email magic-link";
- * Discord was picked over GitHub because the actual target audience — TTRPG
- * players, not developers — overwhelmingly already has a Discord account,
- * while a GitHub account is a dev-tool assumption that doesn't hold broadly.
+ * Discord OAuth login. Discord was picked over GitHub because the actual
+ * target audience — TTRPG players, not developers — overwhelmingly already
+ * has a Discord account, while a GitHub account is a dev-tool assumption
+ * that doesn't hold broadly.
  * It also needs no email-sending infrastructure. The Worker never sees the
  * user's Discord password; it only exchanges an authorization `code` for an
  * access token, reads the stable numeric (snowflake) account id, and
@@ -122,8 +122,8 @@ interface DiscordUserResponse {
  *
  * Verifies the browser-nonce cookie against the KV state record (login-CSRF
  * defense — see module doc comment), exchanges `code` for a Discord access
- * token, reads the stable snowflake user id (never the mutable username —
- * DESIGN §2.1 wants a durable `ownerId`), mints a session, and redirects
+ * token, reads the stable snowflake user id (never the mutable username, so
+ * the `ownerId` stays durable), mints a session, and redirects
  * back to the app with the session token in the URL **fragment**
  * (`#session=...`), never a query string — fragments are not sent to
  * servers/proxies/Referer headers. The client-side sync module reads

@@ -159,11 +159,9 @@ interface ArchetypeStyleRule {
  * Ranger archetype id (`RefData.archetypes` key) -> how it constrains the
  * combat style pick. Hand-verified against each archetype's own vendored
  * `description` prose (see `archetype-features.json`) and, for Elemental
- * Envoy/Wave Warden, the two new archetype-exclusive `COMBAT_STYLES` entries
- * authored for the ranger-style work (`@pf1/engine` `ranger.ts`). Only archetypes present
- * in the vendored slice are listed — see the audit for the full inventory of
- * ranger archetypes that were checked but don't restrict the style pick (most
- * archetypes leave Combat Style Feat untouched).
+ * Envoy/Wave Warden, the two archetype-exclusive `COMBAT_STYLES` entries in
+ * `@pf1/engine` `ranger.ts`. Only archetypes present in the vendored slice are
+ * listed; most archetypes leave Combat Style Feat untouched.
  *
  * Not covered here: Sword-Devil's "Second Combat Style" (11th level) adds a
  * SECOND free style pick on top of the first rather than restricting the first

@@ -3,7 +3,7 @@ import { expect, test, type Page } from "@playwright/test";
 import { typeSearch } from "./search.js";
 
 /**
- * Stage 4 e2e: drive the real tracker UI and assert the gilded sheet recomputes.
+ * Tracker e2e: drive the real tracker UI and assert the gilded sheet recomputes.
  *   - toggle a condition -> a sheet stat changes (and reverts)
  *   - add a timed buff -> a sheet stat changes -> advance rounds -> it expires
  *     and the stat reverts

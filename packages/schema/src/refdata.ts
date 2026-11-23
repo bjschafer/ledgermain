@@ -386,7 +386,7 @@ export interface Class extends RefEntity {
   }[];
   /**
    * Structured entry requirements (prestige classes). Hybrid prereq model
-   * (DESIGN.md §4, mirrors `FeatPrerequisites`): the builder hard-blocks only
+   * (mirrors `FeatPrerequisites`): the builder hard-blocks only
    * on these structured signals; `prereqText` (the verbatim published
    * requirements line) is shown as a soft advisory for everything not
    * structurally captured (alignment, race, sneak-attack-die minimums,
@@ -1465,8 +1465,8 @@ export type KineticInfusionKind = "form" | "substance";
 /**
  * A published kineticist wild talent — infusion, utility talent, simple blast,
  * composite blast, or defense talent. Sourced from the "Pf Data 1e" dataset's
- * `json/class_ability_kinetic_talents.json`, the trickiest of the Phase 3b
- * imports: unlike `RagePower`/ `InvestigatorTalent`, this subsystem file
+ * `json/class_ability_kinetic_talents.json`, the trickiest of the imports:
+ * unlike `RagePower`/ `InvestigatorTalent`, this subsystem file
  * carries NO per-entry `category`/`level`/`compilationSources` dictionary
  * fields at all — every one of `kind`/`infusionKind`/`elements`/`level`/`burn`
  * below is instead parsed out of the entry's own `description` text, which

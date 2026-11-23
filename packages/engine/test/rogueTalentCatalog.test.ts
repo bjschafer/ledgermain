@@ -6,10 +6,10 @@ import { mergedRogueTalentCatalog, resolveRogueTalent, ROGUE_TALENTS } from "../
 
 /**
  * Coverage for the vendored-catalog overlay — mirrors
- * `ragePowerCatalog.test.ts`. Full hand-table parity as of the later catalog pass Phase 5
- * extension: all 234 vendored talents have a hand-authored def; see
- * `rogue-talents.ts`'s "vendored catalog overlay" doc comment for the
- * collision-audit narrative (three same-name pairs matched by vendored id).
+ * `ragePowerCatalog.test.ts`. Full hand-table parity: all 234 vendored
+ * talents have a hand-authored def; see `rogue-talents.ts`'s "vendored
+ * catalog overlay" doc comment for the collision notes (three same-name pairs
+ * matched by vendored id).
  */
 const ref = loadRefData();
 

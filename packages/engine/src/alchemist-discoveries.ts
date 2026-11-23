@@ -9,7 +9,7 @@
  * `class-features.json` carries no per-discovery entries), so there is no
  * upstream JSON to normalize.
  *
- * Scope: FULL vendored parity as of the Phase 5 extension — all 168 entries of
+ * Scope: FULL vendored parity — all 168 entries of
  * the vendored prose catalog (`RefData.alchemistDiscoveries`, the pfdata slice
  * the overlay section below merges against): the Advanced Player's Guide core
  * list, the Ultimate Magic/Ultimate Combat additions, every splatbook bomb

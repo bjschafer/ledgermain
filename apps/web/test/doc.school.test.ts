@@ -1,5 +1,5 @@
 /**
- * Unit tests for Stage 2 (wizard specialization schools) additions to
+ * Unit tests for the wizard specialization school additions to
  * model/doc.ts: `setWizardSchool`, `setWizardOppositionSchools` and
  * `setWizardOppositionElement`.
  */

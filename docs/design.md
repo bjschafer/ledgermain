@@ -1,6 +1,6 @@
 # Pathfinder 1e In-Play Tracker -- Design
 
-> Architecture decisions and rationale -- the source of truth for _why_ the code is shaped the way it is. For what the project is and how to run it, see [`README.md`](../README.md); for the package layout and commands, see [`CLAUDE.md`](../CLAUDE.md). Section numbers are cited from code comments, so they stay stable.
+> Architecture decisions and rationale -- the source of truth for _why_ the code is shaped the way it is. For what the project is and how to run it, see [`README.md`](../README.md); for the package layout and commands, see [`CLAUDE.md`](../CLAUDE.md). Code comments state their own invariants; this document may be rewritten or deleted without touching code.
 
 ## 1. What this is (and isn't)
 

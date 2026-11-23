@@ -1,5 +1,5 @@
 /**
- * Engine tests for Stage 2 HP mode enhancements:
+ * Engine tests for HP mode enhancements:
  * - average / max / rolled HP modes
  * - FCB HP counting ("hp" | "both")
  * - generic stat overrides (bounded allowlist)

@@ -6,8 +6,8 @@
  * (base stats: half master's HP, master's BAB, better-of saves/skills, the
  * master-level progression table) and the individual Bestiary "Animals"
  * entries this module's `BASE_FAMILIARS` table is drawn from (verified
- * against d20pfsrd.com during authoring; no Foundry source was consulted —
- * see DESIGN §6). Foundry's GPL system code is never used as anything but a
+ * against d20pfsrd.com during authoring; no Foundry source was consulted).
+ * Foundry's GPL system code is never used as anything but a
  * behavioral oracle in tests, per the repo's clean-room discipline.
  *
  * Familiar Basics (PF1 CRB / Bestiary "Familiars"):

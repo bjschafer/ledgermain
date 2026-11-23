@@ -1,6 +1,6 @@
 /**
  * Prestige-class entry-requirement gating (3) — the class-level counterpart to
- * `prereqs.ts`'s feat gating, same hybrid policy (DESIGN.md §4): HARD-BLOCK
+ * `prereqs.ts`'s feat gating, same hybrid policy: HARD-BLOCK
  * only on structured signals (`Class.prereqs`), NEVER on free-text prose
  * (`prereqText`, always shown as a soft advisory line). See
  * `packages/schema/src/refdata.ts`'s `Class.prereqs` doc comment for the

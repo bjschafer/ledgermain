@@ -1,11 +1,11 @@
 /**
- * Druid's slice of the pipeline (wave 2, 2026-07-06). Per the per-class file
- * convention (documented in `index.ts`), this file owns BOTH of druid's
- * pipeline artifacts — `DRUID_ARCHETYPE_FEATURE_CLASSIFICATION` (the full
- * per-feature audit) and `DRUID_ARCHETYPE_EFFECTS_EXTRACTED` (the
- * machine-extracted `Change`-shaped effects table) — so a future wave working
- * on a different class never has a reason to touch this file; only `index.ts`
- * (the aggregator) needs one new import + one new spread per class.
+ * Druid's slice of the pipeline. Per the per-class file convention (documented
+ * in `index.ts`), this file owns BOTH of druid's pipeline artifacts —
+ * `DRUID_ARCHETYPE_FEATURE_CLASSIFICATION` (the full per-feature
+ * classification) and `DRUID_ARCHETYPE_EFFECTS_EXTRACTED` (the
+ * machine-extracted `Change`-shaped effects table) — so work on a different
+ * class never has a reason to touch this file; only `index.ts` (the
+ * aggregator) needs one new import + one new spread per class.
  *
  * ── DRUID_ARCHETYPE_FEATURE_CLASSIFICATION ────────────────────────────────
  *
@@ -50,7 +50,7 @@
  *    of the Sun and Moon / Timeless Body) is a safe full swap, not the
  *    atomic-partial-tier trap "blocked" exists for.
  *  - "blocked": none found. Every druid archetype swap against druid's base
- *    kit (see the audit note above) is either a full single-feature
+ *    kit (see the note above) is either a full single-feature
  *    replacement (safe, whether or not the vendored data pairs it) or
  *    targets a base feature that itself carries no vendored `Change` — there
  *    is no "unpaired PARTIAL replacement of a multi-tier atomic `Change`"
@@ -125,10 +125,10 @@
  *
  * ── DRUID_ARCHETYPE_EFFECTS_EXTRACTED ──────────────────────────────────────
  *
- * Machine-extracted mechanical effects for druid archetype class features
- * (wave 2). Clean-room from the published PF1 rules — the vendored prose this
- * was extracted from (`archetype-features.json`) is OGL, so reading it is
- * fine; no Foundry source was consulted (DESIGN.md §6).
+ * Machine-extracted mechanical effects for druid archetype class features.
+ * Clean-room from the published PF1 rules — the vendored prose this was
+ * extracted from (`archetype-features.json`) is OGL, so reading it is
+ * fine; no Foundry source was consulted.
  *
  * This table is deliberately SEPARATE from `archetype-effects.ts`'s
  * `ARCHETYPE_FEATURE_EFFECTS` (the hand-verified table) — every entry here

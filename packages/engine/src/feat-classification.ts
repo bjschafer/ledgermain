@@ -1,15 +1,14 @@
 /**
- * Full classification audit for the feat batch-extraction pass: every one of
- * the 390 feats the Foundry PF1 *system* pack shipped at the time of the
- * audit, bucketed and reasoned, mirroring the archetype-extracted/ pipeline's
- * convention (see `archetype-extracted/index.ts`).
+ * Full classification of the feat batch-extraction pass: every one of the
+ * 390 feats the Foundry PF1 *system* pack shipped, bucketed and reasoned,
+ * mirroring the archetype-extracted/ pipeline's convention (see
+ * `archetype-extracted/index.ts`).
  *
- * `packages/data-pipeline/data/feats.json` now also carries ~3,150 feats
+ * `packages/data-pipeline/data/feats.json` also carries ~3,150 feats
  * merged in from the community `pf1-content` module (see config.ts's
- * `PF_CONTENT_REPO`) — this audit was not redone against that much larger set
- * and doesn't claim to cover it. Extending it would mean individually reading
- * and cross-checking thousands more feats against the published rules, which
- * is out of scope for the data-source merge that added them; an unclassified
+ * `PF_CONTENT_REPO`); this classification covers only the 390 system-pack
+ * feats. Extending it would mean individually reading and cross-checking
+ * thousands more feats against the published rules; an unclassified
  * community feat simply isn't wired into FEAT_EFFECTS/FEAT_POOL_EFFECTS/
  * SITUATIONAL_FEAT_EFFECTS yet; it still displays (name, description,
  * prerequisites) — it just contributes no engine-derived number, same

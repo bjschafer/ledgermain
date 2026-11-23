@@ -12,11 +12,10 @@
  *
  * ── FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION ──────────────────────────────
  *
- * Classification audit for the pilot slice: EVERY feature of EVERY vendored
- * fighter archetype (66 archetypes, 378 features), read and bucketed as
- * `numeric` / `situational` / `subsystem` / `blocked` — the reviewable
- * artifact the pipeline produces alongside the extracted-effects table, and
- * the input a future wave (other classes) mechanically repeats.
+ * Classification of every feature in every vendored fighter archetype
+ * (66 archetypes, 378 features), bucketed as `numeric` / `situational` /
+ * `subsystem` / `blocked`. This is the reviewable artifact the pipeline
+ * produces alongside the extracted-effects table.
  *
  * Bucket definitions (the rubric this was applied against):
  *  - "numeric": an unconditional (or armor-state-gated, matching the
@@ -2978,7 +2977,7 @@ export const FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
  * the weapon-group reclassification described above). Clean-room from the
  * published PF1 rules — the vendored prose this was extracted from
  * (`archetype-features.json`) is OGL, so reading it is fine; no Foundry source
- * was consulted (DESIGN.md §6).
+ * was consulted.
  *
  * This table is deliberately SEPARATE from `archetype-effects.ts`'s
  * `ARCHETYPE_FEATURE_EFFECTS` (the hand-verified table) — every entry here

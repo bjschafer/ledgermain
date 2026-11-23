@@ -1,5 +1,5 @@
 /**
- * Clean-room PF1 conditions table (DESIGN §6): each condition maps to the typed
+ * Clean-room PF1 conditions table: each condition maps to the typed
  * modifiers (`Change[]`) it imposes, so toggling one feeds the same stacking
  * engine as buffs. This is a *core set* of the mechanically-relevant conditions,
  * authored from the published rules — NOT a transcription of Foundry's config.

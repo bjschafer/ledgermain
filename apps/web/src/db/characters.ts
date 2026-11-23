@@ -1,10 +1,10 @@
 /**
  * Local persistence for character documents via Dexie (IndexedDB). Online-first
- * but local-only for Stage 3; this sets up Stage 5 cross-device sync (the doc
- * already carries `ownerId`/`version`/`updatedAt`). No server here.
+ * but local-only; the doc already carries `ownerId`/`version`/`updatedAt` for
+ * cross-device sync. No server here.
  *
- * `save()` bumps the optimistic-concurrency `version` and `updatedAt` so Stage 5
- * can reject stale writes without changing the storage shape.
+ * `save()` bumps the optimistic-concurrency `version` and `updatedAt` so the
+ * server can reject stale writes without changing the storage shape.
  */
 import Dexie, { type Table } from "dexie";
 
@@ -159,7 +159,7 @@ export async function charactersToMove(): Promise<CharacterDoc[]> {
 
 /**
  * Envelope-only `{ id, version, syncedVersion }` for every locally-stored
- * character (Stage 5 sync — `src/sync/backgroundSync.ts`'s open-sync pass
+ * character (sync — `src/sync/backgroundSync.ts`'s open-sync pass
  * compares these against the server's list without needing to read/parse
  * every full document).
  */

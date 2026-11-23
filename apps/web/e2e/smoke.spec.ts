@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 
 /**
- * Stage 3 smoke: proves the app actually renders in a real browser and that
+ * Smoke: proves the app actually renders in a real browser and that
  * RefData is fetched + parsed client-side (the slice unit tests + `vite build`
  * can't cover). The sheet's "Armor Class" seal only renders a computed value
  * once `store.status === "ready"` (doc + sheet + RefData all loaded — see

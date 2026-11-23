@@ -789,7 +789,7 @@ export const MESMERIST_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
  * features (the prose→Change extraction pipeline, mesmerist slice).
  * Clean-room from the published PF1 rules — the vendored prose this was
  * extracted from (`archetype-features.json`) is OGL, so reading it is fine;
- * no Foundry source was consulted (DESIGN.md §6).
+ * no Foundry source was consulted.
  *
  * This table is deliberately SEPARATE from `archetype-effects.ts`'s
  * `ARCHETYPE_FEATURE_EFFECTS` (the hand-verified table) — every entry here

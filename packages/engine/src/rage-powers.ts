@@ -3234,17 +3234,9 @@ export function ragePowersForEdition(edition: RagePowerEdition): RagePowerDef[] 
  * power the vendored catalog describes under a possibly-differently-cased
  * name.
  *
- * Collision audit (all 29 original hand-authored entries, run against the
- * pinned Pf Data 1e slice): every one matched a vendored entry by normalized
- * name, so no `NAME_ALIASES` entry is needed — the source's own
- * spelling/wording matched ours exactly (case-insensitively). (The former 30th
- * entry, Sixth Sense, matched nothing under any key — one of the tells it
- * wasn't real; see the file doc comment.) The batch-1 (A-F) sweep re-ran this
- * same audit for its 70 additions, batch 2 (G-R) for its 106, and batch 3
- * (S-Z) for its final 38 — all three batches: zero collisions, zero aliases
- * needed. FINAL STATE (full parity): all 243 hand-authored entries matched a
- * vendored entry by normalized name; `RAGE_POWER_NAME_ALIASES` stays empty
- * across the entire table.
+ * Collision check against the pinned Pf Data 1e slice: all 243 hand-authored
+ * entries match a vendored entry by normalized name, so
+ * `RAGE_POWER_NAME_ALIASES` stays empty across the entire table.
  *
  * One name COLLIDES within the vendored catalog itself: "Guarded Stance"
  * appears twice — the Core Rulebook original (`guarded_stance`, no

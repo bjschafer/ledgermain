@@ -1,5 +1,5 @@
 /**
- * Clean-room PF1 psychic discipline table (Occult Adventures, DESIGN §6):
+ * Clean-room PF1 psychic discipline table (Occult Adventures):
  * hand-authored, mirroring `oracle-mysteries.ts`'s posture exactly — a
  * discipline's BONUS SPELLS and PHRENIC POOL ABILITY are the only parts of
  * "Psychic Discipline" that are structured/tabular upstream; DISCIPLINE
@@ -7,7 +7,7 @@
  * AMPLIFICATIONS (the psychic's own menu of choosable spell-modifying
  * powers, picked at 1st, 3rd, and every 4 levels thereafter) are
  * prose-heavy, genuinely choice-bearing content — out of scope, same as
- * Oracle Revelations / Arcanist Exploits were at those classes' launches.
+ * Oracle Revelations / Arcanist Exploits.
  *
  * Scope: all 23 published psychic disciplines, both the 12 core Occult
  * Adventures ones (Abomination, Dream, Enlightenment, Faith, Ferocity,

@@ -9,7 +9,7 @@
  * Provenance is preserved: every input modifier appears in the result with an
  * `applied` flag (false = overridden by a higher same-type bonus), so the UI can
  * strike out the loser. Reimplemented from the rules; Foundry's apply-changes is
- * used only as a behavioural oracle in tests (DESIGN §6).
+ * used only as a behavioural oracle in tests.
  */
 
 import type { ModifierComponent } from "@pf1/schema";

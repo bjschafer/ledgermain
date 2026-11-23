@@ -2,7 +2,7 @@
  * The single React binding between the pure model, the engine, and persistence.
  * Components stay thin: they read `doc`/`sheet` and call `update(fn)` with a pure
  * transition from `model/doc`. `compute()` is pure and cheap, so the derived
- * sheet is recomputed on every document change (DESIGN.md §3.2 / Stage 2 notes).
+ * sheet is recomputed on every document change.
  */
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
@@ -162,9 +162,9 @@ export interface CharacterStore {
   /** Delete a single saved character; another (or a fresh blank one) becomes active. */
   deleteCharacter: (id: string) => Promise<void>;
   /**
-   * Stage 5 background sync status (DESIGN.md §2.1). `"disabled"` when
-   * `VITE_API_URL` isn't configured — sync never makes a network call in
-   * that case, matching this app's pre-Stage-5 behavior exactly.
+   * Background sync status. `"disabled"` when `VITE_API_URL` isn't configured
+   * — sync never makes a network call in that case, matching local-only
+   * behavior exactly.
    */
   syncStatus: SyncStatus;
   /** Redirect to Discord OAuth login. No-op if sync is disabled. */
@@ -176,8 +176,7 @@ export interface CharacterStore {
    * "conflict"`): `"reload"` discards local edits and adopts the server's
    * copy; `"overwrite"` keeps local edits and force-pushes past the
    * server's version; `"keep-both"` adopts the server's copy and saves the
-   * local edits as a separate character. Matches DESIGN §2.1's "prompts...
-   * reload?" — this never auto-picks a side.
+   * local edits as a separate character. This never auto-picks a side.
    */
   resolveConflict: (action: ConflictResolution) => Promise<void>;
 }
@@ -351,7 +350,7 @@ export function useCharacter(): CharacterStore {
     }
   }, []);
 
-  // --- Stage 5 sync (DESIGN.md §2.1) ---------------------------------------
+  // --- Sync ---------------------------------------------------------------
   // Everything below is best-effort and never on the editing path: a flaky
   // connection, a conflict, or an expired session only ever change
   // `syncStatus`, never block or fail a local edit.
@@ -492,10 +491,10 @@ export function useCharacter(): CharacterStore {
     ],
   );
 
-  // Open-sync (DESIGN.md §2.1: "each device pulls the latest on open"). Runs
-  // once, after the initial local load, and never blocks rendering — the app
-  // is fully usable the moment `status` is "ready" regardless of how long (or
-  // whether) this resolves.
+  // Open-sync: each device pulls the latest on open. Runs once, after the
+  // initial local load, and never blocks rendering — the app is fully usable
+  // the moment `status` is "ready" regardless of how long (or whether) this
+  // resolves.
   const openSyncRanRef = useRef(false);
   useEffect(() => {
     if (status !== "ready" || openSyncRanRef.current) return;
@@ -527,9 +526,9 @@ export function useCharacter(): CharacterStore {
     };
   }, [status, runSyncPass]);
 
-  // Push-on-change (DESIGN.md §2.1: "...and pushes on change").
-  // `pendingUserEditRef` is set by `update()` immediately before the `doc`
-  // change that triggers this effect, and consumed (read + cleared) here —
+  // Push-on-change: every local edit is pushed. `pendingUserEditRef` is set by
+  // `update()` immediately before the `doc` change that triggers this effect,
+  // and consumed (read + cleared) here —
   // this is what distinguishes "the user actually edited something" from
   // every *other* reason `doc` can change (switching/importing/resetting a
   // character, the HP-autofill effect below, the initial load itself), none
@@ -570,7 +569,7 @@ export function useCharacter(): CharacterStore {
       if (!prev) return prev;
       const next = fn(prev);
       // Every call here is a genuine local edit (a UI-triggered model
-      // transition) — bump the sync version so Stage 5's optimistic-
+      // transition) — bump the sync version so the optimistic-
       // concurrency push/pull (src/sync/) has a monotonic counter to compare
       // against. Skip the bump when the transition itself signals "no
       // change" via reference equality (the established `return doc;` guard

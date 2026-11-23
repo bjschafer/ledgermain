@@ -7,7 +7,7 @@
  * `ClassFeature`, no per-talent breakdown), so there is no upstream JSON to
  * normalize.
  *
- * Scope: FULL vendored parity as of the Phase 5 extension — all 234 vendored
+ * Scope: FULL vendored parity — all 234 vendored
  * talents (regular + advanced, chained + Unchained lists, the catfolk-only
  * group, and the "(Unchained Rogue)" revised variants). SHARED between the
  * chained rogue and Rogue (Unchained) (`build.rogueTalents` — both classes

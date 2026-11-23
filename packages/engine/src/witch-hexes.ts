@@ -8,7 +8,7 @@
  * breakdown — confirmed: `class-features.json` carries no per-hex entries), so
  * there is no upstream JSON to normalize.
  *
- * Scope: FULL vendored parity as of the Phase 5 extension — all 104 vendored
+ * Scope: FULL vendored parity — all 104 vendored
  * hexes (60 regular from 1st level, 31 major from 10th, 13 grand from 18th),
  * the APG core set plus every splatbook addition the pinned data carries
  * (Ultimate Magic, Heroes of Golarion, Healer's Handbook, Champions of Purity,
@@ -1065,10 +1065,10 @@ export { witchHexDC } from "./tables.js";
  *
  * Tier: every matched hex's vendored `tier` field agrees with this table's
  * own `tier` for that entry (8 of the 27 are `major`, 5 are `grand`, the rest
- * `hex`) — verified during the audit, not merely assumed.
+ * `hex`) — verified against the vendored data, not merely assumed.
  */
 
-/** Alias map for a hand-authored id whose vendored-catalog counterpart uses a different name — see the collision-audit comment above. Empty today (no drift found); kept for a future addition. */
+/** Alias map for a hand-authored id whose vendored-catalog counterpart uses a different name — see the collision note above. Empty today (no drift found); kept for a future addition. */
 const HEX_NAME_ALIASES: Record<string, string> = {};
 
 function normalizeHexName(name: string): string {

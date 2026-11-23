@@ -1,5 +1,5 @@
 /**
- * Clean-room PF1 "Wildblooded Mutation" table (DESIGN §6): a wildblooded
+ * Clean-room PF1 "Wildblooded Mutation" table: a wildblooded
  * sorcerer takes a base bloodline plus a mutated form of it. RAW (Ultimate
  * Magic p.70): the character keeps the base bloodline's class skill, bonus
  * spells, and bonus feats, takes the MUTATION's bloodline arcana, and keeps

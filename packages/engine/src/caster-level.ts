@@ -36,7 +36,7 @@ import type { AbilityId, CharacterDoc, Class, RefData } from "@pf1/schema";
 
 import { classByTag } from "./refdata-index.js";
 
-/** Tags of classes recognised as casters in the Stage 1 data slice. */
+/** Tags of classes recognised as casters in the data slice. */
 const FULL_CASTER_TAGS = new Set([
   "wizard",
   "cleric",

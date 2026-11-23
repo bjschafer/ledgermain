@@ -516,11 +516,11 @@ export const SHAMAN_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
  * (the prose→Change extraction pipeline, shaman slice). Clean-room from the
  * published PF1 rules — the vendored prose this was extracted from
  * (`archetype-features.json`) is OGL, so reading it is fine; no Foundry
- * source was consulted (DESIGN.md §6).
+ * source was consulted.
  *
  * Only 1 of shaman's 61 features cleared the `numeric` bar (see
  * `SHAMAN_ARCHETYPE_FEATURE_CLASSIFICATION` above for the full per-feature
- * audit) — shaman's kit is almost entirely spirits, wandering spirits,
+ * classification) — shaman's kit is almost entirely spirits, wandering spirits,
  * spirit animals, hexes, and spirit-magic spell-list swaps, all deferred
  * subsystems in this engine (see the header doc comment).
  *

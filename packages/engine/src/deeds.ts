@@ -1,5 +1,5 @@
 /**
- * Clean-room PF1 gunslinger/swashbuckler deed reference table (DESIGN §6):
+ * Clean-room PF1 gunslinger/swashbuckler deed reference table:
  * hand-authored from the published rules (Ultimate Combat for gunslinger,
  * Pathfinder Unchained for swashbuckler; verified against public SRD
  * text/AoN), mirroring `oracle-revelations.ts`'s posture — with one asymmetry

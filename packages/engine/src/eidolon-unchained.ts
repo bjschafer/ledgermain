@@ -6,8 +6,8 @@
  * granting a themed set of free evolutions/resistances/immunities as the
  * eidolon's HD increase, in place of the chained (APG) eidolon's flat,
  * subtype-less pool. Clean-room, paraphrased from d20pfsrd.com's "Eidolons
- * (Unchained)" page during authoring — no Foundry source was consulted (see
- * DESIGN §6). Aberrant (Pathfinder Campaign Setting: Horror Realms) was added
+ * (Unchained)" page during authoring — no Foundry source was consulted.
+ * Aberrant (Pathfinder Campaign Setting: Horror Realms) was added
  * later, cross-checked against aonprd.com's "Subtypes - Eidolon (Unchained)"
  * page and the raw OGL dataset's `aberrant` entry.
  *

@@ -1452,7 +1452,7 @@ describe("archetypes (Stage 11, third-party dataset — no archetype data in Fou
     });
 
     // 11th/15th/19th level features have no base-fighter grant in our slice to
-    // pair against (Stage 1 collapsed Weapon/Armor Training into single
+    // pair against (the data collapses Weapon/Armor Training into single
     // grants) — correctly left unpaired rather than guessed.
     expect(byLevel.get(11)?.pairedBaseFeatureUuid).toBeUndefined();
   });

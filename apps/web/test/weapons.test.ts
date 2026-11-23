@@ -325,7 +325,7 @@ describe("featChoiceOptions weapon type", () => {
 });
 
 // ---------------------------------------------------------------------------
-// addWeaponFromRef (Stage 8 — weapon picker)
+// addWeaponFromRef (weapon picker)
 // ---------------------------------------------------------------------------
 const longswordRef = Object.values(ref.weapons).find((w) => w.name === "Longsword")!;
 const greatswordRef = Object.values(ref.weapons).find((w) => w.name === "Greatsword")!;

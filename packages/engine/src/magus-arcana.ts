@@ -1,5 +1,5 @@
 /**
- * Clean-room PF1 magus arcana table (DESIGN §6): hand-authored from the
+ * Clean-room PF1 magus arcana table: hand-authored from the
  * published Ultimate Magic rules (verified against public SRD text/AoN), same
  * posture as `arcanist-exploits.ts` — magus arcana are NOT part of the
  * vendored Foundry data pack (only the class's own spellcasting/BAB/Arcane
@@ -7,7 +7,7 @@
  * "Magus Arcana" stub `ClassFeature` with no per-arcana breakdown), so there
  * is no upstream JSON to normalize.
  *
- * Scope: FULL vendored parity as of the Phase 5 extension — all 64 vendored
+ * Scope: FULL vendored parity — all 64 vendored
  * arcana: the 20 base Ultimate Magic ones plus every later-book addition the
  * pinned data carries (Ultimate Combat's Enduring Blade and Arcane
  * Redoubt/Bane Blade — vendored `sources` attribute those two to UC p. 54,

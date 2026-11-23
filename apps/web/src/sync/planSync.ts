@@ -24,8 +24,8 @@ export type SyncAction =
   | { kind: "conflict"; id: string };
 
 /**
- * Decide what one character id needs (DESIGN.md §2.1: "each device pulls the
- * latest on open and pushes on change"). `version` is a monotonic counter
+ * Decide what one character id needs: each device pulls the latest on open
+ * and pushes on change. `version` is a monotonic counter
  * bumped on every local edit, and `syncedVersion` is the server version this
  * device last pushed or pulled: the common ancestor. Comparing both sides to
  * it is what tells "only one side moved" from "both did". Comparing the two
@@ -94,11 +94,11 @@ export function sameContent(a: CharacterDoc, b: CharacterDoc): boolean {
 }
 
 /**
- * A push attempt's server-reported conflict (DESIGN §2.1: "the server
- * rejects a stale write and the client prompts 'a newer version exists on
- * another device — reload?'"). This module only models the two possible
+ * A push attempt's server-reported conflict: the server rejects a stale write
+ * and the client prompts "a newer version exists on another device — reload?".
+ * This module only models the two possible
  * resolutions; the UI decides which one the user picked (`useCharacter.ts`
- * exposes both, never auto-picks one — DESIGN requires a prompt, not a
+ * exposes both, never auto-picks one — the client requires a prompt, not a
  * silent merge).
  */
 export interface SyncConflict {

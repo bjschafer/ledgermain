@@ -593,11 +593,11 @@ export const SWASHBUCKLER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
  * features (the prose→Change extraction pipeline, swashbuckler slice).
  * Clean-room from the published PF1 rules — the vendored prose this was
  * extracted from (`archetype-features.json`) is OGL, so reading it is fine;
- * no Foundry source was consulted (DESIGN.md §6).
+ * no Foundry source was consulted.
  *
  * Only 4 of swashbuckler's 68 features cleared the `numeric` bar (see
  * `SWASHBUCKLER_ARCHETYPE_FEATURE_CLASSIFICATION` above for the full
- * per-feature audit) — the class's kit leans almost entirely on
+ * per-feature classification) — the class's kit leans almost entirely on
  * panache-gated deeds, regain-trigger swaps, and named-weapon training
  * reflavors, all of which are resource-gated or scope-restricted in ways the
  * static sheet can't check (see this file's header doc comment).

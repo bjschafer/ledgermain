@@ -11,7 +11,7 @@ import { collectGrantedFeatures, compute } from "../src/index.js";
  * rationale. `slayerTalentCatalog.test.ts` covers the table shape/merge
  * behavior; this file covers the three live-Change entries actually landing on
  * `compute`'s output, plus the standard unknown-id/wrong-class gating shape
- * every `collect.ts` build-choice loop gets (cookbook §3.1).
+ * every `collect.ts` build-choice loop gets.
  *
  * Sources: `legacy.aonprd.com/advancedClassGuide/classes/slayer.html` (core
  * ACG "Slayer Talents"/"Advanced Talents") and `aonprd.com/SlayerTalents.aspx`

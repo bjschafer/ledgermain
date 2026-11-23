@@ -25,15 +25,14 @@
  * wholeness of body ki power" instead of chained monk's class-feature
  * language) — the classification judgment is identical either way (all three
  * are ki-spend/resource-gated abilities with no baseline number), so the
- * wording difference has zero effect on this pass's buckets.
+ * wording difference has zero effect on this classification's buckets.
  *
- * `./monk.ts` (chained monk's own file, wave 2) only classified 60 of the 328
- * features now vendored under `monk:*` (13 archetypes, before a later
- * archetype-data-source repoint expanded monk's own slice) — see that file's
- * header. Of this class's 14 archetypes, only 6 (black-asp is a partial
+ * `./monk.ts` (chained monk's own file) classifies only 60 of the 328
+ * features vendored under `monk:*` (13 archetypes) — see that file's header.
+ * Of this class's 14 archetypes, only 6 (black-asp is a partial
  * exception — see below; brazen-disciple, disciple-of-wholeness,
  * invested-regent, sage-counselor, scaled-fist, soul-shepherd) fall inside
- * that audited 13-archetype set, and this pass PORTED `./monk.ts`'s own
+ * that classified 13-archetype set, and this file reuses `./monk.ts`'s own
  * judgment for every shared id in those 6 (re-verified against the identical
  * text pulled above, not blind-copied) rather than re-deriving from scratch.
  * The remaining 8 archetypes (black-asp, elemental-monk, lifting-hand,
@@ -636,7 +635,7 @@ export const MONK_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
  * features (the prose→Change extraction pipeline, monkUnchained slice).
  * Clean-room from the published PF1 rules — the vendored prose this was
  * extracted from (`archetype-features.json`) is OGL, so reading it is fine;
- * no Foundry source was consulted (DESIGN.md §6).
+ * no Foundry source was consulted.
  *
  * This table is deliberately SEPARATE from `archetype-effects.ts`'s
  * `ARCHETYPE_FEATURE_EFFECTS` (the hand-verified table) — every entry here

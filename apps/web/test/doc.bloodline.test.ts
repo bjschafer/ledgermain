@@ -1,5 +1,5 @@
 /**
- * Unit tests for Stage 1 (sorcerer bloodline spells) additions to
+ * Unit tests for the sorcerer bloodline spell additions to
  * model/doc.ts: `setSorcererBloodline`, plus the `setSorcererBloodlineVariant`
  * (Draconic dragon type / Elemental element pick).
  */

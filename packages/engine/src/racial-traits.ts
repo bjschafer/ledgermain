@@ -1,5 +1,5 @@
 /**
- * Clean-room PF1 alternate racial traits table (DESIGN §6): hand-authored from
+ * Clean-room PF1 alternate racial traits table: hand-authored from
  * the published rules (Advanced Race Guide / core races, Inner Sea Races for
  * the Sylph "Mostly Human" alternate, public SRD/OGL content) — alternate
  * racial traits are NOT part of the vendored Foundry data pack (only each

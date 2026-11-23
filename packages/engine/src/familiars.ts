@@ -3,7 +3,7 @@
  * Clean-room from the published PF1 rules (CRB Wizard → Arcane Bond →
  * Familiars table, plus Ultimate Magic's "New Familiars" table and Bestiary 2
  * for the additions below it) — no Foundry source was consulted. Same
- * posture as `tables.ts` / `feat-effects.ts` (DESIGN §6).
+ * posture as `tables.ts` / `feat-effects.ts`.
  *
  * Each entry is the bonus the *master* gains from having that familiar. Most
  * of these PF1 rules give the bonus no type, so they're `"untyped"` (always

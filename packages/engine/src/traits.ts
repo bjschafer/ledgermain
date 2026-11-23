@@ -1,5 +1,5 @@
 /**
- * Clean-room PF1 character-traits table (DESIGN §6): hand-authored from the
+ * Clean-room PF1 character-traits table: hand-authored from the
  * published rules (Advanced Player's Guide / Ultimate Campaign, public SRD
  * content). Written when traits were NOT part of any vendored data (same
  * posture as `tables.ts`/`familiars.ts` for content the compendium doesn't

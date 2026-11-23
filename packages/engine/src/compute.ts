@@ -1,15 +1,16 @@
 /**
  * `compute(doc, refData) -> DerivedSheet`: the static (no active buffs/conditions)
  * derived character sheet. Passive racial/item/class-feature changes DO feed
- * through the stacking engine here; active buffs and conditions land in Stage 4.
+ * through the stacking engine here; active buffs and conditions are applied by
+ * the live-state collector.
  *
- * Clean-room implementation from the PF1 rules (DESIGN §6).
+ * Clean-room implementation from the PF1 rules.
  *
  * HP assumptions (documented): maximum hit points at 1st character level; each
  * subsequent level adds the standard rounded average `floor(HD/2) + 1`; Con
  * modifier is added per Hit Die. The favored-class bonus is applied only from the
  * explicit `build.favoredClassBonus` choices (each `"hp"` entry = +1 HP); it is
- * NOT auto-assumed, since the builder (Stage 3) collects those choices.
+ * NOT auto-assumed, since the builder collects those choices.
  *
  * If `build.maxHpOverride` is set (a positive integer), it replaces the computed
  * average as `sheet.hp.max`; the rules-average is always exposed as `sheet.hp.auto`
@@ -1679,8 +1680,7 @@ function computeWeaponAttacks(
     // (Enlarge/Reduce Person, an active polymorph form) differs from the size
     // `w.damageDice` was written for — see `scaleWeaponDamageDice`. The
     // numeric `damageBonus.total` above never includes a dice term (formula.ts
-    // can't evaluate one — see the engine cookbook §2.2), so this scaling is
-    // purely a display correction.
+    // can't evaluate one), so this scaling is purely a display correction.
     if (w.damageDice !== undefined) {
       result.damageDice = scaleWeaponDamageDice(
         w.damageDice,

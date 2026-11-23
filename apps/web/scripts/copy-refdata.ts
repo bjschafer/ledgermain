@@ -8,8 +8,8 @@
  * runtime (REQUIRED by OGL Sec. 10 whenever Open Game Content is distributed, and
  * by Paizo's Community Use Policy for attribution).
  *
- * Stage 5 will swap the browser loader for lazy R2 loading; this copy step and
- * `src/refdata/loader.ts` are the only two places that know where the data lives.
+ * This copy step and `src/refdata/loader.ts` are the only two places that know
+ * where the data lives.
  */
 import { basename, dirname, join } from "node:path";
 import { copyFileSync, cpSync, mkdirSync, rmSync } from "node:fs";

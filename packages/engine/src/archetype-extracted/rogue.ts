@@ -1,26 +1,24 @@
 /**
- * Rogue's slice of the pipeline (wave 2, 2026-07-06; see `index.ts` for the
- * per-class file convention this follows). Covers all 78 vendored rogue
- * archetypes, 251 features, read individually (rogue's archetype count is
- * small enough to afford the exhaustive per-feature pass the fighter pilot's
- * own recommendation flagged as optional for smaller classes — no
- * heuristic-assisted situational/subsystem split here).
+ * Rogue's slice of the pipeline (see `index.ts` for the per-class file
+ * convention this follows). Covers all 78 vendored rogue archetypes, 251
+ * features, read individually (rogue's archetype count is small enough to
+ * afford the exhaustive per-feature pass; no heuristic-assisted
+ * situational/subsystem split here).
  *
  * ── Key finding that shapes this file's `blocked` bucket ──────────────────
  *
- * The task brief for this wave flagged rogue's base features with "real
- * vendored changes (sneak attack via `sneakAttackDice` in tables.ts, trap
- * sense, etc.)" as the double-count trap to watch for. On inspection, that
- * premise mostly doesn't hold: nearly every rogue base class feature's
- * vendored `changes[]` is empty upstream (Evasion, Trap Sense, Uncanny
- * Dodge, Improved Uncanny Dodge, Advanced Talents, Master Strike — confirmed
- * against `class-features.json`), and none of them have a hand-authored
- * numeric table in the engine either (unlike e.g. barbarian's Damage
- * Reduction). They contribute a flat ZERO to the derived sheet today. The
- * one exception is **Trapfinding** itself (`class-features.json` id
- * `pEODJDoTk7uhCZY7`, confirmed as rogue's actual 1st-level grant via
- * `classes.json`), which carries a real `max(1, floor(@class.unlevel / 2))
- * skill.dev` Change already applied to every rogue. It's still safe to
+ * Rogue's base features look like a double-count risk ("real vendored
+ * changes" such as sneak attack via `sneakAttackDice` in tables.ts, trap
+ * sense), but nearly every one has an empty vendored `changes[]` upstream
+ * (Evasion, Trap Sense, Uncanny Dodge, Improved Uncanny Dodge, Advanced
+ * Talents, Master Strike — confirmed against `class-features.json`), and none
+ * have a hand-authored numeric table in the engine either (unlike e.g.
+ * barbarian's Damage Reduction). They contribute a flat ZERO to the derived
+ * sheet today. The one exception is **Trapfinding** itself
+ * (`class-features.json` id `pEODJDoTk7uhCZY7`, confirmed as rogue's actual
+ * 1st-level grant via `classes.json`), which carries a real
+ * `max(1, floor(@class.unlevel / 2)) skill.dev` Change already applied to
+ * every rogue. It's still safe to
  * fully replace: it's a single, un-tiered, whole-feature grant (not a
  * multi-tier atomic formula like fighter's Armor Training), so any
  * archetype feature that cleanly swaps out the WHOLE thing — verified via

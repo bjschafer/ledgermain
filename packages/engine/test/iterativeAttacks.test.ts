@@ -4,7 +4,7 @@
  * 4 attacks total. Count depends only on BAB; the bonus at each step depends
  * on the full attack total (BAB + ability + size + enh + ... ).
  *
- * Explicitly out of scope (per the audit finding): haste/speed extra attacks,
+ * Explicitly out of scope: haste/speed extra attacks,
  * two-weapon fighting, and flurry of blows all modify the iterative sequence
  * beyond plain BAB and are not modeled here.
  */

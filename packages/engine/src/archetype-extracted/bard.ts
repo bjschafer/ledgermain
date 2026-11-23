@@ -1,12 +1,11 @@
 /**
- * Bard's slice of the pipeline (wave 2, 2026-07-06). Per the per-class file
- * convention (documented in `index.ts`), this file owns BOTH of bard's
- * pipeline artifacts — `BARD_ARCHETYPE_EFFECTS_EXTRACTED` (the
- * machine-extracted `Change`-shaped effects table) and
- * `BARD_ARCHETYPE_FEATURE_CLASSIFICATION` (the full per-feature audit) — so a
- * future wave working on a different class never has a reason to touch this
- * file; only `index.ts` (the aggregator) needs one new import + one new spread
- * per class.
+ * Bard's slice of the pipeline. Per the per-class file convention (documented
+ * in `index.ts`), this file owns BOTH of bard's pipeline artifacts —
+ * `BARD_ARCHETYPE_EFFECTS_EXTRACTED` (the machine-extracted `Change`-shaped
+ * effects table) and `BARD_ARCHETYPE_FEATURE_CLASSIFICATION` (the full
+ * per-feature classification) — so work on a different class never has a
+ * reason to touch this file; only `index.ts` (the aggregator) needs one new
+ * import + one new spread per class.
  *
  * Scope: all 70 vendored bard archetypes, 347 features. Bucket rubric is
  * identical to `fighter.ts`'s (numeric / situational / subsystem / blocked —
@@ -2917,10 +2916,10 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
 /**
  * ── BARD_ARCHETYPE_EFFECTS_EXTRACTED ──────────────────────────────────────
  *
- * Machine-extracted mechanical effects for bard archetype class features (wave
- * 2). Clean-room from the published PF1 rules — the vendored prose this was
+ * Machine-extracted mechanical effects for bard archetype class features.
+ * Clean-room from the published PF1 rules — the vendored prose this was
  * extracted from (`archetype-features.json`) is OGL, so reading it is fine; no
- * Foundry source was consulted (DESIGN.md §6).
+ * Foundry source was consulted.
  *
  * Only `numeric` features (per `BARD_ARCHETYPE_FEATURE_CLASSIFICATION`
  * above) get an entry here. `bard:archaeologist:archaeologist-s-luck:1` is

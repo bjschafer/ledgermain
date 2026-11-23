@@ -36,9 +36,9 @@ import type { BuilderProps } from "../builder/types.js";
 import { NARROW_LAYOUT_QUERY, useMediaQuery } from "../../state/useMediaQuery.js";
 
 /**
- * The in-play tracker — Stage 4's differentiator. Thin views over the pure live
- * models (`model/hp`, `model/buffs`, `model/conditions`, `model/resources`); each
- * mutation flows back through `update()` and the shared sheet recomputes live.
+ * The in-play tracker. Thin views over the pure live models (`model/hp`,
+ * `model/buffs`, `model/conditions`, `model/resources`); each mutation flows
+ * back through `update()` and the shared sheet recomputes live.
  *
  * Panels are ordered and grouped by how often they're touched at the table:
  * the combat loop first, then per-encounter toggles, companions, and reference.

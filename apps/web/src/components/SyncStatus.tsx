@@ -17,7 +17,7 @@ export interface SyncStatusProps {
 }
 
 /**
- * The masthead's compact sync indicator (Stage 5, DESIGN.md §2.1). Renders
+ * The masthead's compact sync indicator. Renders
  * nothing when sync is disabled (no `VITE_API_URL` configured) — the
  * default, local-only experience is completely untouched by this component's
  * existence. States that need the player to act (an expired session, a

@@ -191,9 +191,9 @@ export function collectGrantedFeatures(doc: CharacterDoc, refData: RefData): Gra
  * `collectModifiers` (so a swapped-out base feature's `changes[]` — e.g. Armor
  * Training's `mDexA`/`acpA`, Diamond Soul's `spellResist` — stop contributing
  * the moment the swap actually takes effect; see `collect/class-features.ts`'s
- * `collectGrantedClassFeatures`, and the audit that found this WAS a real bug prior to
- * this function existing: `collectModifiers` iterated `classDef.features` with
- * no awareness of `doc.build.archetypes` at all).
+ * `collectGrantedClassFeatures`. Without this function, `collectModifiers`
+ * iterates `classDef.features` with no awareness of `doc.build.archetypes`, so
+ * a swapped-out feature's changes would keep applying).
  */
 export function activeArchetypeSwaps(doc: CharacterDoc, refData: RefData): Map<string, string> {
   const replacedByUuid = new Map<string, string>();

@@ -1,11 +1,11 @@
 /**
- * Clean-room PF1 oracle mystery table (APG, DESIGN §6): hand-authored, mirroring
+ * Clean-room PF1 oracle mystery table (APG): hand-authored, mirroring
  * `bloodlines.ts`'s posture for sorcerer bloodlines — a mystery's CLASS SKILLS
  * and BONUS SPELLS are the only parts of "Mystery" that are structured/tabular
  * upstream; REVELATIONS (the mystery's menu of choosable powers, gained at 1st,
  * 3rd, and every 4 levels thereafter) are prose-heavy, per-mystery, and
  * genuinely choice-bearing content — out of scope here, same as Arcanist
- * Exploits/Greater Exploits were deferred at that class's launch.
+ * Exploits/Greater Exploits.
  *
  * Scope: ALL 34 vendored mysteries — the 10 Advanced Player's Guide "core"
  * ones (Battle, Bones, Flame, Heavens, Life, Lore, Nature, Stone, Waves,

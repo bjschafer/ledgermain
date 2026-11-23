@@ -1,6 +1,6 @@
 /**
- * Archetype pick gating — pure and framework-agnostic (DESIGN.md §4 hybrid
- * validation), same posture as `prereqs.ts`: hard-block only on a STRUCTURED
+ * Archetype pick gating — pure and framework-agnostic (hybrid validation),
+ * same posture as `prereqs.ts`: hard-block only on a STRUCTURED
  * signal. Two archetypes on the same class can conflict two ways:
  *  - they swap the same base-class feature slot (`pairedBaseFeatureUuid`) —
  *    `resolveClassFeatures` applies swaps last-wins, so the earlier pick's

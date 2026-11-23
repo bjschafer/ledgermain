@@ -1,5 +1,5 @@
 /**
- * Clean-room PF1 cavalier/samurai order reference table (DESIGN §6):
+ * Clean-room PF1 cavalier/samurai order reference table:
  * hand-authored from the published rules (Advanced Player's Guide for the six
  * core cavalier orders, Ultimate Combat for the samurai's own Warrior/Ronin
  * orders; verified against public SRD text/AoN), mirroring

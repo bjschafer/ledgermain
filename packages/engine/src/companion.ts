@@ -5,7 +5,7 @@
  * skills), mirroring `familiar.ts`'s shape and posture closely. Clean-room
  * from the published PF1 rules (CRB "Animal Companions" / APG's identical
  * reprint) — verified against d20pfsrd.com during authoring; no Foundry
- * source was consulted (see DESIGN §6). Foundry's GPL system code is never
+ * source was consulted. Foundry's GPL system code is never
  * used as anything but a behavioral oracle in tests, per the repo's
  * clean-room discipline.
  *

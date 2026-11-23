@@ -1,5 +1,5 @@
 /**
- * Clean-room PF1 oracle's curse table (APG, DESIGN §6): hand-authored,
+ * Clean-room PF1 oracle's curse table (APG): hand-authored,
  * mirroring `bloodlines.ts`/`traits.ts`'s posture. Scope: the 6 base APG
  * curses (Clouded Vision, Deaf, Haunted, Lame, Tongues, Wasting) — the
  * vendored Foundry pack ships many more (Blackened, Aboleth, Accursed, ...

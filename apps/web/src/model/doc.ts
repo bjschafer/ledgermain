@@ -3,7 +3,8 @@
  * function returns a NEW document (no mutation), so they are trivially unit-
  * testable without a DOM and safe to use as React state reducers. The builder UI
  * is a thin view over these; persistence (Dexie) and recompute (engine) live
- * elsewhere. Mirrors DESIGN.md §3.1.
+ * elsewhere. Mirrors the CharacterDoc split: build + live state, never derived
+ * values.
  */
 import type {
   AbilityId,

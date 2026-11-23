@@ -34,9 +34,9 @@
  * (`archetype-effects.ts`) — none of which is a flat always-on number. That
  * makes the `subsystem` bucket dominant here (172 of 188 features) and the
  * `numeric` bucket genuinely small (2) — honesty over volume, per this
- * pipeline's own rule (`docs/engine-cookbook.md` §3.4): a feature is only
- * promoted to `numeric` when the text is unconditional and lands on a real
- * target, never because a bucket "should" have more entries.
+ * pipeline's own rule: a feature is only promoted to `numeric` when the text
+ * is unconditional and lands on a real target, never because a bucket
+ * "should" have more entries.
  *
  * One `blocked` entry: Seducer's Otherworldly Allure substitutes Charisma
  * for Intelligence across every witch class feature (bonus spells, max

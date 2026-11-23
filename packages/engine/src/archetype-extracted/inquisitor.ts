@@ -1136,11 +1136,11 @@ export const INQUISITOR_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
  * features (the prose->Change extraction pipeline, inquisitor slice).
  * Clean-room from the published PF1 rules — the vendored prose this was
  * extracted from (`archetype-features.json`) is OGL, so reading it is fine;
- * no Foundry source was consulted (DESIGN.md §6).
+ * no Foundry source was consulted.
  *
  * Only 12 of inquisitor's 139 features cleared the `numeric` bar (see
  * `INQUISITOR_ARCHETYPE_FEATURE_CLASSIFICATION` above for the full
- * per-feature audit) — inquisitor's kit leans heavily on judgment/bane
+ * per-feature classification) — inquisitor's kit leans heavily on judgment/bane
  * reflavors, detection spell-likes, and enemy-scoped or per-target
  * conditional bonuses, all of which stay classification-only. Ten of the
  * twelve are 1st-level "add an ability modifier / a Stern-Gaze-shaped morale

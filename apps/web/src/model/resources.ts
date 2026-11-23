@@ -7,7 +7,7 @@
  *     supplies id + max; `syncDerivedPools` keeps them in step with the build.
  *   - Manual: spell slots and item charges. The vendored data has no per-class
  *     spell-slot tables or item charge counts, so these are user-entered pools
- *     (the documented Stage 4 limitation). Their key doubles as the display label.
+ *     (a known limitation). Their key doubles as the display label.
  */
 
 import type { DerivedResourcePool } from "@pf1/engine";

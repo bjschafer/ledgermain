@@ -1,12 +1,12 @@
 /**
- * Paladin's slice of the pipeline (wave 2, 2026-07-06). Per the per-class file
- * convention (documented in `index.ts`), this file owns BOTH of paladin's
- * pipeline artifacts — `PALADIN_ARCHETYPE_EFFECTS_EXTRACTED` (the
- * machine-extracted `Change`-shaped effects table) and
- * `PALADIN_ARCHETYPE_FEATURE_CLASSIFICATION` (the full per-feature audit) — so
- * a future wave working on a different class never has a reason to touch this
- * file; only `index.ts` (the aggregator) needs one new import + one new spread
- * per class.
+ * Paladin's slice of the pipeline. Per the per-class file convention
+ * (documented in `index.ts`), this file owns BOTH of paladin's pipeline
+ * artifacts — `PALADIN_ARCHETYPE_EFFECTS_EXTRACTED` (the machine-extracted
+ * `Change`-shaped effects table) and
+ * `PALADIN_ARCHETYPE_FEATURE_CLASSIFICATION` (the full per-feature
+ * classification) — so work on a different class never has a reason to touch
+ * this file; only `index.ts` (the aggregator) needs one new import + one new
+ * spread per class.
  *
  * ── PALADIN_ARCHETYPE_FEATURE_CLASSIFICATION ──────────────────────────────
  *
@@ -1890,7 +1890,7 @@ export const PALADIN_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
  * Machine-extracted mechanical effects for paladin archetype class features
  * (16). Clean-room from the published PF1 rules — the vendored prose this was
  * extracted from (`archetype-features.json`) is OGL, so reading it is fine; no
- * Foundry source was consulted (DESIGN.md §6).
+ * Foundry source was consulted.
  *
  * Separate from `archetype-effects.ts`'s `ARCHETYPE_FEATURE_EFFECTS`
  * (hand-verified table, which already covers Oath of Vengeance and Divine

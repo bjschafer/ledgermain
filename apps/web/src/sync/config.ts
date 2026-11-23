@@ -1,13 +1,13 @@
 /**
  * The only place in `apps/web` that knows the persistence API's location —
  * mirrors `src/refdata/loader.ts`'s "one file that knows where data lives"
- * convention (see that module's doc comment / CLAUDE.md).
+ * convention (see that module's doc comment).
  *
  * Unset `VITE_API_URL` (the default for local dev, and for anyone who
  * hasn't deployed `apps/api`) means **local-only mode**: every function in
- * `src/sync/` becomes a no-op, and the app behaves exactly as it did before
- * Stage 5 — Dexie is the only source of truth, no network round-trip is
- * ever made. This is the "degrade silently when... no API is configured"
+ * `src/sync/` becomes a no-op, and the app stays local-only — Dexie is the
+ * only source of truth, no network round-trip is ever made. This is the
+ * "degrade silently when... no API is configured"
  * requirement, satisfied by construction: nothing downstream of this module
  * runs unless it returns a value.
  */

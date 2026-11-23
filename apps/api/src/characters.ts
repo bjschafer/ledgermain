@@ -1,7 +1,6 @@
 /**
- * Dumb persistence for opaque `CharacterDoc` blobs (DESIGN.md §2.1 / the
- * project's one non-negotiable rule: the server never computes or
- * interprets game data). The only fields this module ever reads are the
+ * Dumb persistence for opaque `CharacterDoc` blobs. The server never computes
+ * or interprets game data. The only fields this module ever reads are the
  * three envelope fields the schema already carries for this exact purpose —
  * `id`, `version`, `updatedAt` — plus writing `ownerId` (server-assigned,
  * never trusted from the client). Everything else in the JSON body passes
@@ -23,7 +22,7 @@ import { deleteSharesForCharacter, shareKeysForPurge } from "./shares.js";
  * 2 MB — generous for a fully-built character (deep gear list, full
  * spellbook, many saved rolls) while still bounding KV storage and abuse.
  * A fixed constant (not a config var) is the simplest choice consistent with
- * DESIGN §2.1's "envelope-level checks only" posture — this cap, like the
+ * the "envelope-level checks only" posture — this cap, like the
  * JSON-well-formedness check, is a size/shape check, never a peek at game
  * content.
  */
@@ -128,7 +127,7 @@ export async function getCharacter(ownerId: string, id: string, env: Env): Promi
 /**
  * `PUT /api/characters/:id` — push a document.
  *
- * Optimistic concurrency (DESIGN §2.1): the pushed `version` must be
+ * Optimistic concurrency: the pushed `version` must be
  * strictly greater than whatever is currently stored (or nothing may be
  * stored yet). Otherwise this is a stale write — respond `409` with the
  * currently-stored document so the client can implement "a newer version

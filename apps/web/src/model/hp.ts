@@ -2,7 +2,7 @@
  * Pure HP transitions for the live tracker. Each returns a NEW document so they
  * are trivially unit-testable and safe as React state reducers. Derived max HP
  * lives on the computed sheet, so functions that need it take it as a parameter
- * (the document never stores derived values — DESIGN §2/§3).
+ * (the document never stores derived values).
  *
  * PF1 model:
  *   - Damage is absorbed by temporary HP first, then reduces current HP (which

@@ -51,9 +51,9 @@ export interface PfDataEntry {
    * this table-of-contents page" pointer (e.g. an arcanist greater exploit's
    * `["Greater Exploits", "ability/greater_exploits"]`, or a kineticist wild
    * talent's `["Infusions", "ability/infusion_wild_talents"]`). Absent from
-   * the rage-power file (Phase 3a didn't need it); present and useful as a
-   * grouping/tier signal on later subsystem files (Phase 3b) — see those
-   * transforms' doc comments for how each one interprets it.
+   * the rage-power file; present as a grouping/tier signal on other subsystem
+   * files — see those transforms' doc comments for how each one interprets
+   * it.
    */
   topLink?: [string, string];
 }

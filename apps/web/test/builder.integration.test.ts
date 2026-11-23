@@ -14,7 +14,7 @@ function raceId(name: string): string {
 }
 
 /**
- * Stage 3 success criterion: drive the pure builder model end-to-end to construct
+ * Drives the pure builder model end-to-end to construct
  * a level-1 human fighter, then assert `compute()` produces the expected sheet.
  * No DOM — this proves the builder→CharacterDoc→compute data flow at the model
  * level (the React layer is a thin view over exactly these transitions).

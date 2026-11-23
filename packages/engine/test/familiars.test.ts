@@ -6,7 +6,7 @@ import { loadRefData } from "@pf1/data-pipeline";
 import { compute, FAMILIARS } from "../src/index.js";
 
 /**
- * Stage 3 (arcane bonds): a familiar grants its master a small always-on
+ * Arcane bonds: a familiar grants its master a small always-on
  * bonus (hand-computed here from the published PF1 rules). Bonded objects and
  * unknown familiar kinds apply nothing. All expectations are hand-computed
  * deltas against the same doc with no bond.

@@ -11,7 +11,7 @@
  *
  * Implemented as a small recursive-descent parser + tree-walking evaluator. No
  * `eval`, no `Function`. Reimplemented from the documented dialect behaviour; the
- * Foundry source is used only as a correctness oracle in tests (DESIGN §6).
+ * Foundry source is used only as a correctness oracle in tests.
  */
 
 /* --------------------------------------------------------------- roll data -- */

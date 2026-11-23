@@ -1,5 +1,5 @@
 /**
- * Unit tests for the Stage 1 additions to model/doc.ts:
+ * Unit tests for the document settings and stat transitions in model/doc.ts:
  * HP mode, per-level rolls, FCB houserule, hero-point cap, stat overrides,
  * and favored-class bonus choice setter.
  */

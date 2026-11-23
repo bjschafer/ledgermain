@@ -650,7 +650,7 @@ function isInSchoolList(spell: Spell, school: string, refData: RefData): boolean
  * free pick from the whole school, only from spells the wizard has actually
  * learned. Always false for a Universalist or when no school is chosen —
  * Universalists get no bonus school slot (PF1 RAW correction: their
- * compensation is arcane-school powers, deferred to Stage 4).
+ * compensation is arcane-school powers).
  */
 export function isSchoolSlotEligible(spell: Spell, doc: CharacterDoc, refData: RefData): boolean {
   const school = doc.build.wizardSchool;

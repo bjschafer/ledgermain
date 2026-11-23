@@ -34,7 +34,7 @@ packages/data-pipeline  pinned Foundry YAML → normalized JSON (vendored under 
 packages/engine         pure rules engine — compute(doc, refData) -> DerivedSheet (the crown jewel)
 packages/tokens         shared design tokens (palette, type stack) imported by both front ends
 apps/web                React + Vite builder + live tracker
-apps/api                Cloudflare Worker: dumb persistence for CharacterDoc blobs (Stage 5, docs/design.md §2.1)
+apps/api                Cloudflare Worker: dumb persistence for CharacterDoc blobs (docs/design.md §2.1)
 apps/reference          React + Vite quick-reference lookup site, its own Worker at ref.ledgermain.app
 ```
 
@@ -46,7 +46,7 @@ Derived stats are **never** computed or stored server-side — the server only s
 
 ### Two objects, one engine
 
-- **`CharacterDoc`** (schema) — the single source of truth. Holds _build choices_ (`build.*`) and _live session state_ (`live.*`: hp, conditions, activeBuffs, resources) but **never derived values**. Carries `ownerId`/`version`/`updatedAt` already, for Stage 5 optimistic-concurrency sync.
+- **`CharacterDoc`** (schema) — the single source of truth. Holds _build choices_ (`build.*`) and _live session state_ (`live.*`: hp, conditions, activeBuffs, resources) but **never derived values**. Carries `ownerId`/`version`/`updatedAt` already, for optimistic-concurrency sync.
 - **`compute(doc, refData) -> DerivedSheet`** (engine) — pure, framework-agnostic, returns every displayed number. Toggle anything in the doc → recompute. It's cheap; the web app recomputes on every change rather than memoizing cleverly.
 
 The engine has two genuinely hard pieces, both clean-room (see licensing below):
@@ -69,7 +69,7 @@ The engine is a **clean-room reimplementation** from the published PF1 rules. Th
 - TypeScript strict everywhere. `bun run typecheck` is the gate that must stay green.
 - Lint must stay green: `bun run lint` (errors block; warnings tolerated). Run `bun run lint:fix` first to auto-fix. Don't add new lint warnings to existing code paths.
 - Run `bun run fmt` before committing; `bun run fmt:check` must be green. Don't commit hand-formatted code that fights oxfmt — if you disagree with a fmt result, change your code, don't fight the tool.
-- **Comments explain the unexpected, and are brief. Keep ephemeral context out of code and committed docs.** No pointers to dated audits, planning docs, "wave N", "as-built section", "round-2 notes", or "issue #NN's X pass" — that provenance belongs in the commit message, not the source. A comment should say _why_ the code is surprising and stand on its own, without an external working-doc to resolve it. (A bare issue reference for still-open tracked work is fine; a pointer into a narrative build log is not.)
+- **Comments explain the unexpected, and are brief.** A comment earns its place only if deleting it would lose information the code, types, or git history cannot recover: an invariant, a gotcha, a unit, a concurrency assumption, a rulebook citation, or a marker for still-open work. It must stand on its own. Do not restate the next line, narrate change history (`previously`, `no longer`, `Stage 5`, `wave N`, dated audits), or point at internal narrative docs (`docs/design.md`, `docs/engine-cookbook.md`, `coverageNotes.ts`, changelogs, plans). Inline the one sentence that matters so the doc stays deletable. **Docs may cite code; code may not cite docs.** A bare issue reference for still-open tracked work is fine (`#117`); a pointer into a narrative build log is not.
 - **Content gaps have one source of truth: `apps/web/src/model/coverageNotes.ts`** (rendered as the "What's Not Covered" panel in Settings; purely internal gaps go in its `INTERNAL_GAPS` array, which the panel never shows). Filling a gap means deleting its entry; finding one means adding it. Keep #74 a plain inventory of what's _missing_ — no phase/status narrative, and cite it as a bare `#74`.
 - **`coverageNotes.ts` only ever shrinks.** Its one recurring failure is growing as gaps close, because rewriting an entry to narrate what now works is easier than deleting it. Closing a gap means removing the entry or cutting it back to the smaller gap that remains — never appending what shipped. No "used to", "no longer", "now also", no counts of what got fixed, no enumerating the races or lists that _do_ work; that all belongs in `changelog.ts`, which is the counterpart this file must not converge with. `issueDetail` carries inventory facts (how many entries exist, how many are modeled, what blocks the rest), not implementation history: no issue numbers, no commit provenance, no "audited in the sweep". `apps/web/test/coverageNotes.test.ts` enforces the word budgets and banned constructions — if an edit trips it, cut the entry, don't raise the budget.
 - **No em or en dashes in player-facing copy.** House style (the voice guide in the user's vault) bans them outright. In `changelog.ts` and `coverageNotes.ts` the fix is to restructure the sentence with a colon, a period, or a pair of commas — never print the `--` markdown substitute on screen. Enforced by `apps/web/test/houseStyle.ts` from both tests. Code comments and commit messages are out of scope.

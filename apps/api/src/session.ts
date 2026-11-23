@@ -1,10 +1,10 @@
 /**
  * Session + OAuth-state storage in the `KV` binding. Sessions map an opaque
- * bearer token to a stable `ownerId` (DESIGN.md §2.1: "identity stays
- * boring" — no JWT signing, no cookies; just a random token the client keeps
- * in localStorage and sends as `Authorization: Bearer <token>`). OAuth state
- * nonces are a short-lived KV entry rather than a signed value, since a KV
- * round trip is cheap and this avoids needing another secret.
+ * bearer token to a stable `ownerId` ("identity stays boring": no JWT signing,
+ * no cookies; just a random token the client keeps in localStorage and sends
+ * as `Authorization: Bearer <token>`). OAuth state nonces are a short-lived KV
+ * entry rather than a signed value, since a KV round trip is cheap and this
+ * avoids needing another secret.
  */
 import { listAllKeys } from "./kv.js";
 

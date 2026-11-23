@@ -7,7 +7,7 @@
  * Improved Familiar feat unlocks (CRB p.127's table plus the splatbook
  * expansions), clean-room from the published PF1 rules via aonprd.com /
  * d20pfsrd.com — no vendored creature data exists (the data pipeline ships
- * no bestiary), and Foundry source is never consulted (DESIGN §6).
+ * no bestiary), and Foundry source is never consulted.
  *
  * Rules posture, pinned during design (verified against the published feat
  * text): improved familiars use the NORMAL familiar rules with exactly two
@@ -153,7 +153,7 @@ export interface ImprovedFamiliar extends BaseFamiliar {
   /**
    * The species' own class skills (skill ids) — replaces the animal set for
    * the +3 trained bonus, since the Universal Monster Rules animal list does
-   * not apply to a non-animal (the gap coverageNotes called out).
+   * not apply to a non-animal.
    */
   classSkills?: string[];
   /** Defensive qualities — see {@link CreatureDefenses}. */

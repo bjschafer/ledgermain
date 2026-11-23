@@ -993,7 +993,7 @@ export function normalize(opts: NormalizeOptions): {
     transformVigilanteSocialTalents(vigilanteSocialTalentDict);
 
   // --- arcanist exploits / investigator talents / kineticist wild talents
-  // (fourth-party dataset, Phase 3b) — same posture as rage powers above.
+  // (fourth-party dataset) — same posture as rage powers above.
   const arcanistExploitDict = readPfDataDictionary(
     join(opts.pfDataJsonDir, "class_ability_exploits.json"),
   );

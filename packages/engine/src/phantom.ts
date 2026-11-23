@@ -6,8 +6,8 @@
  * borrow-the-master's-numbers approach). Clean-room from the published PF1
  * rules (Occult Adventures "Spiritualist" class, the "Phantom" class feature,
  * and the "Emotional Focus" subsystem) — paraphrased from
- * aonprd.com/d20pfsrd.com during authoring; no Foundry source was consulted
- * (see DESIGN §6). Foundry's GPL system code is never used as anything but a
+ * aonprd.com/d20pfsrd.com during authoring; no Foundry source was consulted.
+ * Foundry's GPL system code is never used as anything but a
  * behavioral oracle in tests, per the repo's clean-room discipline.
  *
  * Phantom Basics (PF1 Occult Adventures "Phantom"):

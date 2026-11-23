@@ -27,8 +27,8 @@ export const SYSTEM_VERSION = "11.11";
 
 /**
  * Bumped when the RefData *shape* changes (mirrors schema package intent). v2
- * added `armors` and `weapons` collections (Stage 6). v3 adds `archetypes` and
- * `archetypeFeatures` (Stage 11). v4 adds per-domain spell lists
+ * added `armors` and `weapons` collections. v3 adds `archetypes` and
+ * `archetypeFeatures`. v4 adds per-domain spell lists
  * (`domainSpellLists`, `domain-spell-lists.json`) for cleric domains. v5 adds
  * per-bloodline spell lists (`bloodlineSpellLists`,
  * `bloodline-spell-lists.json`) for sorcerer bloodlines. v6 adds
@@ -224,9 +224,9 @@ export const PF_CONTENT_SHA = "c66bf333cafc451d817ead660473dd01d9846fb3";
  * fills gaps neither the Foundry system nor PF1 Content ship as structured
  * data — starting with the full rage-power catalog, then the witch-hex,
  * general shaman-hex, magus-arcana, rogue-family talent, arcanist-exploit,
- * investigator-talent, and kineticist-wild-talent catalogs (Phase 3b), then
- * the mesmerist trick/bold-stare, phrenic-amplification, psychic-discipline,
- * occultist-implement, and Medium legendary-spirit catalogs (Phase 3c).
+ * investigator-talent, and kineticist-wild-talent catalogs, then the
+ * mesmerist trick/bold-stare, phrenic-amplification, psychic-discipline,
+ * occultist-implement, and Medium legendary-spirit catalogs.
  * Single-maintainer repo, so pin like the others: exact commit, never a
  * branch.
  */

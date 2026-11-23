@@ -1,5 +1,5 @@
 /**
- * Clean-room PF1 shaman spirit table (Advanced Class Guide, DESIGN §6):
+ * Clean-room PF1 shaman spirit table (Advanced Class Guide):
  * hand-authored, mirroring `oracle-mysteries.ts`'s posture closely — a
  * shaman's Spirit class feature is structurally the oracle's Mystery under a
  * different name (per the vendored `spirit.yaml` class feature: "If the shaman

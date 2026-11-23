@@ -2,7 +2,7 @@
  * Feat prerequisite gating — pure and framework-agnostic so it can be unit-tested
  * without a DOM.
  *
- * Policy (DESIGN.md §4 hybrid validation):
+ * Policy (hybrid validation):
  *  - HARD-BLOCK only on STRUCTURED prerequisites we reliably parsed (ability
  *    minimums, BAB, caster level, character level, race, required feats, and
  *    "any one of these feats" groups).

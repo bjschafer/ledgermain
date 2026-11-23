@@ -1,9 +1,8 @@
 /**
- * Stage 5 persistence Worker (DESIGN.md §2.1). A thin router over three
- * concerns: Discord OAuth login, session lookup, and CRUD on opaque
- * `CharacterDoc` blobs. No framework — the route table is small enough that
- * a dependency would cost more than it saves (workers-best-practices:
- * prefer bindings/small code over unnecessary layers).
+ * Persistence Worker. A thin router over three concerns: Discord OAuth login,
+ * session lookup, and CRUD on opaque `CharacterDoc` blobs. No framework — the
+ * route table is small enough that a dependency would cost more than it saves
+ * (workers-best-practices: prefer bindings/small code over unnecessary layers).
  */
 import "./env.js";
 import { purgeAccount } from "./account.js";

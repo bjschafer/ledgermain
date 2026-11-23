@@ -1,5 +1,5 @@
 /**
- * Clean-room PF1 sorcerer bloodline arcana + powers table (DESIGN §6):
+ * Clean-room PF1 sorcerer bloodline arcana + powers table:
  * hand-authored from the published Core Rulebook rules (verified against SRD
  * text) — bloodline ARCANA and POWERS are prose-only upstream (only
  * `RefData.bloodlineSpellLists` is vendored, i.e. bonus spells known; see

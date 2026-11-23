@@ -12,7 +12,7 @@ export const ABILITY_IDS: readonly AbilityId[] = ["str", "dex", "con", "int", "w
 
 /**
  * Base-attack-bonus progression tier. PF1 has exactly three; the numeric table
- * per tier is fixed by the rules and lives in the engine (Stage 2), not here.
+ * per tier is fixed by the rules and lives in the engine, not here.
  */
 export type BabTier = "high" | "med" | "low";
 

@@ -57,7 +57,7 @@
  * Strength-modifier multipliers (e.g. the two-handed weapon ×1.5 bonus is
  * likewise never applied to a penalty) and matches how every digital PF1
  * implementation this project has observed behaves (a behavioral-oracle
- * comparison, not copied code — see DESIGN §6); documented here as this
+ * comparison, not copied code); documented here as this
  * project's adopted interpretation rather than left ambiguous.
  */
 

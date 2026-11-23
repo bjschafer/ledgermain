@@ -1,10 +1,10 @@
 /**
- * Sorcerer's slice of the pipeline (wave 2, 2026-07-06). Per the per-class
- * file convention (documented in `index.ts`), this file owns BOTH of
- * sorcerer's pipeline artifacts — `SORCERER_ARCHETYPE_EFFECTS_EXTRACTED` and
- * `SORCERER_ARCHETYPE_FEATURE_CLASSIFICATION` — so a future wave working on a
- * different class never has a reason to touch this file; only `index.ts` (the
- * aggregator) needs one new import + one new spread per class.
+ * Sorcerer's slice of the pipeline. Per the per-class file convention
+ * (documented in `index.ts`), this file owns BOTH of sorcerer's pipeline
+ * artifacts — `SORCERER_ARCHETYPE_EFFECTS_EXTRACTED` and
+ * `SORCERER_ARCHETYPE_FEATURE_CLASSIFICATION` — so work on a different class
+ * never has a reason to touch this file; only `index.ts` (the aggregator)
+ * needs one new import + one new spread per class.
  *
  * Scope: all 11 vendored sorcerer archetypes, 36 features.
  * `SORCERER_ARCHETYPE_EFFECTS_EXTRACTED` is EMPTY this wave — every feature

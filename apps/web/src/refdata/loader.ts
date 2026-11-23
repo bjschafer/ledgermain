@@ -2,7 +2,7 @@
  * Browser RefData loader. The Node-fs `loadRefData()` in @pf1/data-pipeline can't
  * run in the browser, so we `fetch` the vendored JSON that `scripts/copy-refdata.ts`
  * places under `public/data/`. This is the ONE module that knows how RefData
- * reaches the client — Stage 5 swaps it for lazy R2 loading without touching the
+ * reaches the client, so the delivery mechanism can change without touching the
  * rest of the app.
  *
  * Collections are read through `refdata/cache.ts`, so only a data bump costs a

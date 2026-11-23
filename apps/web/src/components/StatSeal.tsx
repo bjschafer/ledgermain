@@ -10,12 +10,12 @@ import { Caret } from "./Caret.js";
 /**
  * A gilded stat "seal" — the big tabular total for one derived value. When given
  * provenance `components`, it expands to reveal the modifier breakdown. The seal +
- * reveal is the design's signature element (see DESIGN_NOTES.md).
+ * reveal is the design's signature element.
  *
  * Pass `className` to append extra classes to the `.seal` element (e.g.
  * `"seal--compact"` for de-emphasised secondary stats).
  *
- * Two "living sheet" cues layer on top of the static seal (the audit's point:
+ * Two "living sheet" cues layer on top of the static seal (the point:
  * recompute is invisible today — toggling a condition changes AC but nothing
  * *shows* it changed):
  *

@@ -37,7 +37,7 @@ interface RogueTalentPickerProps {
  * Free-choice, never blocks past the expected count.
  *
  * Browses the full hand-authored catalog (`mergedRogueTalentCatalog`, at full
- * vendored parity since the Phase 5 extension).
+ * vendored parity).
  */
 export function RogueTalentPicker({ doc, refData, update }: RogueTalentPickerProps) {
   const isRogue = doc.identity.classes.some((c) => c.tag === "rogue" || c.tag === "rogueUnchained");
