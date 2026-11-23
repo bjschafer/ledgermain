@@ -45,8 +45,14 @@ export function transformWeapon(doc: RawDoc): WeaponRef {
     critRange: asNumber(ability.critRange) ?? undefined,
     critMult: asNumber(ability.critMult) ?? undefined,
     category: categoryOf(actionType, rangeUnits),
-    attackAbility: actionType === "rwak" ? "dex" : "str",
-    damageAbility: damageAbility === "str" ? "str" : "none",
+    // Thrown attacks are ranged attack rolls, so Dexterity (CRB p. 178).
+    attackAbility: actionType === "rwak" || actionType === "twak" ? "dex" : "str",
+    // Every bow takes a low-Strength penalty to damage, though some upstream
+    // bows declare no damage ability (CRB p. 144).
+    damageAbility: damageAbility === "str" || weaponGroups.includes("bows") ? "str" : "none",
+    // Upstream models a composite bow's Strength rating as the action's
+    // ability cap, which only composites test their wielder against.
+    composite: str(action?.attackBonus)?.includes("@action.ability.max") ? true : undefined,
     damageMultiplier: weaponSubtype === "2h" ? 1.5 : undefined,
     proficiency: subType,
     weaponGroups: emittedWeaponGroups.length > 0 ? emittedWeaponGroups : undefined,
@@ -99,6 +105,7 @@ interface WeaponAction {
     nonCritParts?: { formula?: string; types?: string[] }[];
   };
   range?: { units?: string; value?: string };
+  attackBonus?: string;
 }
 
 /**

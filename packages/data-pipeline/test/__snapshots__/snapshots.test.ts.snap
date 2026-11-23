@@ -444,6 +444,7 @@ exports[`normalized-output snapshots weapon: Composite Longbow (ranged, STR-to-d
     "Longbow",
   ],
   "category": "ranged",
+  "composite": true,
   "critMult": 3,
   "critRange": 20,
   "damageAbility": "str",

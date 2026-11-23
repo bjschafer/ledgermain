@@ -282,3 +282,39 @@ describe("compute(): an active polymorph form can reach sizes below Small", () =
     expect(sheet.attacks[0]!.damageDice).toBe("1d4");
   });
 });
+
+// CRB p. 144 (Table 6-4) prints a Small rapier at 1d4 and a Medium one at
+// 1d6; a catalog pick carries the Medium dice and says so.
+describe("compute(): catalog dice are scaled from Medium to the wielder's size", () => {
+  const rapier: WeaponInstance = {
+    name: "Rapier",
+    attackAbility: "str",
+    damageDice: "1d6",
+    damageDiceSize: "med",
+  };
+  const halfling = (doc: CharacterDoc): CharacterDoc => ({
+    ...doc,
+    identity: { ...doc.identity, race: raceId("Halfling") },
+  });
+
+  it("a halfling's catalog rapier reads 1d4", () => {
+    const sheet = compute(halfling(makeDoc([rapier])), ref);
+    expect(sheet.attacks[0]!.damageDice).toBe("1d4");
+  });
+
+  it("Enlarge Person brings the halfling's rapier back to the Medium 1d6", () => {
+    const enlarge: ActiveBuff = {
+      instanceId: "buff-enlarge",
+      name: "Enlarge Person",
+      changes: [{ target: "size", type: "untyped", formula: "1" }],
+    };
+    const sheet = compute(halfling(makeDoc([rapier], [enlarge])), ref);
+    expect(sheet.attacks[0]!.damageDice).toBe("1d6");
+  });
+
+  it("hand-entered dice with no size are read as the race size's own", () => {
+    const typed: WeaponInstance = { name: "Rapier", attackAbility: "str", damageDice: "1d4" };
+    const sheet = compute(halfling(makeDoc([typed])), ref);
+    expect(sheet.attacks[0]!.damageDice).toBe("1d4");
+  });
+});

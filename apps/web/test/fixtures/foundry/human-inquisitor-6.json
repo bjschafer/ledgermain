@@ -38,7 +38,7 @@
         "name": "human-inquisitor-6 [base]",
         "type": "character",
         "folder": "GuYuyoqdabfe4xZV",
-        "_id": "9LkKQHWUfkbjQ5MI",
+        "_id": "deFdFpUmLv1Si98D",
         "system": {
           "abilities": {
             "str": { "value": 14 },
@@ -81,7 +81,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "dedYZgOvQWnAJM19",
+            "_id": "EPMoiVsnZuB11puu",
             "folder": null,
             "sort": 0
           },
@@ -102,7 +102,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "yPD2duYk6sJv1sj0",
+            "_id": "7rsb15AXopEsFhL9",
             "folder": null,
             "sort": 0
           },
@@ -124,7 +124,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "N9L2pwTufFr2jHcN",
+            "_id": "69pYeOIztrmKXfMC",
             "folder": null,
             "sort": 0
           },
@@ -145,7 +145,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "j9eyp7rq2ELlyOHa",
+            "_id": "OhZO77SYAQpcaAt9",
             "folder": null,
             "sort": 0
           },
@@ -166,7 +166,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "uTwAve6J2kWg1RVf",
+            "_id": "0q40uSoVLqId735W",
             "folder": null,
             "sort": 0
           },
@@ -187,7 +187,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "VrAyDdihviCpYlgr",
+            "_id": "A5xQYRbkP4VI3q8G",
             "folder": null,
             "sort": 0
           },
@@ -228,7 +228,7 @@
             "type": "race",
             "effects": [],
             "flags": {},
-            "_id": "d68Oy1vz3mhTabxA",
+            "_id": "1fQmI0Oyc0BiEA9P",
             "sort": 0
           },
           {
@@ -325,25 +325,25 @@
               "pf1": {
                 "links": {
                   "classAssociations": {
-                    "hRwbyrRyq3IeKg21": 1,
-                    "GarPMXCWHaYUMEUi": 1,
-                    "uHWlGywvcZFexIzV": 1,
-                    "OAQH5wlzdhoH7kOJ": 1,
-                    "Pzs7bEdjjFjskkbN": 1,
-                    "AL6VobDUcbNoyKXZ": 1,
-                    "XokwJsDL4KeDuhIn": 2,
-                    "jM6mpyVNOJ6Qw7Ev": 2,
-                    "Jqz6eK50NzBymofD": 2,
-                    "2cmPw8AUWEaZba0U": 3,
-                    "wjCK801DZeE18bNR": 3,
-                    "QdbXZeGv9TLyvMGQ": 5,
-                    "3AtAlZ2OHMBDgVbC": 5,
-                    "TnNOBHrWKvQXplYU": 5
+                    "d9ZpfcwWZliDy7TJ": 1,
+                    "3DDYqvsaJncpIUSR": 1,
+                    "6khqVl4QzREImIG1": 1,
+                    "9oTHPc2kpAeV7bkf": 1,
+                    "yuFf7SL4qjlaNELX": 1,
+                    "XiCbcStp2JNqMv1e": 2,
+                    "CvZSU3fws72rKva3": 2,
+                    "pLZQiY9qbsiCSc5l": 2,
+                    "OWRxrs2EO8tC2qzz": 3,
+                    "GkEoog8RSKr69Ym3": 3,
+                    "ABR5P39L8qr9ylHA": 5,
+                    "AmMAuJA4gcwW7er8": 5,
+                    "tWPUOLswtjrWERf5": 5,
+                    "uB3fEqf5707zCr7T": 1
                   }
                 }
               }
             },
-            "_id": "BdZvevPEI0wthX2X",
+            "_id": "jBNy8mYp0Aw1STAn",
             "sort": 0
           },
           {
@@ -379,31 +379,12 @@
               },
               "restrictions": []
             },
-            "_id": "2cIW0EndrTvYtKzJ",
+            "_id": "BHrsFWv3gF0VstUx",
             "effects": [],
             "folder": null,
             "sort": 0,
             "flags": {},
             "_stats": { "compendiumSource": null }
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1.class-abilities.Item.dMtxCqoMLtD9nEjU"
-            },
-            "name": "Domain (INQ)",
-            "system": {
-              "associations": { "classes": ["Inquisitor"] },
-              "sources": [{ "id": "PZO1115", "pages": "38" }],
-              "subType": "classFeat",
-              "class": "inquisitor",
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "flags": {},
-            "sort": 100000,
-            "_id": "hRwbyrRyq3IeKg21",
-            "folder": null
           },
           {
             "_stats": {
@@ -437,15 +418,15 @@
                   { "uuid": "Compendium.pf1.class-abilities.Item.BNP9ZzsT0hEy2V31" }
                 ],
                 "children": [
-                  { "uuid": ".Item.s3PQ8wF79rAVsUCF" },
-                  { "uuid": ".Item.QBGEfjZewHx9bEcX" },
-                  { "uuid": ".Item.lCk9gCHtj68C4SRw" },
-                  { "uuid": ".Item.Lk2EgZM4UddxvGaG" },
-                  { "uuid": ".Item.zymIsdDPLCUacgwY" },
-                  { "uuid": ".Item.7T1fiKLytLi6zzoF" },
-                  { "uuid": ".Item.Yn9V67bkPRnSTgaL" },
-                  { "uuid": ".Item.26G37pcaJWfHVv5K" },
-                  { "uuid": ".Item.9QqDvAfcxwiRDT0w" }
+                  { "uuid": ".Item.sal44NtlsfIG6Yg2" },
+                  { "uuid": ".Item.IRP9bVyAaoyG4yPH" },
+                  { "uuid": ".Item.SRwHdxSFf75yiVAe" },
+                  { "uuid": ".Item.dWfskMFjtxUZFbOy" },
+                  { "uuid": ".Item.83Ic8sDnPwNWYBv7" },
+                  { "uuid": ".Item.QxQunGSuFTQPBord" },
+                  { "uuid": ".Item.w74ela3QzxWouaCh" },
+                  { "uuid": ".Item.qY7vUwo1SvAeY9m4" },
+                  { "uuid": ".Item.31GSI6ERbRjU0opc" }
                 ]
               },
               "sources": [{ "id": "PZO1115", "pages": "38" }],
@@ -459,7 +440,7 @@
             "effects": [],
             "flags": {},
             "sort": 200000,
-            "_id": "GarPMXCWHaYUMEUi",
+            "_id": "d9ZpfcwWZliDy7TJ",
             "folder": null
           },
           {
@@ -479,7 +460,7 @@
             "effects": [],
             "flags": {},
             "sort": 300000,
-            "_id": "uHWlGywvcZFexIzV",
+            "_id": "3DDYqvsaJncpIUSR",
             "folder": null
           },
           {
@@ -513,26 +494,7 @@
             "effects": [],
             "flags": {},
             "sort": 400000,
-            "_id": "OAQH5wlzdhoH7kOJ",
-            "folder": null
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1.class-abilities.Item.HnrnO6l02MdT9lf5"
-            },
-            "name": "Inquisitor Spells",
-            "system": {
-              "associations": { "classes": ["Inquisitor"] },
-              "sources": [{ "id": "PZO1115", "pages": "38" }],
-              "subType": "classFeat",
-              "class": "inquisitor",
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "flags": {},
-            "sort": 600000,
-            "_id": "Pzs7bEdjjFjskkbN",
+            "_id": "6khqVl4QzREImIG1",
             "folder": null
           },
           {
@@ -557,7 +519,26 @@
             "effects": [],
             "flags": {},
             "sort": 500000,
-            "_id": "AL6VobDUcbNoyKXZ",
+            "_id": "9oTHPc2kpAeV7bkf",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.HnrnO6l02MdT9lf5"
+            },
+            "name": "Inquisitor Spells",
+            "system": {
+              "associations": { "classes": ["Inquisitor"] },
+              "sources": [{ "id": "PZO1115", "pages": "38" }],
+              "subType": "classFeat",
+              "class": "inquisitor",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 600000,
+            "_id": "yuFf7SL4qjlaNELX",
             "folder": null
           },
           {
@@ -590,7 +571,7 @@
             "effects": [],
             "flags": {},
             "sort": 700000,
-            "_id": "XokwJsDL4KeDuhIn",
+            "_id": "XiCbcStp2JNqMv1e",
             "folder": null
           },
           {
@@ -618,7 +599,7 @@
             "effects": [],
             "flags": {},
             "sort": 800000,
-            "_id": "jM6mpyVNOJ6Qw7Ev",
+            "_id": "CvZSU3fws72rKva3",
             "folder": null
           },
           {
@@ -649,7 +630,7 @@
             "effects": [],
             "flags": {},
             "sort": 900000,
-            "_id": "Jqz6eK50NzBymofD",
+            "_id": "pLZQiY9qbsiCSc5l",
             "folder": null
           },
           {
@@ -669,7 +650,7 @@
             "effects": [],
             "flags": {},
             "sort": 1000000,
-            "_id": "2cmPw8AUWEaZba0U",
+            "_id": "OWRxrs2EO8tC2qzz",
             "folder": null
           },
           {
@@ -696,7 +677,7 @@
             "effects": [],
             "flags": {},
             "sort": 1100000,
-            "_id": "wjCK801DZeE18bNR",
+            "_id": "GkEoog8RSKr69Ym3",
             "folder": null
           },
           {
@@ -734,7 +715,7 @@
             "effects": [],
             "flags": {},
             "sort": 1200000,
-            "_id": "QdbXZeGv9TLyvMGQ",
+            "_id": "ABR5P39L8qr9ylHA",
             "folder": null
           },
           {
@@ -767,7 +748,7 @@
             "effects": [],
             "flags": {},
             "sort": 1300000,
-            "_id": "3AtAlZ2OHMBDgVbC",
+            "_id": "AmMAuJA4gcwW7er8",
             "folder": null
           },
           {
@@ -800,41 +781,26 @@
             "effects": [],
             "flags": {},
             "sort": 1400000,
-            "_id": "TnNOBHrWKvQXplYU",
+            "_id": "tWPUOLswtjrWERf5",
             "folder": null
           },
           {
             "_stats": {
-              "compendiumSource": "Compendium.pf1.class-abilities.Item.LaSR2WkVuqgG1C6L"
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.dMtxCqoMLtD9nEjU"
             },
-            "name": "Destruction",
+            "name": "Domain (INQ)",
             "system": {
-              "actions": {
-                "L2HwkwRFl0rDBq9I": {
-                  "_id": "L2HwkwRFl0rDBq9I",
-                  "activation": { "type": "nonaction", "unchained": { "type": "nonaction" } },
-                  "name": "Use",
-                  "sort": 0
-                }
-              },
               "associations": { "classes": ["Inquisitor"] },
-              "links": {
-                "supplements": [{ "uuid": "Compendium.pf1.buffs.Item.gBRAvqqjrLw4Cnhm" }],
-                "children": [{ "uuid": ".Item.ahgVb7B3ODh4i3o4" }]
-              },
-              "sources": [{ "id": "PZO1115", "pages": "39" }],
+              "sources": [{ "id": "PZO1115", "pages": "38" }],
               "subType": "classFeat",
-              "tags": ["Judgement"],
               "class": "inquisitor",
               "alignments": {}
             },
             "type": "feat",
             "effects": [],
-            "flags": {
-              "pf1": { "source": "Compendium.pf1.class-abilities.Item.LaSR2WkVuqgG1C6L" }
-            },
-            "sort": 1400000,
-            "_id": "s3PQ8wF79rAVsUCF",
+            "flags": {},
+            "sort": 100000,
+            "_id": "uB3fEqf5707zCr7T",
             "folder": null
           },
           {
@@ -854,7 +820,7 @@
               "associations": { "classes": ["Inquisitor"] },
               "links": {
                 "supplements": [{ "uuid": "Compendium.pf1.buffs.Item.hzu5SyhALN2TBoAe" }],
-                "children": [{ "uuid": ".Item.RQZxdWtrC9rOFkjp" }]
+                "children": [{ "uuid": ".Item.RpCvUhG4hquGhVRV" }]
               },
               "sources": [{ "id": "PZO1115", "pages": "39" }],
               "subType": "classFeat",
@@ -868,7 +834,109 @@
               "pf1": { "source": "Compendium.pf1.class-abilities.Item.b7fTc7fndOIx7jbI" }
             },
             "sort": 1500000,
-            "_id": "QBGEfjZewHx9bEcX",
+            "_id": "sal44NtlsfIG6Yg2",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.LaSR2WkVuqgG1C6L"
+            },
+            "name": "Destruction",
+            "system": {
+              "actions": {
+                "L2HwkwRFl0rDBq9I": {
+                  "_id": "L2HwkwRFl0rDBq9I",
+                  "activation": { "type": "nonaction", "unchained": { "type": "nonaction" } },
+                  "name": "Use",
+                  "sort": 0
+                }
+              },
+              "associations": { "classes": ["Inquisitor"] },
+              "links": {
+                "supplements": [{ "uuid": "Compendium.pf1.buffs.Item.gBRAvqqjrLw4Cnhm" }],
+                "children": [{ "uuid": ".Item.NzquyZ910fvNxjJW" }]
+              },
+              "sources": [{ "id": "PZO1115", "pages": "39" }],
+              "subType": "classFeat",
+              "tags": ["Judgement"],
+              "class": "inquisitor",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {
+              "pf1": { "source": "Compendium.pf1.class-abilities.Item.LaSR2WkVuqgG1C6L" }
+            },
+            "sort": 1400000,
+            "_id": "IRP9bVyAaoyG4yPH",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.Po86Ft2nHRNpNogi"
+            },
+            "name": "Piercing",
+            "system": {
+              "actions": {
+                "L2HwkwRFl0rDBq9I": {
+                  "_id": "L2HwkwRFl0rDBq9I",
+                  "activation": { "type": "nonaction", "unchained": { "type": "nonaction" } },
+                  "name": "Use",
+                  "sort": 0
+                }
+              },
+              "associations": { "classes": ["Inquisitor"] },
+              "links": {
+                "supplements": [{ "uuid": "Compendium.pf1.buffs.Item.yqdRqkADURTHBvVH" }],
+                "children": [{ "uuid": ".Item.iKXez9KAtESgTLpX" }]
+              },
+              "sources": [{ "id": "PZO1115", "pages": "39" }],
+              "subType": "classFeat",
+              "tags": ["Judgement"],
+              "class": "inquisitor",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {
+              "pf1": { "source": "Compendium.pf1.class-abilities.Item.Po86Ft2nHRNpNogi" }
+            },
+            "sort": 1700000,
+            "_id": "SRwHdxSFf75yiVAe",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.APjE7Cvu9fQFYKca"
+            },
+            "name": "Protection",
+            "system": {
+              "actions": {
+                "L2HwkwRFl0rDBq9I": {
+                  "_id": "L2HwkwRFl0rDBq9I",
+                  "activation": { "type": "nonaction", "unchained": { "type": "nonaction" } },
+                  "name": "Use",
+                  "sort": 0
+                }
+              },
+              "associations": { "classes": ["Inquisitor"] },
+              "links": {
+                "supplements": [{ "uuid": "Compendium.pf1.buffs.Item.WrxSFJ9MJvFO3Mmu" }],
+                "children": [{ "uuid": ".Item.DnlW5ZTcqHApLS8t" }]
+              },
+              "sources": [{ "id": "PZO1115", "pages": "39" }],
+              "subType": "classFeat",
+              "tags": ["Judgement"],
+              "class": "inquisitor",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {
+              "pf1": { "source": "Compendium.pf1.class-abilities.Item.APjE7Cvu9fQFYKca" }
+            },
+            "sort": 1800000,
+            "_id": "dWfskMFjtxUZFbOy",
             "folder": null
           },
           {
@@ -888,7 +956,7 @@
               "associations": { "classes": ["Inquisitor"] },
               "links": {
                 "supplements": [{ "uuid": "Compendium.pf1.buffs.Item.mKqlvosmPK2iAxL4" }],
-                "children": [{ "uuid": ".Item.0fkejKf0xPovSTF6" }]
+                "children": [{ "uuid": ".Item.iSk8eDl203L1pO4r" }]
               },
               "sources": [{ "id": "PZO1115", "pages": "39" }],
               "subType": "classFeat",
@@ -902,7 +970,7 @@
               "pf1": { "source": "Compendium.pf1.class-abilities.Item.asMZBthOLKiIF4bM" }
             },
             "sort": 1900000,
-            "_id": "lCk9gCHtj68C4SRw",
+            "_id": "83Ic8sDnPwNWYBv7",
             "folder": null
           },
           {
@@ -922,7 +990,7 @@
               "associations": { "classes": ["Inquisitor"] },
               "links": {
                 "supplements": [{ "uuid": "Compendium.pf1.buffs.Item.cA2R9j90XCY3mRvl" }],
-                "children": [{ "uuid": ".Item.lx4uRmV15qrIMGE9" }]
+                "children": [{ "uuid": ".Item.NZ9mpWKVq1wbi3vc" }]
               },
               "sources": [{ "id": "PZO1115", "pages": "39" }],
               "subType": "classFeat",
@@ -936,7 +1004,7 @@
               "pf1": { "source": "Compendium.pf1.class-abilities.Item.yta6JuJRGAR0UEE7" }
             },
             "sort": 2000000,
-            "_id": "Lk2EgZM4UddxvGaG",
+            "_id": "QxQunGSuFTQPBord",
             "folder": null
           },
           {
@@ -956,7 +1024,7 @@
               "associations": { "classes": ["Inquisitor"] },
               "links": {
                 "supplements": [{ "uuid": "Compendium.pf1.buffs.Item.W9TR1oh1KpDxOKr1" }],
-                "children": [{ "uuid": ".Item.ct7QeEDa6GeC5nob" }]
+                "children": [{ "uuid": ".Item.t87K2MEQ3mJaWIsF" }]
               },
               "sources": [{ "id": "PZO1115", "pages": "39" }],
               "subType": "classFeat",
@@ -970,19 +1038,27 @@
               "pf1": { "source": "Compendium.pf1.class-abilities.Item.zkcLVRBuqCmo7EKx" }
             },
             "sort": 2100000,
-            "_id": "zymIsdDPLCUacgwY",
+            "_id": "w74ela3QzxWouaCh",
             "folder": null
           },
           {
             "_stats": {
-              "compendiumSource": "Compendium.pf1.class-abilities.Item.BNP9ZzsT0hEy2V31"
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.j6ZSm23YrshsdfBt"
             },
-            "name": "Smiting",
+            "name": "Justice",
             "system": {
+              "actions": {
+                "L2HwkwRFl0rDBq9I": {
+                  "_id": "L2HwkwRFl0rDBq9I",
+                  "activation": { "type": "nonaction", "unchained": { "type": "nonaction" } },
+                  "name": "Use",
+                  "sort": 0
+                }
+              },
               "associations": { "classes": ["Inquisitor"] },
               "links": {
-                "supplements": [{ "uuid": "Compendium.pf1.buffs.Item.kFYQF6YT5GIO5EdP" }],
-                "children": [{ "uuid": ".Item.sfw7K4IaDP5KGFrC" }]
+                "supplements": [{ "uuid": "Compendium.pf1.buffs.Item.QAL8jtr7BkTSVpXK" }],
+                "children": [{ "uuid": ".Item.JFfMUkHAc45nM2e8" }]
               },
               "sources": [{ "id": "PZO1115", "pages": "39" }],
               "subType": "classFeat",
@@ -993,10 +1069,10 @@
             "type": "feat",
             "effects": [],
             "flags": {
-              "pf1": { "source": "Compendium.pf1.class-abilities.Item.BNP9ZzsT0hEy2V31" }
+              "pf1": { "source": "Compendium.pf1.class-abilities.Item.j6ZSm23YrshsdfBt" }
             },
-            "sort": 2200000,
-            "_id": "7T1fiKLytLi6zzoF",
+            "sort": 1600000,
+            "_id": "qY7vUwo1SvAeY9m4",
             "folder": null
           },
           {
@@ -1020,7 +1096,7 @@
             "effects": [],
             "flags": { "pf1": { "source": "Compendium.pf1.buffs.Item.gBRAvqqjrLw4Cnhm" } },
             "sort": 0,
-            "_id": "ahgVb7B3ODh4i3o4",
+            "_id": "NzquyZ910fvNxjJW",
             "folder": null
           },
           {
@@ -1035,7 +1111,7 @@
             "effects": [],
             "flags": { "pf1": { "source": "Compendium.pf1.buffs.Item.hzu5SyhALN2TBoAe" } },
             "sort": 100000,
-            "_id": "RQZxdWtrC9rOFkjp",
+            "_id": "RpCvUhG4hquGhVRV",
             "folder": null
           },
           {
@@ -1065,7 +1141,7 @@
             "effects": [],
             "flags": { "pf1": { "source": "Compendium.pf1.buffs.Item.QAL8jtr7BkTSVpXK" } },
             "sort": 200000,
-            "_id": "pOE9ISJGkp8lpIYh",
+            "_id": "JFfMUkHAc45nM2e8",
             "folder": null
           },
           {
@@ -1095,7 +1171,7 @@
             "effects": [],
             "flags": { "pf1": { "source": "Compendium.pf1.buffs.Item.yqdRqkADURTHBvVH" } },
             "sort": 300000,
-            "_id": "CMREFteQ8ttyIVOo",
+            "_id": "iKXez9KAtESgTLpX",
             "folder": null
           },
           {
@@ -1125,7 +1201,7 @@
             "effects": [],
             "flags": { "pf1": { "source": "Compendium.pf1.buffs.Item.WrxSFJ9MJvFO3Mmu" } },
             "sort": 400000,
-            "_id": "Z4kJXHbkzs8PLlnn",
+            "_id": "DnlW5ZTcqHApLS8t",
             "folder": null
           },
           {
@@ -1155,7 +1231,7 @@
             "effects": [],
             "flags": { "pf1": { "source": "Compendium.pf1.buffs.Item.mKqlvosmPK2iAxL4" } },
             "sort": 500000,
-            "_id": "0fkejKf0xPovSTF6",
+            "_id": "iSk8eDl203L1pO4r",
             "folder": null
           },
           {
@@ -1172,7 +1248,7 @@
             "effects": [],
             "flags": { "pf1": { "source": "Compendium.pf1.buffs.Item.cA2R9j90XCY3mRvl" } },
             "sort": 600000,
-            "_id": "lx4uRmV15qrIMGE9",
+            "_id": "NZ9mpWKVq1wbi3vc",
             "folder": null
           },
           {
@@ -1189,7 +1265,7 @@
             "effects": [],
             "flags": { "pf1": { "source": "Compendium.pf1.buffs.Item.W9TR1oh1KpDxOKr1" } },
             "sort": 700000,
-            "_id": "ct7QeEDa6GeC5nob",
+            "_id": "t87K2MEQ3mJaWIsF",
             "folder": null
           },
           {
@@ -1204,27 +1280,19 @@
             "effects": [],
             "flags": { "pf1": { "source": "Compendium.pf1.buffs.Item.kFYQF6YT5GIO5EdP" } },
             "sort": 800000,
-            "_id": "sfw7K4IaDP5KGFrC",
+            "_id": "cdGv9IjQKyMGmYJ1",
             "folder": null
           },
           {
             "_stats": {
-              "compendiumSource": "Compendium.pf1.class-abilities.Item.j6ZSm23YrshsdfBt"
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.BNP9ZzsT0hEy2V31"
             },
-            "name": "Justice",
+            "name": "Smiting",
             "system": {
-              "actions": {
-                "L2HwkwRFl0rDBq9I": {
-                  "_id": "L2HwkwRFl0rDBq9I",
-                  "activation": { "type": "nonaction", "unchained": { "type": "nonaction" } },
-                  "name": "Use",
-                  "sort": 0
-                }
-              },
               "associations": { "classes": ["Inquisitor"] },
               "links": {
-                "supplements": [{ "uuid": "Compendium.pf1.buffs.Item.QAL8jtr7BkTSVpXK" }],
-                "children": [{ "uuid": ".Item.pOE9ISJGkp8lpIYh" }]
+                "supplements": [{ "uuid": "Compendium.pf1.buffs.Item.kFYQF6YT5GIO5EdP" }],
+                "children": [{ "uuid": ".Item.cdGv9IjQKyMGmYJ1" }]
               },
               "sources": [{ "id": "PZO1115", "pages": "39" }],
               "subType": "classFeat",
@@ -1235,78 +1303,10 @@
             "type": "feat",
             "effects": [],
             "flags": {
-              "pf1": { "source": "Compendium.pf1.class-abilities.Item.j6ZSm23YrshsdfBt" }
+              "pf1": { "source": "Compendium.pf1.class-abilities.Item.BNP9ZzsT0hEy2V31" }
             },
-            "sort": 1600000,
-            "_id": "Yn9V67bkPRnSTgaL",
-            "folder": null
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1.class-abilities.Item.APjE7Cvu9fQFYKca"
-            },
-            "name": "Protection",
-            "system": {
-              "actions": {
-                "L2HwkwRFl0rDBq9I": {
-                  "_id": "L2HwkwRFl0rDBq9I",
-                  "activation": { "type": "nonaction", "unchained": { "type": "nonaction" } },
-                  "name": "Use",
-                  "sort": 0
-                }
-              },
-              "associations": { "classes": ["Inquisitor"] },
-              "links": {
-                "supplements": [{ "uuid": "Compendium.pf1.buffs.Item.WrxSFJ9MJvFO3Mmu" }],
-                "children": [{ "uuid": ".Item.Z4kJXHbkzs8PLlnn" }]
-              },
-              "sources": [{ "id": "PZO1115", "pages": "39" }],
-              "subType": "classFeat",
-              "tags": ["Judgement"],
-              "class": "inquisitor",
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "flags": {
-              "pf1": { "source": "Compendium.pf1.class-abilities.Item.APjE7Cvu9fQFYKca" }
-            },
-            "sort": 1800000,
-            "_id": "26G37pcaJWfHVv5K",
-            "folder": null
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1.class-abilities.Item.Po86Ft2nHRNpNogi"
-            },
-            "name": "Piercing",
-            "system": {
-              "actions": {
-                "L2HwkwRFl0rDBq9I": {
-                  "_id": "L2HwkwRFl0rDBq9I",
-                  "activation": { "type": "nonaction", "unchained": { "type": "nonaction" } },
-                  "name": "Use",
-                  "sort": 0
-                }
-              },
-              "associations": { "classes": ["Inquisitor"] },
-              "links": {
-                "supplements": [{ "uuid": "Compendium.pf1.buffs.Item.yqdRqkADURTHBvVH" }],
-                "children": [{ "uuid": ".Item.CMREFteQ8ttyIVOo" }]
-              },
-              "sources": [{ "id": "PZO1115", "pages": "39" }],
-              "subType": "classFeat",
-              "tags": ["Judgement"],
-              "class": "inquisitor",
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "flags": {
-              "pf1": { "source": "Compendium.pf1.class-abilities.Item.Po86Ft2nHRNpNogi" }
-            },
-            "sort": 1700000,
-            "_id": "9QqDvAfcxwiRDT0w",
+            "sort": 2200000,
+            "_id": "31GSI6ERbRjU0opc",
             "folder": null
           },
           {
@@ -1330,7 +1330,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "9nhOv3ZgjfKgaCJi",
+            "_id": "TEgfNuZCsyg31yTO",
             "sort": 0
           },
           {
@@ -1354,7 +1354,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "aKeKduhSqKQumCse",
+            "_id": "YUyWadL0x2PgTZIW",
             "sort": 0
           },
           {
@@ -1378,7 +1378,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "uXwlcA4Ej3EEetyM",
+            "_id": "Zj6m7Yas0pw8RidO",
             "sort": 0
           },
           {
@@ -1402,42 +1402,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "bjDsBw6W3zxucRcn",
-            "sort": 0
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1.armors-and-shields.Item.5TzaS38RPAx1oj9p"
-            },
-            "folder": "33jGfHlDL34jvwnX",
-            "name": "Breastplate",
-            "system": {
-              "armor": {
-                "acp": 4,
-                "dex": 3,
-                "material": { "base": { "value": "steel" }, "addon": [] },
-                "value": 6,
-                "enh": 1,
-                "alignments": {}
-              },
-              "baseTypes": ["Breastplate"],
-              "equipmentSubtype": "mediumArmor",
-              "equipped": true,
-              "hardness": 10,
-              "hp": { "base": 30 },
-              "price": { "base": 200, "unit": "gp" },
-              "quantity": 1,
-              "slot": "armor",
-              "sources": [{ "id": "PZO1110", "pages": "150, 151" }],
-              "spellFailure": 25,
-              "subType": "armor",
-              "weight": { "value": 30 },
-              "mods": {}
-            },
-            "type": "equipment",
-            "effects": [],
-            "flags": {},
-            "_id": "G0z2RLw2RMqHY4eY",
+            "_id": "PIF9CuDp7IIbk2GV",
             "sort": 0
           },
           {
@@ -1486,7 +1451,7 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "D9VZNXEnb0DJ2EDl",
+            "_id": "3I45hA4brtSJFlY7",
             "sort": 0
           },
           {
@@ -1530,7 +1495,42 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "sQ9PkqCfW8CsmdbU",
+            "_id": "AdOv8U9scMC45nsj",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.armors-and-shields.Item.5TzaS38RPAx1oj9p"
+            },
+            "folder": "33jGfHlDL34jvwnX",
+            "name": "Breastplate",
+            "system": {
+              "armor": {
+                "acp": 4,
+                "dex": 3,
+                "material": { "base": { "value": "steel" }, "addon": [] },
+                "value": 6,
+                "enh": 1,
+                "alignments": {}
+              },
+              "baseTypes": ["Breastplate"],
+              "equipmentSubtype": "mediumArmor",
+              "equipped": true,
+              "hardness": 10,
+              "hp": { "base": 30 },
+              "price": { "base": 200, "unit": "gp" },
+              "quantity": 1,
+              "slot": "armor",
+              "sources": [{ "id": "PZO1110", "pages": "150, 151" }],
+              "spellFailure": 25,
+              "subType": "armor",
+              "weight": { "value": 30 },
+              "mods": {}
+            },
+            "type": "equipment",
+            "effects": [],
+            "flags": {},
+            "_id": "zOKkxk5QipFNvj5U",
             "sort": 0
           }
         ],
@@ -1596,14 +1596,15 @@
           "perform": -1,
           "bluff": -1
         }
-      }
+      },
+      "attacks": {}
     },
     "judgments": {
       "actor": {
         "name": "human-inquisitor-6 [judgments]",
         "type": "character",
         "folder": "GuYuyoqdabfe4xZV",
-        "_id": "eNYOV8p2jiGt7uVE",
+        "_id": "q1644cDTpT9A1eUi",
         "system": {
           "abilities": {
             "str": { "value": 14 },
@@ -1646,7 +1647,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "uJpZdskksoTE8SLm",
+            "_id": "vnHYEh78bfmh6lSy",
             "folder": null,
             "sort": 0
           },
@@ -1667,7 +1668,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "5oU4OOEBl9jHpURU",
+            "_id": "jU9SzFCweNV3nOow",
             "folder": null,
             "sort": 0
           },
@@ -1689,7 +1690,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "PErGfnW6ZDh0PV2B",
+            "_id": "MgtuBsnDrd2ffFA7",
             "folder": null,
             "sort": 0
           },
@@ -1710,7 +1711,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "vMUpcC9RQHo5krRj",
+            "_id": "AKKnmt08GsTQPgJk",
             "folder": null,
             "sort": 0
           },
@@ -1731,7 +1732,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "x7pxJDhsE4sfybyc",
+            "_id": "kOLXBLEnBEKD42Mt",
             "folder": null,
             "sort": 0
           },
@@ -1752,7 +1753,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "TwjrkfVngM3HTPV0",
+            "_id": "g5ULZi7mH4UXaOkR",
             "folder": null,
             "sort": 0
           },
@@ -1793,7 +1794,7 @@
             "type": "race",
             "effects": [],
             "flags": {},
-            "_id": "t1rLcHEgekitnPnz",
+            "_id": "qSv9zekfguTQSssi",
             "sort": 0
           },
           {
@@ -1890,25 +1891,25 @@
               "pf1": {
                 "links": {
                   "classAssociations": {
-                    "AEwurqVJiVZl8O3I": 1,
-                    "J19RiiBxGsloEeJo": 1,
-                    "9iXu94jsTDUtg7rn": 1,
-                    "8z7jaS92EAJW3QAI": 1,
-                    "lMjTPOJJEt8OFOMF": 1,
-                    "XEyRWhqR8GRKsId6": 1,
-                    "QV2zrV9SYFAcpo0y": 2,
-                    "5LdpGas5YTt9ExZK": 3,
-                    "7uuoPrBwep50JKF7": 5,
-                    "QKQ3q0f64tObJZpm": 5,
-                    "bfuq6jkCTV2itw3e": 5,
-                    "KtMovRiHZVLqhWYZ": 2,
-                    "L0gGq4lBsL1f7s4a": 2,
-                    "2EUuc4FKz8AsEzQr": 3
+                    "zcLssP8PqVSNqIIB": 1,
+                    "Fuxp98slhQvGNPBH": 1,
+                    "NgPN1NWg19cM0r19": 1,
+                    "UF8e5J53f2hsPABT": 1,
+                    "AB2oFpo6N37Xqwi3": 2,
+                    "N3PryRwAM6OC9ph0": 2,
+                    "jDv1tl9AKvizcWMA": 2,
+                    "x4DUpoOYKWRsimFc": 1,
+                    "NBc6maT8s3fkbWa8": 3,
+                    "zWQnqo2lAI82JUL7": 5,
+                    "7XcQA4tLwtvn6fHC": 5,
+                    "PfNgOc3lGgLIQqX5": 5,
+                    "zad4jkRTwO218Fag": 3,
+                    "vfpxGLPzRFR6mwWq": 1
                   }
                 }
               }
             },
-            "_id": "euYVeCr9xQylmsrp",
+            "_id": "IfdFFjVKiSLmex8p",
             "sort": 0
           },
           {
@@ -1944,31 +1945,12 @@
               },
               "restrictions": []
             },
-            "_id": "XRCt847vNI2rBJWz",
+            "_id": "Tv3EU2lRA2EIjyNY",
             "effects": [],
             "folder": null,
             "sort": 0,
             "flags": {},
             "_stats": { "compendiumSource": null }
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1.class-abilities.Item.dMtxCqoMLtD9nEjU"
-            },
-            "name": "Domain (INQ)",
-            "system": {
-              "associations": { "classes": ["Inquisitor"] },
-              "sources": [{ "id": "PZO1115", "pages": "38" }],
-              "subType": "classFeat",
-              "class": "inquisitor",
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "flags": {},
-            "sort": 100000,
-            "_id": "AEwurqVJiVZl8O3I",
-            "folder": null
           },
           {
             "_stats": {
@@ -2002,15 +1984,15 @@
                   { "uuid": "Compendium.pf1.class-abilities.Item.BNP9ZzsT0hEy2V31" }
                 ],
                 "children": [
-                  { "uuid": ".Item.23pqT5amRl3C45O0" },
-                  { "uuid": ".Item.dogTcH26XCbDuWqQ" },
-                  { "uuid": ".Item.zWQao4KDCtYYmci0" },
-                  { "uuid": ".Item.rU6ZRhGq6SYUzhd8" },
-                  { "uuid": ".Item.iWWR8Ta8ZTx0NGCV" },
-                  { "uuid": ".Item.dSJ2gufqNNPwjjTR" },
-                  { "uuid": ".Item.PBQojUsqHHVjfZe5" },
-                  { "uuid": ".Item.z0KM7AemKgyB3Dy3" },
-                  { "uuid": ".Item.3tVnJPxHveIA2FXS" }
+                  { "uuid": ".Item.l9zuS2SDX0jKqtwf" },
+                  { "uuid": ".Item.nF3rqwMbqtnsZwRK" },
+                  { "uuid": ".Item.Cke22kKpJC86Gjn7" },
+                  { "uuid": ".Item.OzbrovpAFeb8pIsa" },
+                  { "uuid": ".Item.2Prv8tD3njrrB25p" },
+                  { "uuid": ".Item.nC3nUpZVw9Frge3n" },
+                  { "uuid": ".Item.ndaPTcVziJKMPSRe" },
+                  { "uuid": ".Item.ACOOOrzc5up1gegN" },
+                  { "uuid": ".Item.4AoOJ4qPPXSpqKH5" }
                 ]
               },
               "sources": [{ "id": "PZO1115", "pages": "38" }],
@@ -2024,27 +2006,7 @@
             "effects": [],
             "flags": {},
             "sort": 200000,
-            "_id": "J19RiiBxGsloEeJo",
-            "folder": null
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1.class-abilities.Item.9Y9dpXEcjXGtH6Pe"
-            },
-            "name": "Monster Lore",
-            "system": {
-              "abilityType": "ex",
-              "associations": { "classes": ["Inquisitor"] },
-              "sources": [{ "id": "PZO1115", "pages": "40" }],
-              "subType": "classFeat",
-              "class": "inquisitor",
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "flags": {},
-            "sort": 300000,
-            "_id": "9iXu94jsTDUtg7rn",
+            "_id": "zcLssP8PqVSNqIIB",
             "folder": null
           },
           {
@@ -2078,7 +2040,7 @@
             "effects": [],
             "flags": {},
             "sort": 400000,
-            "_id": "8z7jaS92EAJW3QAI",
+            "_id": "Fuxp98slhQvGNPBH",
             "folder": null
           },
           {
@@ -2103,7 +2065,7 @@
             "effects": [],
             "flags": {},
             "sort": 500000,
-            "_id": "lMjTPOJJEt8OFOMF",
+            "_id": "NgPN1NWg19cM0r19",
             "folder": null
           },
           {
@@ -2122,7 +2084,40 @@
             "effects": [],
             "flags": {},
             "sort": 600000,
-            "_id": "XEyRWhqR8GRKsId6",
+            "_id": "UF8e5J53f2hsPABT",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.r8wPs0bB3WhOLxbX"
+            },
+            "name": "Track",
+            "system": {
+              "abilityType": "ex",
+              "associations": {
+                "classes": ["Hunter", "Inquisitor", "Ranger", "Shifter", "Slayer"]
+              },
+              "contextNotes": {
+                "Qw42GVgB5ETwjSiM": {
+                  "target": "skill.survival",
+                  "text": "+[[max(1, floor(@class.unlevel / 2))]] to follow tracks"
+                }
+              },
+              "sources": [
+                { "id": "PZO1110", "pages": "64" },
+                { "id": "PZO1115", "pages": "40" },
+                { "id": "PZO1129", "pages": "28, 53" },
+                { "id": "PZO1140", "pages": "27" }
+              ],
+              "subType": "classFeat",
+              "class": "inquisitor",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 700000,
+            "_id": "AB2oFpo6N37Xqwi3",
             "folder": null
           },
           {
@@ -2150,14 +2145,45 @@
             "effects": [],
             "flags": {},
             "sort": 800000,
-            "_id": "QV2zrV9SYFAcpo0y",
+            "_id": "N3PryRwAM6OC9ph0",
             "folder": null
           },
           {
             "_stats": {
-              "compendiumSource": "Compendium.pf1.class-abilities.Item.10EysX8x5hvz48lr"
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.KGjeQOeDKBMUt98q"
             },
-            "name": "Solo Tactics",
+            "name": "Detect Alignment",
+            "system": {
+              "abilityType": "sp",
+              "actions": {
+                "d8v90zjz3u7orjg0": {
+                  "_id": "d8v90zjz3u7orjg0",
+                  "activation": {
+                    "type": "standard",
+                    "unchained": { "cost": 2, "type": "action" }
+                  },
+                  "name": "Use",
+                  "sort": 0
+                }
+              },
+              "associations": { "classes": ["Inquisitor"] },
+              "sources": [{ "id": "PZO1115", "pages": "40" }],
+              "subType": "classFeat",
+              "class": "inquisitor",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 900000,
+            "_id": "jDv1tl9AKvizcWMA",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.9Y9dpXEcjXGtH6Pe"
+            },
+            "name": "Monster Lore",
             "system": {
               "abilityType": "ex",
               "associations": { "classes": ["Inquisitor"] },
@@ -2169,8 +2195,35 @@
             "type": "feat",
             "effects": [],
             "flags": {},
-            "sort": 1000000,
-            "_id": "5LdpGas5YTt9ExZK",
+            "sort": 300000,
+            "_id": "x4DUpoOYKWRsimFc",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.717fyDCcfLtD345B"
+            },
+            "name": "Teamwork Feat",
+            "system": {
+              "associations": { "classes": ["Inquisitor"] },
+              "changes": {
+                "upaei6g0": {
+                  "_id": "upaei6g0",
+                  "formula": "floor(@class.unlevel / 3)",
+                  "target": "bonusFeats",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1115", "pages": "40" }],
+              "subType": "classFeat",
+              "class": "inquisitor",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 1100000,
+            "_id": "NBc6maT8s3fkbWa8",
             "folder": null
           },
           {
@@ -2208,7 +2261,7 @@
             "effects": [],
             "flags": {},
             "sort": 1200000,
-            "_id": "7uuoPrBwep50JKF7",
+            "_id": "zWQnqo2lAI82JUL7",
             "folder": null
           },
           {
@@ -2241,7 +2294,7 @@
             "effects": [],
             "flags": {},
             "sort": 1300000,
-            "_id": "QKQ3q0f64tObJZpm",
+            "_id": "7XcQA4tLwtvn6fHC",
             "folder": null
           },
           {
@@ -2274,60 +2327,16 @@
             "effects": [],
             "flags": {},
             "sort": 1400000,
-            "_id": "bfuq6jkCTV2itw3e",
+            "_id": "PfNgOc3lGgLIQqX5",
             "folder": null
           },
           {
             "_stats": {
-              "compendiumSource": "Compendium.pf1.class-abilities.Item.r8wPs0bB3WhOLxbX"
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.10EysX8x5hvz48lr"
             },
-            "name": "Track",
+            "name": "Solo Tactics",
             "system": {
               "abilityType": "ex",
-              "associations": {
-                "classes": ["Hunter", "Inquisitor", "Ranger", "Shifter", "Slayer"]
-              },
-              "contextNotes": {
-                "Qw42GVgB5ETwjSiM": {
-                  "target": "skill.survival",
-                  "text": "+[[max(1, floor(@class.unlevel / 2))]] to follow tracks"
-                }
-              },
-              "sources": [
-                { "id": "PZO1110", "pages": "64" },
-                { "id": "PZO1115", "pages": "40" },
-                { "id": "PZO1129", "pages": "28, 53" },
-                { "id": "PZO1140", "pages": "27" }
-              ],
-              "subType": "classFeat",
-              "class": "inquisitor",
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "flags": {},
-            "sort": 700000,
-            "_id": "KtMovRiHZVLqhWYZ",
-            "folder": null
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1.class-abilities.Item.KGjeQOeDKBMUt98q"
-            },
-            "name": "Detect Alignment",
-            "system": {
-              "abilityType": "sp",
-              "actions": {
-                "d8v90zjz3u7orjg0": {
-                  "_id": "d8v90zjz3u7orjg0",
-                  "activation": {
-                    "type": "standard",
-                    "unchained": { "cost": 2, "type": "action" }
-                  },
-                  "name": "Use",
-                  "sort": 0
-                }
-              },
               "associations": { "classes": ["Inquisitor"] },
               "sources": [{ "id": "PZO1115", "pages": "40" }],
               "subType": "classFeat",
@@ -2337,26 +2346,18 @@
             "type": "feat",
             "effects": [],
             "flags": {},
-            "sort": 900000,
-            "_id": "L0gGq4lBsL1f7s4a",
+            "sort": 1000000,
+            "_id": "zad4jkRTwO218Fag",
             "folder": null
           },
           {
             "_stats": {
-              "compendiumSource": "Compendium.pf1.class-abilities.Item.717fyDCcfLtD345B"
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.dMtxCqoMLtD9nEjU"
             },
-            "name": "Teamwork Feat",
+            "name": "Domain (INQ)",
             "system": {
               "associations": { "classes": ["Inquisitor"] },
-              "changes": {
-                "upaei6g0": {
-                  "_id": "upaei6g0",
-                  "formula": "floor(@class.unlevel / 3)",
-                  "target": "bonusFeats",
-                  "type": "untyped"
-                }
-              },
-              "sources": [{ "id": "PZO1115", "pages": "40" }],
+              "sources": [{ "id": "PZO1115", "pages": "38" }],
               "subType": "classFeat",
               "class": "inquisitor",
               "alignments": {}
@@ -2364,8 +2365,8 @@
             "type": "feat",
             "effects": [],
             "flags": {},
-            "sort": 1100000,
-            "_id": "2EUuc4FKz8AsEzQr",
+            "sort": 100000,
+            "_id": "vfpxGLPzRFR6mwWq",
             "folder": null
           },
           {
@@ -2385,7 +2386,7 @@
               "associations": { "classes": ["Inquisitor"] },
               "links": {
                 "supplements": [{ "uuid": "Compendium.pf1.buffs.Item.gBRAvqqjrLw4Cnhm" }],
-                "children": [{ "uuid": ".Item.T7RoSpZUlba43FaQ" }]
+                "children": [{ "uuid": ".Item.fecbPR5b841VVzx7" }]
               },
               "sources": [{ "id": "PZO1115", "pages": "39" }],
               "subType": "classFeat",
@@ -2399,41 +2400,7 @@
               "pf1": { "source": "Compendium.pf1.class-abilities.Item.LaSR2WkVuqgG1C6L" }
             },
             "sort": 1400000,
-            "_id": "23pqT5amRl3C45O0",
-            "folder": null
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1.class-abilities.Item.b7fTc7fndOIx7jbI"
-            },
-            "name": "Healing (Judgment)",
-            "system": {
-              "actions": {
-                "L2HwkwRFl0rDBq9I": {
-                  "_id": "L2HwkwRFl0rDBq9I",
-                  "activation": { "type": "nonaction", "unchained": { "type": "nonaction" } },
-                  "name": "Use",
-                  "sort": 0
-                }
-              },
-              "associations": { "classes": ["Inquisitor"] },
-              "links": {
-                "supplements": [{ "uuid": "Compendium.pf1.buffs.Item.hzu5SyhALN2TBoAe" }],
-                "children": [{ "uuid": ".Item.DK1Cc2sws83gzlyq" }]
-              },
-              "sources": [{ "id": "PZO1115", "pages": "39" }],
-              "subType": "classFeat",
-              "tags": ["Judgement"],
-              "class": "inquisitor",
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "flags": {
-              "pf1": { "source": "Compendium.pf1.class-abilities.Item.b7fTc7fndOIx7jbI" }
-            },
-            "sort": 1500000,
-            "_id": "dogTcH26XCbDuWqQ",
+            "_id": "l9zuS2SDX0jKqtwf",
             "folder": null
           },
           {
@@ -2453,7 +2420,7 @@
               "associations": { "classes": ["Inquisitor"] },
               "links": {
                 "supplements": [{ "uuid": "Compendium.pf1.buffs.Item.QAL8jtr7BkTSVpXK" }],
-                "children": [{ "uuid": ".Item.NKJiovVRjaepSOW9" }]
+                "children": [{ "uuid": ".Item.OU9Hay43PfqthDI3" }]
               },
               "sources": [{ "id": "PZO1115", "pages": "39" }],
               "subType": "classFeat",
@@ -2467,7 +2434,7 @@
               "pf1": { "source": "Compendium.pf1.class-abilities.Item.j6ZSm23YrshsdfBt" }
             },
             "sort": 1600000,
-            "_id": "zWQao4KDCtYYmci0",
+            "_id": "nF3rqwMbqtnsZwRK",
             "folder": null
           },
           {
@@ -2487,7 +2454,7 @@
               "associations": { "classes": ["Inquisitor"] },
               "links": {
                 "supplements": [{ "uuid": "Compendium.pf1.buffs.Item.yqdRqkADURTHBvVH" }],
-                "children": [{ "uuid": ".Item.tuUlvYgtqspixlJJ" }]
+                "children": [{ "uuid": ".Item.De0IbIedK13FCxAs" }]
               },
               "sources": [{ "id": "PZO1115", "pages": "39" }],
               "subType": "classFeat",
@@ -2501,7 +2468,7 @@
               "pf1": { "source": "Compendium.pf1.class-abilities.Item.Po86Ft2nHRNpNogi" }
             },
             "sort": 1700000,
-            "_id": "rU6ZRhGq6SYUzhd8",
+            "_id": "Cke22kKpJC86Gjn7",
             "folder": null
           },
           {
@@ -2521,7 +2488,7 @@
               "associations": { "classes": ["Inquisitor"] },
               "links": {
                 "supplements": [{ "uuid": "Compendium.pf1.buffs.Item.WrxSFJ9MJvFO3Mmu" }],
-                "children": [{ "uuid": ".Item.qatHUxE3iyR7MYRm" }]
+                "children": [{ "uuid": ".Item.GQbKQxHfyCuiiejI" }]
               },
               "sources": [{ "id": "PZO1115", "pages": "39" }],
               "subType": "classFeat",
@@ -2535,7 +2502,7 @@
               "pf1": { "source": "Compendium.pf1.class-abilities.Item.APjE7Cvu9fQFYKca" }
             },
             "sort": 1800000,
-            "_id": "iWWR8Ta8ZTx0NGCV",
+            "_id": "OzbrovpAFeb8pIsa",
             "folder": null
           },
           {
@@ -2555,7 +2522,7 @@
               "associations": { "classes": ["Inquisitor"] },
               "links": {
                 "supplements": [{ "uuid": "Compendium.pf1.buffs.Item.mKqlvosmPK2iAxL4" }],
-                "children": [{ "uuid": ".Item.FMVKGuYjweTJhe5n" }]
+                "children": [{ "uuid": ".Item.JTu9Rtz0Wzs3DqfP" }]
               },
               "sources": [{ "id": "PZO1115", "pages": "39" }],
               "subType": "classFeat",
@@ -2569,14 +2536,14 @@
               "pf1": { "source": "Compendium.pf1.class-abilities.Item.asMZBthOLKiIF4bM" }
             },
             "sort": 1900000,
-            "_id": "dSJ2gufqNNPwjjTR",
+            "_id": "2Prv8tD3njrrB25p",
             "folder": null
           },
           {
             "_stats": {
-              "compendiumSource": "Compendium.pf1.class-abilities.Item.yta6JuJRGAR0UEE7"
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.b7fTc7fndOIx7jbI"
             },
-            "name": "Resiliency (Judgment)",
+            "name": "Healing (Judgment)",
             "system": {
               "actions": {
                 "L2HwkwRFl0rDBq9I": {
@@ -2588,8 +2555,8 @@
               },
               "associations": { "classes": ["Inquisitor"] },
               "links": {
-                "supplements": [{ "uuid": "Compendium.pf1.buffs.Item.cA2R9j90XCY3mRvl" }],
-                "children": [{ "uuid": ".Item.rckz8KVp8lLd6u0s" }]
+                "supplements": [{ "uuid": "Compendium.pf1.buffs.Item.hzu5SyhALN2TBoAe" }],
+                "children": [{ "uuid": ".Item.PSspoIZf9ALhxMMY" }]
               },
               "sources": [{ "id": "PZO1115", "pages": "39" }],
               "subType": "classFeat",
@@ -2600,10 +2567,10 @@
             "type": "feat",
             "effects": [],
             "flags": {
-              "pf1": { "source": "Compendium.pf1.class-abilities.Item.yta6JuJRGAR0UEE7" }
+              "pf1": { "source": "Compendium.pf1.class-abilities.Item.b7fTc7fndOIx7jbI" }
             },
-            "sort": 2000000,
-            "_id": "PBQojUsqHHVjfZe5",
+            "sort": 1500000,
+            "_id": "nC3nUpZVw9Frge3n",
             "folder": null
           },
           {
@@ -2623,7 +2590,7 @@
               "associations": { "classes": ["Inquisitor"] },
               "links": {
                 "supplements": [{ "uuid": "Compendium.pf1.buffs.Item.W9TR1oh1KpDxOKr1" }],
-                "children": [{ "uuid": ".Item.GkS53XXNZxcZJJic" }]
+                "children": [{ "uuid": ".Item.4zRUKU3WksHbp4PK" }]
               },
               "sources": [{ "id": "PZO1115", "pages": "39" }],
               "subType": "classFeat",
@@ -2637,7 +2604,7 @@
               "pf1": { "source": "Compendium.pf1.class-abilities.Item.zkcLVRBuqCmo7EKx" }
             },
             "sort": 2100000,
-            "_id": "z0KM7AemKgyB3Dy3",
+            "_id": "ndaPTcVziJKMPSRe",
             "folder": null
           },
           {
@@ -2649,7 +2616,7 @@
               "associations": { "classes": ["Inquisitor"] },
               "links": {
                 "supplements": [{ "uuid": "Compendium.pf1.buffs.Item.kFYQF6YT5GIO5EdP" }],
-                "children": [{ "uuid": ".Item.1cLtBL7tJYC5seL3" }]
+                "children": [{ "uuid": ".Item.YxR2QmX590TioSoX" }]
               },
               "sources": [{ "id": "PZO1115", "pages": "39" }],
               "subType": "classFeat",
@@ -2663,7 +2630,7 @@
               "pf1": { "source": "Compendium.pf1.class-abilities.Item.BNP9ZzsT0hEy2V31" }
             },
             "sort": 2200000,
-            "_id": "3tVnJPxHveIA2FXS",
+            "_id": "ACOOOrzc5up1gegN",
             "folder": null
           },
           {
@@ -2687,7 +2654,7 @@
             "effects": [],
             "flags": { "pf1": { "source": "Compendium.pf1.buffs.Item.gBRAvqqjrLw4Cnhm" } },
             "sort": 0,
-            "_id": "T7RoSpZUlba43FaQ",
+            "_id": "fecbPR5b841VVzx7",
             "folder": null
           },
           {
@@ -2702,7 +2669,7 @@
             "effects": [],
             "flags": { "pf1": { "source": "Compendium.pf1.buffs.Item.hzu5SyhALN2TBoAe" } },
             "sort": 100000,
-            "_id": "DK1Cc2sws83gzlyq",
+            "_id": "PSspoIZf9ALhxMMY",
             "folder": null
           },
           {
@@ -2732,7 +2699,7 @@
             "effects": [],
             "flags": { "pf1": { "source": "Compendium.pf1.buffs.Item.QAL8jtr7BkTSVpXK" } },
             "sort": 200000,
-            "_id": "NKJiovVRjaepSOW9",
+            "_id": "OU9Hay43PfqthDI3",
             "folder": null
           },
           {
@@ -2762,7 +2729,7 @@
             "effects": [],
             "flags": { "pf1": { "source": "Compendium.pf1.buffs.Item.yqdRqkADURTHBvVH" } },
             "sort": 300000,
-            "_id": "tuUlvYgtqspixlJJ",
+            "_id": "De0IbIedK13FCxAs",
             "folder": null
           },
           {
@@ -2792,7 +2759,7 @@
             "effects": [],
             "flags": { "pf1": { "source": "Compendium.pf1.buffs.Item.WrxSFJ9MJvFO3Mmu" } },
             "sort": 400000,
-            "_id": "qatHUxE3iyR7MYRm",
+            "_id": "GQbKQxHfyCuiiejI",
             "folder": null
           },
           {
@@ -2822,7 +2789,7 @@
             "effects": [],
             "flags": { "pf1": { "source": "Compendium.pf1.buffs.Item.mKqlvosmPK2iAxL4" } },
             "sort": 500000,
-            "_id": "FMVKGuYjweTJhe5n",
+            "_id": "JTu9Rtz0Wzs3DqfP",
             "folder": null
           },
           {
@@ -2839,7 +2806,7 @@
             "effects": [],
             "flags": { "pf1": { "source": "Compendium.pf1.buffs.Item.cA2R9j90XCY3mRvl" } },
             "sort": 600000,
-            "_id": "rckz8KVp8lLd6u0s",
+            "_id": "Jbf3jcnrgsdq9N4w",
             "folder": null
           },
           {
@@ -2856,7 +2823,7 @@
             "effects": [],
             "flags": { "pf1": { "source": "Compendium.pf1.buffs.Item.W9TR1oh1KpDxOKr1" } },
             "sort": 700000,
-            "_id": "GkS53XXNZxcZJJic",
+            "_id": "4zRUKU3WksHbp4PK",
             "folder": null
           },
           {
@@ -2871,7 +2838,41 @@
             "effects": [],
             "flags": { "pf1": { "source": "Compendium.pf1.buffs.Item.kFYQF6YT5GIO5EdP" } },
             "sort": 800000,
-            "_id": "1cLtBL7tJYC5seL3",
+            "_id": "YxR2QmX590TioSoX",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.yta6JuJRGAR0UEE7"
+            },
+            "name": "Resiliency (Judgment)",
+            "system": {
+              "actions": {
+                "L2HwkwRFl0rDBq9I": {
+                  "_id": "L2HwkwRFl0rDBq9I",
+                  "activation": { "type": "nonaction", "unchained": { "type": "nonaction" } },
+                  "name": "Use",
+                  "sort": 0
+                }
+              },
+              "associations": { "classes": ["Inquisitor"] },
+              "links": {
+                "supplements": [{ "uuid": "Compendium.pf1.buffs.Item.cA2R9j90XCY3mRvl" }],
+                "children": [{ "uuid": ".Item.Jbf3jcnrgsdq9N4w" }]
+              },
+              "sources": [{ "id": "PZO1115", "pages": "39" }],
+              "subType": "classFeat",
+              "tags": ["Judgement"],
+              "class": "inquisitor",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {
+              "pf1": { "source": "Compendium.pf1.class-abilities.Item.yta6JuJRGAR0UEE7" }
+            },
+            "sort": 2000000,
+            "_id": "4AoOJ4qPPXSpqKH5",
             "folder": null
           },
           {
@@ -2895,31 +2896,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "XCfmYl99PoXNJofT",
-            "sort": 0
-          },
-          {
-            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.iAbIGhm7T2OK9Brt" },
-            "name": "Iron Will",
-            "system": {
-              "changes": {
-                "vafl2kz4": {
-                  "_id": "vafl2kz4",
-                  "formula": "2",
-                  "target": "will",
-                  "type": "untyped"
-                }
-              },
-              "sources": [{ "id": "PZO1110", "pages": "115, 129" }],
-              "subType": "feat",
-              "tags": ["General", "Saving Throw"],
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "folder": null,
-            "flags": {},
-            "_id": "FFo2269mkyMLw9wT",
+            "_id": "yNuR2pu3jnj7gXFX",
             "sort": 0
           },
           {
@@ -2943,7 +2920,31 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "8OhYlVgkt6xek85B",
+            "_id": "cC1bAtdRHyZi6MGk",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.iAbIGhm7T2OK9Brt" },
+            "name": "Iron Will",
+            "system": {
+              "changes": {
+                "vafl2kz4": {
+                  "_id": "vafl2kz4",
+                  "formula": "2",
+                  "target": "will",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "115, 129" }],
+              "subType": "feat",
+              "tags": ["General", "Saving Throw"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "1QNdC5IIkP76oraw",
             "sort": 0
           },
           {
@@ -2967,7 +2968,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "RA9wZIx6of4zGMOg",
+            "_id": "u0GYfMgWd4AgckOU",
             "sort": 0
           },
           {
@@ -3002,51 +3003,7 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "L3rgXhevlNOSPEUp",
-            "sort": 0
-          },
-          {
-            "_stats": { "compendiumSource": "Compendium.pf1.items.Item.lIPJinb2J7sEB0Ng" },
-            "folder": "LhglMTF2yolyMayX",
-            "name": "Headband of Inspired Wisdom +2",
-            "system": {
-              "armor": {
-                "material": {
-                  "base": { "value": "leather" },
-                  "normal": { "value": "leather" },
-                  "addon": []
-                },
-                "alignments": {}
-              },
-              "aura": { "school": "trs" },
-              "changes": {
-                "5rvzw2j6": { "_id": "5rvzw2j6", "formula": "2", "target": "wis", "type": "enh" }
-              },
-              "cl": 8,
-              "creation": {
-                "cost": { "unit": "gp", "value": 2000 },
-                "description": "<p>@UUID[Compendium.pf1.feats.Item.tD76K8QGco9scT0r]{Craft Wondrous Item}, @UUID[Compendium.pf1.spells.Item.b9ggsagifzk4fwut]{owl's wisdom}</p>"
-              },
-              "equipmentSubtype": "lightArmor",
-              "equipped": true,
-              "hp": { "base": 10 },
-              "price": { "base": 4000, "unit": "gp" },
-              "quantity": 1,
-              "resizing": true,
-              "slot": "headband",
-              "sources": [
-                { "id": "PZO1123", "pages": "250" },
-                { "id": "PZO1110", "pages": "516" }
-              ],
-              "subType": "wondrous",
-              "unidentified": { "name": "Headband", "price": { "base": 0, "unit": "gp" } },
-              "weight": { "value": 1 },
-              "mods": {}
-            },
-            "type": "equipment",
-            "effects": [],
-            "flags": {},
-            "_id": "QpehpjpVGKYVely2",
+            "_id": "cuxwz9191i5lWsV3",
             "sort": 0
           },
           {
@@ -3095,7 +3052,51 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "Ys9TyVZI3MRsgHN5",
+            "_id": "BWuGWiZM9vfGlLsH",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.items.Item.lIPJinb2J7sEB0Ng" },
+            "folder": "LhglMTF2yolyMayX",
+            "name": "Headband of Inspired Wisdom +2",
+            "system": {
+              "armor": {
+                "material": {
+                  "base": { "value": "leather" },
+                  "normal": { "value": "leather" },
+                  "addon": []
+                },
+                "alignments": {}
+              },
+              "aura": { "school": "trs" },
+              "changes": {
+                "5rvzw2j6": { "_id": "5rvzw2j6", "formula": "2", "target": "wis", "type": "enh" }
+              },
+              "cl": 8,
+              "creation": {
+                "cost": { "unit": "gp", "value": 2000 },
+                "description": "<p>@UUID[Compendium.pf1.feats.Item.tD76K8QGco9scT0r]{Craft Wondrous Item}, @UUID[Compendium.pf1.spells.Item.b9ggsagifzk4fwut]{owl's wisdom}</p>"
+              },
+              "equipmentSubtype": "lightArmor",
+              "equipped": true,
+              "hp": { "base": 10 },
+              "price": { "base": 4000, "unit": "gp" },
+              "quantity": 1,
+              "resizing": true,
+              "slot": "headband",
+              "sources": [
+                { "id": "PZO1123", "pages": "250" },
+                { "id": "PZO1110", "pages": "516" }
+              ],
+              "subType": "wondrous",
+              "unidentified": { "name": "Headband", "price": { "base": 0, "unit": "gp" } },
+              "weight": { "value": 1 },
+              "mods": {}
+            },
+            "type": "equipment",
+            "effects": [],
+            "flags": {},
+            "_id": "FIsyyckCXL9MRbaR",
             "sort": 0
           },
           {
@@ -3126,7 +3127,7 @@
             "type": "buff",
             "effects": [],
             "flags": {},
-            "_id": "WmCGKazDo2gdmvp9",
+            "_id": "9F6aPzMQzPaXAPK3",
             "sort": 0
           },
           {
@@ -3151,7 +3152,7 @@
             "type": "buff",
             "effects": [],
             "flags": {},
-            "_id": "H93lQAoEoNu1Az31",
+            "_id": "0WtZYaTNgVFTwWlE",
             "sort": 0
           }
         ],
@@ -3217,14 +3218,15 @@
           "perform": -1,
           "bluff": -1
         }
-      }
+      },
+      "attacks": {}
     },
     "conditions": {
       "actor": {
         "name": "human-inquisitor-6 [conditions]",
         "type": "character",
         "folder": "GuYuyoqdabfe4xZV",
-        "_id": "st55dFzp7BjocqSv",
+        "_id": "PM69zDoL6pXBTIQG",
         "system": {
           "abilities": {
             "str": { "value": 14 },
@@ -3267,7 +3269,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "IWbGPqu7qwEPWsfN",
+            "_id": "Hz47yf0bmpVaIRAw",
             "folder": null,
             "sort": 0
           },
@@ -3288,7 +3290,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "GUQMiNGj9YOUh3aC",
+            "_id": "0AVjMK6rElsccqLs",
             "folder": null,
             "sort": 0
           },
@@ -3310,7 +3312,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "hvMU7A3tYopbAiYM",
+            "_id": "gMpgSpfGJiNeU5yu",
             "folder": null,
             "sort": 0
           },
@@ -3331,7 +3333,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "tZRegvDPIFqx7Rxw",
+            "_id": "jb4SvJfACjLtvABk",
             "folder": null,
             "sort": 0
           },
@@ -3352,7 +3354,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "uV96G4inES88hJa3",
+            "_id": "NWv97FzAwuLSOXTV",
             "folder": null,
             "sort": 0
           },
@@ -3373,7 +3375,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "t0JA0mZZAYMwRGGD",
+            "_id": "7aHTCe3NUTV3n30h",
             "folder": null,
             "sort": 0
           },
@@ -3414,7 +3416,7 @@
             "type": "race",
             "effects": [],
             "flags": {},
-            "_id": "JuDzwQVbW2Egq3BP",
+            "_id": "YFavm0T4ldPHLW9C",
             "sort": 0
           },
           {
@@ -3511,25 +3513,25 @@
               "pf1": {
                 "links": {
                   "classAssociations": {
-                    "hdkgadMJyu4dqwSc": 1,
-                    "u2QdykIn2VrR5rYn": 1,
-                    "Js7WDspTe4CBilTK": 1,
-                    "O1SKZ50V2EC4QZq9": 1,
-                    "9X18iXzcLteWUHbk": 2,
-                    "KfMpAXZg1yYq46rK": 2,
-                    "ZelfIuo0ckaJvvlK": 3,
-                    "QqLWKGM6LpmCd1Uy": 3,
-                    "0Z0j9o7C3fIwxARO": 5,
-                    "jORE2IE7gc7SWbcF": 5,
-                    "j4udJ754OdeJPRcs": 5,
-                    "qSb2B3Dea1dcYPTa": 2,
-                    "gG9lKirmyfnKYfOo": 1,
-                    "5X1Ys9XkcSLgogCt": 1
+                    "1HPI85lVjt3BIchI": 1,
+                    "fwIWX5o8jnBqhC28": 1,
+                    "41qK49CN3bWDvRVX": 1,
+                    "haF74V6xu3UNIjvx": 1,
+                    "eqKupFpoFIXKJ0SI": 1,
+                    "iKYS0TY6iWYT4O2e": 1,
+                    "YYueN7mPs1uA4xrM": 2,
+                    "WJHsoLbzJXN0DTAw": 2,
+                    "7JTmcA65FE9zDb8g": 2,
+                    "qAmEhpDnCN4OBUfr": 3,
+                    "wpZzIqYr7shU7Zfh": 3,
+                    "GRPqom7yrfkzhJbf": 5,
+                    "b2JX2sBoz7fiStPQ": 5,
+                    "h2wJbKbcwR2Bdc69": 5
                   }
                 }
               }
             },
-            "_id": "uGHaCEaPJEPn9Xlh",
+            "_id": "bwfLbx5oueQo5bDV",
             "sort": 0
           },
           {
@@ -3565,12 +3567,31 @@
               },
               "restrictions": []
             },
-            "_id": "8EiXeZuLma9uH9ns",
+            "_id": "Cpo7wfjFYjBlCcHe",
             "effects": [],
             "folder": null,
             "sort": 0,
             "flags": {},
             "_stats": { "compendiumSource": null }
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.dMtxCqoMLtD9nEjU"
+            },
+            "name": "Domain (INQ)",
+            "system": {
+              "associations": { "classes": ["Inquisitor"] },
+              "sources": [{ "id": "PZO1115", "pages": "38" }],
+              "subType": "classFeat",
+              "class": "inquisitor",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 100000,
+            "_id": "1HPI85lVjt3BIchI",
+            "folder": null
           },
           {
             "_stats": {
@@ -3604,15 +3625,15 @@
                   { "uuid": "Compendium.pf1.class-abilities.Item.BNP9ZzsT0hEy2V31" }
                 ],
                 "children": [
-                  { "uuid": ".Item.wfxkB5eqgrEPv7wr" },
-                  { "uuid": ".Item.jTuPOznUJY0uNaXe" },
-                  { "uuid": ".Item.pE5uQqoqojHh9vi3" },
-                  { "uuid": ".Item.wdeGvTv1wfEP2gvL" },
-                  { "uuid": ".Item.PsP8zPGAm2SIqXv8" },
-                  { "uuid": ".Item.PeFPsWZd4l5liUrc" },
-                  { "uuid": ".Item.py633nwW4fsmFt22" },
-                  { "uuid": ".Item.8jcUYM9G35dE7hP8" },
-                  { "uuid": ".Item.zQbbbWv6K3sigZ3t" }
+                  { "uuid": ".Item.wpOILs6pcnOOgjOX" },
+                  { "uuid": ".Item.56YLCTN7GbkzMeEY" },
+                  { "uuid": ".Item.qkQshJEkGE8io4Dx" },
+                  { "uuid": ".Item.VI42ppIRcc0ZuPjs" },
+                  { "uuid": ".Item.hQC0TsOS0kXMnLcV" },
+                  { "uuid": ".Item.GKtJ4bSFgZaBnVzP" },
+                  { "uuid": ".Item.wr2aqmkCj8XtDsd9" },
+                  { "uuid": ".Item.GWa9hE8IQahZO99g" },
+                  { "uuid": ".Item.7JwSr6WlDDVg8ghh" }
                 ]
               },
               "sources": [{ "id": "PZO1115", "pages": "38" }],
@@ -3626,7 +3647,7 @@
             "effects": [],
             "flags": {},
             "sort": 200000,
-            "_id": "hdkgadMJyu4dqwSc",
+            "_id": "fwIWX5o8jnBqhC28",
             "folder": null
           },
           {
@@ -3646,7 +3667,7 @@
             "effects": [],
             "flags": {},
             "sort": 300000,
-            "_id": "u2QdykIn2VrR5rYn",
+            "_id": "41qK49CN3bWDvRVX",
             "folder": null
           },
           {
@@ -3680,7 +3701,32 @@
             "effects": [],
             "flags": {},
             "sort": 400000,
-            "_id": "Js7WDspTe4CBilTK",
+            "_id": "haF74V6xu3UNIjvx",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.RaFl9SpbAlXqhsDk"
+            },
+            "name": "Orisons",
+            "system": {
+              "associations": {
+                "classes": ["Cleric", "Druid", "Inquisitor", "Oracle", "Shaman", "Warpriest"]
+              },
+              "sources": [
+                { "id": "PZO1110", "pages": "38, 48" },
+                { "id": "PZO1115", "pages": "38, 42" },
+                { "id": "PZO1129", "pages": "35, 60" }
+              ],
+              "subType": "classFeat",
+              "class": "inquisitor",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 500000,
+            "_id": "eqKupFpoFIXKJ0SI",
             "folder": null
           },
           {
@@ -3699,7 +3745,40 @@
             "effects": [],
             "flags": {},
             "sort": 600000,
-            "_id": "O1SKZ50V2EC4QZq9",
+            "_id": "iKYS0TY6iWYT4O2e",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.r8wPs0bB3WhOLxbX"
+            },
+            "name": "Track",
+            "system": {
+              "abilityType": "ex",
+              "associations": {
+                "classes": ["Hunter", "Inquisitor", "Ranger", "Shifter", "Slayer"]
+              },
+              "contextNotes": {
+                "Qw42GVgB5ETwjSiM": {
+                  "target": "skill.survival",
+                  "text": "+[[max(1, floor(@class.unlevel / 2))]] to follow tracks"
+                }
+              },
+              "sources": [
+                { "id": "PZO1110", "pages": "64" },
+                { "id": "PZO1115", "pages": "40" },
+                { "id": "PZO1129", "pages": "28, 53" },
+                { "id": "PZO1140", "pages": "27" }
+              ],
+              "subType": "classFeat",
+              "class": "inquisitor",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 700000,
+            "_id": "YYueN7mPs1uA4xrM",
             "folder": null
           },
           {
@@ -3727,7 +3806,7 @@
             "effects": [],
             "flags": {},
             "sort": 800000,
-            "_id": "9X18iXzcLteWUHbk",
+            "_id": "WJHsoLbzJXN0DTAw",
             "folder": null
           },
           {
@@ -3758,7 +3837,7 @@
             "effects": [],
             "flags": {},
             "sort": 900000,
-            "_id": "KfMpAXZg1yYq46rK",
+            "_id": "7JTmcA65FE9zDb8g",
             "folder": null
           },
           {
@@ -3778,7 +3857,7 @@
             "effects": [],
             "flags": {},
             "sort": 1000000,
-            "_id": "ZelfIuo0ckaJvvlK",
+            "_id": "qAmEhpDnCN4OBUfr",
             "folder": null
           },
           {
@@ -3805,7 +3884,7 @@
             "effects": [],
             "flags": {},
             "sort": 1100000,
-            "_id": "QqLWKGM6LpmCd1Uy",
+            "_id": "wpZzIqYr7shU7Zfh",
             "folder": null
           },
           {
@@ -3843,7 +3922,7 @@
             "effects": [],
             "flags": {},
             "sort": 1200000,
-            "_id": "0Z0j9o7C3fIwxARO",
+            "_id": "GRPqom7yrfkzhJbf",
             "folder": null
           },
           {
@@ -3876,7 +3955,7 @@
             "effects": [],
             "flags": {},
             "sort": 1300000,
-            "_id": "jORE2IE7gc7SWbcF",
+            "_id": "b2JX2sBoz7fiStPQ",
             "folder": null
           },
           {
@@ -3909,84 +3988,7 @@
             "effects": [],
             "flags": {},
             "sort": 1400000,
-            "_id": "j4udJ754OdeJPRcs",
-            "folder": null
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1.class-abilities.Item.r8wPs0bB3WhOLxbX"
-            },
-            "name": "Track",
-            "system": {
-              "abilityType": "ex",
-              "associations": {
-                "classes": ["Hunter", "Inquisitor", "Ranger", "Shifter", "Slayer"]
-              },
-              "contextNotes": {
-                "Qw42GVgB5ETwjSiM": {
-                  "target": "skill.survival",
-                  "text": "+[[max(1, floor(@class.unlevel / 2))]] to follow tracks"
-                }
-              },
-              "sources": [
-                { "id": "PZO1110", "pages": "64" },
-                { "id": "PZO1115", "pages": "40" },
-                { "id": "PZO1129", "pages": "28, 53" },
-                { "id": "PZO1140", "pages": "27" }
-              ],
-              "subType": "classFeat",
-              "class": "inquisitor",
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "flags": {},
-            "sort": 700000,
-            "_id": "qSb2B3Dea1dcYPTa",
-            "folder": null
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1.class-abilities.Item.RaFl9SpbAlXqhsDk"
-            },
-            "name": "Orisons",
-            "system": {
-              "associations": {
-                "classes": ["Cleric", "Druid", "Inquisitor", "Oracle", "Shaman", "Warpriest"]
-              },
-              "sources": [
-                { "id": "PZO1110", "pages": "38, 48" },
-                { "id": "PZO1115", "pages": "38, 42" },
-                { "id": "PZO1129", "pages": "35, 60" }
-              ],
-              "subType": "classFeat",
-              "class": "inquisitor",
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "flags": {},
-            "sort": 500000,
-            "_id": "gG9lKirmyfnKYfOo",
-            "folder": null
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1.class-abilities.Item.dMtxCqoMLtD9nEjU"
-            },
-            "name": "Domain (INQ)",
-            "system": {
-              "associations": { "classes": ["Inquisitor"] },
-              "sources": [{ "id": "PZO1115", "pages": "38" }],
-              "subType": "classFeat",
-              "class": "inquisitor",
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "flags": {},
-            "sort": 100000,
-            "_id": "5X1Ys9XkcSLgogCt",
+            "_id": "h2wJbKbcwR2Bdc69",
             "folder": null
           },
           {
@@ -4006,7 +4008,7 @@
               "associations": { "classes": ["Inquisitor"] },
               "links": {
                 "supplements": [{ "uuid": "Compendium.pf1.buffs.Item.gBRAvqqjrLw4Cnhm" }],
-                "children": [{ "uuid": ".Item.oPkqq9c7WmsU05G5" }]
+                "children": [{ "uuid": ".Item.1bqRKiKDOMi8hKtd" }]
               },
               "sources": [{ "id": "PZO1115", "pages": "39" }],
               "subType": "classFeat",
@@ -4020,7 +4022,7 @@
               "pf1": { "source": "Compendium.pf1.class-abilities.Item.LaSR2WkVuqgG1C6L" }
             },
             "sort": 1400000,
-            "_id": "wfxkB5eqgrEPv7wr",
+            "_id": "wpOILs6pcnOOgjOX",
             "folder": null
           },
           {
@@ -4040,7 +4042,7 @@
               "associations": { "classes": ["Inquisitor"] },
               "links": {
                 "supplements": [{ "uuid": "Compendium.pf1.buffs.Item.hzu5SyhALN2TBoAe" }],
-                "children": [{ "uuid": ".Item.wCP9bjVOhZq5gkwG" }]
+                "children": [{ "uuid": ".Item.flry3EUxzct2Qyr0" }]
               },
               "sources": [{ "id": "PZO1115", "pages": "39" }],
               "subType": "classFeat",
@@ -4054,7 +4056,7 @@
               "pf1": { "source": "Compendium.pf1.class-abilities.Item.b7fTc7fndOIx7jbI" }
             },
             "sort": 1500000,
-            "_id": "jTuPOznUJY0uNaXe",
+            "_id": "56YLCTN7GbkzMeEY",
             "folder": null
           },
           {
@@ -4074,7 +4076,7 @@
               "associations": { "classes": ["Inquisitor"] },
               "links": {
                 "supplements": [{ "uuid": "Compendium.pf1.buffs.Item.QAL8jtr7BkTSVpXK" }],
-                "children": [{ "uuid": ".Item.KTOE8RTalPC1qsPh" }]
+                "children": [{ "uuid": ".Item.STYOzxcwaaCcjJY0" }]
               },
               "sources": [{ "id": "PZO1115", "pages": "39" }],
               "subType": "classFeat",
@@ -4088,7 +4090,7 @@
               "pf1": { "source": "Compendium.pf1.class-abilities.Item.j6ZSm23YrshsdfBt" }
             },
             "sort": 1600000,
-            "_id": "pE5uQqoqojHh9vi3",
+            "_id": "qkQshJEkGE8io4Dx",
             "folder": null
           },
           {
@@ -4108,7 +4110,7 @@
               "associations": { "classes": ["Inquisitor"] },
               "links": {
                 "supplements": [{ "uuid": "Compendium.pf1.buffs.Item.yqdRqkADURTHBvVH" }],
-                "children": [{ "uuid": ".Item.wPrcYCvxEoSoYxjK" }]
+                "children": [{ "uuid": ".Item.01v1OhkmcynG2wy6" }]
               },
               "sources": [{ "id": "PZO1115", "pages": "39" }],
               "subType": "classFeat",
@@ -4122,7 +4124,7 @@
               "pf1": { "source": "Compendium.pf1.class-abilities.Item.Po86Ft2nHRNpNogi" }
             },
             "sort": 1700000,
-            "_id": "wdeGvTv1wfEP2gvL",
+            "_id": "VI42ppIRcc0ZuPjs",
             "folder": null
           },
           {
@@ -4142,7 +4144,7 @@
               "associations": { "classes": ["Inquisitor"] },
               "links": {
                 "supplements": [{ "uuid": "Compendium.pf1.buffs.Item.WrxSFJ9MJvFO3Mmu" }],
-                "children": [{ "uuid": ".Item.yAlnM9FmEcPcdu5o" }]
+                "children": [{ "uuid": ".Item.pBXLA6FVw6Kgi6um" }]
               },
               "sources": [{ "id": "PZO1115", "pages": "39" }],
               "subType": "classFeat",
@@ -4156,7 +4158,7 @@
               "pf1": { "source": "Compendium.pf1.class-abilities.Item.APjE7Cvu9fQFYKca" }
             },
             "sort": 1800000,
-            "_id": "PsP8zPGAm2SIqXv8",
+            "_id": "hQC0TsOS0kXMnLcV",
             "folder": null
           },
           {
@@ -4176,7 +4178,7 @@
               "associations": { "classes": ["Inquisitor"] },
               "links": {
                 "supplements": [{ "uuid": "Compendium.pf1.buffs.Item.mKqlvosmPK2iAxL4" }],
-                "children": [{ "uuid": ".Item.n1FckBZkt5FNW5sq" }]
+                "children": [{ "uuid": ".Item.teWuOmuBVLN1LZ9R" }]
               },
               "sources": [{ "id": "PZO1115", "pages": "39" }],
               "subType": "classFeat",
@@ -4190,7 +4192,7 @@
               "pf1": { "source": "Compendium.pf1.class-abilities.Item.asMZBthOLKiIF4bM" }
             },
             "sort": 1900000,
-            "_id": "PeFPsWZd4l5liUrc",
+            "_id": "GKtJ4bSFgZaBnVzP",
             "folder": null
           },
           {
@@ -4210,7 +4212,7 @@
               "associations": { "classes": ["Inquisitor"] },
               "links": {
                 "supplements": [{ "uuid": "Compendium.pf1.buffs.Item.cA2R9j90XCY3mRvl" }],
-                "children": [{ "uuid": ".Item.V53qQN1Ocfeani2F" }]
+                "children": [{ "uuid": ".Item.o2jVv6unzgc6UAZp" }]
               },
               "sources": [{ "id": "PZO1115", "pages": "39" }],
               "subType": "classFeat",
@@ -4224,7 +4226,7 @@
               "pf1": { "source": "Compendium.pf1.class-abilities.Item.yta6JuJRGAR0UEE7" }
             },
             "sort": 2000000,
-            "_id": "py633nwW4fsmFt22",
+            "_id": "wr2aqmkCj8XtDsd9",
             "folder": null
           },
           {
@@ -4244,7 +4246,7 @@
               "associations": { "classes": ["Inquisitor"] },
               "links": {
                 "supplements": [{ "uuid": "Compendium.pf1.buffs.Item.W9TR1oh1KpDxOKr1" }],
-                "children": [{ "uuid": ".Item.z2HTWXZyoCRBTU4G" }]
+                "children": [{ "uuid": ".Item.RLNrD1RajKPsFFPe" }]
               },
               "sources": [{ "id": "PZO1115", "pages": "39" }],
               "subType": "classFeat",
@@ -4258,7 +4260,33 @@
               "pf1": { "source": "Compendium.pf1.class-abilities.Item.zkcLVRBuqCmo7EKx" }
             },
             "sort": 2100000,
-            "_id": "8jcUYM9G35dE7hP8",
+            "_id": "GWa9hE8IQahZO99g",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.BNP9ZzsT0hEy2V31"
+            },
+            "name": "Smiting",
+            "system": {
+              "associations": { "classes": ["Inquisitor"] },
+              "links": {
+                "supplements": [{ "uuid": "Compendium.pf1.buffs.Item.kFYQF6YT5GIO5EdP" }],
+                "children": [{ "uuid": ".Item.p1JPbqdcswRozwIZ" }]
+              },
+              "sources": [{ "id": "PZO1115", "pages": "39" }],
+              "subType": "classFeat",
+              "tags": ["Judgement"],
+              "class": "inquisitor",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {
+              "pf1": { "source": "Compendium.pf1.class-abilities.Item.BNP9ZzsT0hEy2V31" }
+            },
+            "sort": 2200000,
+            "_id": "7JwSr6WlDDVg8ghh",
             "folder": null
           },
           {
@@ -4282,7 +4310,7 @@
             "effects": [],
             "flags": { "pf1": { "source": "Compendium.pf1.buffs.Item.gBRAvqqjrLw4Cnhm" } },
             "sort": 0,
-            "_id": "oPkqq9c7WmsU05G5",
+            "_id": "1bqRKiKDOMi8hKtd",
             "folder": null
           },
           {
@@ -4297,7 +4325,7 @@
             "effects": [],
             "flags": { "pf1": { "source": "Compendium.pf1.buffs.Item.hzu5SyhALN2TBoAe" } },
             "sort": 100000,
-            "_id": "wCP9bjVOhZq5gkwG",
+            "_id": "flry3EUxzct2Qyr0",
             "folder": null
           },
           {
@@ -4327,7 +4355,7 @@
             "effects": [],
             "flags": { "pf1": { "source": "Compendium.pf1.buffs.Item.QAL8jtr7BkTSVpXK" } },
             "sort": 200000,
-            "_id": "KTOE8RTalPC1qsPh",
+            "_id": "STYOzxcwaaCcjJY0",
             "folder": null
           },
           {
@@ -4357,112 +4385,7 @@
             "effects": [],
             "flags": { "pf1": { "source": "Compendium.pf1.buffs.Item.yqdRqkADURTHBvVH" } },
             "sort": 300000,
-            "_id": "wPrcYCvxEoSoYxjK",
-            "folder": null
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1.class-abilities.Item.BNP9ZzsT0hEy2V31"
-            },
-            "name": "Smiting",
-            "system": {
-              "associations": { "classes": ["Inquisitor"] },
-              "links": {
-                "supplements": [{ "uuid": "Compendium.pf1.buffs.Item.kFYQF6YT5GIO5EdP" }],
-                "children": [{ "uuid": ".Item.4eeMYBhoJrjoKydN" }]
-              },
-              "sources": [{ "id": "PZO1115", "pages": "39" }],
-              "subType": "classFeat",
-              "tags": ["Judgement"],
-              "class": "inquisitor",
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "flags": {
-              "pf1": { "source": "Compendium.pf1.class-abilities.Item.BNP9ZzsT0hEy2V31" }
-            },
-            "sort": 2200000,
-            "_id": "zQbbbWv6K3sigZ3t",
-            "folder": null
-          },
-          {
-            "_stats": { "compendiumSource": "Compendium.pf1.buffs.Item.mKqlvosmPK2iAxL4" },
-            "name": "Purity",
-            "system": {
-              "changes": {
-                "HjSnWCEe": {
-                  "_id": "HjSnWCEe",
-                  "formula": "1 + floor(@item.level / 5)",
-                  "target": "allSavingThrows",
-                  "type": "sacred"
-                }
-              },
-              "contextNotes": {
-                "ES8sjo0Eowtq67wy": {
-                  "target": "allSavingThrows",
-                  "text": "+[[if(gte(@item.level, 10), (1 + floor(@item.level / 5)))] against curses, diseases, and poisons."
-                }
-              },
-              "duration": { "units": "combat" },
-              "level": 1,
-              "sources": [{ "id": "PZO1115", "pages": "39" }],
-              "subType": "feat"
-            },
-            "type": "buff",
-            "effects": [],
-            "flags": { "pf1": { "source": "Compendium.pf1.buffs.Item.mKqlvosmPK2iAxL4" } },
-            "sort": 500000,
-            "_id": "n1FckBZkt5FNW5sq",
-            "folder": null
-          },
-          {
-            "_stats": { "compendiumSource": "Compendium.pf1.buffs.Item.cA2R9j90XCY3mRvl" },
-            "name": "Resiliency",
-            "system": {
-              "dr": [{ "formula": "1 + floor(@item.level / 5)", "types": ["magic"] }],
-              "duration": { "units": "combat" },
-              "level": 1,
-              "sources": [{ "id": "PZO1115", "pages": "39" }],
-              "subType": "feat"
-            },
-            "type": "buff",
-            "effects": [],
-            "flags": { "pf1": { "source": "Compendium.pf1.buffs.Item.cA2R9j90XCY3mRvl" } },
-            "sort": 600000,
-            "_id": "V53qQN1Ocfeani2F",
-            "folder": null
-          },
-          {
-            "_stats": { "compendiumSource": "Compendium.pf1.buffs.Item.W9TR1oh1KpDxOKr1" },
-            "name": "Resistance",
-            "system": {
-              "duration": { "units": "combat" },
-              "eres": [{ "formula": "(1 + floor(@item.level / 3)) * 2", "types": [] }],
-              "level": 1,
-              "sources": [{ "id": "PZO1115", "pages": "39" }],
-              "subType": "feat"
-            },
-            "type": "buff",
-            "effects": [],
-            "flags": { "pf1": { "source": "Compendium.pf1.buffs.Item.W9TR1oh1KpDxOKr1" } },
-            "sort": 700000,
-            "_id": "z2HTWXZyoCRBTU4G",
-            "folder": null
-          },
-          {
-            "_stats": { "compendiumSource": "Compendium.pf1.buffs.Item.kFYQF6YT5GIO5EdP" },
-            "name": "Smiting",
-            "system": {
-              "duration": { "units": "combat" },
-              "sources": [{ "id": "PZO1115", "pages": "39" }],
-              "subType": "feat"
-            },
-            "type": "buff",
-            "effects": [],
-            "flags": { "pf1": { "source": "Compendium.pf1.buffs.Item.kFYQF6YT5GIO5EdP" } },
-            "sort": 800000,
-            "_id": "4eeMYBhoJrjoKydN",
+            "_id": "01v1OhkmcynG2wy6",
             "folder": null
           },
           {
@@ -4492,7 +4415,86 @@
             "effects": [],
             "flags": { "pf1": { "source": "Compendium.pf1.buffs.Item.WrxSFJ9MJvFO3Mmu" } },
             "sort": 400000,
-            "_id": "yAlnM9FmEcPcdu5o",
+            "_id": "pBXLA6FVw6Kgi6um",
+            "folder": null
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.buffs.Item.mKqlvosmPK2iAxL4" },
+            "name": "Purity",
+            "system": {
+              "changes": {
+                "HjSnWCEe": {
+                  "_id": "HjSnWCEe",
+                  "formula": "1 + floor(@item.level / 5)",
+                  "target": "allSavingThrows",
+                  "type": "sacred"
+                }
+              },
+              "contextNotes": {
+                "ES8sjo0Eowtq67wy": {
+                  "target": "allSavingThrows",
+                  "text": "+[[if(gte(@item.level, 10), (1 + floor(@item.level / 5)))] against curses, diseases, and poisons."
+                }
+              },
+              "duration": { "units": "combat" },
+              "level": 1,
+              "sources": [{ "id": "PZO1115", "pages": "39" }],
+              "subType": "feat"
+            },
+            "type": "buff",
+            "effects": [],
+            "flags": { "pf1": { "source": "Compendium.pf1.buffs.Item.mKqlvosmPK2iAxL4" } },
+            "sort": 500000,
+            "_id": "teWuOmuBVLN1LZ9R",
+            "folder": null
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.buffs.Item.cA2R9j90XCY3mRvl" },
+            "name": "Resiliency",
+            "system": {
+              "dr": [{ "formula": "1 + floor(@item.level / 5)", "types": ["magic"] }],
+              "duration": { "units": "combat" },
+              "level": 1,
+              "sources": [{ "id": "PZO1115", "pages": "39" }],
+              "subType": "feat"
+            },
+            "type": "buff",
+            "effects": [],
+            "flags": { "pf1": { "source": "Compendium.pf1.buffs.Item.cA2R9j90XCY3mRvl" } },
+            "sort": 600000,
+            "_id": "o2jVv6unzgc6UAZp",
+            "folder": null
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.buffs.Item.W9TR1oh1KpDxOKr1" },
+            "name": "Resistance",
+            "system": {
+              "duration": { "units": "combat" },
+              "eres": [{ "formula": "(1 + floor(@item.level / 3)) * 2", "types": [] }],
+              "level": 1,
+              "sources": [{ "id": "PZO1115", "pages": "39" }],
+              "subType": "feat"
+            },
+            "type": "buff",
+            "effects": [],
+            "flags": { "pf1": { "source": "Compendium.pf1.buffs.Item.W9TR1oh1KpDxOKr1" } },
+            "sort": 700000,
+            "_id": "RLNrD1RajKPsFFPe",
+            "folder": null
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.buffs.Item.kFYQF6YT5GIO5EdP" },
+            "name": "Smiting",
+            "system": {
+              "duration": { "units": "combat" },
+              "sources": [{ "id": "PZO1115", "pages": "39" }],
+              "subType": "feat"
+            },
+            "type": "buff",
+            "effects": [],
+            "flags": { "pf1": { "source": "Compendium.pf1.buffs.Item.kFYQF6YT5GIO5EdP" } },
+            "sort": 800000,
+            "_id": "p1JPbqdcswRozwIZ",
             "folder": null
           },
           {
@@ -4516,7 +4518,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "DAotV6yLPC0RaOQU",
+            "_id": "xtBKNCQHhLfkQsWJ",
             "sort": 0
           },
           {
@@ -4540,7 +4542,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "8DjM6lz6l0sMX5Gu",
+            "_id": "n6BBD3jFLaOTmGxq",
             "sort": 0
           },
           {
@@ -4564,7 +4566,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "LIAu8b0tmbPbWPYP",
+            "_id": "gwUlj0V0SctLCDpV",
             "sort": 0
           },
           {
@@ -4588,7 +4590,86 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "GcJR14hVADPnHrBN",
+            "_id": "9GLMkFK2HWqsq0JG",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.armors-and-shields.Item.5TzaS38RPAx1oj9p"
+            },
+            "folder": "33jGfHlDL34jvwnX",
+            "name": "Breastplate",
+            "system": {
+              "armor": {
+                "acp": 4,
+                "dex": 3,
+                "material": { "base": { "value": "steel" }, "addon": [] },
+                "value": 6,
+                "enh": 1,
+                "alignments": {}
+              },
+              "baseTypes": ["Breastplate"],
+              "equipmentSubtype": "mediumArmor",
+              "equipped": true,
+              "hardness": 10,
+              "hp": { "base": 30 },
+              "price": { "base": 200, "unit": "gp" },
+              "quantity": 1,
+              "slot": "armor",
+              "sources": [{ "id": "PZO1110", "pages": "150, 151" }],
+              "spellFailure": 25,
+              "subType": "armor",
+              "weight": { "value": 30 },
+              "mods": {}
+            },
+            "type": "equipment",
+            "effects": [],
+            "flags": {},
+            "_id": "NEN9qZNcY28E1GLR",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.items.Item.lIPJinb2J7sEB0Ng" },
+            "folder": "LhglMTF2yolyMayX",
+            "name": "Headband of Inspired Wisdom +2",
+            "system": {
+              "armor": {
+                "material": {
+                  "base": { "value": "leather" },
+                  "normal": { "value": "leather" },
+                  "addon": []
+                },
+                "alignments": {}
+              },
+              "aura": { "school": "trs" },
+              "changes": {
+                "5rvzw2j6": { "_id": "5rvzw2j6", "formula": "2", "target": "wis", "type": "enh" }
+              },
+              "cl": 8,
+              "creation": {
+                "cost": { "unit": "gp", "value": 2000 },
+                "description": "<p>@UUID[Compendium.pf1.feats.Item.tD76K8QGco9scT0r]{Craft Wondrous Item}, @UUID[Compendium.pf1.spells.Item.b9ggsagifzk4fwut]{owl's wisdom}</p>"
+              },
+              "equipmentSubtype": "lightArmor",
+              "equipped": true,
+              "hp": { "base": 10 },
+              "price": { "base": 4000, "unit": "gp" },
+              "quantity": 1,
+              "resizing": true,
+              "slot": "headband",
+              "sources": [
+                { "id": "PZO1123", "pages": "250" },
+                { "id": "PZO1110", "pages": "516" }
+              ],
+              "subType": "wondrous",
+              "unidentified": { "name": "Headband", "price": { "base": 0, "unit": "gp" } },
+              "weight": { "value": 1 },
+              "mods": {}
+            },
+            "type": "equipment",
+            "effects": [],
+            "flags": {},
+            "_id": "ZIDKEnG3nVQkBkVP",
             "sort": 0
           },
           {
@@ -4637,86 +4718,7 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "Y0HVhqpOvQgrUgi4",
-            "sort": 0
-          },
-          {
-            "_stats": { "compendiumSource": "Compendium.pf1.items.Item.lIPJinb2J7sEB0Ng" },
-            "folder": "LhglMTF2yolyMayX",
-            "name": "Headband of Inspired Wisdom +2",
-            "system": {
-              "armor": {
-                "material": {
-                  "base": { "value": "leather" },
-                  "normal": { "value": "leather" },
-                  "addon": []
-                },
-                "alignments": {}
-              },
-              "aura": { "school": "trs" },
-              "changes": {
-                "5rvzw2j6": { "_id": "5rvzw2j6", "formula": "2", "target": "wis", "type": "enh" }
-              },
-              "cl": 8,
-              "creation": {
-                "cost": { "unit": "gp", "value": 2000 },
-                "description": "<p>@UUID[Compendium.pf1.feats.Item.tD76K8QGco9scT0r]{Craft Wondrous Item}, @UUID[Compendium.pf1.spells.Item.b9ggsagifzk4fwut]{owl's wisdom}</p>"
-              },
-              "equipmentSubtype": "lightArmor",
-              "equipped": true,
-              "hp": { "base": 10 },
-              "price": { "base": 4000, "unit": "gp" },
-              "quantity": 1,
-              "resizing": true,
-              "slot": "headband",
-              "sources": [
-                { "id": "PZO1123", "pages": "250" },
-                { "id": "PZO1110", "pages": "516" }
-              ],
-              "subType": "wondrous",
-              "unidentified": { "name": "Headband", "price": { "base": 0, "unit": "gp" } },
-              "weight": { "value": 1 },
-              "mods": {}
-            },
-            "type": "equipment",
-            "effects": [],
-            "flags": {},
-            "_id": "VWR7ysJg2WIddpkj",
-            "sort": 0
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1.armors-and-shields.Item.5TzaS38RPAx1oj9p"
-            },
-            "folder": "33jGfHlDL34jvwnX",
-            "name": "Breastplate",
-            "system": {
-              "armor": {
-                "acp": 4,
-                "dex": 3,
-                "material": { "base": { "value": "steel" }, "addon": [] },
-                "value": 6,
-                "enh": 1,
-                "alignments": {}
-              },
-              "baseTypes": ["Breastplate"],
-              "equipmentSubtype": "mediumArmor",
-              "equipped": true,
-              "hardness": 10,
-              "hp": { "base": 30 },
-              "price": { "base": 200, "unit": "gp" },
-              "quantity": 1,
-              "slot": "armor",
-              "sources": [{ "id": "PZO1110", "pages": "150, 151" }],
-              "spellFailure": 25,
-              "subType": "armor",
-              "weight": { "value": 30 },
-              "mods": {}
-            },
-            "type": "equipment",
-            "effects": [],
-            "flags": {},
-            "_id": "JMAmlNtcPWi4Dedx",
+            "_id": "igxe9JwWlvFEkhQB",
             "sort": 0
           }
         ],
@@ -4726,7 +4728,7 @@
             "img": "systems/pf1/icons/conditions/sickened.svg",
             "statuses": ["sickened"],
             "showIcon": 2,
-            "_id": "ZH0wSuMNbJL2xFx7",
+            "_id": "dU7ESTJyGZaJdG9R",
             "type": "base",
             "system": { "changes": [] },
             "disabled": false,
@@ -4750,9 +4752,9 @@
               "coreVersion": "14.370",
               "systemId": "pf1",
               "systemVersion": "11.11",
-              "createdTime": 1795403191775,
-              "modifiedTime": 1795403191775,
-              "lastModifiedBy": "jnrEqpgUjbAxjuLp",
+              "createdTime": 1795407416269,
+              "modifiedTime": 1795407416269,
+              "lastModifiedBy": "7UYomJpxzjJzDpJa",
               "compendiumSource": null,
               "duplicateSource": null,
               "exportSource": null
@@ -4820,7 +4822,8 @@
           "perform": -3,
           "bluff": -3
         }
-      }
+      },
+      "attacks": {}
     }
   }
 }

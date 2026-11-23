@@ -17,7 +17,11 @@
     },
     "items": [
       { "pack": "pf1.items", "name": "Headband of Vast Intelligence +2", "equipped": true },
-      { "pack": "pf1.items", "name": "Ring of Protection +1", "equipped": true }
+      { "pack": "pf1.items", "name": "Ring of Protection +1", "equipped": true },
+      { "pack": "pf1.weapons-and-ammo", "name": "Longbow", "equipped": true },
+      { "pack": "pf1.weapons-and-ammo", "name": "Arrow", "quantity": 20 },
+      { "pack": "pf1.weapons-and-ammo", "name": "Light Crossbow", "equipped": true },
+      { "pack": "pf1.weapons-and-ammo", "name": "Crossbow Bolt", "quantity": 10 }
     ],
     "scenarios": {
       "base": {},
@@ -37,7 +41,7 @@
         "name": "elf-wizard-6 [base]",
         "type": "character",
         "folder": "GuYuyoqdabfe4xZV",
-        "_id": "XUwA0KEvVHSBSuNG",
+        "_id": "48v4ia8bUXUXWH82",
         "system": {
           "abilities": {
             "str": { "value": 8 },
@@ -80,7 +84,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "PqGFTiHckkGdw9pQ",
+            "_id": "PllpkOcv3eAUwEFW",
             "folder": null,
             "sort": 0
           },
@@ -101,7 +105,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "H4DU3bsHquwiERWx",
+            "_id": "9ZLlfC8fGGbqin4l",
             "folder": null,
             "sort": 0
           },
@@ -122,7 +126,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "anu2lluN94blXa4l",
+            "_id": "N6tjJ8pQkY3znxFf",
             "folder": null,
             "sort": 0
           },
@@ -144,7 +148,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "AE7n8YbqV8M3vVFS",
+            "_id": "l2xIEah6GckNxKya",
             "folder": null,
             "sort": 0
           },
@@ -165,7 +169,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "zEkNE2nZf7KPsvlP",
+            "_id": "gVXIuQKwycd8YaFc",
             "folder": null,
             "sort": 0
           },
@@ -187,7 +191,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "yiyWk5ysruqDgw2r",
+            "_id": "habfzROATaGHhwQN",
             "folder": null,
             "sort": 0
           },
@@ -245,7 +249,7 @@
             "type": "race",
             "effects": [],
             "flags": {},
-            "_id": "FMizoiRwHkPKTmmJ",
+            "_id": "eWrrOw3yliszc6XR",
             "sort": 0
           },
           {
@@ -305,18 +309,18 @@
               "pf1": {
                 "links": {
                   "classAssociations": {
-                    "MCXPsoPi42klL7OR": 1,
-                    "MtJfBBJ9kJLc3thi": 1,
-                    "ej9FbckV5mlQuddC": 1,
-                    "yIOhI1NTWXAHTvEb": 1,
-                    "ejtwUd0VA1tWWA1u": 1,
-                    "Xfh87EbBybsGOyRn": 1,
-                    "ALePq1ceJr0tJ8bM": 5
+                    "1imU1hYlY7rh1Uzy": 1,
+                    "uoJ1hT3ekozXeECm": 1,
+                    "TwduT0fZUFQUZOSO": 1,
+                    "0SM8JChxnVPe5Cut": 1,
+                    "louujguKwhY8kgPl": 1,
+                    "6zo5mU7IixDFVhET": 1,
+                    "IheIMBE08eoS5OXJ": 5
                   }
                 }
               }
             },
-            "_id": "tm1LXMwejcrMzQG5",
+            "_id": "FARkb76KqoLVvVbG",
             "sort": 0
           },
           {
@@ -352,7 +356,7 @@
               },
               "restrictions": []
             },
-            "_id": "dLOfl6ZUa8g1J8ti",
+            "_id": "OCqZfh3w96euwrg2",
             "effects": [],
             "folder": null,
             "sort": 0,
@@ -375,7 +379,7 @@
             "effects": [],
             "flags": {},
             "sort": 100000,
-            "_id": "MCXPsoPi42klL7OR",
+            "_id": "1imU1hYlY7rh1Uzy",
             "folder": null
           },
           {
@@ -394,7 +398,7 @@
             "effects": [],
             "flags": {},
             "sort": 200000,
-            "_id": "MtJfBBJ9kJLc3thi",
+            "_id": "uoJ1hT3ekozXeECm",
             "folder": null
           },
           {
@@ -414,7 +418,7 @@
               },
               "links": {
                 "supplements": [{ "uuid": "Compendium.pf1.feats.Item.tlRu8SYjzA7WCHN7" }],
-                "children": [{ "uuid": ".Item.tsEh5ExFSFWkgU7P" }]
+                "children": [{ "uuid": ".Item.WXlfEi4LxGb8xZdA" }]
               },
               "sources": [{ "id": "PZO1110", "pages": "79" }],
               "subType": "classFeat",
@@ -425,7 +429,7 @@
             "effects": [],
             "flags": {},
             "sort": 300000,
-            "_id": "ej9FbckV5mlQuddC",
+            "_id": "TwduT0fZUFQUZOSO",
             "folder": null
           },
           {
@@ -462,7 +466,7 @@
             "effects": [],
             "flags": {},
             "sort": 400000,
-            "_id": "yIOhI1NTWXAHTvEb",
+            "_id": "0SM8JChxnVPe5Cut",
             "folder": null
           },
           {
@@ -474,7 +478,7 @@
               "associations": { "classes": ["Wizard"] },
               "links": {
                 "supplements": [{ "uuid": "Compendium.pf1.items.Item.onurpjwtdogsedsg" }],
-                "children": [{ "uuid": ".Item.oWfLfQGWr2Zm9IN2" }]
+                "children": [{ "uuid": ".Item.qT7c5sfFCtRwW3lj" }]
               },
               "sources": [{ "id": "PZO1110", "pages": "79" }],
               "subType": "classFeat",
@@ -485,7 +489,7 @@
             "effects": [],
             "flags": {},
             "sort": 500000,
-            "_id": "ejtwUd0VA1tWWA1u",
+            "_id": "louujguKwhY8kgPl",
             "folder": null
           },
           {
@@ -504,7 +508,7 @@
             "effects": [],
             "flags": {},
             "sort": 600000,
-            "_id": "Xfh87EbBybsGOyRn",
+            "_id": "6zo5mU7IixDFVhET",
             "folder": null
           },
           {
@@ -531,7 +535,7 @@
             "effects": [],
             "flags": {},
             "sort": 700000,
-            "_id": "ALePq1ceJr0tJ8bM",
+            "_id": "IheIMBE08eoS5OXJ",
             "folder": null
           },
           {
@@ -547,7 +551,7 @@
             "effects": [],
             "flags": { "pf1": { "source": "Compendium.pf1.feats.Item.tlRu8SYjzA7WCHN7" } },
             "sort": 700000,
-            "_id": "tsEh5ExFSFWkgU7P",
+            "_id": "WXlfEi4LxGb8xZdA",
             "folder": null
           },
           {
@@ -569,7 +573,7 @@
             "effects": [],
             "flags": { "pf1": { "source": "Compendium.pf1.items.Item.onurpjwtdogsedsg" } },
             "sort": 0,
-            "_id": "oWfLfQGWr2Zm9IN2",
+            "_id": "qT7c5sfFCtRwW3lj",
             "folder": null
           },
           {
@@ -593,7 +597,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "D3knLgK76uz7TiFb",
+            "_id": "cy5shFtwIHxkNj1X",
             "sort": 0
           },
           {
@@ -617,7 +621,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "n9pUyFN5CJHI3DVO",
+            "_id": "DRl8Cd2qAb7FIb3p",
             "sort": 0
           },
           {
@@ -647,7 +651,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "v9rMA8Hwuu7dVx0u",
+            "_id": "VvoIiq3npHh8bfZn",
             "sort": 0
           },
           {
@@ -663,7 +667,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "a78NfIreki6Tc0wD",
+            "_id": "rd2nkK48vzTbPTKM",
             "sort": 0
           },
           {
@@ -707,7 +711,7 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "lPrbie8l0rYgoMK8",
+            "_id": "LqOanG0lugbBkr9m",
             "sort": 0
           },
           {
@@ -755,7 +759,172 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "Y0HYV78IR8wLxeMJ",
+            "_id": "eSo8weFEigriUZ3P",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.weapons-and-ammo.Item.PqJih70EG2A1XNGf"
+            },
+            "folder": "ojvASzhaCGmnx8xQ",
+            "name": "Longbow",
+            "system": {
+              "actions": {
+                "ttojwk1puhibwtkx": {
+                  "_id": "ttojwk1puhibwtkx",
+                  "ability": {
+                    "attack": "_default",
+                    "critMult": 3,
+                    "critRange": 20,
+                    "damage": "str",
+                    "damageMult": 1,
+                    "max": 0
+                  },
+                  "actionType": "rwak",
+                  "activation": { "type": "attack", "unchained": { "type": "attack" } },
+                  "ammo": { "type": "arrow" },
+                  "damage": {
+                    "parts": [{ "formula": "sizeRoll(1, 8, @size)", "types": ["piercing"] }]
+                  },
+                  "duration": { "units": "inst" },
+                  "extraAttacks": { "type": "standard" },
+                  "name": "Attack",
+                  "range": { "maxIncrements": 10, "units": "ft", "value": "100" },
+                  "sort": 0
+                }
+              },
+              "ammo": { "type": "arrow" },
+              "baseTypes": ["Longbow"],
+              "equipped": true,
+              "hands": 2,
+              "hardness": 5,
+              "hp": { "base": 5 },
+              "material": { "base": { "value": "wood" }, "addon": [] },
+              "price": { "base": 75, "unit": "gp" },
+              "quantity": 1,
+              "sources": [
+                { "id": "PZO1110", "pages": "143, 147" },
+                { "id": "PZO9452", "pages": "0" }
+              ],
+              "subType": "martial",
+              "tags": ["Eastern"],
+              "weaponGroups": ["bows"],
+              "weaponSubtype": "ranged",
+              "weight": { "value": 3 },
+              "alignments": {},
+              "mods": {}
+            },
+            "type": "weapon",
+            "effects": [],
+            "flags": {},
+            "_id": "MPYKnITO5TuwPa8w",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.weapons-and-ammo.Item.23HXFjpPnuLFOylm"
+            },
+            "flags": { "pf1": {} },
+            "folder": "0gW0aJOeBes695zU",
+            "name": "Arrow",
+            "system": {
+              "enh": null,
+              "equipped": false,
+              "hardness": 5,
+              "hp": { "base": 1 },
+              "price": { "base": 5, "unit": "cp" },
+              "quantity": 20,
+              "sources": [
+                { "id": "PZO1110", "pages": "142, 145" },
+                { "id": "PZO1123", "pages": "22" }
+              ],
+              "subType": "arrow",
+              "unidentified": { "price": { "base": 5, "unit": "cp" } },
+              "weight": { "value": 0.15 },
+              "alignments": {},
+              "mods": {}
+            },
+            "type": "ammo",
+            "effects": [],
+            "_id": "wUoonkyAMUclnrdg",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.weapons-and-ammo.Item.RWbjRwSPsuPAUDhw"
+            },
+            "folder": "3BIbUnQy7dC6EWdX",
+            "name": "Light Crossbow",
+            "system": {
+              "actions": {
+                "3qt3osag8ctlzjve": {
+                  "_id": "3qt3osag8ctlzjve",
+                  "ability": { "attack": "_default", "critMult": 2, "critRange": 19 },
+                  "actionType": "rwak",
+                  "activation": { "type": "attack", "unchained": { "type": "attack" } },
+                  "ammo": { "type": "bolt" },
+                  "damage": {
+                    "parts": [{ "formula": "sizeRoll(1, 8, @size)", "types": ["piercing"] }]
+                  },
+                  "duration": { "units": "inst" },
+                  "extraAttacks": { "type": "standard" },
+                  "name": "Attack",
+                  "range": { "maxIncrements": 10, "units": "ft", "value": "80" },
+                  "sort": 0
+                }
+              },
+              "ammo": { "type": "bolt" },
+              "baseTypes": ["Light Crossbow"],
+              "equipped": true,
+              "hands": 2,
+              "hardness": 5,
+              "hp": { "base": 5 },
+              "material": { "base": { "value": "wood" }, "addon": [] },
+              "price": { "base": 35, "unit": "gp" },
+              "quantity": 1,
+              "sources": [
+                { "id": "PZO1110", "pages": "142, 145" },
+                { "id": "PZO9452", "pages": "0" }
+              ],
+              "subType": "simple",
+              "weaponGroups": ["crossbows"],
+              "weaponSubtype": "ranged",
+              "weight": { "value": 4 },
+              "alignments": {},
+              "mods": {}
+            },
+            "type": "weapon",
+            "effects": [],
+            "flags": {},
+            "_id": "BLdG7WFXChD07OUd",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.weapons-and-ammo.Item.v04yeRzoqrhYx0G7"
+            },
+            "flags": { "pf1": {} },
+            "folder": "0gW0aJOeBes695zU",
+            "name": "Crossbow Bolt",
+            "system": {
+              "equipped": false,
+              "hardness": 5,
+              "hp": { "base": 1 },
+              "price": { "base": 1, "unit": "sp" },
+              "quantity": 10,
+              "sources": [
+                { "id": "PZO1110", "pages": "142, 145" },
+                { "id": "PZO1123", "pages": "22" }
+              ],
+              "subType": "bolt",
+              "unidentified": { "price": { "base": 1, "unit": "sp" } },
+              "weight": { "value": 0.1 },
+              "alignments": {},
+              "mods": {}
+            },
+            "type": "ammo",
+            "effects": [],
+            "_id": "wS7ZF70JZcA9mZ2j",
             "sort": 0
           }
         ],
@@ -821,6 +990,26 @@
           "perform": 0,
           "bluff": 0
         }
+      },
+      "attacks": {
+        "Longbow": {
+          "attack": [6],
+          "damage": -1,
+          "dice": "1d8",
+          "formula": {
+            "attack": "1d20 + 3[Dexterity] + 3[Base Attack Bonus]",
+            "damage": ["sizeRoll(1,8,4) - 1[Strength]"]
+          }
+        },
+        "Light Crossbow": {
+          "attack": [6],
+          "damage": 0,
+          "dice": "1d8",
+          "formula": {
+            "attack": "1d20 + 3[Dexterity] + 3[Base Attack Bonus]",
+            "damage": ["sizeRoll(1,8,4)"]
+          }
+        }
       }
     },
     "buffs": {
@@ -828,7 +1017,7 @@
         "name": "elf-wizard-6 [buffs]",
         "type": "character",
         "folder": "GuYuyoqdabfe4xZV",
-        "_id": "OZLmlsJZtt9lTx1r",
+        "_id": "1c10ZrIOiPKFFwOr",
         "system": {
           "abilities": {
             "str": { "value": 8 },
@@ -871,7 +1060,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "9PuhqL04V6wjb3u6",
+            "_id": "nesFBZOKSTcRADjz",
             "folder": null,
             "sort": 0
           },
@@ -892,7 +1081,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "4c67Mb88PucSeZgr",
+            "_id": "LphNTj23x7rVTD3K",
             "folder": null,
             "sort": 0
           },
@@ -913,7 +1102,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "0cQaBbeADNPcZAIq",
+            "_id": "6aml0X1xLp9rXPx2",
             "folder": null,
             "sort": 0
           },
@@ -935,7 +1124,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "UGbUhxCqCm2vhdct",
+            "_id": "P7io2FeboJAOsVzM",
             "folder": null,
             "sort": 0
           },
@@ -956,7 +1145,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "EBsosulJOJFjnEgT",
+            "_id": "Wh0wluiouONabyke",
             "folder": null,
             "sort": 0
           },
@@ -978,7 +1167,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "AyKknzbHqHUIihws",
+            "_id": "y8pESxsoY0CdJISC",
             "folder": null,
             "sort": 0
           },
@@ -1036,7 +1225,7 @@
             "type": "race",
             "effects": [],
             "flags": {},
-            "_id": "FI3SA7sBdAu9wtRz",
+            "_id": "r20bmBVqnQyFp9GL",
             "sort": 0
           },
           {
@@ -1096,18 +1285,18 @@
               "pf1": {
                 "links": {
                   "classAssociations": {
-                    "QIQijMnygHcEGxtS": 1,
-                    "XAKTKoFyYGTo4huu": 1,
-                    "Y8SC30mWgxbBvTGp": 1,
-                    "J79R4Hr3kNMhRmT9": 1,
-                    "lZ8tSYVLodC365dS": 1,
-                    "wIwm6Wc6qiIqLw6V": 5,
-                    "AtX0A1hFHnvvyZcj": 1
+                    "6i5YEQRTnM0KoB8Y": 1,
+                    "OVJkqCgfZw6Lpr96": 1,
+                    "S1uBXj1WmYZznBcJ": 1,
+                    "KXZtHelYtSLVnQfv": 1,
+                    "PBsLshU61zB9MeBm": 1,
+                    "nZlcNsdVEyTv6Iup": 5,
+                    "ATJqKxrAip8dXaj9": 1
                   }
                 }
               }
             },
-            "_id": "hFJWto1XOevRlSIu",
+            "_id": "eVYWzCQW57BDgE1T",
             "sort": 0
           },
           {
@@ -1143,7 +1332,7 @@
               },
               "restrictions": []
             },
-            "_id": "bh6UFToXZAuFw7Gr",
+            "_id": "kUTPgt5lwbbSv4Ew",
             "effects": [],
             "folder": null,
             "sort": 0,
@@ -1152,12 +1341,12 @@
           },
           {
             "_stats": {
-              "compendiumSource": "Compendium.pf1.class-abilities.Item.20JWTam2dn7jjZFV"
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.pW1PNlDcdGl7KuEa"
             },
-            "name": "Arcane School",
+            "name": "Arcane Bond",
             "system": {
               "associations": { "classes": ["Wizard"] },
-              "sources": [{ "id": "PZO1110", "pages": "78-79, 79-82" }],
+              "sources": [{ "id": "PZO1110", "pages": "78" }],
               "subType": "classFeat",
               "class": "wizard",
               "alignments": {}
@@ -1165,8 +1354,8 @@
             "type": "feat",
             "effects": [],
             "flags": {},
-            "sort": 200000,
-            "_id": "QIQijMnygHcEGxtS",
+            "sort": 100000,
+            "_id": "6i5YEQRTnM0KoB8Y",
             "folder": null
           },
           {
@@ -1186,7 +1375,7 @@
               },
               "links": {
                 "supplements": [{ "uuid": "Compendium.pf1.feats.Item.tlRu8SYjzA7WCHN7" }],
-                "children": [{ "uuid": ".Item.oxZXSbA49SqR2aRF" }]
+                "children": [{ "uuid": ".Item.05SErXA2vBV5uDUU" }]
               },
               "sources": [{ "id": "PZO1110", "pages": "79" }],
               "subType": "classFeat",
@@ -1197,7 +1386,7 @@
             "effects": [],
             "flags": {},
             "sort": 300000,
-            "_id": "XAKTKoFyYGTo4huu",
+            "_id": "OVJkqCgfZw6Lpr96",
             "folder": null
           },
           {
@@ -1234,7 +1423,7 @@
             "effects": [],
             "flags": {},
             "sort": 400000,
-            "_id": "Y8SC30mWgxbBvTGp",
+            "_id": "S1uBXj1WmYZznBcJ",
             "folder": null
           },
           {
@@ -1246,7 +1435,7 @@
               "associations": { "classes": ["Wizard"] },
               "links": {
                 "supplements": [{ "uuid": "Compendium.pf1.items.Item.onurpjwtdogsedsg" }],
-                "children": [{ "uuid": ".Item.I1eIp29Jpx88MW3Y" }]
+                "children": [{ "uuid": ".Item.ra5RFBVTpMWNvRzJ" }]
               },
               "sources": [{ "id": "PZO1110", "pages": "79" }],
               "subType": "classFeat",
@@ -1257,7 +1446,7 @@
             "effects": [],
             "flags": {},
             "sort": 500000,
-            "_id": "J79R4Hr3kNMhRmT9",
+            "_id": "KXZtHelYtSLVnQfv",
             "folder": null
           },
           {
@@ -1276,7 +1465,7 @@
             "effects": [],
             "flags": {},
             "sort": 600000,
-            "_id": "lZ8tSYVLodC365dS",
+            "_id": "PBsLshU61zB9MeBm",
             "folder": null
           },
           {
@@ -1303,17 +1492,17 @@
             "effects": [],
             "flags": {},
             "sort": 700000,
-            "_id": "wIwm6Wc6qiIqLw6V",
+            "_id": "nZlcNsdVEyTv6Iup",
             "folder": null
           },
           {
             "_stats": {
-              "compendiumSource": "Compendium.pf1.class-abilities.Item.pW1PNlDcdGl7KuEa"
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.20JWTam2dn7jjZFV"
             },
-            "name": "Arcane Bond",
+            "name": "Arcane School",
             "system": {
               "associations": { "classes": ["Wizard"] },
-              "sources": [{ "id": "PZO1110", "pages": "78" }],
+              "sources": [{ "id": "PZO1110", "pages": "78-79, 79-82" }],
               "subType": "classFeat",
               "class": "wizard",
               "alignments": {}
@@ -1321,24 +1510,8 @@
             "type": "feat",
             "effects": [],
             "flags": {},
-            "sort": 100000,
-            "_id": "AtX0A1hFHnvvyZcj",
-            "folder": null
-          },
-          {
-            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.tlRu8SYjzA7WCHN7" },
-            "name": "Scribe Scroll",
-            "system": {
-              "sources": [{ "id": "PZO1110", "pages": "117, 133" }],
-              "subType": "feat",
-              "tags": ["General", "Item Creation"],
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "flags": { "pf1": { "source": "Compendium.pf1.feats.Item.tlRu8SYjzA7WCHN7" } },
-            "sort": 700000,
-            "_id": "oxZXSbA49SqR2aRF",
+            "sort": 200000,
+            "_id": "ATJqKxrAip8dXaj9",
             "folder": null
           },
           {
@@ -1360,8 +1533,48 @@
             "effects": [],
             "flags": { "pf1": { "source": "Compendium.pf1.items.Item.onurpjwtdogsedsg" } },
             "sort": 0,
-            "_id": "I1eIp29Jpx88MW3Y",
+            "_id": "ra5RFBVTpMWNvRzJ",
             "folder": null
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.tlRu8SYjzA7WCHN7" },
+            "name": "Scribe Scroll",
+            "system": {
+              "sources": [{ "id": "PZO1110", "pages": "117, 133" }],
+              "subType": "feat",
+              "tags": ["General", "Item Creation"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": { "pf1": { "source": "Compendium.pf1.feats.Item.tlRu8SYjzA7WCHN7" } },
+            "sort": 700000,
+            "_id": "05SErXA2vBV5uDUU",
+            "folder": null
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.Uuiu3p982omhMEPj" },
+            "name": "Improved Initiative",
+            "system": {
+              "changes": {
+                "ign7okhi": {
+                  "_id": "ign7okhi",
+                  "formula": "4",
+                  "target": "init",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "115, 127" }],
+              "subType": "feat",
+              "tags": ["Combat"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "2pDklWcHH3AuhHdo",
+            "sort": 0
           },
           {
             "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.fVRnBIHR4Jq6btvm" },
@@ -1384,23 +1597,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "qdRKNVs2wOFQTdgZ",
-            "sort": 0
-          },
-          {
-            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.u7rGDZUL296QIuA0" },
-            "name": "Combat Casting",
-            "system": {
-              "sources": [{ "id": "PZO1110", "pages": "114, 119" }],
-              "subType": "feat",
-              "tags": ["General", "Magic", "Defensive"],
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "folder": null,
-            "flags": {},
-            "_id": "Kur1KcZe3cuPNsiX",
+            "_id": "IS9tZSdnJlJaf1qv",
             "sort": 0
           },
           {
@@ -1430,31 +1627,67 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "KT6eWXfVExrs9xhi",
+            "_id": "V4via8vdtcuIbyTP",
             "sort": 0
           },
           {
-            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.Uuiu3p982omhMEPj" },
-            "name": "Improved Initiative",
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.u7rGDZUL296QIuA0" },
+            "name": "Combat Casting",
             "system": {
-              "changes": {
-                "ign7okhi": {
-                  "_id": "ign7okhi",
-                  "formula": "4",
-                  "target": "init",
-                  "type": "untyped"
-                }
-              },
-              "sources": [{ "id": "PZO1110", "pages": "115, 127" }],
+              "sources": [{ "id": "PZO1110", "pages": "114, 119" }],
               "subType": "feat",
-              "tags": ["Combat"],
+              "tags": ["General", "Magic", "Defensive"],
               "alignments": {}
             },
             "type": "feat",
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "GdGROj1i4qkV2OlQ",
+            "_id": "v3kR4zkJDXV1zKGx",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.items.Item.lrKImXw2wiv8DCD1" },
+            "folder": "LhglMTF2yolyMayX",
+            "name": "Headband of Vast Intelligence +2",
+            "system": {
+              "armor": {
+                "material": {
+                  "base": { "value": "leather" },
+                  "normal": { "value": "leather" },
+                  "addon": []
+                },
+                "alignments": {}
+              },
+              "aura": { "school": "trs" },
+              "changes": {
+                "bhtggif7": { "_id": "bhtggif7", "formula": "2", "target": "int", "type": "enh" }
+              },
+              "cl": 8,
+              "creation": {
+                "cost": { "unit": "gp", "value": 2000 },
+                "description": "<p>@UUID[Compendium.pf1.feats.Item.tD76K8QGco9scT0r]{Craft Wondrous Item}, @UUID[Compendium.pf1.spells.Item.743anqr1ahefv8zd]{Fox's Cunning}</p>"
+              },
+              "equipmentSubtype": "lightArmor",
+              "equipped": true,
+              "hp": { "base": 10 },
+              "price": { "base": 4000, "unit": "gp" },
+              "quantity": 1,
+              "resizing": true,
+              "slot": "headband",
+              "sources": [
+                { "id": "PZO1123", "pages": "251" },
+                { "id": "PZO1110", "pages": "517" }
+              ],
+              "subType": "wondrous",
+              "unidentified": { "name": "Headband", "price": { "base": 0, "unit": "gp" } },
+              "weight": { "value": 1 },
+              "mods": {}
+            },
+            "type": "equipment",
+            "effects": [],
+            "flags": {},
+            "_id": "UvGcvTo2Ce4bNe5t",
             "sort": 0
           },
           {
@@ -1502,51 +1735,172 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "Is1HWuLrRZU6RSgH",
+            "_id": "tSOYQjTAkUtl2Hby",
             "sort": 0
           },
           {
-            "_stats": { "compendiumSource": "Compendium.pf1.items.Item.lrKImXw2wiv8DCD1" },
-            "folder": "LhglMTF2yolyMayX",
-            "name": "Headband of Vast Intelligence +2",
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.weapons-and-ammo.Item.PqJih70EG2A1XNGf"
+            },
+            "folder": "ojvASzhaCGmnx8xQ",
+            "name": "Longbow",
             "system": {
-              "armor": {
-                "material": {
-                  "base": { "value": "leather" },
-                  "normal": { "value": "leather" },
-                  "addon": []
-                },
-                "alignments": {}
+              "actions": {
+                "ttojwk1puhibwtkx": {
+                  "_id": "ttojwk1puhibwtkx",
+                  "ability": {
+                    "attack": "_default",
+                    "critMult": 3,
+                    "critRange": 20,
+                    "damage": "str",
+                    "damageMult": 1,
+                    "max": 0
+                  },
+                  "actionType": "rwak",
+                  "activation": { "type": "attack", "unchained": { "type": "attack" } },
+                  "ammo": { "type": "arrow" },
+                  "damage": {
+                    "parts": [{ "formula": "sizeRoll(1, 8, @size)", "types": ["piercing"] }]
+                  },
+                  "duration": { "units": "inst" },
+                  "extraAttacks": { "type": "standard" },
+                  "name": "Attack",
+                  "range": { "maxIncrements": 10, "units": "ft", "value": "100" },
+                  "sort": 0
+                }
               },
-              "aura": { "school": "trs" },
-              "changes": {
-                "bhtggif7": { "_id": "bhtggif7", "formula": "2", "target": "int", "type": "enh" }
-              },
-              "cl": 8,
-              "creation": {
-                "cost": { "unit": "gp", "value": 2000 },
-                "description": "<p>@UUID[Compendium.pf1.feats.Item.tD76K8QGco9scT0r]{Craft Wondrous Item}, @UUID[Compendium.pf1.spells.Item.743anqr1ahefv8zd]{Fox's Cunning}</p>"
-              },
-              "equipmentSubtype": "lightArmor",
+              "ammo": { "type": "arrow" },
+              "baseTypes": ["Longbow"],
               "equipped": true,
-              "hp": { "base": 10 },
-              "price": { "base": 4000, "unit": "gp" },
+              "hands": 2,
+              "hardness": 5,
+              "hp": { "base": 5 },
+              "material": { "base": { "value": "wood" }, "addon": [] },
+              "price": { "base": 75, "unit": "gp" },
               "quantity": 1,
-              "resizing": true,
-              "slot": "headband",
               "sources": [
-                { "id": "PZO1123", "pages": "251" },
-                { "id": "PZO1110", "pages": "517" }
+                { "id": "PZO1110", "pages": "143, 147" },
+                { "id": "PZO9452", "pages": "0" }
               ],
-              "subType": "wondrous",
-              "unidentified": { "name": "Headband", "price": { "base": 0, "unit": "gp" } },
-              "weight": { "value": 1 },
+              "subType": "martial",
+              "tags": ["Eastern"],
+              "weaponGroups": ["bows"],
+              "weaponSubtype": "ranged",
+              "weight": { "value": 3 },
+              "alignments": {},
               "mods": {}
             },
-            "type": "equipment",
+            "type": "weapon",
             "effects": [],
             "flags": {},
-            "_id": "fD8eX7uJE7nXrkHg",
+            "_id": "u03vUUJM571XZ1Ed",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.weapons-and-ammo.Item.23HXFjpPnuLFOylm"
+            },
+            "flags": { "pf1": {} },
+            "folder": "0gW0aJOeBes695zU",
+            "name": "Arrow",
+            "system": {
+              "enh": null,
+              "equipped": false,
+              "hardness": 5,
+              "hp": { "base": 1 },
+              "price": { "base": 5, "unit": "cp" },
+              "quantity": 20,
+              "sources": [
+                { "id": "PZO1110", "pages": "142, 145" },
+                { "id": "PZO1123", "pages": "22" }
+              ],
+              "subType": "arrow",
+              "unidentified": { "price": { "base": 5, "unit": "cp" } },
+              "weight": { "value": 0.15 },
+              "alignments": {},
+              "mods": {}
+            },
+            "type": "ammo",
+            "effects": [],
+            "_id": "McFX56QEf79hSsEl",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.weapons-and-ammo.Item.RWbjRwSPsuPAUDhw"
+            },
+            "folder": "3BIbUnQy7dC6EWdX",
+            "name": "Light Crossbow",
+            "system": {
+              "actions": {
+                "3qt3osag8ctlzjve": {
+                  "_id": "3qt3osag8ctlzjve",
+                  "ability": { "attack": "_default", "critMult": 2, "critRange": 19 },
+                  "actionType": "rwak",
+                  "activation": { "type": "attack", "unchained": { "type": "attack" } },
+                  "ammo": { "type": "bolt" },
+                  "damage": {
+                    "parts": [{ "formula": "sizeRoll(1, 8, @size)", "types": ["piercing"] }]
+                  },
+                  "duration": { "units": "inst" },
+                  "extraAttacks": { "type": "standard" },
+                  "name": "Attack",
+                  "range": { "maxIncrements": 10, "units": "ft", "value": "80" },
+                  "sort": 0
+                }
+              },
+              "ammo": { "type": "bolt" },
+              "baseTypes": ["Light Crossbow"],
+              "equipped": true,
+              "hands": 2,
+              "hardness": 5,
+              "hp": { "base": 5 },
+              "material": { "base": { "value": "wood" }, "addon": [] },
+              "price": { "base": 35, "unit": "gp" },
+              "quantity": 1,
+              "sources": [
+                { "id": "PZO1110", "pages": "142, 145" },
+                { "id": "PZO9452", "pages": "0" }
+              ],
+              "subType": "simple",
+              "weaponGroups": ["crossbows"],
+              "weaponSubtype": "ranged",
+              "weight": { "value": 4 },
+              "alignments": {},
+              "mods": {}
+            },
+            "type": "weapon",
+            "effects": [],
+            "flags": {},
+            "_id": "MFHw0KwO1Ykeeh4x",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.weapons-and-ammo.Item.v04yeRzoqrhYx0G7"
+            },
+            "flags": { "pf1": {} },
+            "folder": "0gW0aJOeBes695zU",
+            "name": "Crossbow Bolt",
+            "system": {
+              "equipped": false,
+              "hardness": 5,
+              "hp": { "base": 1 },
+              "price": { "base": 1, "unit": "sp" },
+              "quantity": 10,
+              "sources": [
+                { "id": "PZO1110", "pages": "142, 145" },
+                { "id": "PZO1123", "pages": "22" }
+              ],
+              "subType": "bolt",
+              "unidentified": { "price": { "base": 1, "unit": "sp" } },
+              "weight": { "value": 0.1 },
+              "alignments": {},
+              "mods": {}
+            },
+            "type": "ammo",
+            "effects": [],
+            "_id": "3o844F3Z1bKV8OqI",
             "sort": 0
           },
           {
@@ -1572,7 +1926,7 @@
             "type": "buff",
             "effects": [],
             "flags": {},
-            "_id": "I8st8s4vkkQHkUfS",
+            "_id": "vnpzyJt26aKFJNF6",
             "sort": 0
           },
           {
@@ -1598,7 +1952,7 @@
             "type": "buff",
             "effects": [],
             "flags": {},
-            "_id": "DmQhRvRDHUohqgOf",
+            "_id": "6wdFwOruuv9I91lh",
             "sort": 0
           },
           {
@@ -1618,7 +1972,7 @@
             "type": "buff",
             "effects": [],
             "flags": {},
-            "_id": "5CPc9zMVA8UTyMZX",
+            "_id": "3JOD8pRBusSTuIiX",
             "sort": 0
           }
         ],
@@ -1684,6 +2038,26 @@
           "perform": 0,
           "bluff": 0
         }
+      },
+      "attacks": {
+        "Longbow": {
+          "attack": [6],
+          "damage": 0,
+          "dice": "1d8",
+          "formula": {
+            "attack": "1d20 + 3[Dexterity] + 3[Base Attack Bonus]",
+            "damage": ["sizeRoll(1,8,4) + 0[Strength]"]
+          }
+        },
+        "Light Crossbow": {
+          "attack": [6],
+          "damage": 0,
+          "dice": "1d8",
+          "formula": {
+            "attack": "1d20 + 3[Dexterity] + 3[Base Attack Bonus]",
+            "damage": ["sizeRoll(1,8,4)"]
+          }
+        }
       }
     },
     "conditions": {
@@ -1691,7 +2065,7 @@
         "name": "elf-wizard-6 [conditions]",
         "type": "character",
         "folder": "GuYuyoqdabfe4xZV",
-        "_id": "4vUUKRnpel2q3Kk9",
+        "_id": "9g7Hn52WDy9cyjqQ",
         "system": {
           "abilities": {
             "str": { "value": 8 },
@@ -1735,7 +2109,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "XntRmyc2uYOiYAZM",
+            "_id": "W9xgW59BU7XiiHcL",
             "folder": null,
             "sort": 0
           },
@@ -1756,7 +2130,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "96mlkfJEDu1olGdO",
+            "_id": "S8I0CEbSGwVn6aOu",
             "folder": null,
             "sort": 0
           },
@@ -1777,7 +2151,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "0tX4IkCyVtlkzuqe",
+            "_id": "MADncL8KmVtsKFUo",
             "folder": null,
             "sort": 0
           },
@@ -1799,7 +2173,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "cAGMwbDqTDyhUCdu",
+            "_id": "HOwfy9zOMptb1H4N",
             "folder": null,
             "sort": 0
           },
@@ -1820,7 +2194,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "Wb28545tMoDbExpD",
+            "_id": "zL5AROv45vPBgyu3",
             "folder": null,
             "sort": 0
           },
@@ -1842,7 +2216,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "vWMdxHc017a9k0Do",
+            "_id": "jQ2AxUWDiZoTmSdW",
             "folder": null,
             "sort": 0
           },
@@ -1900,7 +2274,7 @@
             "type": "race",
             "effects": [],
             "flags": {},
-            "_id": "cNCfb5iNEo6gBy9R",
+            "_id": "P22D88MM9dGMQeW1",
             "sort": 0
           },
           {
@@ -1960,18 +2334,18 @@
               "pf1": {
                 "links": {
                   "classAssociations": {
-                    "b8oQbWrfY5VhCID8": 1,
-                    "lDTwUOpuGzlT0Jid": 1,
-                    "ETthiWYduolncRIJ": 1,
-                    "xeCwB62dX5x2l7Ga": 1,
-                    "Wz3gUZUAHAdbXMvY": 1,
-                    "Ho4VJNmgD3vTCJJA": 5,
-                    "HCz3qUzNj4XScnfS": 1
+                    "Cre2Ad7YHYevjazU": 1,
+                    "pAeluPwIp2bBYTrg": 1,
+                    "8phaOxxU5wG6PMDB": 1,
+                    "xFpv4gcuL7qHzx7j": 1,
+                    "2wvdixTNVQY0NEXV": 1,
+                    "OJEqqmKnbUNGXEcb": 1,
+                    "hQTm1h17BbN2mgl1": 5
                   }
                 }
               }
             },
-            "_id": "TvUZPvAPDTIuO1cR",
+            "_id": "FoZua67yypZ49yaT",
             "sort": 0
           },
           {
@@ -2007,7 +2381,7 @@
               },
               "restrictions": []
             },
-            "_id": "L5DmiyrKqoCKdZ3g",
+            "_id": "reJmSfHZ1z4GU3Aa",
             "effects": [],
             "folder": null,
             "sort": 0,
@@ -2030,7 +2404,26 @@
             "effects": [],
             "flags": {},
             "sort": 100000,
-            "_id": "b8oQbWrfY5VhCID8",
+            "_id": "Cre2Ad7YHYevjazU",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.20JWTam2dn7jjZFV"
+            },
+            "name": "Arcane School",
+            "system": {
+              "associations": { "classes": ["Wizard"] },
+              "sources": [{ "id": "PZO1110", "pages": "78-79, 79-82" }],
+              "subType": "classFeat",
+              "class": "wizard",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 200000,
+            "_id": "pAeluPwIp2bBYTrg",
             "folder": null
           },
           {
@@ -2050,7 +2443,7 @@
               },
               "links": {
                 "supplements": [{ "uuid": "Compendium.pf1.feats.Item.tlRu8SYjzA7WCHN7" }],
-                "children": [{ "uuid": ".Item.cLKdEkPDabQV8NUx" }]
+                "children": [{ "uuid": ".Item.TVaAcAVTKoGKv9sL" }]
               },
               "sources": [{ "id": "PZO1110", "pages": "79" }],
               "subType": "classFeat",
@@ -2061,7 +2454,49 @@
             "effects": [],
             "flags": {},
             "sort": 300000,
-            "_id": "lDTwUOpuGzlT0Jid",
+            "_id": "8phaOxxU5wG6PMDB",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.4wdsdOkgv4uEkS9K"
+            },
+            "name": "Spellbooks (WIZ)",
+            "system": {
+              "associations": { "classes": ["Wizard"] },
+              "links": {
+                "supplements": [{ "uuid": "Compendium.pf1.items.Item.onurpjwtdogsedsg" }],
+                "children": [{ "uuid": ".Item.NyPIHr4GH00n8WhW" }]
+              },
+              "sources": [{ "id": "PZO1110", "pages": "79" }],
+              "subType": "classFeat",
+              "class": "wizard",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 500000,
+            "_id": "xFpv4gcuL7qHzx7j",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.LrjNAKP05lZq2tZZ"
+            },
+            "name": "Wizard Spells",
+            "system": {
+              "associations": { "classes": ["Wizard"] },
+              "sources": [{ "id": "PZO1110", "pages": "77" }],
+              "subType": "classFeat",
+              "class": "wizard",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 600000,
+            "_id": "2wvdixTNVQY0NEXV",
             "folder": null
           },
           {
@@ -2098,49 +2533,7 @@
             "effects": [],
             "flags": {},
             "sort": 400000,
-            "_id": "ETthiWYduolncRIJ",
-            "folder": null
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1.class-abilities.Item.4wdsdOkgv4uEkS9K"
-            },
-            "name": "Spellbooks (WIZ)",
-            "system": {
-              "associations": { "classes": ["Wizard"] },
-              "links": {
-                "supplements": [{ "uuid": "Compendium.pf1.items.Item.onurpjwtdogsedsg" }],
-                "children": [{ "uuid": ".Item.aychctKmx8vN9RQq" }]
-              },
-              "sources": [{ "id": "PZO1110", "pages": "79" }],
-              "subType": "classFeat",
-              "class": "wizard",
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "flags": {},
-            "sort": 500000,
-            "_id": "xeCwB62dX5x2l7Ga",
-            "folder": null
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1.class-abilities.Item.LrjNAKP05lZq2tZZ"
-            },
-            "name": "Wizard Spells",
-            "system": {
-              "associations": { "classes": ["Wizard"] },
-              "sources": [{ "id": "PZO1110", "pages": "77" }],
-              "subType": "classFeat",
-              "class": "wizard",
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "flags": {},
-            "sort": 600000,
-            "_id": "Wz3gUZUAHAdbXMvY",
+            "_id": "OJEqqmKnbUNGXEcb",
             "folder": null
           },
           {
@@ -2167,26 +2560,7 @@
             "effects": [],
             "flags": {},
             "sort": 700000,
-            "_id": "Ho4VJNmgD3vTCJJA",
-            "folder": null
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1.class-abilities.Item.20JWTam2dn7jjZFV"
-            },
-            "name": "Arcane School",
-            "system": {
-              "associations": { "classes": ["Wizard"] },
-              "sources": [{ "id": "PZO1110", "pages": "78-79, 79-82" }],
-              "subType": "classFeat",
-              "class": "wizard",
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "flags": {},
-            "sort": 200000,
-            "_id": "HCz3qUzNj4XScnfS",
+            "_id": "hQTm1h17BbN2mgl1",
             "folder": null
           },
           {
@@ -2202,7 +2576,7 @@
             "effects": [],
             "flags": { "pf1": { "source": "Compendium.pf1.feats.Item.tlRu8SYjzA7WCHN7" } },
             "sort": 700000,
-            "_id": "cLKdEkPDabQV8NUx",
+            "_id": "TVaAcAVTKoGKv9sL",
             "folder": null
           },
           {
@@ -2224,7 +2598,7 @@
             "effects": [],
             "flags": { "pf1": { "source": "Compendium.pf1.items.Item.onurpjwtdogsedsg" } },
             "sort": 0,
-            "_id": "aychctKmx8vN9RQq",
+            "_id": "NyPIHr4GH00n8WhW",
             "folder": null
           },
           {
@@ -2248,7 +2622,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "smp1ZIztwrBZnpkt",
+            "_id": "SNat340pAe6AOphW",
             "sort": 0
           },
           {
@@ -2272,7 +2646,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "ABV19YjbjgjLQ189",
+            "_id": "Bwxaa7HS22kdSZCC",
             "sort": 0
           },
           {
@@ -2302,7 +2676,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "C842PXFU3gTdFSR7",
+            "_id": "jnuXCXnLjUClywxE",
             "sort": 0
           },
           {
@@ -2318,7 +2692,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "1Sqv5y7PNKKBk3JP",
+            "_id": "oOSevzjp3dhiNteq",
             "sort": 0
           },
           {
@@ -2362,7 +2736,7 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "drHLnUNMiJV7Smmg",
+            "_id": "AedEofWN6Dlv7cRV",
             "sort": 0
           },
           {
@@ -2410,7 +2784,172 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "zLVTTXLGAaFWJM7P",
+            "_id": "rJPPR5Sv2UqukDdA",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.weapons-and-ammo.Item.PqJih70EG2A1XNGf"
+            },
+            "folder": "ojvASzhaCGmnx8xQ",
+            "name": "Longbow",
+            "system": {
+              "actions": {
+                "ttojwk1puhibwtkx": {
+                  "_id": "ttojwk1puhibwtkx",
+                  "ability": {
+                    "attack": "_default",
+                    "critMult": 3,
+                    "critRange": 20,
+                    "damage": "str",
+                    "damageMult": 1,
+                    "max": 0
+                  },
+                  "actionType": "rwak",
+                  "activation": { "type": "attack", "unchained": { "type": "attack" } },
+                  "ammo": { "type": "arrow" },
+                  "damage": {
+                    "parts": [{ "formula": "sizeRoll(1, 8, @size)", "types": ["piercing"] }]
+                  },
+                  "duration": { "units": "inst" },
+                  "extraAttacks": { "type": "standard" },
+                  "name": "Attack",
+                  "range": { "maxIncrements": 10, "units": "ft", "value": "100" },
+                  "sort": 0
+                }
+              },
+              "ammo": { "type": "arrow" },
+              "baseTypes": ["Longbow"],
+              "equipped": true,
+              "hands": 2,
+              "hardness": 5,
+              "hp": { "base": 5 },
+              "material": { "base": { "value": "wood" }, "addon": [] },
+              "price": { "base": 75, "unit": "gp" },
+              "quantity": 1,
+              "sources": [
+                { "id": "PZO1110", "pages": "143, 147" },
+                { "id": "PZO9452", "pages": "0" }
+              ],
+              "subType": "martial",
+              "tags": ["Eastern"],
+              "weaponGroups": ["bows"],
+              "weaponSubtype": "ranged",
+              "weight": { "value": 3 },
+              "alignments": {},
+              "mods": {}
+            },
+            "type": "weapon",
+            "effects": [],
+            "flags": {},
+            "_id": "MYQnaW6pmEKSCClT",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.weapons-and-ammo.Item.23HXFjpPnuLFOylm"
+            },
+            "flags": { "pf1": {} },
+            "folder": "0gW0aJOeBes695zU",
+            "name": "Arrow",
+            "system": {
+              "enh": null,
+              "equipped": false,
+              "hardness": 5,
+              "hp": { "base": 1 },
+              "price": { "base": 5, "unit": "cp" },
+              "quantity": 20,
+              "sources": [
+                { "id": "PZO1110", "pages": "142, 145" },
+                { "id": "PZO1123", "pages": "22" }
+              ],
+              "subType": "arrow",
+              "unidentified": { "price": { "base": 5, "unit": "cp" } },
+              "weight": { "value": 0.15 },
+              "alignments": {},
+              "mods": {}
+            },
+            "type": "ammo",
+            "effects": [],
+            "_id": "TGT6zSUaTiYuTjaM",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.weapons-and-ammo.Item.RWbjRwSPsuPAUDhw"
+            },
+            "folder": "3BIbUnQy7dC6EWdX",
+            "name": "Light Crossbow",
+            "system": {
+              "actions": {
+                "3qt3osag8ctlzjve": {
+                  "_id": "3qt3osag8ctlzjve",
+                  "ability": { "attack": "_default", "critMult": 2, "critRange": 19 },
+                  "actionType": "rwak",
+                  "activation": { "type": "attack", "unchained": { "type": "attack" } },
+                  "ammo": { "type": "bolt" },
+                  "damage": {
+                    "parts": [{ "formula": "sizeRoll(1, 8, @size)", "types": ["piercing"] }]
+                  },
+                  "duration": { "units": "inst" },
+                  "extraAttacks": { "type": "standard" },
+                  "name": "Attack",
+                  "range": { "maxIncrements": 10, "units": "ft", "value": "80" },
+                  "sort": 0
+                }
+              },
+              "ammo": { "type": "bolt" },
+              "baseTypes": ["Light Crossbow"],
+              "equipped": true,
+              "hands": 2,
+              "hardness": 5,
+              "hp": { "base": 5 },
+              "material": { "base": { "value": "wood" }, "addon": [] },
+              "price": { "base": 35, "unit": "gp" },
+              "quantity": 1,
+              "sources": [
+                { "id": "PZO1110", "pages": "142, 145" },
+                { "id": "PZO9452", "pages": "0" }
+              ],
+              "subType": "simple",
+              "weaponGroups": ["crossbows"],
+              "weaponSubtype": "ranged",
+              "weight": { "value": 4 },
+              "alignments": {},
+              "mods": {}
+            },
+            "type": "weapon",
+            "effects": [],
+            "flags": {},
+            "_id": "EV9h7FRjuk2FZLro",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.weapons-and-ammo.Item.v04yeRzoqrhYx0G7"
+            },
+            "flags": { "pf1": {} },
+            "folder": "0gW0aJOeBes695zU",
+            "name": "Crossbow Bolt",
+            "system": {
+              "equipped": false,
+              "hardness": 5,
+              "hp": { "base": 1 },
+              "price": { "base": 1, "unit": "sp" },
+              "quantity": 10,
+              "sources": [
+                { "id": "PZO1110", "pages": "142, 145" },
+                { "id": "PZO1123", "pages": "22" }
+              ],
+              "subType": "bolt",
+              "unidentified": { "price": { "base": 1, "unit": "sp" } },
+              "weight": { "value": 0.1 },
+              "alignments": {},
+              "mods": {}
+            },
+            "type": "ammo",
+            "effects": [],
+            "_id": "knmQY4k453v9dpOC",
             "sort": 0
           }
         ],
@@ -2420,7 +2959,7 @@
             "img": "systems/pf1/icons/conditions/grappled.svg",
             "statuses": ["grappled"],
             "showIcon": 2,
-            "_id": "CrSJr5aCVW4vzrFB",
+            "_id": "dyWII6qmXwRHwAxo",
             "type": "base",
             "system": { "changes": [] },
             "disabled": false,
@@ -2444,8 +2983,8 @@
               "coreVersion": "14.370",
               "systemId": "pf1",
               "systemVersion": "11.11",
-              "createdTime": 1795401514479,
-              "modifiedTime": 1795401514479,
+              "createdTime": 1795407367710,
+              "modifiedTime": 1795407367710,
               "lastModifiedBy": "7UYomJpxzjJzDpJa",
               "compendiumSource": null,
               "duplicateSource": null,
@@ -2513,6 +3052,26 @@
           "senseMotive": 1,
           "perform": -1,
           "bluff": -1
+        }
+      },
+      "attacks": {
+        "Longbow": {
+          "attack": [1],
+          "damage": -1,
+          "dice": "1d8",
+          "formula": {
+            "attack": "1d20 + 1[Dexterity] + 3[Base Attack Bonus] - 1[Negative Levels] - 2[Grappled]",
+            "damage": ["sizeRoll(1,8,4) - 1[Strength]"]
+          }
+        },
+        "Light Crossbow": {
+          "attack": [1],
+          "damage": 0,
+          "dice": "1d8",
+          "formula": {
+            "attack": "1d20 + 1[Dexterity] + 3[Base Attack Bonus] - 1[Negative Levels] - 2[Grappled]",
+            "damage": ["sizeRoll(1,8,4)"]
+          }
         }
       }
     }

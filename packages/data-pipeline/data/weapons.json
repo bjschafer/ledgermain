@@ -397,7 +397,7 @@
     "weaponSubtype": "light"
   },
   "2mw29eyL5mzZgKqR": {
-    "attackAbility": "str",
+    "attackAbility": "dex",
     "baseTypes": ["Trident"],
     "category": "ranged",
     "critMult": 2,
@@ -595,7 +595,7 @@
     "weight": 5
   },
   "42M7kFLkyccrj1uf": {
-    "attackAbility": "str",
+    "attackAbility": "dex",
     "baseTypes": ["Shuriken"],
     "category": "ranged",
     "critMult": 2,
@@ -629,7 +629,7 @@
     "weight": 0.1
   },
   "4Ljn6CWNcYi1OebL": {
-    "attackAbility": "str",
+    "attackAbility": "dex",
     "baseTypes": ["Shoanti Bolas"],
     "category": "ranged",
     "critMult": 2,
@@ -888,7 +888,7 @@
     "weight": 2
   },
   "6AfGnpzoFUpKLJgM": {
-    "attackAbility": "str",
+    "attackAbility": "dex",
     "baseTypes": ["Kunai"],
     "category": "ranged",
     "critMult": 2,
@@ -1075,7 +1075,7 @@
     "weight": 4
   },
   "6oevs2mE3QqqQEAK": {
-    "attackAbility": "str",
+    "attackAbility": "dex",
     "baseTypes": ["Net"],
     "category": "ranged",
     "critMult": 2,
@@ -1154,7 +1154,7 @@
     "weight": 3
   },
   "7sMY07dTQ2JKGYMl": {
-    "attackAbility": "str",
+    "attackAbility": "dex",
     "baseTypes": ["Harpoon"],
     "category": "ranged",
     "critMult": 3,
@@ -1238,7 +1238,7 @@
     "weight": 1
   },
   "8KCwDN3vuwoF6erS": {
-    "attackAbility": "str",
+    "attackAbility": "dex",
     "baseTypes": ["Grappling Hook"],
     "category": "ranged",
     "critMult": 2,
@@ -1432,7 +1432,7 @@
     "category": "ranged",
     "critMult": 3,
     "critRange": 20,
-    "damageAbility": "none",
+    "damageAbility": "str",
     "damageDice": "1d6",
     "damageTypes": ["piercing"],
     "group": "shortbow",
@@ -1457,7 +1457,7 @@
     "weight": 2
   },
   "AzvaEePCpHBoKWnw": {
-    "attackAbility": "str",
+    "attackAbility": "dex",
     "baseTypes": ["Amentum"],
     "category": "ranged",
     "critMult": 2,
@@ -1784,7 +1784,7 @@
     "weight": 1
   },
   "Dwk80eD0rB93lPnN": {
-    "attackAbility": "str",
+    "attackAbility": "dex",
     "baseTypes": ["Light Hammer"],
     "category": "ranged",
     "critMult": 2,
@@ -2035,7 +2035,7 @@
     "weight": 2
   },
   "F5ZLN44A3QWL8S7k": {
-    "attackAbility": "str",
+    "attackAbility": "dex",
     "baseTypes": ["Pilum"],
     "category": "ranged",
     "critMult": 2,
@@ -2177,7 +2177,7 @@
     "weight": 4
   },
   "G96EeduQ7ttyMNXT": {
-    "attackAbility": "str",
+    "attackAbility": "dex",
     "baseTypes": ["Chain-Hammer"],
     "category": "ranged",
     "critMult": 2,
@@ -2207,6 +2207,7 @@
     "attackAbility": "dex",
     "baseTypes": ["Shortbow"],
     "category": "ranged",
+    "composite": true,
     "critMult": 3,
     "critRange": 20,
     "damageAbility": "str",
@@ -2325,7 +2326,7 @@
     "weight": 1
   },
   "GydLTGUvuK9zzQbm": {
-    "attackAbility": "str",
+    "attackAbility": "dex",
     "baseTypes": ["Flask Thrower"],
     "category": "ranged",
     "critMult": 2,
@@ -2547,7 +2548,7 @@
     "weight": 10
   },
   "IuMbrWJqt6pLLmbz": {
-    "attackAbility": "str",
+    "attackAbility": "dex",
     "baseTypes": ["Atlatl"],
     "category": "ranged",
     "critMult": 2,
@@ -2931,7 +2932,7 @@
     "weight": 3
   },
   "KmbhZ4Z674Yk9yIh": {
-    "attackAbility": "str",
+    "attackAbility": "dex",
     "baseTypes": ["Javelin"],
     "category": "ranged",
     "critMult": 2,
@@ -3234,7 +3235,7 @@
     "weight": 10
   },
   "LWPBZON5AHSjxqXi": {
-    "attackAbility": "str",
+    "attackAbility": "dex",
     "baseTypes": ["Throwing Arrow Cord"],
     "category": "ranged",
     "critMult": 2,
@@ -3259,7 +3260,7 @@
     "weaponSubtype": "ranged"
   },
   "Lgyo1r1XDa3bYOp7": {
-    "attackAbility": "str",
+    "attackAbility": "dex",
     "baseTypes": ["Sibat"],
     "category": "ranged",
     "critMult": 3,
@@ -3446,7 +3447,7 @@
     "weight": 12
   },
   "N37FFAdWjVV6EolR": {
-    "attackAbility": "str",
+    "attackAbility": "dex",
     "baseTypes": ["Shortspear"],
     "category": "ranged",
     "critMult": 2,
@@ -3663,7 +3664,7 @@
     "weight": 8
   },
   "Ot4NtUyqNkKPXujH": {
-    "attackAbility": "str",
+    "attackAbility": "dex",
     "baseTypes": ["Jolting Dart"],
     "category": "ranged",
     "critMult": 2,
@@ -3998,7 +3999,7 @@
     "weight": 3
   },
   "Q0lPhlUtRuqoWfyI": {
-    "attackAbility": "str",
+    "attackAbility": "dex",
     "baseTypes": ["Boomerang"],
     "category": "ranged",
     "critMult": 2,
@@ -4550,7 +4551,7 @@
     "weight": 2
   },
   "T5N66YUFkpdxXv3d": {
-    "attackAbility": "str",
+    "attackAbility": "dex",
     "baseTypes": ["Stingchuck"],
     "category": "ranged",
     "critMult": 2,
@@ -4576,7 +4577,7 @@
     "weight": 9
   },
   "TGPELygeHlA4eDrj": {
-    "attackAbility": "str",
+    "attackAbility": "dex",
     "baseTypes": ["Dire Bolas"],
     "category": "ranged",
     "critMult": 2,
@@ -4707,7 +4708,7 @@
     "weight": 2
   },
   "V2eFtz6QWSP5bipu": {
-    "attackAbility": "str",
+    "attackAbility": "dex",
     "baseTypes": ["Shrillshaft Javelin"],
     "category": "ranged",
     "critMult": 2,
@@ -4924,7 +4925,7 @@
     "weight": 4
   },
   "VwxTLVOEPfbvIv9B": {
-    "attackAbility": "str",
+    "attackAbility": "dex",
     "baseTypes": ["Sling Glove"],
     "category": "ranged",
     "critMult": 2,
@@ -5097,7 +5098,7 @@
     "weight": 12
   },
   "XCLQKtU665jMBcJj": {
-    "attackAbility": "str",
+    "attackAbility": "dex",
     "baseTypes": ["Stormshaft Javelin"],
     "category": "ranged",
     "critMult": 2,
@@ -5147,7 +5148,7 @@
     "weight": 3
   },
   "Y4zuC6CQxCFXcojX": {
-    "attackAbility": "str",
+    "attackAbility": "dex",
     "baseTypes": ["Wushu Dart"],
     "category": "ranged",
     "critMult": 2,
@@ -5341,7 +5342,7 @@
     "weight": 8
   },
   "ZBnZt4RlEg7ckoKE": {
-    "attackAbility": "str",
+    "attackAbility": "dex",
     "baseTypes": ["Halfling Sling Staff"],
     "category": "ranged",
     "critMult": 3,
@@ -5796,7 +5797,7 @@
     "weight": 1
   },
   "bEZGQcXqVZtvS4hd": {
-    "attackAbility": "str",
+    "attackAbility": "dex",
     "baseTypes": ["Crystal Chakram"],
     "category": "ranged",
     "critMult": 2,
@@ -5822,7 +5823,7 @@
     "weight": 2
   },
   "bTmiY6Bkj2kSPUKV": {
-    "attackAbility": "str",
+    "attackAbility": "dex",
     "baseTypes": ["Dwarven Sphinx Hammer"],
     "category": "ranged",
     "critMult": 3,
@@ -5959,7 +5960,7 @@
     "weight": 20
   },
   "cJV7OBm9KiF2WWiu": {
-    "attackAbility": "str",
+    "attackAbility": "dex",
     "baseTypes": ["Sling"],
     "category": "ranged",
     "critMult": 2,
@@ -6025,7 +6026,7 @@
     "weight": 3
   },
   "cLA0y1lyV3YDAmLf": {
-    "attackAbility": "str",
+    "attackAbility": "dex",
     "baseTypes": ["Phaleros"],
     "category": "ranged",
     "critMult": 2,
@@ -6482,7 +6483,7 @@
     "weight": 9
   },
   "gAs85NM90mIR4O4Z": {
-    "attackAbility": "str",
+    "attackAbility": "dex",
     "baseTypes": ["Throwing Axe"],
     "category": "ranged",
     "critMult": 2,
@@ -6698,7 +6699,7 @@
     "weight": 5
   },
   "hPkTX7pOJ5shyv1n": {
-    "attackAbility": "str",
+    "attackAbility": "dex",
     "baseTypes": ["Kestros"],
     "category": "ranged",
     "critMult": 3,
@@ -7072,7 +7073,7 @@
     "weight": 2
   },
   "kBfgnl7ccM6QLCcH": {
-    "attackAbility": "str",
+    "attackAbility": "dex",
     "baseTypes": ["Bolas"],
     "category": "ranged",
     "critMult": 2,
@@ -7228,7 +7229,7 @@
     "weight": 1
   },
   "lhRflc0WUdsF1s4h": {
-    "attackAbility": "str",
+    "attackAbility": "dex",
     "baseTypes": ["Throwing Shield"],
     "category": "ranged",
     "critMult": 2,
@@ -7327,7 +7328,7 @@
     "weight": 2
   },
   "mCwwHo32SU7kjGyu": {
-    "attackAbility": "str",
+    "attackAbility": "dex",
     "baseTypes": ["Dart"],
     "category": "ranged",
     "critMult": 2,
@@ -7473,6 +7474,7 @@
     "attackAbility": "dex",
     "baseTypes": ["Longbow"],
     "category": "ranged",
+    "composite": true,
     "critMult": 3,
     "critRange": 20,
     "damageAbility": "str",
@@ -7544,7 +7546,7 @@
     "weight": 3
   },
   "nSZTb7vN2SH2KwRG": {
-    "attackAbility": "str",
+    "attackAbility": "dex",
     "baseTypes": ["Halfling Double Sling"],
     "category": "ranged",
     "critMult": 2,
@@ -7909,7 +7911,7 @@
     "weight": 5
   },
   "pIRXX5fRRgO9JfF2": {
-    "attackAbility": "str",
+    "attackAbility": "dex",
     "baseTypes": ["Wahaika", "Club"],
     "category": "ranged",
     "critMult": 2,
@@ -8056,7 +8058,7 @@
     "weaponSubtype": "light"
   },
   "qEpaSO593GKaXJuo": {
-    "attackAbility": "str",
+    "attackAbility": "dex",
     "baseTypes": ["Hurlbat"],
     "category": "ranged",
     "critMult": 2,
@@ -8171,7 +8173,7 @@
     "weight": 12
   },
   "s0LFk8Jk5CsgOj7V": {
-    "attackAbility": "str",
+    "attackAbility": "dex",
     "baseTypes": ["Spear"],
     "category": "ranged",
     "critMult": 3,
@@ -8382,7 +8384,7 @@
     "weight": 6
   },
   "tjuTlbdI85ClQhf6": {
-    "attackAbility": "str",
+    "attackAbility": "dex",
     "baseTypes": ["Starknife"],
     "category": "ranged",
     "critMult": 3,
@@ -8942,7 +8944,7 @@
     "weight": 2
   },
   "xRAy5aBcjRvvbz8z": {
-    "attackAbility": "str",
+    "attackAbility": "dex",
     "baseTypes": ["Rope Dart"],
     "category": "ranged",
     "critMult": 2,

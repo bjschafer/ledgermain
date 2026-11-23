@@ -6,7 +6,7 @@
  *  - Typed bonus-stacking resolver: {@link resolveStack}.
  */
 
-export { compute, armorPieceAcp } from "./compute.js";
+export { compute, armorPieceAcp, scaleWeaponDamageDice } from "./compute.js";
 export {
   ABILITY_DC_FAMILIES,
   abilityDCTarget,

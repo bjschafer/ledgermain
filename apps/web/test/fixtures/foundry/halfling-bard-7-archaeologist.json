@@ -55,7 +55,7 @@
         "name": "halfling-bard-7-archaeologist [base]",
         "type": "character",
         "folder": "GuYuyoqdabfe4xZV",
-        "_id": "AultH4NhACwdj06O",
+        "_id": "LkL8kCtQvro6IQvk",
         "system": {
           "abilities": {
             "str": { "value": 10 },
@@ -98,7 +98,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "fG68Pw1bxbcByKIK",
+            "_id": "Ofx7e4y5ag9SMd0q",
             "folder": null,
             "sort": 0
           },
@@ -119,7 +119,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "y5lov4yeOkSImCKS",
+            "_id": "x0GPhA3IcM6yWA3Z",
             "folder": null,
             "sort": 0
           },
@@ -140,7 +140,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "2UZErmgsHs579vFc",
+            "_id": "93vrQEJFwyAwY1TN",
             "folder": null,
             "sort": 0
           },
@@ -161,7 +161,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "vS5svNrFXcbdkqiP",
+            "_id": "OBgtsfPMF3avjDjY",
             "folder": null,
             "sort": 0
           },
@@ -182,7 +182,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "YHwTdvrgavC1agiy",
+            "_id": "9Sls0dAHOXcsqQU0",
             "folder": null,
             "sort": 0
           },
@@ -203,7 +203,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "KNqcMJj2vFUGQfkM",
+            "_id": "OgcSzBY4NnVOuQxj",
             "folder": null,
             "sort": 0
           },
@@ -270,7 +270,7 @@
             "type": "race",
             "effects": [],
             "flags": {},
-            "_id": "BedGiJIm0pUPKsos",
+            "_id": "TzzK8CLi0awMkJ85",
             "sort": 0
           },
           {
@@ -366,25 +366,25 @@
               "pf1": {
                 "links": {
                   "classAssociations": {
-                    "aBjjb3OnTTx5Hc2X": 1,
-                    "IbgNFRxwVprDq7RI": 1,
-                    "0YGpKoUTf3B5pgKT": 1,
-                    "JDvSO7JwSL78BB86": 1,
-                    "sc9aTEFHGZqQ35C0": 1,
-                    "VzbuGY3VQMdP859U": 1,
-                    "goinu2iuzaiL3v3O": 1,
-                    "X5FT47hT5bH4kOFF": 1,
-                    "Y2A71ARl8lBuPd7j": 2,
-                    "5pqA1Q2qz97jckK0": 3,
-                    "Gr8C5F3Wc8PuFZKC": 5,
-                    "GGuBMwO3Ks6VDVZT": 5,
-                    "dVReUG5wdPO6sRtd": 6,
-                    "oZrFI99l49CJVQO1": 2
+                    "6gwjjeeDkbXdA8d8": 1,
+                    "vX216WZdXqOj8nob": 1,
+                    "GyHcEq2JlbjOfPQh": 1,
+                    "iWzDWzYXs94Cqfn4": 1,
+                    "CTyUGkI2mz1zeJIx": 1,
+                    "q9YcsfhNuwqfBcTC": 1,
+                    "b5JVET4pZQZSeSIK": 2,
+                    "wugD1yEAC11Sht5G": 2,
+                    "X34ALww5ypP1HAbp": 3,
+                    "zYEwdvTqG6fAnA6G": 5,
+                    "PzLlmPDnUES3WETG": 5,
+                    "VHAgd1H6C7mXTSP6": 6,
+                    "x5zSyEd0Yt5zRqDr": 1,
+                    "4nxDkKvnZseelUXP": 1
                   }
                 }
               }
             },
-            "_id": "tAwkO1yJadHnFXO1",
+            "_id": "G6d5GZGWI4ejWxdV",
             "sort": 0
           },
           {
@@ -420,7 +420,7 @@
               },
               "restrictions": []
             },
-            "_id": "f908pvS3SAJ3YHOd",
+            "_id": "Mup2oqJ9cCGkdNrN",
             "effects": [],
             "folder": null,
             "sort": 0,
@@ -452,7 +452,7 @@
             "effects": [],
             "flags": {},
             "sort": 100000,
-            "_id": "aBjjb3OnTTx5Hc2X",
+            "_id": "6gwjjeeDkbXdA8d8",
             "folder": null
           },
           {
@@ -489,7 +489,7 @@
             "effects": [],
             "flags": {},
             "sort": 700000,
-            "_id": "goinu2iuzaiL3v3O",
+            "_id": "CTyUGkI2mz1zeJIx",
             "folder": null
           },
           {
@@ -508,7 +508,7 @@
             "effects": [],
             "flags": {},
             "sort": 800000,
-            "_id": "X5FT47hT5bH4kOFF",
+            "_id": "q9YcsfhNuwqfBcTC",
             "folder": null
           },
           {
@@ -546,7 +546,7 @@
             "effects": [],
             "flags": {},
             "sort": 1200000,
-            "_id": "Gr8C5F3Wc8PuFZKC",
+            "_id": "zYEwdvTqG6fAnA6G",
             "folder": null
           },
           {
@@ -579,156 +579,8 @@
             "effects": [],
             "flags": {},
             "sort": 1300000,
-            "_id": "GGuBMwO3Ks6VDVZT",
+            "_id": "PzLlmPDnUES3WETG",
             "folder": null
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1e-archetypes.pf-arch-features.Item.PRvaJBuSUDG32wYz"
-            },
-            "name": "Archaeologist's Luck (Archaeologist)",
-            "system": {
-              "abilityType": "ex",
-              "actions": {
-                "t93uUl9leMnhbtUY": {
-                  "_id": "t93uUl9leMnhbtUY",
-                  "activation": { "type": "swift", "unchained": { "type": "action" } },
-                  "img": "icons/tools/instruments/harp-lap-brown.webp",
-                  "name": "Use",
-                  "range": { "units": "personal" },
-                  "sort": 0
-                }
-              },
-              "associations": { "classes": ["Bard"] },
-              "sources": [{ "id": "PZO1118", "pages": "32" }],
-              "subType": "classFeat",
-              "tags": ["Archaeologist"],
-              "uses": { "maxFormula": "4 + @abilities.cha.mod", "per": "day" },
-              "_pending": { "actions": true },
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "folder": null,
-            "flags": {},
-            "_id": "gdd38IGrm5slV5b2",
-            "sort": 0
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1e-archetypes.pf-arch-features.Item.1zlJJj6W7TeXvahc"
-            },
-            "name": "Clever Explorer (Archaeologist)",
-            "system": {
-              "associations": { "classes": ["Bard"] },
-              "sources": [{ "id": "PZO1118", "pages": "32" }],
-              "subType": "classFeat",
-              "tags": ["Archaeologist"],
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "folder": null,
-            "flags": {},
-            "_id": "PyPdtGRuNX6PVnPY",
-            "sort": 0
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1e-archetypes.pf-arch-features.Item.wbdg7SRZvXqba5lQ"
-            },
-            "name": "Uncanny Dodge (Archaeologist)",
-            "system": {
-              "associations": { "classes": ["Bard"] },
-              "sources": [{ "id": "PZO1118", "pages": "32" }],
-              "subType": "classFeat",
-              "tags": ["Archaeologist"],
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "folder": null,
-            "flags": {},
-            "_id": "ZmjPkfIvnkLf26xd",
-            "sort": 0
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1e-archetypes.pf-arch-features.Item.Frlze5Na5lg4bSLi"
-            },
-            "name": "Trap Sense (Archaeologist)",
-            "system": {
-              "abilityType": "ex",
-              "actions": {
-                "LrUey2MlA6ujwqFx": {
-                  "_id": "LrUey2MlA6ujwqFx",
-                  "activation": { "type": "nonaction", "unchained": { "type": "nonaction" } },
-                  "img": "icons/tools/instruments/harp-lap-brown.webp",
-                  "name": "Use",
-                  "sort": 0
-                }
-              },
-              "associations": { "classes": ["Bard"] },
-              "contextNotes": {
-                "81oBxxH3X5nq5rp8": {
-                  "target": "ref",
-                  "text": "+[[floor(@classes.rogue.level/3)]] vs. traps"
-                },
-                "ZPXV3pjU7Cb0G9XY": {
-                  "target": "ac",
-                  "text": "+[[floor(@classes.rogue.level/3)]] dodge vs. traps"
-                }
-              },
-              "sources": [{ "id": "PZO1118", "pages": "32" }],
-              "subType": "classFeat",
-              "tags": ["Archaeologist"],
-              "_pending": { "actions": true, "contextNotes": true },
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "folder": null,
-            "flags": {},
-            "_id": "5dojYPLIyzkUqCoH",
-            "sort": 0
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1e-archetypes.pf-arch-features.Item.3RuYRzQvUYKM2M3x"
-            },
-            "name": "Rogue Talents (Archaeologist)",
-            "system": {
-              "associations": { "classes": ["Bard"] },
-              "sources": [{ "id": "PZO1118", "pages": "32" }],
-              "subType": "classFeat",
-              "tags": ["Archaeologist"],
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "folder": null,
-            "flags": {},
-            "_id": "0zPfVNBePC3s4zZI",
-            "sort": 0
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1e-archetypes.pf-arch-features.Item.iftc6b32LjAyvIDg"
-            },
-            "name": "Evasion (Archaeologist)",
-            "system": {
-              "associations": { "classes": ["Bard"] },
-              "sources": [{ "id": "PZO1118", "pages": "32" }],
-              "subType": "classFeat",
-              "tags": ["Archaeologist"],
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "folder": null,
-            "flags": {},
-            "_id": "cD3LCMvjM2DfYbgv",
-            "sort": 0
           },
           {
             "_stats": {
@@ -778,7 +630,155 @@
             "type": "feat",
             "effects": [],
             "flags": {},
-            "_id": "ieZx945CJCEfxVUp",
+            "_id": "CxK3MWSEd3UkEsrE",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1e-archetypes.pf-arch-features.Item.wbdg7SRZvXqba5lQ"
+            },
+            "name": "Uncanny Dodge (Archaeologist)",
+            "system": {
+              "associations": { "classes": ["Bard"] },
+              "sources": [{ "id": "PZO1118", "pages": "32" }],
+              "subType": "classFeat",
+              "tags": ["Archaeologist"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "CVOcMt0uJL83i6j9",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1e-archetypes.pf-arch-features.Item.Frlze5Na5lg4bSLi"
+            },
+            "name": "Trap Sense (Archaeologist)",
+            "system": {
+              "abilityType": "ex",
+              "actions": {
+                "fMJSqYSdBdshUc3d": {
+                  "_id": "fMJSqYSdBdshUc3d",
+                  "activation": { "type": "nonaction", "unchained": { "type": "nonaction" } },
+                  "img": "icons/tools/instruments/harp-lap-brown.webp",
+                  "name": "Use",
+                  "sort": 0
+                }
+              },
+              "associations": { "classes": ["Bard"] },
+              "contextNotes": {
+                "jWOYLjqXa2u29Vg2": {
+                  "target": "ref",
+                  "text": "+[[floor(@classes.rogue.level/3)]] vs. traps"
+                },
+                "yrEcNUConwWvcCau": {
+                  "target": "ac",
+                  "text": "+[[floor(@classes.rogue.level/3)]] dodge vs. traps"
+                }
+              },
+              "sources": [{ "id": "PZO1118", "pages": "32" }],
+              "subType": "classFeat",
+              "tags": ["Archaeologist"],
+              "_pending": { "actions": true, "contextNotes": true },
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "jzICuHMWLa84Kr1a",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1e-archetypes.pf-arch-features.Item.3RuYRzQvUYKM2M3x"
+            },
+            "name": "Rogue Talents (Archaeologist)",
+            "system": {
+              "associations": { "classes": ["Bard"] },
+              "sources": [{ "id": "PZO1118", "pages": "32" }],
+              "subType": "classFeat",
+              "tags": ["Archaeologist"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "Tp8J6h1sOKv5ygbf",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1e-archetypes.pf-arch-features.Item.iftc6b32LjAyvIDg"
+            },
+            "name": "Evasion (Archaeologist)",
+            "system": {
+              "associations": { "classes": ["Bard"] },
+              "sources": [{ "id": "PZO1118", "pages": "32" }],
+              "subType": "classFeat",
+              "tags": ["Archaeologist"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "DbO0QiGT1ObTrKq6",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1e-archetypes.pf-arch-features.Item.PRvaJBuSUDG32wYz"
+            },
+            "name": "Archaeologist's Luck (Archaeologist)",
+            "system": {
+              "abilityType": "ex",
+              "actions": {
+                "5S8b3ICdPv1xJ03N": {
+                  "_id": "5S8b3ICdPv1xJ03N",
+                  "activation": { "type": "swift", "unchained": { "type": "action" } },
+                  "img": "icons/tools/instruments/harp-lap-brown.webp",
+                  "name": "Use",
+                  "range": { "units": "personal" },
+                  "sort": 0
+                }
+              },
+              "associations": { "classes": ["Bard"] },
+              "sources": [{ "id": "PZO1118", "pages": "32" }],
+              "subType": "classFeat",
+              "tags": ["Archaeologist"],
+              "uses": { "maxFormula": "4 + @abilities.cha.mod", "per": "day" },
+              "_pending": { "actions": true },
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "7Y7YomK5YTa85OFa",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1e-archetypes.pf-arch-features.Item.1zlJJj6W7TeXvahc"
+            },
+            "name": "Clever Explorer (Archaeologist)",
+            "system": {
+              "associations": { "classes": ["Bard"] },
+              "sources": [{ "id": "PZO1118", "pages": "32" }],
+              "subType": "classFeat",
+              "tags": ["Archaeologist"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "Nd2wu55gLyhjnJd2",
             "sort": 0
           },
           {
@@ -802,7 +802,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "hdNdgq0ZaRmGiMEd",
+            "_id": "ONbjFItZd1ALXnjj",
             "sort": 0
           },
           {
@@ -826,7 +826,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "AY0IUx5lMQwIDcV6",
+            "_id": "wGcGhbJ7BVi9Yuc6",
             "sort": 0
           },
           {
@@ -850,7 +850,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "GgP2GnKuYx4VeGms",
+            "_id": "mIBAgrp2F3DPhJyF",
             "sort": 0
           },
           {
@@ -874,7 +874,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "eJPT8oqLFoPigOpO",
+            "_id": "ksIz6JQR1uQxRlDd",
             "sort": 0
           },
           {
@@ -907,7 +907,7 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "NnvbdCO7qN1W19dd",
+            "_id": "a8KYQ4yMuqWqD9JH",
             "sort": 0
           }
         ],
@@ -973,14 +973,15 @@
           "perform": 4,
           "bluff": 14
         }
-      }
+      },
+      "attacks": {}
     },
     "buffs": {
       "actor": {
         "name": "halfling-bard-7-archaeologist [buffs]",
         "type": "character",
         "folder": "GuYuyoqdabfe4xZV",
-        "_id": "r8XohnR8N0vLyoTE",
+        "_id": "j9PasxyVWh1DiAC4",
         "system": {
           "abilities": {
             "str": { "value": 10 },
@@ -1023,7 +1024,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "QbJTwy5juSdqtYT2",
+            "_id": "xPzRkIv8jQZNBEtH",
             "folder": null,
             "sort": 0
           },
@@ -1044,7 +1045,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "zlLXvjCHwo0UtCqm",
+            "_id": "Bc1dJqyK4KmQDrwN",
             "folder": null,
             "sort": 0
           },
@@ -1065,7 +1066,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "czBjk9DSuUW6wXd6",
+            "_id": "cO0cMwM4YXDM1vNH",
             "folder": null,
             "sort": 0
           },
@@ -1086,7 +1087,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "DxY7WE43NSgxzBar",
+            "_id": "qFuNrbiM1oQoUHJI",
             "folder": null,
             "sort": 0
           },
@@ -1107,7 +1108,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "gIZ65lqNZf7oJvSD",
+            "_id": "qlqVgh8pCwYw905d",
             "folder": null,
             "sort": 0
           },
@@ -1128,7 +1129,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "WC43Vekxh3aQw6S1",
+            "_id": "ElZpBj5wq72LyF5j",
             "folder": null,
             "sort": 0
           },
@@ -1195,7 +1196,7 @@
             "type": "race",
             "effects": [],
             "flags": {},
-            "_id": "akaxyfWfOPuv1x52",
+            "_id": "yOydq7FCC4bjE5pB",
             "sort": 0
           },
           {
@@ -1291,25 +1292,25 @@
               "pf1": {
                 "links": {
                   "classAssociations": {
-                    "KsNAwnSZ1unlf7Ld": 1,
-                    "tS3YC0pkz1wrRQEf": 1,
-                    "orkLAXsmMB0KrF8e": 1,
-                    "xLF2ojpxOT9rq3lV": 1,
-                    "Dz8gfpEs7WLzExdz": 1,
-                    "eonr7Qjz3UZpQApn": 1,
-                    "yX1NZqW5UNZXHlpD": 1,
-                    "C7FDmKGtaVyPyZj3": 2,
-                    "qG8UWrXbBqYY9XwK": 2,
-                    "6b71Ar6Y8HzCb844": 3,
-                    "36YLbT1FNzNrzvtJ": 5,
-                    "8pF7ly6MRY57jwA8": 5,
-                    "517TkYR4VvL8BcPv": 6,
-                    "nc3Uqxq9GQaUxuaW": 1
+                    "dHsItQmblThzR6Yu": 1,
+                    "TAw4U7PODQf1kJgO": 1,
+                    "a0OOL534Y3KNmdRa": 1,
+                    "MgKdyM2XzOE3ZrVm": 1,
+                    "AehTVqUfQHJiT99r": 1,
+                    "wzqaZPiA9V9KDjRM": 1,
+                    "LNG6timg8hFVfqxN": 2,
+                    "ZNCnVwx1fIVotcm7": 2,
+                    "FJJBcFaKfaJINmPN": 3,
+                    "hiw0YEpRrt2CUgTv": 5,
+                    "XYZmVTShIHGTlEXo": 5,
+                    "emslYWXvQO3ThlCg": 6,
+                    "LxlzipVfDyCs4e3d": 1,
+                    "QDojoIJzeo5rcsSe": 1
                   }
                 }
               }
             },
-            "_id": "KZUSgrjo5CjlDrca",
+            "_id": "9NbWk01KN5rN4xEK",
             "sort": 0
           },
           {
@@ -1345,7 +1346,7 @@
               },
               "restrictions": []
             },
-            "_id": "TApCZU1eQ8AWUnj9",
+            "_id": "U9Wb11eox5Fong3l",
             "effects": [],
             "folder": null,
             "sort": 0,
@@ -1377,7 +1378,7 @@
             "effects": [],
             "flags": {},
             "sort": 100000,
-            "_id": "KsNAwnSZ1unlf7Ld",
+            "_id": "dHsItQmblThzR6Yu",
             "folder": null
           },
           {
@@ -1414,7 +1415,7 @@
             "effects": [],
             "flags": {},
             "sort": 700000,
-            "_id": "eonr7Qjz3UZpQApn",
+            "_id": "AehTVqUfQHJiT99r",
             "folder": null
           },
           {
@@ -1433,7 +1434,7 @@
             "effects": [],
             "flags": {},
             "sort": 800000,
-            "_id": "yX1NZqW5UNZXHlpD",
+            "_id": "wzqaZPiA9V9KDjRM",
             "folder": null
           },
           {
@@ -1471,7 +1472,7 @@
             "effects": [],
             "flags": {},
             "sort": 1200000,
-            "_id": "36YLbT1FNzNrzvtJ",
+            "_id": "hiw0YEpRrt2CUgTv",
             "folder": null
           },
           {
@@ -1504,8 +1505,156 @@
             "effects": [],
             "flags": {},
             "sort": 1300000,
-            "_id": "8pF7ly6MRY57jwA8",
+            "_id": "XYZmVTShIHGTlEXo",
             "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1e-archetypes.pf-arch-features.Item.PRvaJBuSUDG32wYz"
+            },
+            "name": "Archaeologist's Luck (Archaeologist)",
+            "system": {
+              "abilityType": "ex",
+              "actions": {
+                "5S8b3ICdPv1xJ03N": {
+                  "_id": "5S8b3ICdPv1xJ03N",
+                  "activation": { "type": "swift", "unchained": { "type": "action" } },
+                  "img": "icons/tools/instruments/harp-lap-brown.webp",
+                  "name": "Use",
+                  "range": { "units": "personal" },
+                  "sort": 0
+                }
+              },
+              "associations": { "classes": ["Bard"] },
+              "sources": [{ "id": "PZO1118", "pages": "32" }],
+              "subType": "classFeat",
+              "tags": ["Archaeologist"],
+              "uses": { "maxFormula": "4 + @abilities.cha.mod", "per": "day" },
+              "_pending": { "actions": true },
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "j3wUoh0D0BoXIwsW",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1e-archetypes.pf-arch-features.Item.1zlJJj6W7TeXvahc"
+            },
+            "name": "Clever Explorer (Archaeologist)",
+            "system": {
+              "associations": { "classes": ["Bard"] },
+              "sources": [{ "id": "PZO1118", "pages": "32" }],
+              "subType": "classFeat",
+              "tags": ["Archaeologist"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "urK9SL9yWduJPg6j",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1e-archetypes.pf-arch-features.Item.wbdg7SRZvXqba5lQ"
+            },
+            "name": "Uncanny Dodge (Archaeologist)",
+            "system": {
+              "associations": { "classes": ["Bard"] },
+              "sources": [{ "id": "PZO1118", "pages": "32" }],
+              "subType": "classFeat",
+              "tags": ["Archaeologist"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "jx3dISU4NucErJar",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1e-archetypes.pf-arch-features.Item.Frlze5Na5lg4bSLi"
+            },
+            "name": "Trap Sense (Archaeologist)",
+            "system": {
+              "abilityType": "ex",
+              "actions": {
+                "fMJSqYSdBdshUc3d": {
+                  "_id": "fMJSqYSdBdshUc3d",
+                  "activation": { "type": "nonaction", "unchained": { "type": "nonaction" } },
+                  "img": "icons/tools/instruments/harp-lap-brown.webp",
+                  "name": "Use",
+                  "sort": 0
+                }
+              },
+              "associations": { "classes": ["Bard"] },
+              "contextNotes": {
+                "jWOYLjqXa2u29Vg2": {
+                  "target": "ref",
+                  "text": "+[[floor(@classes.rogue.level/3)]] vs. traps"
+                },
+                "yrEcNUConwWvcCau": {
+                  "target": "ac",
+                  "text": "+[[floor(@classes.rogue.level/3)]] dodge vs. traps"
+                }
+              },
+              "sources": [{ "id": "PZO1118", "pages": "32" }],
+              "subType": "classFeat",
+              "tags": ["Archaeologist"],
+              "_pending": { "actions": true, "contextNotes": true },
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "IwsK5amIg8IWTt67",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1e-archetypes.pf-arch-features.Item.3RuYRzQvUYKM2M3x"
+            },
+            "name": "Rogue Talents (Archaeologist)",
+            "system": {
+              "associations": { "classes": ["Bard"] },
+              "sources": [{ "id": "PZO1118", "pages": "32" }],
+              "subType": "classFeat",
+              "tags": ["Archaeologist"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "yS3HWtH9rBKaikwa",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1e-archetypes.pf-arch-features.Item.iftc6b32LjAyvIDg"
+            },
+            "name": "Evasion (Archaeologist)",
+            "system": {
+              "associations": { "classes": ["Bard"] },
+              "sources": [{ "id": "PZO1118", "pages": "32" }],
+              "subType": "classFeat",
+              "tags": ["Archaeologist"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "1RbBtqlUOfBqRd3X",
+            "sort": 0
           },
           {
             "_stats": {
@@ -1555,227 +1704,7 @@
             "type": "feat",
             "effects": [],
             "flags": {},
-            "_id": "IDzI52IrFtxlmskm",
-            "sort": 0
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1e-archetypes.pf-arch-features.Item.PRvaJBuSUDG32wYz"
-            },
-            "name": "Archaeologist's Luck (Archaeologist)",
-            "system": {
-              "abilityType": "ex",
-              "actions": {
-                "t93uUl9leMnhbtUY": {
-                  "_id": "t93uUl9leMnhbtUY",
-                  "activation": { "type": "swift", "unchained": { "type": "action" } },
-                  "img": "icons/tools/instruments/harp-lap-brown.webp",
-                  "name": "Use",
-                  "range": { "units": "personal" },
-                  "sort": 0
-                }
-              },
-              "associations": { "classes": ["Bard"] },
-              "sources": [{ "id": "PZO1118", "pages": "32" }],
-              "subType": "classFeat",
-              "tags": ["Archaeologist"],
-              "uses": { "maxFormula": "4 + @abilities.cha.mod", "per": "day" },
-              "_pending": { "actions": true },
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "folder": null,
-            "flags": {},
-            "_id": "7nYfVuiRN1KCLkm1",
-            "sort": 0
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1e-archetypes.pf-arch-features.Item.1zlJJj6W7TeXvahc"
-            },
-            "name": "Clever Explorer (Archaeologist)",
-            "system": {
-              "associations": { "classes": ["Bard"] },
-              "sources": [{ "id": "PZO1118", "pages": "32" }],
-              "subType": "classFeat",
-              "tags": ["Archaeologist"],
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "folder": null,
-            "flags": {},
-            "_id": "kN2XDgao0Q6l7ht6",
-            "sort": 0
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1e-archetypes.pf-arch-features.Item.wbdg7SRZvXqba5lQ"
-            },
-            "name": "Uncanny Dodge (Archaeologist)",
-            "system": {
-              "associations": { "classes": ["Bard"] },
-              "sources": [{ "id": "PZO1118", "pages": "32" }],
-              "subType": "classFeat",
-              "tags": ["Archaeologist"],
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "folder": null,
-            "flags": {},
-            "_id": "hbFyJq22petPUYIz",
-            "sort": 0
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1e-archetypes.pf-arch-features.Item.Frlze5Na5lg4bSLi"
-            },
-            "name": "Trap Sense (Archaeologist)",
-            "system": {
-              "abilityType": "ex",
-              "actions": {
-                "LrUey2MlA6ujwqFx": {
-                  "_id": "LrUey2MlA6ujwqFx",
-                  "activation": { "type": "nonaction", "unchained": { "type": "nonaction" } },
-                  "img": "icons/tools/instruments/harp-lap-brown.webp",
-                  "name": "Use",
-                  "sort": 0
-                }
-              },
-              "associations": { "classes": ["Bard"] },
-              "contextNotes": {
-                "81oBxxH3X5nq5rp8": {
-                  "target": "ref",
-                  "text": "+[[floor(@classes.rogue.level/3)]] vs. traps"
-                },
-                "ZPXV3pjU7Cb0G9XY": {
-                  "target": "ac",
-                  "text": "+[[floor(@classes.rogue.level/3)]] dodge vs. traps"
-                }
-              },
-              "sources": [{ "id": "PZO1118", "pages": "32" }],
-              "subType": "classFeat",
-              "tags": ["Archaeologist"],
-              "_pending": { "actions": true, "contextNotes": true },
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "folder": null,
-            "flags": {},
-            "_id": "bVhBFC1AroLm66fI",
-            "sort": 0
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1e-archetypes.pf-arch-features.Item.3RuYRzQvUYKM2M3x"
-            },
-            "name": "Rogue Talents (Archaeologist)",
-            "system": {
-              "associations": { "classes": ["Bard"] },
-              "sources": [{ "id": "PZO1118", "pages": "32" }],
-              "subType": "classFeat",
-              "tags": ["Archaeologist"],
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "folder": null,
-            "flags": {},
-            "_id": "saTCahFYTP7fGR5J",
-            "sort": 0
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1e-archetypes.pf-arch-features.Item.iftc6b32LjAyvIDg"
-            },
-            "name": "Evasion (Archaeologist)",
-            "system": {
-              "associations": { "classes": ["Bard"] },
-              "sources": [{ "id": "PZO1118", "pages": "32" }],
-              "subType": "classFeat",
-              "tags": ["Archaeologist"],
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "folder": null,
-            "flags": {},
-            "_id": "n0qpY4ztsr8IlhZ1",
-            "sort": 0
-          },
-          {
-            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.iAbIGhm7T2OK9Brt" },
-            "name": "Iron Will",
-            "system": {
-              "changes": {
-                "vafl2kz4": {
-                  "_id": "vafl2kz4",
-                  "formula": "2",
-                  "target": "will",
-                  "type": "untyped"
-                }
-              },
-              "sources": [{ "id": "PZO1110", "pages": "115, 129" }],
-              "subType": "feat",
-              "tags": ["General", "Saving Throw"],
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "folder": null,
-            "flags": {},
-            "_id": "desLx9zyjpGrm4zk",
-            "sort": 0
-          },
-          {
-            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.fVRnBIHR4Jq6btvm" },
-            "name": "Great Fortitude",
-            "system": {
-              "changes": {
-                "0rubibb4": {
-                  "_id": "0rubibb4",
-                  "formula": "2",
-                  "target": "fort",
-                  "type": "untyped"
-                }
-              },
-              "sources": [{ "id": "PZO1110", "pages": "115, 124" }],
-              "subType": "feat",
-              "tags": ["General", "Saving Throw", "Defensive"],
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "folder": null,
-            "flags": {},
-            "_id": "ySqk3B7FuEp9gF1N",
-            "sort": 0
-          },
-          {
-            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.0bZf3SDkvVOe2ujH" },
-            "name": "Lightning Reflexes",
-            "system": {
-              "changes": {
-                "ni86uxwa": {
-                  "_id": "ni86uxwa",
-                  "formula": "2",
-                  "target": "ref",
-                  "type": "untyped"
-                }
-              },
-              "sources": [{ "id": "PZO1110", "pages": "115, 130" }],
-              "subType": "feat",
-              "tags": ["General", "Saving Throw"],
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "folder": null,
-            "flags": {},
-            "_id": "5AMMp6lPysnu9svH",
+            "_id": "geCViKVMOy72WS9A",
             "sort": 0
           },
           {
@@ -1799,7 +1728,79 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "PPP0wi74MGurBrwh",
+            "_id": "4si0YFBrtUu8B3wc",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.iAbIGhm7T2OK9Brt" },
+            "name": "Iron Will",
+            "system": {
+              "changes": {
+                "vafl2kz4": {
+                  "_id": "vafl2kz4",
+                  "formula": "2",
+                  "target": "will",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "115, 129" }],
+              "subType": "feat",
+              "tags": ["General", "Saving Throw"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "OXsIT9ZJ1w1qjh00",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.fVRnBIHR4Jq6btvm" },
+            "name": "Great Fortitude",
+            "system": {
+              "changes": {
+                "0rubibb4": {
+                  "_id": "0rubibb4",
+                  "formula": "2",
+                  "target": "fort",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "115, 124" }],
+              "subType": "feat",
+              "tags": ["General", "Saving Throw", "Defensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "YdiptxfTtyurhx57",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.0bZf3SDkvVOe2ujH" },
+            "name": "Lightning Reflexes",
+            "system": {
+              "changes": {
+                "ni86uxwa": {
+                  "_id": "ni86uxwa",
+                  "formula": "2",
+                  "target": "ref",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "115, 130" }],
+              "subType": "feat",
+              "tags": ["General", "Saving Throw"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "8kWoRBAlqLnzXl2P",
             "sort": 0
           },
           {
@@ -1832,7 +1833,7 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "EaLTnAc1yqUt1ls1",
+            "_id": "XmnSFLMrVd857YZQ",
             "sort": 0
           },
           {
@@ -1869,7 +1870,7 @@
             "type": "buff",
             "effects": [],
             "flags": {},
-            "_id": "yUG0dcoA7fBpo4JV",
+            "_id": "lLOH4SyRipbHz5zL",
             "sort": 0
           },
           {
@@ -1894,7 +1895,7 @@
             "type": "buff",
             "effects": [],
             "flags": {},
-            "_id": "C2QBTfsSQZEPV0JU",
+            "_id": "qZ59mQNTvIZUwQif",
             "sort": 0
           }
         ],
@@ -1960,14 +1961,15 @@
           "perform": 6,
           "bluff": 16
         }
-      }
+      },
+      "attacks": {}
     },
     "sickened": {
       "actor": {
         "name": "halfling-bard-7-archaeologist [sickened]",
         "type": "character",
         "folder": "GuYuyoqdabfe4xZV",
-        "_id": "QaH0Esz2R4ntwYCp",
+        "_id": "qUPi1geKA5yHztmM",
         "system": {
           "abilities": {
             "str": { "value": 10 },
@@ -2010,7 +2012,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "S8lL9CXJyGrXubRb",
+            "_id": "C8O5ay3IqWN7miVM",
             "folder": null,
             "sort": 0
           },
@@ -2031,7 +2033,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "O0geya16GLipqPmu",
+            "_id": "000xXZM6uDSTxcDO",
             "folder": null,
             "sort": 0
           },
@@ -2052,7 +2054,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "EUvRJaC2kJIytTwx",
+            "_id": "diIMwpyBLbzcBUA8",
             "folder": null,
             "sort": 0
           },
@@ -2073,7 +2075,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "r8otbvZqFRVONCjz",
+            "_id": "q2BecB6GzMwdacsS",
             "folder": null,
             "sort": 0
           },
@@ -2094,7 +2096,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "dijedoX5iUFgvQJP",
+            "_id": "sH4IDaKWJ0H5l1ob",
             "folder": null,
             "sort": 0
           },
@@ -2115,7 +2117,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "KPZQSGvPbiJNp51N",
+            "_id": "jIPCxJyPIzY0ow61",
             "folder": null,
             "sort": 0
           },
@@ -2182,7 +2184,7 @@
             "type": "race",
             "effects": [],
             "flags": {},
-            "_id": "kQE375BN7oKx7OM0",
+            "_id": "bW2KHmUTEnjhslvH",
             "sort": 0
           },
           {
@@ -2278,25 +2280,25 @@
               "pf1": {
                 "links": {
                   "classAssociations": {
-                    "vvt7wLqQ4wzgYYUw": 1,
-                    "Vp1qeRQ5MyICfkBu": 1,
-                    "ZbNnAjfTDzPxjnJq": 1,
-                    "P7wmjjkihMgB78Of": 1,
-                    "NIdROPBzCTaeDEuo": 1,
-                    "O1QYvBW1eswBDJmN": 1,
-                    "3iIghIHWkMyVhsxy": 1,
-                    "wurs6kjqcQMJ5eqC": 1,
-                    "s9sEumHGfujAJTwH": 2,
-                    "5LkHWw1C7ou3EnZV": 2,
-                    "nDB8OY5PISO51qFt": 5,
-                    "LifxvcQ13ohDIm6L": 3,
-                    "Nf0DXYRAcVhEI7Is": 6,
-                    "gPApOPT86qpK78Q0": 5
+                    "hPUf8PT4B1ZtuUBY": 1,
+                    "YoTlembMjD3irY4F": 1,
+                    "A3oHqZxHWwQk6zpJ": 1,
+                    "fI77iih3a0Y8UQii": 1,
+                    "c2GYVaePnA1cE7Cm": 1,
+                    "LRheq0whrmeaeBA5": 1,
+                    "t35gFdeqSECmbfzH": 1,
+                    "YHPMx9HIVmSpBtYL": 2,
+                    "PpQ1gGfWhHSgdAjd": 2,
+                    "D3JxPVUAZ8D57r2o": 3,
+                    "WRmwmpUc5esdNHJM": 5,
+                    "Lhhl5lPZEI2bk1rY": 5,
+                    "ERuKhi4KLOnpBzvn": 6,
+                    "RfNGQhEDUlwrYh7C": 1
                   }
                 }
               }
             },
-            "_id": "Iz0FBzjhVllcUJkV",
+            "_id": "dDJpuaoCmAUrHNBB",
             "sort": 0
           },
           {
@@ -2332,59 +2334,12 @@
               },
               "restrictions": []
             },
-            "_id": "R9eKYhMfGtoYNWFN",
+            "_id": "qZwoI8p17GiNOtRv",
             "effects": [],
             "folder": null,
             "sort": 0,
             "flags": {},
             "_stats": { "compendiumSource": null }
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1.class-abilities.Item.Pb9pxYrx6tS87euP"
-            },
-            "name": "Bardic Knowledge",
-            "system": {
-              "abilityType": "ex",
-              "associations": { "classes": ["Bard", "Skald"] },
-              "changes": {
-                "6sscr87o": {
-                  "_id": "6sscr87o",
-                  "formula": "max(1, floor(@class.unlevel / 2))",
-                  "target": "skill.knowledge",
-                  "type": "untyped"
-                }
-              },
-              "sources": [{ "id": "PZO1110", "pages": "35" }],
-              "subType": "classFeat",
-              "class": "bard",
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "flags": {},
-            "sort": 100000,
-            "_id": "NIdROPBzCTaeDEuo",
-            "folder": null
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1.class-abilities.Item.S4VHXq1asXBwaRwo"
-            },
-            "name": "Bard Spells",
-            "system": {
-              "associations": { "classes": ["Bard"] },
-              "sources": [{ "id": "PZO1110", "pages": "35" }],
-              "subType": "classFeat",
-              "class": "bard",
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "flags": {},
-            "sort": 800000,
-            "_id": "3iIghIHWkMyVhsxy",
-            "folder": null
           },
           {
             "_stats": {
@@ -2420,7 +2375,26 @@
             "effects": [],
             "flags": {},
             "sort": 700000,
-            "_id": "wurs6kjqcQMJ5eqC",
+            "_id": "LRheq0whrmeaeBA5",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.S4VHXq1asXBwaRwo"
+            },
+            "name": "Bard Spells",
+            "system": {
+              "associations": { "classes": ["Bard"] },
+              "sources": [{ "id": "PZO1110", "pages": "35" }],
+              "subType": "classFeat",
+              "class": "bard",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 800000,
+            "_id": "t35gFdeqSECmbfzH",
             "folder": null
           },
           {
@@ -2458,7 +2432,7 @@
             "effects": [],
             "flags": {},
             "sort": 1200000,
-            "_id": "nDB8OY5PISO51qFt",
+            "_id": "WRmwmpUc5esdNHJM",
             "folder": null
           },
           {
@@ -2491,8 +2465,184 @@
             "effects": [],
             "flags": {},
             "sort": 1300000,
-            "_id": "gPApOPT86qpK78Q0",
+            "_id": "Lhhl5lPZEI2bk1rY",
             "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.Pb9pxYrx6tS87euP"
+            },
+            "name": "Bardic Knowledge",
+            "system": {
+              "abilityType": "ex",
+              "associations": { "classes": ["Bard", "Skald"] },
+              "changes": {
+                "6sscr87o": {
+                  "_id": "6sscr87o",
+                  "formula": "max(1, floor(@class.unlevel / 2))",
+                  "target": "skill.knowledge",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "35" }],
+              "subType": "classFeat",
+              "class": "bard",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 100000,
+            "_id": "RfNGQhEDUlwrYh7C",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1e-archetypes.pf-arch-features.Item.PRvaJBuSUDG32wYz"
+            },
+            "name": "Archaeologist's Luck (Archaeologist)",
+            "system": {
+              "abilityType": "ex",
+              "actions": {
+                "5S8b3ICdPv1xJ03N": {
+                  "_id": "5S8b3ICdPv1xJ03N",
+                  "activation": { "type": "swift", "unchained": { "type": "action" } },
+                  "img": "icons/tools/instruments/harp-lap-brown.webp",
+                  "name": "Use",
+                  "range": { "units": "personal" },
+                  "sort": 0
+                }
+              },
+              "associations": { "classes": ["Bard"] },
+              "sources": [{ "id": "PZO1118", "pages": "32" }],
+              "subType": "classFeat",
+              "tags": ["Archaeologist"],
+              "uses": { "maxFormula": "4 + @abilities.cha.mod", "per": "day" },
+              "_pending": { "actions": true },
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "Foa7SAVgD92sEWth",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1e-archetypes.pf-arch-features.Item.1zlJJj6W7TeXvahc"
+            },
+            "name": "Clever Explorer (Archaeologist)",
+            "system": {
+              "associations": { "classes": ["Bard"] },
+              "sources": [{ "id": "PZO1118", "pages": "32" }],
+              "subType": "classFeat",
+              "tags": ["Archaeologist"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "KNqkoR8gWUZWRwKs",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1e-archetypes.pf-arch-features.Item.wbdg7SRZvXqba5lQ"
+            },
+            "name": "Uncanny Dodge (Archaeologist)",
+            "system": {
+              "associations": { "classes": ["Bard"] },
+              "sources": [{ "id": "PZO1118", "pages": "32" }],
+              "subType": "classFeat",
+              "tags": ["Archaeologist"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "FO2i5ftW6eyILEWw",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1e-archetypes.pf-arch-features.Item.Frlze5Na5lg4bSLi"
+            },
+            "name": "Trap Sense (Archaeologist)",
+            "system": {
+              "abilityType": "ex",
+              "actions": {
+                "fMJSqYSdBdshUc3d": {
+                  "_id": "fMJSqYSdBdshUc3d",
+                  "activation": { "type": "nonaction", "unchained": { "type": "nonaction" } },
+                  "img": "icons/tools/instruments/harp-lap-brown.webp",
+                  "name": "Use",
+                  "sort": 0
+                }
+              },
+              "associations": { "classes": ["Bard"] },
+              "contextNotes": {
+                "jWOYLjqXa2u29Vg2": {
+                  "target": "ref",
+                  "text": "+[[floor(@classes.rogue.level/3)]] vs. traps"
+                },
+                "yrEcNUConwWvcCau": {
+                  "target": "ac",
+                  "text": "+[[floor(@classes.rogue.level/3)]] dodge vs. traps"
+                }
+              },
+              "sources": [{ "id": "PZO1118", "pages": "32" }],
+              "subType": "classFeat",
+              "tags": ["Archaeologist"],
+              "_pending": { "actions": true, "contextNotes": true },
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "plI65PGSV0I4SSgc",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1e-archetypes.pf-arch-features.Item.3RuYRzQvUYKM2M3x"
+            },
+            "name": "Rogue Talents (Archaeologist)",
+            "system": {
+              "associations": { "classes": ["Bard"] },
+              "sources": [{ "id": "PZO1118", "pages": "32" }],
+              "subType": "classFeat",
+              "tags": ["Archaeologist"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "dX1yHqW9FdTZU0id",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1e-archetypes.pf-arch-features.Item.iftc6b32LjAyvIDg"
+            },
+            "name": "Evasion (Archaeologist)",
+            "system": {
+              "associations": { "classes": ["Bard"] },
+              "sources": [{ "id": "PZO1118", "pages": "32" }],
+              "subType": "classFeat",
+              "tags": ["Archaeologist"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "7zp0HAGYS2ZTADmy",
+            "sort": 0
           },
           {
             "_stats": {
@@ -2542,155 +2692,7 @@
             "type": "feat",
             "effects": [],
             "flags": {},
-            "_id": "OyfKXGLqk2tkNdN0",
-            "sort": 0
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1e-archetypes.pf-arch-features.Item.1zlJJj6W7TeXvahc"
-            },
-            "name": "Clever Explorer (Archaeologist)",
-            "system": {
-              "associations": { "classes": ["Bard"] },
-              "sources": [{ "id": "PZO1118", "pages": "32" }],
-              "subType": "classFeat",
-              "tags": ["Archaeologist"],
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "folder": null,
-            "flags": {},
-            "_id": "F9M1i5ZHkPJ0b6GO",
-            "sort": 0
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1e-archetypes.pf-arch-features.Item.PRvaJBuSUDG32wYz"
-            },
-            "name": "Archaeologist's Luck (Archaeologist)",
-            "system": {
-              "abilityType": "ex",
-              "actions": {
-                "t93uUl9leMnhbtUY": {
-                  "_id": "t93uUl9leMnhbtUY",
-                  "activation": { "type": "swift", "unchained": { "type": "action" } },
-                  "img": "icons/tools/instruments/harp-lap-brown.webp",
-                  "name": "Use",
-                  "range": { "units": "personal" },
-                  "sort": 0
-                }
-              },
-              "associations": { "classes": ["Bard"] },
-              "sources": [{ "id": "PZO1118", "pages": "32" }],
-              "subType": "classFeat",
-              "tags": ["Archaeologist"],
-              "uses": { "maxFormula": "4 + @abilities.cha.mod", "per": "day" },
-              "_pending": { "actions": true },
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "folder": null,
-            "flags": {},
-            "_id": "1WzEaJLCQqY6iXYc",
-            "sort": 0
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1e-archetypes.pf-arch-features.Item.Frlze5Na5lg4bSLi"
-            },
-            "name": "Trap Sense (Archaeologist)",
-            "system": {
-              "abilityType": "ex",
-              "actions": {
-                "LrUey2MlA6ujwqFx": {
-                  "_id": "LrUey2MlA6ujwqFx",
-                  "activation": { "type": "nonaction", "unchained": { "type": "nonaction" } },
-                  "img": "icons/tools/instruments/harp-lap-brown.webp",
-                  "name": "Use",
-                  "sort": 0
-                }
-              },
-              "associations": { "classes": ["Bard"] },
-              "contextNotes": {
-                "81oBxxH3X5nq5rp8": {
-                  "target": "ref",
-                  "text": "+[[floor(@classes.rogue.level/3)]] vs. traps"
-                },
-                "ZPXV3pjU7Cb0G9XY": {
-                  "target": "ac",
-                  "text": "+[[floor(@classes.rogue.level/3)]] dodge vs. traps"
-                }
-              },
-              "sources": [{ "id": "PZO1118", "pages": "32" }],
-              "subType": "classFeat",
-              "tags": ["Archaeologist"],
-              "_pending": { "actions": true, "contextNotes": true },
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "folder": null,
-            "flags": {},
-            "_id": "jm9YVwtLVbzIWxBL",
-            "sort": 0
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1e-archetypes.pf-arch-features.Item.wbdg7SRZvXqba5lQ"
-            },
-            "name": "Uncanny Dodge (Archaeologist)",
-            "system": {
-              "associations": { "classes": ["Bard"] },
-              "sources": [{ "id": "PZO1118", "pages": "32" }],
-              "subType": "classFeat",
-              "tags": ["Archaeologist"],
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "folder": null,
-            "flags": {},
-            "_id": "CUPVO4I8cREJbK3X",
-            "sort": 0
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1e-archetypes.pf-arch-features.Item.3RuYRzQvUYKM2M3x"
-            },
-            "name": "Rogue Talents (Archaeologist)",
-            "system": {
-              "associations": { "classes": ["Bard"] },
-              "sources": [{ "id": "PZO1118", "pages": "32" }],
-              "subType": "classFeat",
-              "tags": ["Archaeologist"],
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "folder": null,
-            "flags": {},
-            "_id": "VXhI9X8338rzuWMf",
-            "sort": 0
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1e-archetypes.pf-arch-features.Item.iftc6b32LjAyvIDg"
-            },
-            "name": "Evasion (Archaeologist)",
-            "system": {
-              "associations": { "classes": ["Bard"] },
-              "sources": [{ "id": "PZO1118", "pages": "32" }],
-              "subType": "classFeat",
-              "tags": ["Archaeologist"],
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "folder": null,
-            "flags": {},
-            "_id": "50X6PvUKnTVW077U",
+            "_id": "Y3KDh3R1jzzO1j1j",
             "sort": 0
           },
           {
@@ -2714,7 +2716,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "b9WQpLiwgTwR0Agd",
+            "_id": "chYnXmA3ydlDI3fx",
             "sort": 0
           },
           {
@@ -2738,7 +2740,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "pZRgFWeVwnDnZba8",
+            "_id": "6OOpz5IgA1mF4D0v",
             "sort": 0
           },
           {
@@ -2762,7 +2764,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "BXqZ0keL85y5xyrz",
+            "_id": "V8g4PQlKiT3mxqTg",
             "sort": 0
           },
           {
@@ -2786,7 +2788,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "C1XdO26OZoYR0MXZ",
+            "_id": "RosEwDqQruyT5zbx",
             "sort": 0
           },
           {
@@ -2819,7 +2821,7 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "sIowa6qXUThAAmgs",
+            "_id": "EYNEOFXPJ6rggftT",
             "sort": 0
           }
         ],
@@ -2829,7 +2831,7 @@
             "img": "systems/pf1/icons/conditions/sickened.svg",
             "statuses": ["sickened"],
             "showIcon": 2,
-            "_id": "b56gsWcNhFRQ7sqh",
+            "_id": "Cj7xCgJYYz21jXRD",
             "type": "base",
             "system": { "changes": [] },
             "disabled": false,
@@ -2853,9 +2855,9 @@
               "coreVersion": "14.370",
               "systemId": "pf1",
               "systemVersion": "11.11",
-              "createdTime": 1795403586318,
-              "modifiedTime": 1795403586318,
-              "lastModifiedBy": "AKnVcnI4fMKGUzTH",
+              "createdTime": 1795407440292,
+              "modifiedTime": 1795407440292,
+              "lastModifiedBy": "7UYomJpxzjJzDpJa",
               "compendiumSource": null,
               "duplicateSource": null,
               "exportSource": null
@@ -2923,7 +2925,8 @@
           "perform": 2,
           "bluff": 12
         }
-      }
+      },
+      "attacks": {}
     }
   }
 }

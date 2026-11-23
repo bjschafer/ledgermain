@@ -35,7 +35,7 @@
         "name": "elf-wizard-7 [base]",
         "type": "character",
         "folder": "GuYuyoqdabfe4xZV",
-        "_id": "403OtEAx8d2JJkz7",
+        "_id": "YeNSsNBMnANsJD6E",
         "system": {
           "abilities": {
             "str": { "value": 8 },
@@ -78,7 +78,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "yh79EHaWzpTTeYQX",
+            "_id": "RD9FQkvIOfIWLt42",
             "folder": null,
             "sort": 0
           },
@@ -99,7 +99,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "zrLzHpOORLo7rfPT",
+            "_id": "GRXI9wVzDIlyy8cf",
             "folder": null,
             "sort": 0
           },
@@ -121,7 +121,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "mAoif5F0loxdiLaK",
+            "_id": "Yf5UxxEnas5Jqd4e",
             "folder": null,
             "sort": 0
           },
@@ -142,7 +142,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "tJvHCJ0813ixYLjb",
+            "_id": "mm3hDTZdi0vUvHt0",
             "folder": null,
             "sort": 0
           },
@@ -164,7 +164,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "SASr2vwIZqwxVGOO",
+            "_id": "jVUCWheKa9hbNSfL",
             "folder": null,
             "sort": 0
           },
@@ -222,7 +222,7 @@
             "type": "race",
             "effects": [],
             "flags": {},
-            "_id": "7Um5NgRsiNBxHUGw",
+            "_id": "59wV4SsgOlwGoc6Y",
             "sort": 0
           },
           {
@@ -282,18 +282,18 @@
               "pf1": {
                 "links": {
                   "classAssociations": {
-                    "GiwekgpmInKwCuND": 1,
-                    "2i5ZzJeTolkWoC6R": 1,
-                    "gqxktahm8caTHxL8": 1,
-                    "mMUPlk157ONtb7bc": 1,
-                    "63Ujx3Ldj5diHlD5": 1,
-                    "4m5F8QbDqJ9vezxE": 1,
-                    "RUnkIP3n8MTwvHY4": 5
+                    "ClJszWq9RlhbDVMI": 1,
+                    "KOpt1LgsjRQyCK5g": 1,
+                    "C0fjh4XFnk8Q5oHn": 1,
+                    "Q8D1p5f6jDU3drGq": 1,
+                    "j7BeRqoZXB0IDqlY": 1,
+                    "4N1HCn9C1u5IbZ33": 5,
+                    "Fmt70fNfwBHajf4D": 1
                   }
                 }
               }
             },
-            "_id": "khZGjDDT6kjvEV0x",
+            "_id": "ibIMdYCUyRZGAkRR",
             "sort": 0
           },
           {
@@ -329,7 +329,7 @@
               },
               "restrictions": []
             },
-            "_id": "ttilyjsmcAoqersp",
+            "_id": "912DDJutyqocwo5t",
             "effects": [],
             "folder": null,
             "sort": 0,
@@ -352,26 +352,7 @@
             "effects": [],
             "flags": {},
             "sort": 100000,
-            "_id": "GiwekgpmInKwCuND",
-            "folder": null
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1.class-abilities.Item.20JWTam2dn7jjZFV"
-            },
-            "name": "Arcane School",
-            "system": {
-              "associations": { "classes": ["Wizard"] },
-              "sources": [{ "id": "PZO1110", "pages": "78-79, 79-82" }],
-              "subType": "classFeat",
-              "class": "wizard",
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "flags": {},
-            "sort": 200000,
-            "_id": "2i5ZzJeTolkWoC6R",
+            "_id": "ClJszWq9RlhbDVMI",
             "folder": null
           },
           {
@@ -391,7 +372,7 @@
               },
               "links": {
                 "supplements": [{ "uuid": "Compendium.pf1.feats.Item.tlRu8SYjzA7WCHN7" }],
-                "children": [{ "uuid": ".Item.oaADDc6AmUrgdUh2" }]
+                "children": [{ "uuid": ".Item.blrAA5sdgbIMUagY" }]
               },
               "sources": [{ "id": "PZO1110", "pages": "79" }],
               "subType": "classFeat",
@@ -402,7 +383,7 @@
             "effects": [],
             "flags": {},
             "sort": 300000,
-            "_id": "gqxktahm8caTHxL8",
+            "_id": "KOpt1LgsjRQyCK5g",
             "folder": null
           },
           {
@@ -439,21 +420,17 @@
             "effects": [],
             "flags": {},
             "sort": 400000,
-            "_id": "mMUPlk157ONtb7bc",
+            "_id": "C0fjh4XFnk8Q5oHn",
             "folder": null
           },
           {
             "_stats": {
-              "compendiumSource": "Compendium.pf1.class-abilities.Item.4wdsdOkgv4uEkS9K"
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.20JWTam2dn7jjZFV"
             },
-            "name": "Spellbooks (WIZ)",
+            "name": "Arcane School",
             "system": {
               "associations": { "classes": ["Wizard"] },
-              "links": {
-                "supplements": [{ "uuid": "Compendium.pf1.items.Item.onurpjwtdogsedsg" }],
-                "children": [{ "uuid": ".Item.fF8M7XLHYlkVn6vG" }]
-              },
-              "sources": [{ "id": "PZO1110", "pages": "79" }],
+              "sources": [{ "id": "PZO1110", "pages": "78-79, 79-82" }],
               "subType": "classFeat",
               "class": "wizard",
               "alignments": {}
@@ -461,8 +438,8 @@
             "type": "feat",
             "effects": [],
             "flags": {},
-            "sort": 500000,
-            "_id": "63Ujx3Ldj5diHlD5",
+            "sort": 200000,
+            "_id": "Q8D1p5f6jDU3drGq",
             "folder": null
           },
           {
@@ -481,7 +458,7 @@
             "effects": [],
             "flags": {},
             "sort": 600000,
-            "_id": "4m5F8QbDqJ9vezxE",
+            "_id": "j7BeRqoZXB0IDqlY",
             "folder": null
           },
           {
@@ -508,7 +485,30 @@
             "effects": [],
             "flags": {},
             "sort": 700000,
-            "_id": "RUnkIP3n8MTwvHY4",
+            "_id": "4N1HCn9C1u5IbZ33",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.4wdsdOkgv4uEkS9K"
+            },
+            "name": "Spellbooks (WIZ)",
+            "system": {
+              "associations": { "classes": ["Wizard"] },
+              "links": {
+                "supplements": [{ "uuid": "Compendium.pf1.items.Item.onurpjwtdogsedsg" }],
+                "children": [{ "uuid": ".Item.uu6Z7VA61r5ikzec" }]
+              },
+              "sources": [{ "id": "PZO1110", "pages": "79" }],
+              "subType": "classFeat",
+              "class": "wizard",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 500000,
+            "_id": "Fmt70fNfwBHajf4D",
             "folder": null
           },
           {
@@ -524,7 +524,7 @@
             "effects": [],
             "flags": { "pf1": { "source": "Compendium.pf1.feats.Item.tlRu8SYjzA7WCHN7" } },
             "sort": 700000,
-            "_id": "oaADDc6AmUrgdUh2",
+            "_id": "blrAA5sdgbIMUagY",
             "folder": null
           },
           {
@@ -546,7 +546,7 @@
             "effects": [],
             "flags": { "pf1": { "source": "Compendium.pf1.items.Item.onurpjwtdogsedsg" } },
             "sort": 0,
-            "_id": "fF8M7XLHYlkVn6vG",
+            "_id": "uu6Z7VA61r5ikzec",
             "folder": null
           },
           {
@@ -570,7 +570,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "SbXOMbL6ahEAhhdx",
+            "_id": "SwIiOVMcZdAurnp2",
             "sort": 0
           },
           {
@@ -594,7 +594,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "abkOOkRx4qvVyw8v",
+            "_id": "ptkivySphNI6MIpY",
             "sort": 0
           },
           {
@@ -618,7 +618,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "Z4Fm2zNTSpjf6kPK",
+            "_id": "gM5ru4M9viurBJ6x",
             "sort": 0
           },
           {
@@ -642,7 +642,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "6PoJZwnSf6rrh4CS",
+            "_id": "OoUjrEWkD865VnFn",
             "sort": 0
           },
           {
@@ -674,7 +674,7 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "Fd9NwE1VEdJSC7FD",
+            "_id": "MOoRKaHCJGGxMkRt",
             "sort": 0
           },
           {
@@ -723,7 +723,7 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "2XPCFxm5isvDr29y",
+            "_id": "NuzytkZ8WzDAr0Iv",
             "sort": 0
           }
         ],
@@ -789,14 +789,15 @@
           "perform": 0,
           "bluff": 0
         }
-      }
+      },
+      "attacks": {}
     },
     "buffs": {
       "actor": {
         "name": "elf-wizard-7 [buffs]",
         "type": "character",
         "folder": "GuYuyoqdabfe4xZV",
-        "_id": "nVVPLZJQr5R2MAo0",
+        "_id": "XYXLyjAzD91If9n1",
         "system": {
           "abilities": {
             "str": { "value": 8 },
@@ -839,7 +840,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "svMI1wtSDsEocRky",
+            "_id": "QPSxuMjqeYSV0yJP",
             "folder": null,
             "sort": 0
           },
@@ -860,7 +861,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "usXic3LXMiNMsSfT",
+            "_id": "28u8NQ0N7v3Jh70N",
             "folder": null,
             "sort": 0
           },
@@ -882,7 +883,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "mMyxhGC11NSXR9mD",
+            "_id": "gV0L8zl3Qu1hW6o1",
             "folder": null,
             "sort": 0
           },
@@ -903,7 +904,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "hhJwDD13UTKTQ9xI",
+            "_id": "qT0sLBuUE11pu5cL",
             "folder": null,
             "sort": 0
           },
@@ -925,7 +926,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "kYzgXZPNFKRKiu6F",
+            "_id": "jWPNabgmlbz3YOFZ",
             "folder": null,
             "sort": 0
           },
@@ -983,7 +984,7 @@
             "type": "race",
             "effects": [],
             "flags": {},
-            "_id": "2uI0SSc4ZutBKKY5",
+            "_id": "HGyboh1sBCTCLaHS",
             "sort": 0
           },
           {
@@ -1043,18 +1044,18 @@
               "pf1": {
                 "links": {
                   "classAssociations": {
-                    "yKtuRqoUEaDw3mHe": 1,
-                    "9q4kKQMsMot7ArJV": 1,
-                    "dxfsmWv0vigs3QwP": 1,
-                    "SWFo7GdBxsSKVAon": 1,
-                    "KcZLZ1qVob8TPd7n": 1,
-                    "QCmKLwQ9GtBDSkm5": 1,
-                    "uUuAosoZhtacltQj": 5
+                    "AJmaMtYIOsT3O78U": 1,
+                    "9S5CwXwMPv1rV5I0": 1,
+                    "VcKgICqmSPAsfRsU": 1,
+                    "PaJttHKDL2QArdau": 1,
+                    "9lmDQ92PG3Prn1gN": 1,
+                    "7zZE3iMVu0xG7vcc": 1,
+                    "OatZ7C1MDDiZHBi5": 5
                   }
                 }
               }
             },
-            "_id": "AsjAF7M8r2lbp48O",
+            "_id": "bVuIiWB5mFUbMmi7",
             "sort": 0
           },
           {
@@ -1090,7 +1091,7 @@
               },
               "restrictions": []
             },
-            "_id": "UzlWXW6bLRG1wms8",
+            "_id": "wT4XEF7kZbsKV3ck",
             "effects": [],
             "folder": null,
             "sort": 0,
@@ -1113,7 +1114,7 @@
             "effects": [],
             "flags": {},
             "sort": 100000,
-            "_id": "yKtuRqoUEaDw3mHe",
+            "_id": "AJmaMtYIOsT3O78U",
             "folder": null
           },
           {
@@ -1132,7 +1133,7 @@
             "effects": [],
             "flags": {},
             "sort": 200000,
-            "_id": "9q4kKQMsMot7ArJV",
+            "_id": "9S5CwXwMPv1rV5I0",
             "folder": null
           },
           {
@@ -1152,7 +1153,7 @@
               },
               "links": {
                 "supplements": [{ "uuid": "Compendium.pf1.feats.Item.tlRu8SYjzA7WCHN7" }],
-                "children": [{ "uuid": ".Item.UXCsjmNfojscoIiF" }]
+                "children": [{ "uuid": ".Item.x2LlWxp9VsPRIPXI" }]
               },
               "sources": [{ "id": "PZO1110", "pages": "79" }],
               "subType": "classFeat",
@@ -1163,7 +1164,7 @@
             "effects": [],
             "flags": {},
             "sort": 300000,
-            "_id": "dxfsmWv0vigs3QwP",
+            "_id": "VcKgICqmSPAsfRsU",
             "folder": null
           },
           {
@@ -1200,7 +1201,7 @@
             "effects": [],
             "flags": {},
             "sort": 400000,
-            "_id": "SWFo7GdBxsSKVAon",
+            "_id": "PaJttHKDL2QArdau",
             "folder": null
           },
           {
@@ -1212,7 +1213,7 @@
               "associations": { "classes": ["Wizard"] },
               "links": {
                 "supplements": [{ "uuid": "Compendium.pf1.items.Item.onurpjwtdogsedsg" }],
-                "children": [{ "uuid": ".Item.91ZTKgv0iQkXzMT3" }]
+                "children": [{ "uuid": ".Item.jhGg8ejjgbgV0gps" }]
               },
               "sources": [{ "id": "PZO1110", "pages": "79" }],
               "subType": "classFeat",
@@ -1223,7 +1224,7 @@
             "effects": [],
             "flags": {},
             "sort": 500000,
-            "_id": "KcZLZ1qVob8TPd7n",
+            "_id": "9lmDQ92PG3Prn1gN",
             "folder": null
           },
           {
@@ -1242,7 +1243,7 @@
             "effects": [],
             "flags": {},
             "sort": 600000,
-            "_id": "QCmKLwQ9GtBDSkm5",
+            "_id": "7zZE3iMVu0xG7vcc",
             "folder": null
           },
           {
@@ -1269,7 +1270,7 @@
             "effects": [],
             "flags": {},
             "sort": 700000,
-            "_id": "uUuAosoZhtacltQj",
+            "_id": "OatZ7C1MDDiZHBi5",
             "folder": null
           },
           {
@@ -1285,7 +1286,7 @@
             "effects": [],
             "flags": { "pf1": { "source": "Compendium.pf1.feats.Item.tlRu8SYjzA7WCHN7" } },
             "sort": 700000,
-            "_id": "UXCsjmNfojscoIiF",
+            "_id": "x2LlWxp9VsPRIPXI",
             "folder": null
           },
           {
@@ -1307,7 +1308,7 @@
             "effects": [],
             "flags": { "pf1": { "source": "Compendium.pf1.items.Item.onurpjwtdogsedsg" } },
             "sort": 0,
-            "_id": "91ZTKgv0iQkXzMT3",
+            "_id": "jhGg8ejjgbgV0gps",
             "folder": null
           },
           {
@@ -1331,7 +1332,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "w46VcrBVDkQhmTGV",
+            "_id": "UTcPjHtrOkoMAJjg",
             "sort": 0
           },
           {
@@ -1355,7 +1356,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "j2fdEwX1z8ZliTjS",
+            "_id": "tM3bV3Xx4z9Vj7DP",
             "sort": 0
           },
           {
@@ -1379,7 +1380,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "Km53OlAB1RWAQg8E",
+            "_id": "bK8QgfrGxCgjZsRb",
             "sort": 0
           },
           {
@@ -1403,7 +1404,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "iNLmvqWgD3KquiKX",
+            "_id": "eSGRXDT4WZ0PV2uZ",
             "sort": 0
           },
           {
@@ -1435,7 +1436,7 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "gTqUzex9C3E2siMc",
+            "_id": "iTFH1NUQYE3OobEz",
             "sort": 0
           },
           {
@@ -1484,7 +1485,7 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "5t9hbo3i7LTO5t2b",
+            "_id": "RNxhn5qGn4HnsrNv",
             "sort": 0
           },
           {
@@ -1510,7 +1511,7 @@
             "type": "buff",
             "effects": [],
             "flags": {},
-            "_id": "rLL1Uns4d9Hxs5L1",
+            "_id": "0LRRTMyIO0nsc04C",
             "sort": 0
           },
           {
@@ -1536,7 +1537,7 @@
             "type": "buff",
             "effects": [],
             "flags": {},
-            "_id": "UqdPW2jMsszvOHw6",
+            "_id": "ZkvsbsIcwVmAslC9",
             "sort": 0
           }
         ],
@@ -1602,14 +1603,15 @@
           "perform": 0,
           "bluff": 0
         }
-      }
+      },
+      "attacks": {}
     },
     "drained": {
       "actor": {
         "name": "elf-wizard-7 [drained]",
         "type": "character",
         "folder": "GuYuyoqdabfe4xZV",
-        "_id": "jyyWXGJMAQFQng4u",
+        "_id": "kwrSY864fyhHDrYQ",
         "system": {
           "abilities": {
             "str": { "value": 8 },
@@ -1652,7 +1654,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "Utti0IggjYZShGRB",
+            "_id": "tFdsxw1qTf1i86I5",
             "folder": null,
             "sort": 0
           },
@@ -1673,7 +1675,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "JNZh589yjXceMmuH",
+            "_id": "N4KpYRnCZ0E74uml",
             "folder": null,
             "sort": 0
           },
@@ -1695,7 +1697,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "X0y2oNV6fowxti9r",
+            "_id": "3GR6mdiBXLcz4Aux",
             "folder": null,
             "sort": 0
           },
@@ -1716,7 +1718,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "YNlQcbVbysKwoNhX",
+            "_id": "kK7ziIAP1iWItLGB",
             "folder": null,
             "sort": 0
           },
@@ -1738,7 +1740,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "Rwze2TFTzVoYrwlT",
+            "_id": "EXIwVRVMTAcDi4ey",
             "folder": null,
             "sort": 0
           },
@@ -1796,7 +1798,7 @@
             "type": "race",
             "effects": [],
             "flags": {},
-            "_id": "c8rr8VPV6rRWjgGY",
+            "_id": "nbiCOMExoRhIqn9x",
             "sort": 0
           },
           {
@@ -1856,18 +1858,18 @@
               "pf1": {
                 "links": {
                   "classAssociations": {
-                    "zrrOQbzvU7pZr6zT": 1,
-                    "D2jbp8KarmCjbFY2": 1,
-                    "UEhhmCBsu38yq8za": 1,
-                    "258sQ2VJGBybK5nJ": 1,
-                    "X75X852tnXBpM527": 1,
-                    "RsSXL6lgUkE3Yvvn": 5,
-                    "LWQecupATvMJLWn0": 1
+                    "rZJfoqYVPz7xjnRg": 1,
+                    "ZnEh6bgv8MiRhQ7U": 1,
+                    "0xLlxrcIVm8MQKVh": 1,
+                    "oLv95WdrILHIp5lW": 1,
+                    "tW8tRE9DfOcvKxcF": 1,
+                    "tgbsTKj2LOEQO1aE": 5,
+                    "elhdIjjBxa86gR5A": 1
                   }
                 }
               }
             },
-            "_id": "XnzUw6i1WnC2mtyR",
+            "_id": "IdRVwr4QjNy3YJlF",
             "sort": 0
           },
           {
@@ -1903,31 +1905,12 @@
               },
               "restrictions": []
             },
-            "_id": "zacU6XaIgHkLyuPZ",
+            "_id": "V4LNBLRFxzdsHq7a",
             "effects": [],
             "folder": null,
             "sort": 0,
             "flags": {},
             "_stats": { "compendiumSource": null }
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1.class-abilities.Item.pW1PNlDcdGl7KuEa"
-            },
-            "name": "Arcane Bond",
-            "system": {
-              "associations": { "classes": ["Wizard"] },
-              "sources": [{ "id": "PZO1110", "pages": "78" }],
-              "subType": "classFeat",
-              "class": "wizard",
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "flags": {},
-            "sort": 100000,
-            "_id": "zrrOQbzvU7pZr6zT",
-            "folder": null
           },
           {
             "_stats": {
@@ -1945,7 +1928,7 @@
             "effects": [],
             "flags": {},
             "sort": 200000,
-            "_id": "D2jbp8KarmCjbFY2",
+            "_id": "rZJfoqYVPz7xjnRg",
             "folder": null
           },
           {
@@ -1965,7 +1948,7 @@
               },
               "links": {
                 "supplements": [{ "uuid": "Compendium.pf1.feats.Item.tlRu8SYjzA7WCHN7" }],
-                "children": [{ "uuid": ".Item.QSDfKwzfUlZGXfh9" }]
+                "children": [{ "uuid": ".Item.8B6zP3Oy4CJlqQYQ" }]
               },
               "sources": [{ "id": "PZO1110", "pages": "79" }],
               "subType": "classFeat",
@@ -1976,76 +1959,7 @@
             "effects": [],
             "flags": {},
             "sort": 300000,
-            "_id": "UEhhmCBsu38yq8za",
-            "folder": null
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1.class-abilities.Item.4wdsdOkgv4uEkS9K"
-            },
-            "name": "Spellbooks (WIZ)",
-            "system": {
-              "associations": { "classes": ["Wizard"] },
-              "links": {
-                "supplements": [{ "uuid": "Compendium.pf1.items.Item.onurpjwtdogsedsg" }],
-                "children": [{ "uuid": ".Item.ayynXU59kiZjg2nv" }]
-              },
-              "sources": [{ "id": "PZO1110", "pages": "79" }],
-              "subType": "classFeat",
-              "class": "wizard",
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "flags": {},
-            "sort": 500000,
-            "_id": "258sQ2VJGBybK5nJ",
-            "folder": null
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1.class-abilities.Item.LrjNAKP05lZq2tZZ"
-            },
-            "name": "Wizard Spells",
-            "system": {
-              "associations": { "classes": ["Wizard"] },
-              "sources": [{ "id": "PZO1110", "pages": "77" }],
-              "subType": "classFeat",
-              "class": "wizard",
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "flags": {},
-            "sort": 600000,
-            "_id": "X75X852tnXBpM527",
-            "folder": null
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1.class-abilities.Item.2h3lI574tmVjOalQ"
-            },
-            "name": "Bonus Feats (WIZ)",
-            "system": {
-              "associations": { "classes": ["Wizard"] },
-              "changes": {
-                "6l06zvcu": {
-                  "_id": "6l06zvcu",
-                  "formula": "floor(@class.unlevel / 5)",
-                  "target": "bonusFeats",
-                  "type": "untyped"
-                }
-              },
-              "sources": [{ "id": "PZO1110", "pages": "79" }],
-              "subType": "classFeat",
-              "class": "wizard",
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "flags": {},
-            "sort": 700000,
-            "_id": "RsSXL6lgUkE3Yvvn",
+            "_id": "ZnEh6bgv8MiRhQ7U",
             "folder": null
           },
           {
@@ -2082,7 +1996,95 @@
             "effects": [],
             "flags": {},
             "sort": 400000,
-            "_id": "LWQecupATvMJLWn0",
+            "_id": "0xLlxrcIVm8MQKVh",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.4wdsdOkgv4uEkS9K"
+            },
+            "name": "Spellbooks (WIZ)",
+            "system": {
+              "associations": { "classes": ["Wizard"] },
+              "links": {
+                "supplements": [{ "uuid": "Compendium.pf1.items.Item.onurpjwtdogsedsg" }],
+                "children": [{ "uuid": ".Item.NJ3g1woByTM2kokk" }]
+              },
+              "sources": [{ "id": "PZO1110", "pages": "79" }],
+              "subType": "classFeat",
+              "class": "wizard",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 500000,
+            "_id": "oLv95WdrILHIp5lW",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.LrjNAKP05lZq2tZZ"
+            },
+            "name": "Wizard Spells",
+            "system": {
+              "associations": { "classes": ["Wizard"] },
+              "sources": [{ "id": "PZO1110", "pages": "77" }],
+              "subType": "classFeat",
+              "class": "wizard",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 600000,
+            "_id": "tW8tRE9DfOcvKxcF",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.2h3lI574tmVjOalQ"
+            },
+            "name": "Bonus Feats (WIZ)",
+            "system": {
+              "associations": { "classes": ["Wizard"] },
+              "changes": {
+                "6l06zvcu": {
+                  "_id": "6l06zvcu",
+                  "formula": "floor(@class.unlevel / 5)",
+                  "target": "bonusFeats",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "79" }],
+              "subType": "classFeat",
+              "class": "wizard",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 700000,
+            "_id": "tgbsTKj2LOEQO1aE",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.pW1PNlDcdGl7KuEa"
+            },
+            "name": "Arcane Bond",
+            "system": {
+              "associations": { "classes": ["Wizard"] },
+              "sources": [{ "id": "PZO1110", "pages": "78" }],
+              "subType": "classFeat",
+              "class": "wizard",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 100000,
+            "_id": "elhdIjjBxa86gR5A",
             "folder": null
           },
           {
@@ -2098,7 +2100,7 @@
             "effects": [],
             "flags": { "pf1": { "source": "Compendium.pf1.feats.Item.tlRu8SYjzA7WCHN7" } },
             "sort": 700000,
-            "_id": "QSDfKwzfUlZGXfh9",
+            "_id": "8B6zP3Oy4CJlqQYQ",
             "folder": null
           },
           {
@@ -2120,7 +2122,7 @@
             "effects": [],
             "flags": { "pf1": { "source": "Compendium.pf1.items.Item.onurpjwtdogsedsg" } },
             "sort": 0,
-            "_id": "ayynXU59kiZjg2nv",
+            "_id": "NJ3g1woByTM2kokk",
             "folder": null
           },
           {
@@ -2144,7 +2146,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "p9T3T1RYsoX7OHaw",
+            "_id": "GziW112J7UdBGPlB",
             "sort": 0
           },
           {
@@ -2168,7 +2170,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "XmlTBKrZuZVoI5xq",
+            "_id": "f7wBSWwwMZ8BYK2Y",
             "sort": 0
           },
           {
@@ -2192,7 +2194,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "wYm5GTTz7ajfiKlr",
+            "_id": "Sl0Va0QHL5OxrA8Q",
             "sort": 0
           },
           {
@@ -2216,39 +2218,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "aq5mjY9Mco8bUzBw",
-            "sort": 0
-          },
-          {
-            "_stats": { "compendiumSource": "Compendium.pf1.items.Item.w7NKnt0TAYj17XSK" },
-            "folder": "SbFyTToC7yBBC8Sb",
-            "name": "Bracers of Armor +1",
-            "system": {
-              "armor": { "value": 1, "alignments": {} },
-              "aura": { "school": "con" },
-              "cl": 7,
-              "creation": {
-                "cost": { "unit": "gp", "value": 500 },
-                "description": "<p>@UUID[Compendium.pf1.feats.Item.tD76K8QGco9scT0r]{Craft Wondrous Item}, @UUID[Compendium.pf1.spells.ucc0a31d1y86oleh]{mage armor}, creator's caster level must be at least two times that of the bonus placed on the bracers, plus any requirements of the armor special abilities</p>"
-              },
-              "equipmentSubtype": "lightArmor",
-              "equipped": true,
-              "hp": { "base": 10 },
-              "price": { "base": 1000, "unit": "gp" },
-              "quantity": 1,
-              "slot": "wrists",
-              "sources": [
-                { "id": "PZO1123", "pages": "271" },
-                { "id": "PZO1110", "pages": "504" }
-              ],
-              "subType": "wondrous",
-              "weight": { "value": 1 },
-              "mods": {}
-            },
-            "type": "equipment",
-            "effects": [],
-            "flags": {},
-            "_id": "BVmHCWpfprtVcPqo",
+            "_id": "QMtBewDZa52LKfnT",
             "sort": 0
           },
           {
@@ -2297,7 +2267,39 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "g6PRtxutPxTXOLzA",
+            "_id": "Fw2antmaVJp4nQrr",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.items.Item.w7NKnt0TAYj17XSK" },
+            "folder": "SbFyTToC7yBBC8Sb",
+            "name": "Bracers of Armor +1",
+            "system": {
+              "armor": { "value": 1, "alignments": {} },
+              "aura": { "school": "con" },
+              "cl": 7,
+              "creation": {
+                "cost": { "unit": "gp", "value": 500 },
+                "description": "<p>@UUID[Compendium.pf1.feats.Item.tD76K8QGco9scT0r]{Craft Wondrous Item}, @UUID[Compendium.pf1.spells.ucc0a31d1y86oleh]{mage armor}, creator's caster level must be at least two times that of the bonus placed on the bracers, plus any requirements of the armor special abilities</p>"
+              },
+              "equipmentSubtype": "lightArmor",
+              "equipped": true,
+              "hp": { "base": 10 },
+              "price": { "base": 1000, "unit": "gp" },
+              "quantity": 1,
+              "slot": "wrists",
+              "sources": [
+                { "id": "PZO1123", "pages": "271" },
+                { "id": "PZO1110", "pages": "504" }
+              ],
+              "subType": "wondrous",
+              "weight": { "value": 1 },
+              "mods": {}
+            },
+            "type": "equipment",
+            "effects": [],
+            "flags": {},
+            "_id": "2NMoUI36JkDhav8P",
             "sort": 0
           }
         ],
@@ -2363,7 +2365,8 @@
           "perform": 0,
           "bluff": 0
         }
-      }
+      },
+      "attacks": {}
     }
   }
 }

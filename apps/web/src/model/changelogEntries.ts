@@ -49,6 +49,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-11-22-ranged-weapon-fixes",
+    date: "2026-11-22",
+    title: "Bows, thrown weapons, and Small weapon damage",
+    note: "Composite bows take a Strength rating on the Weapons step: it caps the Strength bonus to damage, and a weaker archer takes -2 to hit. Thrown weapons and slings add Strength to damage and use Dexterity to hit, and a plain bow takes a low Strength penalty. Small characters' catalog weapons use Small damage dice. For an older thrown weapon, edit it and choose Use catalog attack ability to switch to Dexterity without losing other edits.",
+  },
+  {
     id: "2026-11-22-armor-speed-fixes",
     date: "2026-11-22",
     title: "Armor, speed, and Divine Power fixes",

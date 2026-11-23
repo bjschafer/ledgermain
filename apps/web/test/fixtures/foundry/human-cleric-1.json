@@ -30,7 +30,7 @@
         "name": "human-cleric-1 [base]",
         "type": "character",
         "folder": "GuYuyoqdabfe4xZV",
-        "_id": "9tNo9URfLHEenjce",
+        "_id": "JSldl8p5B6UDBN85",
         "system": {
           "abilities": {
             "str": { "value": 14 },
@@ -74,7 +74,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "FWmBt5qNG1AbOsV7",
+            "_id": "u4n9Ksuq3LW2LS5N",
             "folder": null,
             "sort": 0
           },
@@ -95,7 +95,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "bZKSldyDYkmxJQ2f",
+            "_id": "QUBgpPDW8zttM8gp",
             "folder": null,
             "sort": 0
           },
@@ -136,7 +136,7 @@
             "type": "race",
             "effects": [],
             "flags": {},
-            "_id": "JKUi84VV1z0t3jeV",
+            "_id": "OwGYWTklFCb2BxDt",
             "sort": 0
           },
           {
@@ -202,19 +202,19 @@
               "pf1": {
                 "links": {
                   "classAssociations": {
-                    "sYDafVd6r2DeojpS": 1,
-                    "bS6FGrGK8tWnuTjJ": 1,
-                    "PbZwznknOqnvr4Ii": 1,
-                    "6ky2qJnM9UGsf9P2": 1,
-                    "OBpzQ97nQlzlnA6U": 1,
-                    "nnP6CilAocjzu1FA": 1,
-                    "zCFMP9tcr35ZM8G9": 1,
-                    "Jw0VQ2AzGGKHi7ap": 1
+                    "BQONwYFCALv1JjLM": 1,
+                    "fvjLpo1oQwNBPNuH": 1,
+                    "uRd9GumdvrcrxkUg": 1,
+                    "MCjndEc3CGKXpXpA": 1,
+                    "CFfl5SQPdiiIJeME": 1,
+                    "dgcUzW8caaLTnz2H": 1,
+                    "eu6bMj4Ksxs5vjRj": 1,
+                    "E6Lsn6dIsLxfhOlr": 1
                   }
                 }
               }
             },
-            "_id": "ZlqrCyQJeqYzMg53",
+            "_id": "igJQj2rSD0CkaPc2",
             "sort": 0
           },
           {
@@ -250,51 +250,12 @@
               },
               "restrictions": []
             },
-            "_id": "UAO8zhVloNHpzVjG",
+            "_id": "EsRhzYj6MPzZM9kB",
             "effects": [],
             "folder": null,
             "sort": 0,
             "flags": {},
             "_stats": { "compendiumSource": null }
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1.class-abilities.Item.zrUJt7YpAJkf2NC6"
-            },
-            "name": "Domains",
-            "system": {
-              "associations": { "classes": ["Cleric"] },
-              "sources": [{ "id": "PZO1110", "pages": "40" }],
-              "subType": "classFeat",
-              "class": "cleric",
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "flags": {},
-            "sort": 200000,
-            "_id": "sYDafVd6r2DeojpS",
-            "folder": null
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1.class-abilities.Item.Wkv124hVPATT35bm"
-            },
-            "name": "Aura",
-            "system": {
-              "abilityType": "ex",
-              "associations": { "classes": ["Cleric", "Warpriest"] },
-              "sources": [{ "id": "PZO1110", "pages": "39" }],
-              "subType": "classFeat",
-              "class": "cleric",
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "flags": {},
-            "sort": 300000,
-            "_id": "bS6FGrGK8tWnuTjJ",
-            "folder": null
           },
           {
             "_stats": {
@@ -418,7 +379,65 @@
             "effects": [],
             "flags": {},
             "sort": 100000,
-            "_id": "PbZwznknOqnvr4Ii",
+            "_id": "BQONwYFCALv1JjLM",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.zrUJt7YpAJkf2NC6"
+            },
+            "name": "Domains",
+            "system": {
+              "associations": { "classes": ["Cleric"] },
+              "sources": [{ "id": "PZO1110", "pages": "40" }],
+              "subType": "classFeat",
+              "class": "cleric",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 200000,
+            "_id": "fvjLpo1oQwNBPNuH",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.Wkv124hVPATT35bm"
+            },
+            "name": "Aura",
+            "system": {
+              "abilityType": "ex",
+              "associations": { "classes": ["Cleric", "Warpriest"] },
+              "sources": [{ "id": "PZO1110", "pages": "39" }],
+              "subType": "classFeat",
+              "class": "cleric",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 300000,
+            "_id": "uRd9GumdvrcrxkUg",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.kx2ZfV2wjlAZgQ6E"
+            },
+            "name": "Spontaneous Casting (CLE)",
+            "system": {
+              "associations": { "classes": ["Cleric"] },
+              "sources": [{ "id": "PZO1110", "pages": "41" }],
+              "subType": "classFeat",
+              "class": "cleric",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 400000,
+            "_id": "MCjndEc3CGKXpXpA",
             "folder": null
           },
           {
@@ -440,7 +459,26 @@
             "effects": [],
             "flags": {},
             "sort": 500000,
-            "_id": "6ky2qJnM9UGsf9P2",
+            "_id": "CFfl5SQPdiiIJeME",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.EvrFDqZDbbFS4Avb"
+            },
+            "name": "Bonus Languages (CLE)",
+            "system": {
+              "associations": { "classes": ["Cleric"] },
+              "sources": [{ "id": "PZO1110", "pages": "41" }],
+              "subType": "classFeat",
+              "class": "cleric",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 600000,
+            "_id": "dgcUzW8caaLTnz2H",
             "folder": null
           },
           {
@@ -465,7 +503,7 @@
             "effects": [],
             "flags": {},
             "sort": 700000,
-            "_id": "OBpzQ97nQlzlnA6U",
+            "_id": "eu6bMj4Ksxs5vjRj",
             "folder": null
           },
           {
@@ -484,45 +522,7 @@
             "effects": [],
             "flags": {},
             "sort": 800000,
-            "_id": "nnP6CilAocjzu1FA",
-            "folder": null
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1.class-abilities.Item.kx2ZfV2wjlAZgQ6E"
-            },
-            "name": "Spontaneous Casting (CLE)",
-            "system": {
-              "associations": { "classes": ["Cleric"] },
-              "sources": [{ "id": "PZO1110", "pages": "41" }],
-              "subType": "classFeat",
-              "class": "cleric",
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "flags": {},
-            "sort": 400000,
-            "_id": "zCFMP9tcr35ZM8G9",
-            "folder": null
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1.class-abilities.Item.EvrFDqZDbbFS4Avb"
-            },
-            "name": "Bonus Languages (CLE)",
-            "system": {
-              "associations": { "classes": ["Cleric"] },
-              "sources": [{ "id": "PZO1110", "pages": "41" }],
-              "subType": "classFeat",
-              "class": "cleric",
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "flags": {},
-            "sort": 600000,
-            "_id": "Jw0VQ2AzGGKHi7ap",
+            "_id": "E6Lsn6dIsLxfhOlr",
             "folder": null
           },
           {
@@ -546,7 +546,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "i5P232o9hrwjTpVF",
+            "_id": "Oahk6eFviXbkxAz5",
             "sort": 0
           },
           {
@@ -570,7 +570,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "w3sQIMahalV2nHsT",
+            "_id": "fb12CK6tA3FeV46A",
             "sort": 0
           },
           {
@@ -604,7 +604,7 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "yEPbGSXMtZpqqXp2",
+            "_id": "QfV8FLPqdqBijMiH",
             "sort": 0
           },
           {
@@ -652,7 +652,7 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "Mt26rGBZepextWhw",
+            "_id": "60vT15fDfmpvOF4l",
             "sort": 0
           }
         ],
@@ -718,14 +718,15 @@
           "perform": 0,
           "bluff": 0
         }
-      }
+      },
+      "attacks": {}
     },
     "buffs": {
       "actor": {
         "name": "human-cleric-1 [buffs]",
         "type": "character",
         "folder": "GuYuyoqdabfe4xZV",
-        "_id": "787k6vW3MEo16ZKz",
+        "_id": "rMzjKaSATPHeNaMM",
         "system": {
           "abilities": {
             "str": { "value": 14 },
@@ -769,7 +770,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "oJ29hhXO4YDXB81a",
+            "_id": "rX4lHyXe0WB7pxdg",
             "folder": null,
             "sort": 0
           },
@@ -790,7 +791,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "Q8lAkyayxUsdSiIA",
+            "_id": "Qw2cKWdqe9ahEaXn",
             "folder": null,
             "sort": 0
           },
@@ -831,7 +832,7 @@
             "type": "race",
             "effects": [],
             "flags": {},
-            "_id": "JBjGv6fnIT1R8DRu",
+            "_id": "xaFFxlIbiclAkVlJ",
             "sort": 0
           },
           {
@@ -897,19 +898,19 @@
               "pf1": {
                 "links": {
                   "classAssociations": {
-                    "f0CEs8MuKSIJjYGv": 1,
-                    "Y02aKEVlXUqtvYqq": 1,
-                    "zpbtfnTzvgsnacbm": 1,
-                    "ag3xEUZPFKokUJwW": 1,
-                    "w0NYfiaGofsCN9zD": 1,
-                    "dbVcaB1d0Xul16bV": 1,
-                    "8U71S6nRay3UIFml": 1,
-                    "NLT4cCJJVzyZ1s4k": 1
+                    "Hbav4D5eOa0rAlFB": 1,
+                    "GdBmJqxmg7wRX7O2": 1,
+                    "iQt1jcqStTh3J6ID": 1,
+                    "T08hyBxbWyExus9D": 1,
+                    "DV8uWU1Rn4oXVAtJ": 1,
+                    "mJH7Jn4qsb50MCpB": 1,
+                    "3iMuPiJ1qLhI5jEP": 1,
+                    "YmncAVekbO4DmEiy": 1
                   }
                 }
               }
             },
-            "_id": "ApjIMESj68dP0Ijv",
+            "_id": "GOZq9d7E1RgCwBwc",
             "sort": 0
           },
           {
@@ -945,12 +946,31 @@
               },
               "restrictions": []
             },
-            "_id": "o70AJQ9QaRhF3cEj",
+            "_id": "84nnB10lcc4seFan",
             "effects": [],
             "folder": null,
             "sort": 0,
             "flags": {},
             "_stats": { "compendiumSource": null }
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.zrUJt7YpAJkf2NC6"
+            },
+            "name": "Domains",
+            "system": {
+              "associations": { "classes": ["Cleric"] },
+              "sources": [{ "id": "PZO1110", "pages": "40" }],
+              "subType": "classFeat",
+              "class": "cleric",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 200000,
+            "_id": "Hbav4D5eOa0rAlFB",
+            "folder": null
           },
           {
             "_stats": {
@@ -969,130 +989,7 @@
             "effects": [],
             "flags": {},
             "sort": 300000,
-            "_id": "f0CEs8MuKSIJjYGv",
-            "folder": null
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1.class-abilities.Item.kx2ZfV2wjlAZgQ6E"
-            },
-            "name": "Spontaneous Casting (CLE)",
-            "system": {
-              "associations": { "classes": ["Cleric"] },
-              "sources": [{ "id": "PZO1110", "pages": "41" }],
-              "subType": "classFeat",
-              "class": "cleric",
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "flags": {},
-            "sort": 400000,
-            "_id": "Y02aKEVlXUqtvYqq",
-            "folder": null
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1.class-abilities.Item.exdHrqciehozr5SD"
-            },
-            "name": "Chaotic, Evil, Good, and Lawful Spells",
-            "system": {
-              "associations": { "classes": ["Cleric", "Druid", "Hunter", "Warpriest"] },
-              "sources": [
-                { "id": "PZO1110", "pages": "41, 49" },
-                { "id": "PZO1129", "pages": "26, 60" }
-              ],
-              "subType": "classFeat",
-              "class": "cleric",
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "flags": {},
-            "sort": 500000,
-            "_id": "zpbtfnTzvgsnacbm",
-            "folder": null
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1.class-abilities.Item.EvrFDqZDbbFS4Avb"
-            },
-            "name": "Bonus Languages (CLE)",
-            "system": {
-              "associations": { "classes": ["Cleric"] },
-              "sources": [{ "id": "PZO1110", "pages": "41" }],
-              "subType": "classFeat",
-              "class": "cleric",
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "flags": {},
-            "sort": 600000,
-            "_id": "ag3xEUZPFKokUJwW",
-            "folder": null
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1.class-abilities.Item.RaFl9SpbAlXqhsDk"
-            },
-            "name": "Orisons",
-            "system": {
-              "associations": {
-                "classes": ["Cleric", "Druid", "Inquisitor", "Oracle", "Shaman", "Warpriest"]
-              },
-              "sources": [
-                { "id": "PZO1110", "pages": "38, 48" },
-                { "id": "PZO1115", "pages": "38, 42" },
-                { "id": "PZO1129", "pages": "35, 60" }
-              ],
-              "subType": "classFeat",
-              "class": "cleric",
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "flags": {},
-            "sort": 700000,
-            "_id": "w0NYfiaGofsCN9zD",
-            "folder": null
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1.class-abilities.Item.W4PGylYL7ghRfy5G"
-            },
-            "name": "Cleric Spells",
-            "system": {
-              "associations": { "classes": ["Cleric"] },
-              "sources": [{ "id": "PZO1110", "pages": "39-40" }],
-              "subType": "classFeat",
-              "class": "cleric",
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "flags": {},
-            "sort": 800000,
-            "_id": "dbVcaB1d0Xul16bV",
-            "folder": null
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1.class-abilities.Item.zrUJt7YpAJkf2NC6"
-            },
-            "name": "Domains",
-            "system": {
-              "associations": { "classes": ["Cleric"] },
-              "sources": [{ "id": "PZO1110", "pages": "40" }],
-              "subType": "classFeat",
-              "class": "cleric",
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "flags": {},
-            "sort": 200000,
-            "_id": "8U71S6nRay3UIFml",
+            "_id": "GdBmJqxmg7wRX7O2",
             "folder": null
           },
           {
@@ -1217,7 +1114,111 @@
             "effects": [],
             "flags": {},
             "sort": 100000,
-            "_id": "NLT4cCJJVzyZ1s4k",
+            "_id": "iQt1jcqStTh3J6ID",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.kx2ZfV2wjlAZgQ6E"
+            },
+            "name": "Spontaneous Casting (CLE)",
+            "system": {
+              "associations": { "classes": ["Cleric"] },
+              "sources": [{ "id": "PZO1110", "pages": "41" }],
+              "subType": "classFeat",
+              "class": "cleric",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 400000,
+            "_id": "T08hyBxbWyExus9D",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.exdHrqciehozr5SD"
+            },
+            "name": "Chaotic, Evil, Good, and Lawful Spells",
+            "system": {
+              "associations": { "classes": ["Cleric", "Druid", "Hunter", "Warpriest"] },
+              "sources": [
+                { "id": "PZO1110", "pages": "41, 49" },
+                { "id": "PZO1129", "pages": "26, 60" }
+              ],
+              "subType": "classFeat",
+              "class": "cleric",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 500000,
+            "_id": "DV8uWU1Rn4oXVAtJ",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.EvrFDqZDbbFS4Avb"
+            },
+            "name": "Bonus Languages (CLE)",
+            "system": {
+              "associations": { "classes": ["Cleric"] },
+              "sources": [{ "id": "PZO1110", "pages": "41" }],
+              "subType": "classFeat",
+              "class": "cleric",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 600000,
+            "_id": "mJH7Jn4qsb50MCpB",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.RaFl9SpbAlXqhsDk"
+            },
+            "name": "Orisons",
+            "system": {
+              "associations": {
+                "classes": ["Cleric", "Druid", "Inquisitor", "Oracle", "Shaman", "Warpriest"]
+              },
+              "sources": [
+                { "id": "PZO1110", "pages": "38, 48" },
+                { "id": "PZO1115", "pages": "38, 42" },
+                { "id": "PZO1129", "pages": "35, 60" }
+              ],
+              "subType": "classFeat",
+              "class": "cleric",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 700000,
+            "_id": "3iMuPiJ1qLhI5jEP",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.W4PGylYL7ghRfy5G"
+            },
+            "name": "Cleric Spells",
+            "system": {
+              "associations": { "classes": ["Cleric"] },
+              "sources": [{ "id": "PZO1110", "pages": "39-40" }],
+              "subType": "classFeat",
+              "class": "cleric",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 800000,
+            "_id": "YmncAVekbO4DmEiy",
             "folder": null
           },
           {
@@ -1241,7 +1242,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "bQSnMo5hWjBLZgFV",
+            "_id": "oxkc1NiPVmaBewk0",
             "sort": 0
           },
           {
@@ -1265,41 +1266,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "b4rW21qTijXjAPof",
-            "sort": 0
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1.armors-and-shields.Item.unY9jt1B8a5bbnzO"
-            },
-            "folder": "33jGfHlDL34jvwnX",
-            "name": "Chainmail",
-            "system": {
-              "armor": {
-                "acp": 5,
-                "dex": 2,
-                "material": { "base": { "value": "steel" }, "addon": [] },
-                "value": 6,
-                "alignments": {}
-              },
-              "baseTypes": ["Chainmail"],
-              "equipmentSubtype": "mediumArmor",
-              "equipped": true,
-              "hardness": 10,
-              "hp": { "base": 30 },
-              "price": { "base": 150, "unit": "gp" },
-              "quantity": 1,
-              "slot": "armor",
-              "sources": [{ "id": "PZO1110", "pages": "150, 151" }],
-              "spellFailure": 30,
-              "subType": "armor",
-              "weight": { "value": 40 },
-              "mods": {}
-            },
-            "type": "equipment",
-            "effects": [],
-            "flags": {},
-            "_id": "g48chycyvxEVEfN4",
+            "_id": "GK7pZ1qmMl5vVFle",
             "sort": 0
           },
           {
@@ -1347,7 +1314,41 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "8vPTQkwtuCcH7sh5",
+            "_id": "62JfjOLw6opPVtMK",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.armors-and-shields.Item.unY9jt1B8a5bbnzO"
+            },
+            "folder": "33jGfHlDL34jvwnX",
+            "name": "Chainmail",
+            "system": {
+              "armor": {
+                "acp": 5,
+                "dex": 2,
+                "material": { "base": { "value": "steel" }, "addon": [] },
+                "value": 6,
+                "alignments": {}
+              },
+              "baseTypes": ["Chainmail"],
+              "equipmentSubtype": "mediumArmor",
+              "equipped": true,
+              "hardness": 10,
+              "hp": { "base": 30 },
+              "price": { "base": 150, "unit": "gp" },
+              "quantity": 1,
+              "slot": "armor",
+              "sources": [{ "id": "PZO1110", "pages": "150, 151" }],
+              "spellFailure": 30,
+              "subType": "armor",
+              "weight": { "value": 40 },
+              "mods": {}
+            },
+            "type": "equipment",
+            "effects": [],
+            "flags": {},
+            "_id": "uAIs9il9lqz3hbwE",
             "sort": 0
           },
           {
@@ -1378,7 +1379,7 @@
             "type": "buff",
             "effects": [],
             "flags": {},
-            "_id": "50CAYIdUQLCOu8L4",
+            "_id": "ad07JALWh9dkcROf",
             "sort": 0
           },
           {
@@ -1403,7 +1404,7 @@
             "type": "buff",
             "effects": [],
             "flags": {},
-            "_id": "3DnBLqkB3nVELNBq",
+            "_id": "iX6D3AoEBXv3F5pY",
             "sort": 0
           }
         ],
@@ -1469,14 +1470,15 @@
           "perform": 0,
           "bluff": 0
         }
-      }
+      },
+      "attacks": {}
     },
     "conditions": {
       "actor": {
         "name": "human-cleric-1 [conditions]",
         "type": "character",
         "folder": "GuYuyoqdabfe4xZV",
-        "_id": "vL0VWAGjTmYteMej",
+        "_id": "NNbTSf3TavLJInnw",
         "system": {
           "abilities": {
             "str": { "value": 14 },
@@ -1520,7 +1522,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "tCX044hOgDzB0m1g",
+            "_id": "1oP0iM8z4EuvpNHH",
             "folder": null,
             "sort": 0
           },
@@ -1541,7 +1543,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "SxIH407ze9jymex1",
+            "_id": "WVAPc7EuqahTA2hS",
             "folder": null,
             "sort": 0
           },
@@ -1582,7 +1584,7 @@
             "type": "race",
             "effects": [],
             "flags": {},
-            "_id": "ycn4jlBNtnrzmcrk",
+            "_id": "ffTwMbGlHJDCfVqo",
             "sort": 0
           },
           {
@@ -1648,19 +1650,19 @@
               "pf1": {
                 "links": {
                   "classAssociations": {
-                    "A2dNVgCkhcP2oqCu": 1,
-                    "r5Go0ylZ0O1OYs1Y": 1,
-                    "0y9kiRdVg6SNH4cJ": 1,
-                    "qgGzeqoaYXK94bL0": 1,
-                    "IXVv9ZBWRJMdZUR0": 1,
-                    "Wnt78IahvRlKapHI": 1,
-                    "5eQwojFgpgXzv7wZ": 1,
-                    "jm7Ib5nleYW7s4Rq": 1
+                    "n2HMCjYdXSjj2thB": 1,
+                    "anWINpGcHIBg59YQ": 1,
+                    "Gq1iu1xzkNiA4bQt": 1,
+                    "LdBr0E0PaZjv7exD": 1,
+                    "HkKScvsxfqVplrZK": 1,
+                    "BnPWJj5pWlscLCj2": 1,
+                    "c32fdsl0Ok554wKu": 1,
+                    "Li5FWKTWDCFTDA6W": 1
                   }
                 }
               }
             },
-            "_id": "NFPOc77EUM5K35oF",
+            "_id": "QQXnIeS1cuP1rrFK",
             "sort": 0
           },
           {
@@ -1696,7 +1698,7 @@
               },
               "restrictions": []
             },
-            "_id": "pf27lvcQGhx59dLM",
+            "_id": "VYE4KzrWKDo7BxDR",
             "effects": [],
             "folder": null,
             "sort": 0,
@@ -1825,7 +1827,7 @@
             "effects": [],
             "flags": {},
             "sort": 100000,
-            "_id": "A2dNVgCkhcP2oqCu",
+            "_id": "n2HMCjYdXSjj2thB",
             "folder": null
           },
           {
@@ -1844,7 +1846,7 @@
             "effects": [],
             "flags": {},
             "sort": 200000,
-            "_id": "r5Go0ylZ0O1OYs1Y",
+            "_id": "anWINpGcHIBg59YQ",
             "folder": null
           },
           {
@@ -1864,7 +1866,7 @@
             "effects": [],
             "flags": {},
             "sort": 300000,
-            "_id": "0y9kiRdVg6SNH4cJ",
+            "_id": "Gq1iu1xzkNiA4bQt",
             "folder": null
           },
           {
@@ -1883,7 +1885,7 @@
             "effects": [],
             "flags": {},
             "sort": 400000,
-            "_id": "qgGzeqoaYXK94bL0",
+            "_id": "LdBr0E0PaZjv7exD",
             "folder": null
           },
           {
@@ -1905,7 +1907,7 @@
             "effects": [],
             "flags": {},
             "sort": 500000,
-            "_id": "IXVv9ZBWRJMdZUR0",
+            "_id": "HkKScvsxfqVplrZK",
             "folder": null
           },
           {
@@ -1924,7 +1926,7 @@
             "effects": [],
             "flags": {},
             "sort": 600000,
-            "_id": "Wnt78IahvRlKapHI",
+            "_id": "BnPWJj5pWlscLCj2",
             "folder": null
           },
           {
@@ -1949,7 +1951,7 @@
             "effects": [],
             "flags": {},
             "sort": 700000,
-            "_id": "5eQwojFgpgXzv7wZ",
+            "_id": "c32fdsl0Ok554wKu",
             "folder": null
           },
           {
@@ -1968,7 +1970,7 @@
             "effects": [],
             "flags": {},
             "sort": 800000,
-            "_id": "jm7Ib5nleYW7s4Rq",
+            "_id": "Li5FWKTWDCFTDA6W",
             "folder": null
           },
           {
@@ -1992,7 +1994,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "MjHRaqF8fILOpNyW",
+            "_id": "a76g0OdKEnsUBXin",
             "sort": 0
           },
           {
@@ -2016,7 +2018,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "hMeUarsMgJv9Nf4b",
+            "_id": "Gla2G6XsOl5rHCVX",
             "sort": 0
           },
           {
@@ -2050,7 +2052,7 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "odxQcDytMURaXris",
+            "_id": "FCxdkDMU4f2CRNeC",
             "sort": 0
           },
           {
@@ -2098,7 +2100,7 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "0rrV9utM6ioH2CA5",
+            "_id": "rg0yuzunCOBLrI2Q",
             "sort": 0
           }
         ],
@@ -2108,7 +2110,7 @@
             "img": "systems/pf1/icons/conditions/shaken.svg",
             "statuses": ["shaken"],
             "showIcon": 2,
-            "_id": "CXlYrD0g7JfqcfFN",
+            "_id": "VqWDGkADBVw1CPSH",
             "type": "base",
             "system": { "changes": [] },
             "disabled": false,
@@ -2132,9 +2134,9 @@
               "coreVersion": "14.370",
               "systemId": "pf1",
               "systemVersion": "11.11",
-              "createdTime": 1795403156094,
-              "modifiedTime": 1795403156094,
-              "lastModifiedBy": "jnrEqpgUjbAxjuLp",
+              "createdTime": 1795407393895,
+              "modifiedTime": 1795407393895,
+              "lastModifiedBy": "7UYomJpxzjJzDpJa",
               "compendiumSource": null,
               "duplicateSource": null,
               "exportSource": null
@@ -2202,7 +2204,8 @@
           "perform": -2,
           "bluff": -2
         }
-      }
+      },
+      "attacks": {}
     }
   }
 }

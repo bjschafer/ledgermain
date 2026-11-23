@@ -102,6 +102,17 @@
     items.forEach((item, index) => {
       const spec_ = spec.items[index];
       if (spec_.equipped != null) item.system.equipped = spec_.equipped;
+      if (spec_.quantity != null) item.system.quantity = spec_.quantity;
+      if (item.type === "weapon") {
+        if (spec_.enh) item.system.enh = spec_.enh;
+        if (spec_.masterwork) item.system.masterwork = true;
+        if (spec_.strRating != null) {
+          for (const action of Object.values(item.system.actions)) {
+            action.ability.max = spec_.strRating;
+          }
+        }
+        return;
+      }
       if (spec_.enh) item.system.armor.enh = spec_.enh;
       if (spec_.material) {
         const m = spec_.material;
@@ -201,6 +212,61 @@
     };
   }
 
+  // A roll's bonus is its total less what the dice rolled, so the numbers
+  // come out the same whatever the dice did.
+  function flat(roll) {
+    return roll.total - roll.dice.reduce((sum, d) => sum + d.total, 0);
+  }
+
+  /**
+   * Every weapon used through the documented `ItemPF#use` options, once
+   * plainly and once per `attacks` entry in the spec: the full-attack
+   * sequence and each attack's damage as dice plus a flat bonus. Dialog
+   * toggles the actor's feats would switch on by default are pinned off so
+   * each key names everything that applies.
+   */
+  async function weaponAttacks(actor, spec) {
+    const out = {};
+    const specFor = (name) => spec.items.find((i) => i.name === name);
+    const ammo = actor.items.filter((i) => i.type === "ammo");
+    for (const item of actor.items.filter((i) => i.type === "weapon")) {
+      const type = item.defaultAction?.ammo?.type;
+      const ammoId = type ? ammo.find((a) => a.system.subType === type)?.id : undefined;
+      if (type && !ammoId) throw new Error(`${spec.id}: ${item.name} needs ${type} ammunition`);
+      const variants = [{ id: null }, ...(specFor(item.name)?.attacks ?? [])];
+      for (const v of variants) {
+        // oxlint-disable-next-line no-await-in-loop -- each use reads the actor's state; keep them ordered
+        const used = await item.use({
+          skipDialog: true,
+          chatMessage: false,
+          powerAttack: v.powerAttack ?? false,
+          rapidShot: false,
+          manyshot: false,
+          haste: false,
+          // Not in the documented UseOptions, but the dialog honors them.
+          pointBlankShot: false,
+          deadlyAim: false,
+          piranhaStrike: false,
+          ...(v.held ? { held: v.held } : {}),
+          ...(ammoId ? { ammo: ammoId } : {}),
+        });
+        const chat = used?.shared?.chatAttacks;
+        if (!chat?.length) throw new Error(`${spec.id}: ${item.name} produced no attacks`);
+        const damage = chat[0].damage?.rolls ?? [];
+        out[v.id ? `${item.name}.${v.id}` : item.name] = {
+          attack: chat.map((c) => flat(c.attack)),
+          damage: damage.reduce((sum, r) => sum + flat(r), 0),
+          dice: damage
+            .flatMap((r) => r.dice)
+            .map((d) => `${d.number}d${d.faces}`)
+            .join("+"),
+          formula: { attack: chat[0].attack.formula, damage: damage.map((r) => r.formula) },
+        };
+      }
+    }
+    return out;
+  }
+
   // Trimmed to what an importer could use, so the committed fixtures stay a
   // reviewable size and regenerate without churn: no item prose, no token,
   // image or permission data, no untouched skill items (a fresh actor carries
@@ -238,7 +304,12 @@
       for (const [name, scenario] of Object.entries(spec.scenarios)) {
         // oxlint-disable-next-line no-await-in-loop -- one actor at a time keeps the world's writes ordered
         const actor = await build(spec, name, scenario);
-        scenarios[name] = { actor: exportData(actor), derived: derived(actor) };
+        scenarios[name] = {
+          actor: exportData(actor),
+          derived: derived(actor),
+          // oxlint-disable-next-line no-await-in-loop -- see above
+          attacks: await weaponAttacks(actor, spec),
+        };
       }
       out[spec.id] = {
         foundry: { core: game.version, system: game.system.version },

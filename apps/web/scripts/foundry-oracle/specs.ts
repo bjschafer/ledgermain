@@ -19,14 +19,32 @@ export interface OracleItem {
   pack: string;
   name: string;
   equipped?: boolean;
-  /** Armor/shield enhancement bonus. */
+  /** Armor, shield or weapon enhancement bonus. */
   enh?: number;
+  masterwork?: boolean;
+  quantity?: number;
   /**
    * Special material, plus the adjusted stats that go with it: Foundry stores
    * the tag but leaves max Dex and armor check penalty at the base armor's
    * values, so a mithral suit has to carry its own.
    */
   material?: { id: string; maxDex?: number; acp?: number; spellFailure?: number };
+  /** A composite bow's Strength rating. */
+  strRating?: number;
+  /**
+   * Attack-dialog settings to roll a weapon with besides the plain attack
+   * (no Power Attack, held as the weapon's own handedness), which every
+   * weapon gets.
+   */
+  attacks?: OracleAttack[];
+}
+
+/** One way of using a weapon, as the options Foundry's attack dialog takes. */
+export interface OracleAttack {
+  /** Appended to the weapon's name in the stat key. */
+  id: string;
+  powerAttack?: boolean;
+  held?: "2h" | "oh";
 }
 
 export interface OracleScenario {
@@ -50,6 +68,12 @@ export interface OracleSpec {
   feats: string[];
   skills: Record<string, number>;
   items: OracleItem[];
+  /**
+   * Picks the Foundry items have no field or automation for. Applied only
+   * after import on the Ledgermain side; missing Foundry bonuses must be
+   * listed as divergences, not supplied to Foundry as hand-entered numbers.
+   */
+  choices?: { feats?: Record<string, string>; weaponTrainingGroups?: string[] };
   /**
    * An archetype from `pf1e-archetypes`. Foundry doesn't apply one: the item
    * pulls in none of its features and removes nothing, so the spec names the

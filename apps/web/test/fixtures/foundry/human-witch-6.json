@@ -37,7 +37,7 @@
         "name": "human-witch-6 [base]",
         "type": "character",
         "folder": "GuYuyoqdabfe4xZV",
-        "_id": "qXk4a5DMY17uYQfu",
+        "_id": "FLVxgu0pAFXn5bZ4",
         "system": {
           "abilities": {
             "str": { "value": 8 },
@@ -80,7 +80,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "a5etCMaNBlsr87q9",
+            "_id": "zE15jzXn0r7MjSpz",
             "folder": null,
             "sort": 0
           },
@@ -102,7 +102,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "Ippf0EzcHTvxey92",
+            "_id": "31Yi5orrTFv9ea2V",
             "folder": null,
             "sort": 0
           },
@@ -124,7 +124,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "goZZF2fu0Wj0MzEi",
+            "_id": "1REwNI4gomIq7bAL",
             "folder": null,
             "sort": 0
           },
@@ -145,7 +145,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "1Jsz50XlPnEnhXt4",
+            "_id": "7RGCfRUqDYzV0DXZ",
             "folder": null,
             "sort": 0
           },
@@ -166,7 +166,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "1YpKJQWKot9DRPXL",
+            "_id": "MArW4eXk9iXFGokY",
             "folder": null,
             "sort": 0
           },
@@ -207,7 +207,7 @@
             "type": "race",
             "effects": [],
             "flags": {},
-            "_id": "z8nR6I7n08DyIwiT",
+            "_id": "hjcAODiyPzWVBGZl",
             "sort": 0
           },
           {
@@ -271,16 +271,16 @@
               "pf1": {
                 "links": {
                   "classAssociations": {
-                    "5nNqvZomiakXqfgr": 1,
-                    "JhCZA7T4RSGprRpj": 1,
-                    "Qbq4ym5p7PjaUBXT": 1,
-                    "96Jq8oJu7XWA79lF": 1,
-                    "5uV33F2YdsMKEbnT": 1
+                    "Za5ZOPU1FtDSUN50": 1,
+                    "sO741K7GLaDudWA8": 1,
+                    "IHsFlZ1qaxmJHJEF": 1,
+                    "zOqNS2HFYFTMSL1X": 1,
+                    "okGhdGVcfVBlncRn": 1
                   }
                 }
               }
             },
-            "_id": "RTozgkg1k0Ys6Ok2",
+            "_id": "vM0KbiZmAwmEaRYq",
             "sort": 0
           },
           {
@@ -316,7 +316,7 @@
               },
               "restrictions": []
             },
-            "_id": "1e1Y8xTu3tWfRbHF",
+            "_id": "XTTZsimSoeyrTOTB",
             "effects": [],
             "folder": null,
             "sort": 0,
@@ -342,7 +342,7 @@
             "effects": [],
             "flags": {},
             "sort": 100000,
-            "_id": "5nNqvZomiakXqfgr",
+            "_id": "Za5ZOPU1FtDSUN50",
             "folder": null
           },
           {
@@ -362,7 +362,7 @@
             "effects": [],
             "flags": {},
             "sort": 200000,
-            "_id": "JhCZA7T4RSGprRpj",
+            "_id": "sO741K7GLaDudWA8",
             "folder": null
           },
           {
@@ -399,7 +399,7 @@
             "effects": [],
             "flags": {},
             "sort": 300000,
-            "_id": "Qbq4ym5p7PjaUBXT",
+            "_id": "IHsFlZ1qaxmJHJEF",
             "folder": null
           },
           {
@@ -418,7 +418,7 @@
             "effects": [],
             "flags": {},
             "sort": 400000,
-            "_id": "96Jq8oJu7XWA79lF",
+            "_id": "zOqNS2HFYFTMSL1X",
             "folder": null
           },
           {
@@ -437,32 +437,8 @@
             "effects": [],
             "flags": {},
             "sort": 500000,
-            "_id": "5uV33F2YdsMKEbnT",
+            "_id": "okGhdGVcfVBlncRn",
             "folder": null
-          },
-          {
-            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.Uuiu3p982omhMEPj" },
-            "name": "Improved Initiative",
-            "system": {
-              "changes": {
-                "ign7okhi": {
-                  "_id": "ign7okhi",
-                  "formula": "4",
-                  "target": "init",
-                  "type": "untyped"
-                }
-              },
-              "sources": [{ "id": "PZO1110", "pages": "115, 127" }],
-              "subType": "feat",
-              "tags": ["Combat"],
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "folder": null,
-            "flags": {},
-            "_id": "XKfsqCHKXh9fUvGj",
-            "sort": 0
           },
           {
             "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.8snLqsJN4LLL00Nq" },
@@ -485,7 +461,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "RGfAg8146QhEJlG1",
+            "_id": "PFb9SXWfoFRhW83Y",
             "sort": 0
           },
           {
@@ -509,7 +485,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "n0z7iGUUTNAdYo6g",
+            "_id": "JEYqzdUbKb3o95tz",
             "sort": 0
           },
           {
@@ -525,7 +501,31 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "bMbhDBIp5wgNw890",
+            "_id": "AKlcJHxrm2U81oMA",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.Uuiu3p982omhMEPj" },
+            "name": "Improved Initiative",
+            "system": {
+              "changes": {
+                "ign7okhi": {
+                  "_id": "ign7okhi",
+                  "formula": "4",
+                  "target": "init",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "115, 127" }],
+              "subType": "feat",
+              "tags": ["Combat"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "ROMWKXsPudftN0zC",
             "sort": 0
           },
           {
@@ -569,7 +569,7 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "7GAcRtY28rlGuJdm",
+            "_id": "yRw9YyiY1a5PFFNN",
             "sort": 0
           },
           {
@@ -618,7 +618,7 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "OFAW4whNzWU2U5AQ",
+            "_id": "UyjdAifP3oZGR9xL",
             "sort": 0
           },
           {
@@ -650,7 +650,7 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "VzXi2mCjW1ylDFEG",
+            "_id": "jV1ZWNgmhPsYVU6d",
             "sort": 0
           }
         ],
@@ -716,14 +716,15 @@
           "perform": 0,
           "bluff": 0
         }
-      }
+      },
+      "attacks": {}
     },
     "buffs": {
       "actor": {
         "name": "human-witch-6 [buffs]",
         "type": "character",
         "folder": "GuYuyoqdabfe4xZV",
-        "_id": "6PwJkJCxIbrI3qxy",
+        "_id": "Qj8kKWGPh31PK28i",
         "system": {
           "abilities": {
             "str": { "value": 8 },
@@ -766,7 +767,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "6XTecUovDTvuurhY",
+            "_id": "m26njsuuXdJTRrFE",
             "folder": null,
             "sort": 0
           },
@@ -788,7 +789,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "i25n9sGUYmogWIXl",
+            "_id": "mKixFpKMHCwQ5tK8",
             "folder": null,
             "sort": 0
           },
@@ -810,7 +811,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "3Jae4CoBd8sZCl9q",
+            "_id": "jDMz3NraX71CG04f",
             "folder": null,
             "sort": 0
           },
@@ -831,7 +832,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "Y6rFdPhAtPX85G5p",
+            "_id": "Lb7iYZLqRzem6oPW",
             "folder": null,
             "sort": 0
           },
@@ -852,7 +853,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "zGnvXRRaq1L3PzIk",
+            "_id": "XDO7tpDML8YcnL6j",
             "folder": null,
             "sort": 0
           },
@@ -893,7 +894,7 @@
             "type": "race",
             "effects": [],
             "flags": {},
-            "_id": "XBlgpnRRy0S6JnKI",
+            "_id": "NLwngYCHrJA3kVyu",
             "sort": 0
           },
           {
@@ -957,16 +958,16 @@
               "pf1": {
                 "links": {
                   "classAssociations": {
-                    "oJBCnNAQDCxtbdlg": 1,
-                    "hh700vzbshyhuGTr": 1,
-                    "zOGGuhDU45Gn82jK": 1,
-                    "jpfmvKnWKBbyiuFp": 1,
-                    "Mefx6RaCzTOOo6My": 1
+                    "j48PQLbS51GQ3Nzi": 1,
+                    "P2P5heH88AZO48eO": 1,
+                    "0pM0CyluQKSPo2HR": 1,
+                    "frqToJzWsKXMWIdz": 1,
+                    "PcO3bRmvr8oumJ2h": 1
                   }
                 }
               }
             },
-            "_id": "ZV7XRJy8VxnviQMl",
+            "_id": "p1GJkJ8DiITObdDd",
             "sort": 0
           },
           {
@@ -1002,12 +1003,34 @@
               },
               "restrictions": []
             },
-            "_id": "cYLce8T1s9iRCXr6",
+            "_id": "Mo76NOAw8NwqJFUe",
             "effects": [],
             "folder": null,
             "sort": 0,
             "flags": {},
             "_stats": { "compendiumSource": null }
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.GBkIhC1Bpp2MAD4e"
+            },
+            "name": "Hex",
+            "system": {
+              "associations": { "classes": ["Witch", "Shaman"] },
+              "sources": [
+                { "id": "PZO1129", "pages": "35-36" },
+                { "id": "PZO1115", "pages": "66" }
+              ],
+              "subType": "classFeat",
+              "class": "witch",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 100000,
+            "_id": "j48PQLbS51GQ3Nzi",
+            "folder": null
           },
           {
             "_stats": {
@@ -1026,45 +1049,7 @@
             "effects": [],
             "flags": {},
             "sort": 200000,
-            "_id": "oJBCnNAQDCxtbdlg",
-            "folder": null
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1.class-abilities.Item.4k6uFSPDhObXgLqu"
-            },
-            "name": "Patron Spells",
-            "system": {
-              "associations": { "classes": ["Witch"] },
-              "sources": [{ "id": "PZO1115", "pages": "65" }],
-              "subType": "classFeat",
-              "class": "witch",
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "flags": {},
-            "sort": 400000,
-            "_id": "hh700vzbshyhuGTr",
-            "folder": null
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1.class-abilities.Item.K0Ls0j080ptiPvTC"
-            },
-            "name": "Witch Spells",
-            "system": {
-              "associations": { "classes": ["Witch"] },
-              "sources": [{ "id": "PZO1115", "pages": "65" }],
-              "subType": "classFeat",
-              "class": "witch",
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "flags": {},
-            "sort": 500000,
-            "_id": "zOGGuhDU45Gn82jK",
+            "_id": "P2P5heH88AZO48eO",
             "folder": null
           },
           {
@@ -1101,20 +1086,17 @@
             "effects": [],
             "flags": {},
             "sort": 300000,
-            "_id": "jpfmvKnWKBbyiuFp",
+            "_id": "0pM0CyluQKSPo2HR",
             "folder": null
           },
           {
             "_stats": {
-              "compendiumSource": "Compendium.pf1.class-abilities.Item.GBkIhC1Bpp2MAD4e"
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.4k6uFSPDhObXgLqu"
             },
-            "name": "Hex",
+            "name": "Patron Spells",
             "system": {
-              "associations": { "classes": ["Witch", "Shaman"] },
-              "sources": [
-                { "id": "PZO1129", "pages": "35-36" },
-                { "id": "PZO1115", "pages": "66" }
-              ],
+              "associations": { "classes": ["Witch"] },
+              "sources": [{ "id": "PZO1115", "pages": "65" }],
               "subType": "classFeat",
               "class": "witch",
               "alignments": {}
@@ -1122,9 +1104,52 @@
             "type": "feat",
             "effects": [],
             "flags": {},
-            "sort": 100000,
-            "_id": "Mefx6RaCzTOOo6My",
+            "sort": 400000,
+            "_id": "frqToJzWsKXMWIdz",
             "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.K0Ls0j080ptiPvTC"
+            },
+            "name": "Witch Spells",
+            "system": {
+              "associations": { "classes": ["Witch"] },
+              "sources": [{ "id": "PZO1115", "pages": "65" }],
+              "subType": "classFeat",
+              "class": "witch",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 500000,
+            "_id": "PcO3bRmvr8oumJ2h",
+            "folder": null
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.8snLqsJN4LLL00Nq" },
+            "name": "Toughness",
+            "system": {
+              "changes": {
+                "bl5pemy2": {
+                  "_id": "bl5pemy2",
+                  "formula": "max(3, @attributes.hd.total)",
+                  "target": "mhp",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "116, 135" }],
+              "subType": "feat",
+              "tags": ["General", "Defensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "E2jPCyzuR2wuuS7t",
+            "sort": 0
           },
           {
             "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.Uuiu3p982omhMEPj" },
@@ -1147,7 +1172,23 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "EFFJKEz9U7gP0k1d",
+            "_id": "TB2oQ4m4nYDr47Rj",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.u7rGDZUL296QIuA0" },
+            "name": "Combat Casting",
+            "system": {
+              "sources": [{ "id": "PZO1110", "pages": "114, 119" }],
+              "subType": "feat",
+              "tags": ["General", "Magic", "Defensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "g2beUvUuNZMYEFZE",
             "sort": 0
           },
           {
@@ -1171,47 +1212,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "k31bfV1nKeO4Sbjo",
-            "sort": 0
-          },
-          {
-            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.u7rGDZUL296QIuA0" },
-            "name": "Combat Casting",
-            "system": {
-              "sources": [{ "id": "PZO1110", "pages": "114, 119" }],
-              "subType": "feat",
-              "tags": ["General", "Magic", "Defensive"],
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "folder": null,
-            "flags": {},
-            "_id": "KOA0upY1DC9UNTeO",
-            "sort": 0
-          },
-          {
-            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.8snLqsJN4LLL00Nq" },
-            "name": "Toughness",
-            "system": {
-              "changes": {
-                "bl5pemy2": {
-                  "_id": "bl5pemy2",
-                  "formula": "max(3, @attributes.hd.total)",
-                  "target": "mhp",
-                  "type": "untyped"
-                }
-              },
-              "sources": [{ "id": "PZO1110", "pages": "116, 135" }],
-              "subType": "feat",
-              "tags": ["General", "Defensive"],
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "folder": null,
-            "flags": {},
-            "_id": "KQk3hNI0G3q4MSTY",
+            "_id": "uWzK7WP1g33wslk5",
             "sort": 0
           },
           {
@@ -1255,7 +1256,7 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "XGclfFGpj3MNZ8H8",
+            "_id": "S98sD3wgHErp3D9T",
             "sort": 0
           },
           {
@@ -1304,7 +1305,7 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "9pIkUmpvJeuylaae",
+            "_id": "PSLZNUWR7McABPhy",
             "sort": 0
           },
           {
@@ -1336,7 +1337,7 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "H9dVrg9uX5QawXm9",
+            "_id": "eRSTFbIqJXKRbe92",
             "sort": 0
           },
           {
@@ -1362,7 +1363,7 @@
             "type": "buff",
             "effects": [],
             "flags": {},
-            "_id": "DwPafc1p9xmNnFo0",
+            "_id": "OkvcJNNXkNfD1xxS",
             "sort": 0
           },
           {
@@ -1388,7 +1389,7 @@
             "type": "buff",
             "effects": [],
             "flags": {},
-            "_id": "8h6hkOPeJIIVzTq1",
+            "_id": "pAwC1mmRFcVzSOlb",
             "sort": 0
           },
           {
@@ -1408,7 +1409,7 @@
             "type": "buff",
             "effects": [],
             "flags": {},
-            "_id": "DKJuhY7zXUrFf8YV",
+            "_id": "pXSBjimq0Iv6FWVh",
             "sort": 0
           }
         ],
@@ -1474,7 +1475,8 @@
           "perform": 0,
           "bluff": 0
         }
-      }
+      },
+      "attacks": {}
     }
   }
 }

@@ -1257,6 +1257,24 @@ function weaponGroupKeys(w: Pick<WeaponInstance, "group" | "weaponGroups">): str
 }
 
 /**
+ * The Strength modifier a ranged weapon adds to damage (CRB p. 144): all of
+ * it for a thrown weapon or a sling (which upstream groups with thrown
+ * weapons), up to the Strength rating for a composite bow, only a penalty
+ * for any other bow, and nothing for crossbows, firearms and the rest.
+ * `undefined` means the weapon takes no Strength at all.
+ */
+function rangedStrengthDamage(
+  w: WeaponInstance,
+  groupKeys: readonly string[],
+  strMod: number,
+): number | undefined {
+  if (groupKeys.includes("thrown")) return strMod;
+  if (w.strRating !== undefined) return Math.min(strMod, w.strRating);
+  if (groupKeys.includes("bows")) return Math.min(strMod, 0);
+  return undefined;
+}
+
+/**
  * Rogue (Unchained) Finesse Training: true when `w` is eligible for the
  * character's Dex-to-damage substitution — one of `build.
  * rogueFinesseWeapons`' picks that have actually been UNLOCKED by the
@@ -1387,19 +1405,20 @@ function towerShieldAttackComponents(doc: CharacterDoc): ModifierComponent[] {
  *   see {@link rogueFinesseTrainingMatches} — so the player doesn't have to
  *   flip the per-weapon field by hand for the class feature that's supposed
  *   to grant it for free.
- * - Ranged: the default/unset "str" contributes NOTHING (no composite-bow
- *   rating modeled — a plain bow must not gain Str damage). Dex damage only
- *   applies via an explicit player-set "dex" override, or automatically for a
- *   firearm covered by the Gun Training family — see {@link
- *   gunTrainingMatches} — and is always ×1 (never damageMultiplier-scaled;
- *   Gun Training's own text carries no two-handed-weapon scaling), including
- *   a negative Dex modifier applying in full.
+ * - Ranged: the default/unset "str" follows the ranged Strength rules — see
+ *   {@link rangedStrengthDamage} — and a composite bow whose Strength rating
+ *   is above the wielder's Strength modifier takes -2 on attacks (CRB
+ *   p. 147). Dex damage applies via an explicit player-set "dex" override, or
+ *   automatically for a firearm covered by the Gun Training family — see
+ *   {@link gunTrainingMatches}. Ranged ability damage is always ×1 (never
+ *   damageMultiplier-scaled; neither rule mentions two-handed scaling), and a
+ *   negative modifier applies in full.
  *
- * `baseSize`/`effectiveSize` (the race size the weapon's `damageDice` was
- * written for, and the wielder's current effective size) rewrite the
- * DISPLAYED `damageDice` string when they differ — see
- * {@link scaleWeaponDamageDice} — since the numeric damage bonus above never
- * carries a dice term to begin with.
+ * `w.damageDiceSize` (the size the weapon's `damageDice` was written for,
+ * defaulting to `baseSize`, the race size) and `effectiveSize` (the wielder's
+ * current size) rewrite the DISPLAYED `damageDice` string when they differ —
+ * see {@link scaleWeaponDamageDice} — since the numeric damage bonus above
+ * never carries a dice term to begin with.
  */
 function computeWeaponAttacks(
   doc: CharacterDoc,
@@ -1482,6 +1501,9 @@ function computeWeaponAttacks(
           ]),
       ...groupKeys.flatMap((g) => forTarget(collected, `attack.weapon.${g}`)),
     ]);
+    // A composite bow drawn by someone weaker than its rating (CRB p. 147).
+    const compositePenalty =
+      category === "ranged" && w.strRating !== undefined && abilityMods.str < w.strRating ? -2 : 0;
     const attackTotal =
       bab +
       attackAbilityMod +
@@ -1490,6 +1512,7 @@ function computeWeaponAttacks(
       masterworkBonus +
       weaponAttackStack.total +
       weaponProfPenalty +
+      compositePenalty +
       flatAttackPenalty;
     const attackComponents: ModifierComponent[] = [
       synthetic("BAB", "base", bab),
@@ -1501,19 +1524,19 @@ function computeWeaponAttacks(
         : []),
       ...toComponents(weaponAttackStack.modifiers),
       ...weaponProfComponents,
+      ...(compositePenalty !== 0
+        ? [synthetic(`${w.name} (Strength below its rating)`, "penalty", compositePenalty)]
+        : []),
       ...flatAttackPenaltyComponents,
     ];
 
-    // Ability-to-damage: STR or DEX. Melee (unchanged): scaled by
-    // damageMultiplier; an unset/default "str" value is auto-promoted to
-    // "dex" for a weapon matching Rogue (Unchained)'s Finesse Training.
-    // Ranged: the default/unset "str" contributes NOTHING (no composite-bow
-    // rating modeled here — a plain bow must not gain Str damage); only an
-    // explicit player-set "dex" (the escape hatch for an unmodeled
-    // Dex-to-damage source) or a Gun Training family match
+    // Ability-to-damage: STR or DEX. Melee: scaled by damageMultiplier; an
+    // unset/default "str" value is auto-promoted to "dex" for a weapon
+    // matching Rogue (Unchained)'s Finesse Training. Ranged: the default
+    // "str" follows `rangedStrengthDamage`, a Gun Training family match
     // (`gunTrainingMatches`, auto — same "str doesn't block the auto-match"
-    // convention as autoFinesseDex) ever apply. Either way an explicit
-    // "dex"/"none" always wins over an auto-match.
+    // convention as autoFinesseDex) swaps in Dex, and an explicit player-set
+    // "dex"/"none" always wins over either.
     const autoFinesseDex =
       (w.damageAbility === undefined || w.damageAbility === "str") &&
       category === "melee" &&
@@ -1522,6 +1545,12 @@ function computeWeaponAttacks(
       (w.damageAbility === undefined || w.damageAbility === "str") &&
       category === "ranged" &&
       gunTrainingMatches(doc, w);
+    // Zero is left off entirely, so a strong archer's longbow shows no
+    // Strength term rather than a +0 one.
+    const rangedStr =
+      category === "ranged" && !autoGunTrainingDex && (w.damageAbility ?? "str") === "str"
+        ? rangedStrengthDamage(w, groupKeys, abilityMods.str) || undefined
+        : undefined;
     const damageAbility: "str" | "dex" | "none" =
       category === "melee"
         ? autoFinesseDex
@@ -1529,28 +1558,30 @@ function computeWeaponAttacks(
           : (w.damageAbility ?? "str")
         : autoGunTrainingDex || w.damageAbility === "dex"
           ? "dex"
-          : "none";
+          : rangedStr !== undefined
+            ? "str"
+            : "none";
     // "none" carries no ability at all, so there is nothing to substitute for.
     // Melee's Str/Dex term can be swapped by a registered ability
     // substitution (Guided, Zen Archer's Perfect Strike, ...); no ranged
     // damage substitution is registered (`ability-substitution.ts` has no
-    // "damage.ranged" slot — nothing published needs one), so the ranged Dex
-    // case reads the modifier directly.
+    // "damage.ranged" slot — nothing published needs one), so the ranged
+    // cases read the modifier directly.
     const resolvedDamageAbility: ResolvedAbility | undefined =
       damageAbility === "none"
         ? undefined
         : category === "melee"
           ? resolveSubstitution("damage.melee", damageAbility, abilityMods, substitutions)
-          : { ability: "dex", mod: abilityMods.dex };
+          : damageAbility === "dex"
+            ? { ability: "dex", mod: abilityMods.dex }
+            : { ability: "str", mod: rangedStr! };
     const damageAbilityMod = resolvedDamageAbility?.mod ?? 0;
     const mult = w.damageMultiplier ?? 1;
     const appliesAbilityDamage = damageAbility === "str" || damageAbility === "dex";
     // The multiplier (1.5× two-handed, 0.5× off-hand) scales a melee Str/Dex
     // BONUS only — a penalty is never multiplied up or reduced (PF1 RAW: the
-    // full penalty always applies). Ranged ability damage is always ×1 (Gun
-    // Training and its archetype variants read "a bonus... equal to her
-    // Dexterity modifier", with no two-handed-weapon scaling), including a
-    // negative Dex modifier applying in full.
+    // full penalty always applies). Ranged ability damage is always ×1,
+    // including a negative modifier applying in full.
     const abilityDamage = !appliesAbilityDamage
       ? 0
       : category === "ranged"
@@ -1596,8 +1627,13 @@ function computeWeaponAttacks(
         damageAbility === "dex" && w.damageAbility !== "dex" && dexFeats.damage
           ? ` (${dexFeats.damage})`
           : "";
+      // Why a composite bow's Strength term is smaller than the modifier.
+      const capLabel =
+        category === "ranged" && damageAbility === "str" && damageAbilityMod < abilityMods.str
+          ? ` (rating ${w.strRating})`
+          : "";
       damageComponents.push(
-        synthetic(`${abilityLabel}${promotedBy}${multLabel}`, "ability", abilityDamage),
+        synthetic(`${abilityLabel}${promotedBy}${multLabel}${capLabel}`, "ability", abilityDamage),
       );
     }
     if (enh !== 0) damageComponents.push(synthetic(`${w.name} (enhancement)`, "enh", enh));
@@ -1646,7 +1682,11 @@ function computeWeaponAttacks(
     // can't evaluate one — see the engine cookbook §2.2), so this scaling is
     // purely a display correction.
     if (w.damageDice !== undefined) {
-      result.damageDice = scaleWeaponDamageDice(w.damageDice, baseSize, effectiveSize);
+      result.damageDice = scaleWeaponDamageDice(
+        w.damageDice,
+        w.damageDiceSize ?? baseSize,
+        effectiveSize,
+      );
     }
     // Range increment (ranged only) and firearm-specific display data
     // (Ultimate Combat) — see WeaponInstance's rangeIncrement/misfire/

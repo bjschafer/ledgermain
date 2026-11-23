@@ -78,7 +78,7 @@ describe("importFoundryActor", () => {
   });
 
   it("keeps hand-made gear as a custom item and reports it", () => {
-    const actor = exportOf("human-fighter-6");
+    const actor = exportOf("human-paladin-6");
     actor.items.push({
       type: "loot",
       name: "Grandfather's Pocket Watch",

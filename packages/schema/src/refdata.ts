@@ -1027,10 +1027,12 @@ export interface WeaponRef extends RefEntity {
   group?: string;
   /** Melee or ranged; which attack modifier target applies. */
   category: "melee" | "ranged";
-  /** Ability used for the attack roll: "str" (mwak) or "dex" (rwak). */
+  /** Ability used for the attack roll: "str" (melee) or "dex" (ranged and thrown). */
   attackAbility: "str" | "dex";
-  /** Ability added to damage: "str" when the source declares it, else "none". */
+  /** Ability added to damage: "str" when the source declares it or the weapon is a bow, else "none". */
   damageAbility?: "str" | "none";
+  /** A composite bow, which carries a Strength rating (`WeaponInstance.strRating`). */
+  composite?: boolean;
   /**
    * Multiplier applied to the damage ability modifier (1 one-handed / ranged,
    * 1.5 two-handed, 0.5 off-hand).

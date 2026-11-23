@@ -32,7 +32,7 @@
         "name": "dwarf-monk-6 [base]",
         "type": "character",
         "folder": "GuYuyoqdabfe4xZV",
-        "_id": "oxiUrTpj2UaMqtvu",
+        "_id": "tDIo57KWKaFwOYrY",
         "system": {
           "abilities": {
             "str": { "value": 13 },
@@ -75,7 +75,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "28MEtG6HpXOJNpYk",
+            "_id": "ndD3mFEi3bMt7pev",
             "folder": null,
             "sort": 0
           },
@@ -96,7 +96,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "tkppOcdbh7vb4Gec",
+            "_id": "gbklSQoNJWm8AMgH",
             "folder": null,
             "sort": 0
           },
@@ -117,7 +117,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "SLhHKeT1JYQsveMI",
+            "_id": "VDiJKT39Y4YqMT2I",
             "folder": null,
             "sort": 0
           },
@@ -138,7 +138,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "5EErLqibgXTMR21D",
+            "_id": "lkZ6xt1GRFFldrtc",
             "folder": null,
             "sort": 0
           },
@@ -215,7 +215,7 @@
             "type": "race",
             "effects": [],
             "flags": {},
-            "_id": "fEEPc58tDkXmUB47",
+            "_id": "ND1s8W2UwOqtQMtM",
             "sort": 0
           },
           {
@@ -311,24 +311,24 @@
               "pf1": {
                 "links": {
                   "classAssociations": {
-                    "esY1Ydup6Gf8cpnS": 1,
-                    "h50l8Za18Hmrf35Y": 1,
-                    "mQapCSTskgzq1a1M": 1,
-                    "TIuxFHzPCHECSLeT": 1,
-                    "HM63Sx60bFk5jSfZ": 1,
-                    "Krjblry6vVK4N1mZ": 2,
-                    "T9AQAcMzPV3BtsDk": 3,
-                    "2rijSAD3EbRpDEUp": 3,
-                    "Q7MEPS2Hz4w8lunP": 3,
-                    "6f7181NMwwLZpl31": 4,
-                    "FUD2XHgzTCo2F5af": 4,
-                    "6Jbndytls3I5g2Sl": 5,
-                    "Ej3P6lRcGUH0bk2i": 5
+                    "T80wmOJyeq95sEXQ": 1,
+                    "Xc0LhMpnxaRSIKCw": 1,
+                    "0AaYQCgv6Vic7nve": 1,
+                    "3R2DfxPFSnEs8sZx": 1,
+                    "37yLdEEhHBqlFo7t": 1,
+                    "973LMQsi5j6hffC4": 2,
+                    "Y6Fjtb7Uie9dVqaF": 3,
+                    "WwssEaPPa827N5P2": 3,
+                    "5x4yvulEpZcA9IwR": 4,
+                    "TO5VA3xWks3jS9wN": 4,
+                    "t1qFzwrmvUZJtaQG": 5,
+                    "C5YYksGFeK3TCfj9": 5,
+                    "5FGpiAnkSVK9MBie": 3
                   }
                 }
               }
             },
-            "_id": "Rdd8Wd1NQKiAMapV",
+            "_id": "jzJrekSRmF2wpS4j",
             "sort": 0
           },
           {
@@ -358,61 +358,7 @@
             "effects": [],
             "flags": {},
             "sort": 100000,
-            "_id": "esY1Ydup6Gf8cpnS",
-            "folder": null
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1.class-abilities.Item.2ausI8g6SsmbOpgF"
-            },
-            "name": "Stunning Fist",
-            "system": {
-              "abilityType": "ex",
-              "actions": {
-                "t964ab1f99gydrqs": {
-                  "_id": "t964ab1f99gydrqs",
-                  "activation": { "type": "nonaction", "unchained": { "type": "nonaction" } },
-                  "name": "Use",
-                  "range": { "units": "touch" },
-                  "save": {
-                    "dc": "10 + floor(@class.unlevel / 2) + @abilities.wis.mod",
-                    "description": "Fortitude negates",
-                    "type": "fort"
-                  },
-                  "sort": 0
-                }
-              },
-              "associations": { "classes": ["Monk", "Monk (Unchained)"] },
-              "changes": {
-                "QhK37Pp0": {
-                  "_id": "QhK37Pp0",
-                  "formula": "1",
-                  "target": "bonusFeats",
-                  "type": "untyped"
-                }
-              },
-              "links": {
-                "supplements": [{ "uuid": "Compendium.pf1.feats.Item.GsjouI6B8X7BA5wN" }],
-                "children": [{ "uuid": ".Item.qwzY95bhYYmZA0G2" }]
-              },
-              "sources": [
-                { "id": "PZO1110", "pages": "59" },
-                { "id": "PZO1131", "pages": "14" }
-              ],
-              "subType": "classFeat",
-              "tag": "stunningFist",
-              "uses": {
-                "maxFormula": "@class.unlevel + floor((@attributes.hd.total - @class.unlevel ) / 4)",
-                "per": "day"
-              },
-              "class": "monk",
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "flags": {},
-            "sort": 300000,
-            "_id": "h50l8Za18Hmrf35Y",
+            "_id": "T80wmOJyeq95sEXQ",
             "folder": null
           },
           {
@@ -460,7 +406,61 @@
             "effects": [],
             "flags": {},
             "sort": 200000,
-            "_id": "mQapCSTskgzq1a1M",
+            "_id": "Xc0LhMpnxaRSIKCw",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.2ausI8g6SsmbOpgF"
+            },
+            "name": "Stunning Fist",
+            "system": {
+              "abilityType": "ex",
+              "actions": {
+                "t964ab1f99gydrqs": {
+                  "_id": "t964ab1f99gydrqs",
+                  "activation": { "type": "nonaction", "unchained": { "type": "nonaction" } },
+                  "name": "Use",
+                  "range": { "units": "touch" },
+                  "save": {
+                    "dc": "10 + floor(@class.unlevel / 2) + @abilities.wis.mod",
+                    "description": "Fortitude negates",
+                    "type": "fort"
+                  },
+                  "sort": 0
+                }
+              },
+              "associations": { "classes": ["Monk", "Monk (Unchained)"] },
+              "changes": {
+                "QhK37Pp0": {
+                  "_id": "QhK37Pp0",
+                  "formula": "1",
+                  "target": "bonusFeats",
+                  "type": "untyped"
+                }
+              },
+              "links": {
+                "supplements": [{ "uuid": "Compendium.pf1.feats.Item.GsjouI6B8X7BA5wN" }],
+                "children": [{ "uuid": ".Item.ZCE19uZE5EsbSVPv" }]
+              },
+              "sources": [
+                { "id": "PZO1110", "pages": "59" },
+                { "id": "PZO1131", "pages": "14" }
+              ],
+              "subType": "classFeat",
+              "tag": "stunningFist",
+              "uses": {
+                "maxFormula": "@class.unlevel + floor((@attributes.hd.total - @class.unlevel ) / 4)",
+                "per": "day"
+              },
+              "class": "monk",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 300000,
+            "_id": "0AaYQCgv6Vic7nve",
             "folder": null
           },
           {
@@ -506,7 +506,7 @@
               },
               "links": {
                 "supplements": [{ "uuid": "Compendium.pf1.feats.Item.2aTFNMs3pW6nUBlr" }],
-                "children": [{ "uuid": ".Item.XE3uitEQ5VSK3fxL" }]
+                "children": [{ "uuid": ".Item.VrkoiQrqAjQdcsvV" }]
               },
               "showInCombat": true,
               "sources": [
@@ -521,7 +521,7 @@
             "effects": [],
             "flags": {},
             "sort": 400000,
-            "_id": "TIuxFHzPCHECSLeT",
+            "_id": "3R2DfxPFSnEs8sZx",
             "folder": null
           },
           {
@@ -558,7 +558,7 @@
             "effects": [],
             "flags": {},
             "sort": 500000,
-            "_id": "HM63Sx60bFk5jSfZ",
+            "_id": "37yLdEEhHBqlFo7t",
             "folder": null
           },
           {
@@ -589,7 +589,7 @@
             "effects": [],
             "flags": {},
             "sort": 600000,
-            "_id": "Krjblry6vVK4N1mZ",
+            "_id": "973LMQsi5j6hffC4",
             "folder": null
           },
           {
@@ -620,35 +620,7 @@
             "effects": [],
             "flags": {},
             "sort": 700000,
-            "_id": "T9AQAcMzPV3BtsDk",
-            "folder": null
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1.class-abilities.Item.E7enBZN7FCsoyIof"
-            },
-            "name": "Maneuver Training",
-            "system": {
-              "abilityType": "ex",
-              "associations": { "classes": ["Monk"] },
-              "changes": {
-                "0iguyvon": {
-                  "_id": "0iguyvon",
-                  "formula": "@class.unlevel - @attributes.bab.total",
-                  "target": "cmb",
-                  "type": "untyped"
-                }
-              },
-              "sources": [{ "id": "PZO1110", "pages": "59" }],
-              "subType": "classFeat",
-              "class": "monk",
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "flags": {},
-            "sort": 800000,
-            "_id": "2rijSAD3EbRpDEUp",
+            "_id": "Y6Fjtb7Uie9dVqaF",
             "folder": null
           },
           {
@@ -674,7 +646,7 @@
             "effects": [],
             "flags": {},
             "sort": 900000,
-            "_id": "Q7MEPS2Hz4w8lunP",
+            "_id": "WwssEaPPa827N5P2",
             "folder": null
           },
           {
@@ -707,7 +679,7 @@
             "effects": [],
             "flags": {},
             "sort": 1000000,
-            "_id": "6f7181NMwwLZpl31",
+            "_id": "5x4yvulEpZcA9IwR",
             "folder": null
           },
           {
@@ -727,7 +699,7 @@
             "effects": [],
             "flags": {},
             "sort": 1100000,
-            "_id": "FUD2XHgzTCo2F5af",
+            "_id": "TO5VA3xWks3jS9wN",
             "folder": null
           },
           {
@@ -757,7 +729,7 @@
             "effects": [],
             "flags": {},
             "sort": 1200000,
-            "_id": "6Jbndytls3I5g2Sl",
+            "_id": "t1qFzwrmvUZJtaQG",
             "folder": null
           },
           {
@@ -786,7 +758,35 @@
             "effects": [],
             "flags": {},
             "sort": 1300000,
-            "_id": "Ej3P6lRcGUH0bk2i",
+            "_id": "C5YYksGFeK3TCfj9",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.E7enBZN7FCsoyIof"
+            },
+            "name": "Maneuver Training",
+            "system": {
+              "abilityType": "ex",
+              "associations": { "classes": ["Monk"] },
+              "changes": {
+                "0iguyvon": {
+                  "_id": "0iguyvon",
+                  "formula": "@class.unlevel - @attributes.bab.total",
+                  "target": "cmb",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "59" }],
+              "subType": "classFeat",
+              "class": "monk",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 800000,
+            "_id": "5FGpiAnkSVK9MBie",
             "folder": null
           },
           {
@@ -802,7 +802,7 @@
             "effects": [],
             "flags": { "pf1": { "source": "Compendium.pf1.feats.Item.GsjouI6B8X7BA5wN" } },
             "sort": 1300000,
-            "_id": "qwzY95bhYYmZA0G2",
+            "_id": "ZCE19uZE5EsbSVPv",
             "folder": null
           },
           {
@@ -818,7 +818,7 @@
             "effects": [],
             "flags": { "pf1": { "source": "Compendium.pf1.feats.Item.2aTFNMs3pW6nUBlr" } },
             "sort": 1400000,
-            "_id": "XE3uitEQ5VSK3fxL",
+            "_id": "VrkoiQrqAjQdcsvV",
             "folder": null
           },
           {
@@ -834,7 +834,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "mCqSmsUaiJ3CRysw",
+            "_id": "wASLHSV9pj3Tjjza",
             "sort": 0
           },
           {
@@ -864,7 +864,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "0LSQF3GinPbx1X7n",
+            "_id": "QO9gutNSmXPTRxPO",
             "sort": 0
           },
           {
@@ -895,7 +895,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "j2ZDiwEZ9YKJlsw3",
+            "_id": "rfg7ypO79jqhqMtT",
             "sort": 0
           },
           {
@@ -932,7 +932,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "uewu5lPv6A849H40",
+            "_id": "CZB0CH0eCxAcc7Tx",
             "sort": 0
           },
           {
@@ -951,7 +951,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "ZjRANN9Eyi3l3fmz",
+            "_id": "0pbtdi8HrektgdqL",
             "sort": 0
           },
           {
@@ -975,7 +975,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "y4auk2AvaHDIRQ0H",
+            "_id": "MJdkPISUT1lv4Q53",
             "sort": 0
           },
           {
@@ -999,7 +999,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "euYMKHZiavFK7U2n",
+            "_id": "ocHxCdE03RDDAkil",
             "sort": 0
           },
           {
@@ -1031,7 +1031,7 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "6PkTlXYGn4aNEAuf",
+            "_id": "DKiSgRSRcHHmA10d",
             "sort": 0
           },
           {
@@ -1075,7 +1075,7 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "yPPQ8A3sD7LD4zPe",
+            "_id": "FTg9uLZDZ4RWoHOg",
             "sort": 0
           }
         ],
@@ -1141,14 +1141,15 @@
           "perform": -1,
           "bluff": -1
         }
-      }
+      },
+      "attacks": {}
     },
     "haste": {
       "actor": {
         "name": "dwarf-monk-6 [haste]",
         "type": "character",
         "folder": "GuYuyoqdabfe4xZV",
-        "_id": "P0Ob0foDxheYB9LK",
+        "_id": "kz4CNHBHOuJ4U1bH",
         "system": {
           "abilities": {
             "str": { "value": 13 },
@@ -1191,7 +1192,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "bFZk02wPhfAOdK8g",
+            "_id": "IVkElXQLzcXBBDv3",
             "folder": null,
             "sort": 0
           },
@@ -1212,7 +1213,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "yoCio9QNaS9ZEsNE",
+            "_id": "rzaeoReHunf33pNx",
             "folder": null,
             "sort": 0
           },
@@ -1233,7 +1234,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "9PeDA19xAkl4AiUW",
+            "_id": "yZxDHx56JkeiCFiJ",
             "folder": null,
             "sort": 0
           },
@@ -1254,7 +1255,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "HyxOh5KFASjQAOw6",
+            "_id": "ME5mWvFDr0vOBvWW",
             "folder": null,
             "sort": 0
           },
@@ -1331,7 +1332,7 @@
             "type": "race",
             "effects": [],
             "flags": {},
-            "_id": "7jzOLBQF7zeYyU5h",
+            "_id": "ONLMKCgRNTH7K7Yk",
             "sort": 0
           },
           {
@@ -1427,24 +1428,24 @@
               "pf1": {
                 "links": {
                   "classAssociations": {
-                    "0lIHJoBgYJOsgyST": 1,
-                    "tBWld9gEpEF9iBSM": 1,
-                    "1wwjxFI7mPSduQfG": 1,
-                    "E9qVh1VLC7VJsx1M": 1,
-                    "mQfGfefn5V35qauQ": 1,
-                    "hH6C1ufovz9pMwl6": 2,
-                    "zcHjENAuGA7K9gOm": 3,
-                    "QQIgGULcSVioIuSl": 3,
-                    "0A6laqXvWXc0q8CQ": 3,
-                    "WARpoXk3cVUPdT5F": 4,
-                    "92m01UUKodziCc9P": 5,
-                    "oYloPuVuQAWlOvd9": 5,
-                    "Acg9C8VtrP1uCTgK": 4
+                    "6f92kw8iNkd0KV0a": 1,
+                    "k36zMbkcAP2HBnhV": 1,
+                    "es8u7O8QbFtYxHOo": 1,
+                    "rnbOxyMbvFgwUdng": 1,
+                    "uw9SGQUmyfJmDSh0": 1,
+                    "SoFj6oqdpM3PppJb": 2,
+                    "qgNglrRt39lectr4": 3,
+                    "IT2BfY6ckLivIxUq": 3,
+                    "uRZ3wNXOe7SNecKh": 3,
+                    "Xjwj2aqVplgG0uM5": 4,
+                    "XdurPJnwqwZjflIg": 4,
+                    "F2onx5kDKYiezY9a": 5,
+                    "7Sccfwh3ohoCxCxX": 5
                   }
                 }
               }
             },
-            "_id": "vytyMiIR1329Kp84",
+            "_id": "nnDi9Com2L2UduxH",
             "sort": 0
           },
           {
@@ -1474,7 +1475,7 @@
             "effects": [],
             "flags": {},
             "sort": 100000,
-            "_id": "0lIHJoBgYJOsgyST",
+            "_id": "6f92kw8iNkd0KV0a",
             "folder": null
           },
           {
@@ -1522,7 +1523,7 @@
             "effects": [],
             "flags": {},
             "sort": 200000,
-            "_id": "tBWld9gEpEF9iBSM",
+            "_id": "k36zMbkcAP2HBnhV",
             "folder": null
           },
           {
@@ -1557,7 +1558,7 @@
               },
               "links": {
                 "supplements": [{ "uuid": "Compendium.pf1.feats.Item.GsjouI6B8X7BA5wN" }],
-                "children": [{ "uuid": ".Item.xnezO0kgG4tvx39Z" }]
+                "children": [{ "uuid": ".Item.twZBIBGJe2jIqcvU" }]
               },
               "sources": [
                 { "id": "PZO1110", "pages": "59" },
@@ -1576,7 +1577,7 @@
             "effects": [],
             "flags": {},
             "sort": 300000,
-            "_id": "1wwjxFI7mPSduQfG",
+            "_id": "es8u7O8QbFtYxHOo",
             "folder": null
           },
           {
@@ -1622,7 +1623,7 @@
               },
               "links": {
                 "supplements": [{ "uuid": "Compendium.pf1.feats.Item.2aTFNMs3pW6nUBlr" }],
-                "children": [{ "uuid": ".Item.R0u3dlspKkuP9170" }]
+                "children": [{ "uuid": ".Item.x5Gmtrel1WhzpEuV" }]
               },
               "showInCombat": true,
               "sources": [
@@ -1637,7 +1638,7 @@
             "effects": [],
             "flags": {},
             "sort": 400000,
-            "_id": "E9qVh1VLC7VJsx1M",
+            "_id": "rnbOxyMbvFgwUdng",
             "folder": null
           },
           {
@@ -1674,7 +1675,7 @@
             "effects": [],
             "flags": {},
             "sort": 500000,
-            "_id": "mQfGfefn5V35qauQ",
+            "_id": "uw9SGQUmyfJmDSh0",
             "folder": null
           },
           {
@@ -1705,7 +1706,7 @@
             "effects": [],
             "flags": {},
             "sort": 600000,
-            "_id": "hH6C1ufovz9pMwl6",
+            "_id": "SoFj6oqdpM3PppJb",
             "folder": null
           },
           {
@@ -1736,7 +1737,7 @@
             "effects": [],
             "flags": {},
             "sort": 700000,
-            "_id": "zcHjENAuGA7K9gOm",
+            "_id": "qgNglrRt39lectr4",
             "folder": null
           },
           {
@@ -1764,7 +1765,7 @@
             "effects": [],
             "flags": {},
             "sort": 800000,
-            "_id": "QQIgGULcSVioIuSl",
+            "_id": "IT2BfY6ckLivIxUq",
             "folder": null
           },
           {
@@ -1790,7 +1791,7 @@
             "effects": [],
             "flags": {},
             "sort": 900000,
-            "_id": "0A6laqXvWXc0q8CQ",
+            "_id": "uRZ3wNXOe7SNecKh",
             "folder": null
           },
           {
@@ -1823,7 +1824,27 @@
             "effects": [],
             "flags": {},
             "sort": 1000000,
-            "_id": "WARpoXk3cVUPdT5F",
+            "_id": "Xjwj2aqVplgG0uM5",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.M4bXVPXouXroIt90"
+            },
+            "name": "Slow Fall",
+            "system": {
+              "abilityType": "ex",
+              "associations": { "classes": ["Monk"] },
+              "sources": [{ "id": "PZO1110", "pages": "59" }],
+              "subType": "classFeat",
+              "class": "monk",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 1100000,
+            "_id": "XdurPJnwqwZjflIg",
             "folder": null
           },
           {
@@ -1853,7 +1874,7 @@
             "effects": [],
             "flags": {},
             "sort": 1200000,
-            "_id": "92m01UUKodziCc9P",
+            "_id": "F2onx5kDKYiezY9a",
             "folder": null
           },
           {
@@ -1882,27 +1903,7 @@
             "effects": [],
             "flags": {},
             "sort": 1300000,
-            "_id": "oYloPuVuQAWlOvd9",
-            "folder": null
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1.class-abilities.Item.M4bXVPXouXroIt90"
-            },
-            "name": "Slow Fall",
-            "system": {
-              "abilityType": "ex",
-              "associations": { "classes": ["Monk"] },
-              "sources": [{ "id": "PZO1110", "pages": "59" }],
-              "subType": "classFeat",
-              "class": "monk",
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "flags": {},
-            "sort": 1100000,
-            "_id": "Acg9C8VtrP1uCTgK",
+            "_id": "7Sccfwh3ohoCxCxX",
             "folder": null
           },
           {
@@ -1918,7 +1919,7 @@
             "effects": [],
             "flags": { "pf1": { "source": "Compendium.pf1.feats.Item.GsjouI6B8X7BA5wN" } },
             "sort": 1300000,
-            "_id": "xnezO0kgG4tvx39Z",
+            "_id": "twZBIBGJe2jIqcvU",
             "folder": null
           },
           {
@@ -1934,7 +1935,7 @@
             "effects": [],
             "flags": { "pf1": { "source": "Compendium.pf1.feats.Item.2aTFNMs3pW6nUBlr" } },
             "sort": 1400000,
-            "_id": "R0u3dlspKkuP9170",
+            "_id": "x5Gmtrel1WhzpEuV",
             "folder": null
           },
           {
@@ -1950,7 +1951,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "vODgsxkSe19EmGw9",
+            "_id": "jm3BZSkdO4ZKEK1R",
             "sort": 0
           },
           {
@@ -1980,7 +1981,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "tlvXwr1ATVgguskU",
+            "_id": "OYlGFB77dDCe9aT3",
             "sort": 0
           },
           {
@@ -2011,7 +2012,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "WsKnGjHDhrZUhPOr",
+            "_id": "hvZ8TwoKjbQ2tlYB",
             "sort": 0
           },
           {
@@ -2048,7 +2049,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "vHn8AbbfNzthHNCl",
+            "_id": "Ce5AbmKidTLjkduw",
             "sort": 0
           },
           {
@@ -2067,7 +2068,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "Z2MBBbTTnsMeMobJ",
+            "_id": "Ik8en7gpcvfsXZzx",
             "sort": 0
           },
           {
@@ -2091,7 +2092,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "dAsTaMG1oR6OpbOP",
+            "_id": "vWX3qrC61tb884Al",
             "sort": 0
           },
           {
@@ -2115,39 +2116,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "WRvTr3xiTOVUYqCO",
-            "sort": 0
-          },
-          {
-            "_stats": { "compendiumSource": "Compendium.pf1.items.Item.w7NKnt0TAYj17XSK" },
-            "folder": "SbFyTToC7yBBC8Sb",
-            "name": "Bracers of Armor +1",
-            "system": {
-              "armor": { "value": 1, "alignments": {} },
-              "aura": { "school": "con" },
-              "cl": 7,
-              "creation": {
-                "cost": { "unit": "gp", "value": 500 },
-                "description": "<p>@UUID[Compendium.pf1.feats.Item.tD76K8QGco9scT0r]{Craft Wondrous Item}, @UUID[Compendium.pf1.spells.ucc0a31d1y86oleh]{mage armor}, creator's caster level must be at least two times that of the bonus placed on the bracers, plus any requirements of the armor special abilities</p>"
-              },
-              "equipmentSubtype": "lightArmor",
-              "equipped": true,
-              "hp": { "base": 10 },
-              "price": { "base": 1000, "unit": "gp" },
-              "quantity": 1,
-              "slot": "wrists",
-              "sources": [
-                { "id": "PZO1123", "pages": "271" },
-                { "id": "PZO1110", "pages": "504" }
-              ],
-              "subType": "wondrous",
-              "weight": { "value": 1 },
-              "mods": {}
-            },
-            "type": "equipment",
-            "effects": [],
-            "flags": {},
-            "_id": "gjxjTHOsoxQB3Kaq",
+            "_id": "QhkBnMOkIdL6uX2Y",
             "sort": 0
           },
           {
@@ -2191,7 +2160,39 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "CfjaOoc8VauTosnI",
+            "_id": "lf3wvbJSk4hevjMB",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.items.Item.w7NKnt0TAYj17XSK" },
+            "folder": "SbFyTToC7yBBC8Sb",
+            "name": "Bracers of Armor +1",
+            "system": {
+              "armor": { "value": 1, "alignments": {} },
+              "aura": { "school": "con" },
+              "cl": 7,
+              "creation": {
+                "cost": { "unit": "gp", "value": 500 },
+                "description": "<p>@UUID[Compendium.pf1.feats.Item.tD76K8QGco9scT0r]{Craft Wondrous Item}, @UUID[Compendium.pf1.spells.ucc0a31d1y86oleh]{mage armor}, creator's caster level must be at least two times that of the bonus placed on the bracers, plus any requirements of the armor special abilities</p>"
+              },
+              "equipmentSubtype": "lightArmor",
+              "equipped": true,
+              "hp": { "base": 10 },
+              "price": { "base": 1000, "unit": "gp" },
+              "quantity": 1,
+              "slot": "wrists",
+              "sources": [
+                { "id": "PZO1123", "pages": "271" },
+                { "id": "PZO1110", "pages": "504" }
+              ],
+              "subType": "wondrous",
+              "weight": { "value": 1 },
+              "mods": {}
+            },
+            "type": "equipment",
+            "effects": [],
+            "flags": {},
+            "_id": "4G67TPRIl1oanCgq",
             "sort": 0
           },
           {
@@ -2249,7 +2250,7 @@
             "type": "buff",
             "effects": [],
             "flags": {},
-            "_id": "w7kABqFE8RwjaRax",
+            "_id": "wFKpyp9lWALArsbR",
             "sort": 0
           }
         ],
@@ -2315,14 +2316,15 @@
           "perform": -1,
           "bluff": -1
         }
-      }
+      },
+      "attacks": {}
     },
     "conditions": {
       "actor": {
         "name": "dwarf-monk-6 [conditions]",
         "type": "character",
         "folder": "GuYuyoqdabfe4xZV",
-        "_id": "7aU8WVq4wvh1RENy",
+        "_id": "JpKGFpOA6El7o43b",
         "system": {
           "abilities": {
             "str": { "value": 13 },
@@ -2365,7 +2367,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "B5JCLsTfkSlONfdq",
+            "_id": "ZzHuRYHAg34yXZHy",
             "folder": null,
             "sort": 0
           },
@@ -2386,7 +2388,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "BIlZM2OGHzLMLMAQ",
+            "_id": "0jqLlYWL5gYFov0N",
             "folder": null,
             "sort": 0
           },
@@ -2407,7 +2409,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "25tfxOrL6fsl8k5U",
+            "_id": "5H97p6fJIieqQRfN",
             "folder": null,
             "sort": 0
           },
@@ -2428,7 +2430,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "Btbj55KTmAm4z3b9",
+            "_id": "ZSS4O9rudMjFEoYW",
             "folder": null,
             "sort": 0
           },
@@ -2505,7 +2507,7 @@
             "type": "race",
             "effects": [],
             "flags": {},
-            "_id": "qHS94CkT4mChssvt",
+            "_id": "b3AKz134pO1Llyoy",
             "sort": 0
           },
           {
@@ -2601,24 +2603,24 @@
               "pf1": {
                 "links": {
                   "classAssociations": {
-                    "Su03l0eyeD4V9ySu": 1,
-                    "39oQ2pWRxGu0Ql1m": 1,
-                    "YVmpkOUAqndPqk2m": 1,
-                    "WsLLwVP44CDCYki8": 1,
-                    "oAXA7lElghGHdB4z": 1,
-                    "8ojNN4ySMLoAKhqD": 2,
-                    "8zsT6ft3UYJHbPqK": 3,
-                    "vExUX7ZMnIgJPBcB": 3,
-                    "cELciDrzQlLx5uCm": 4,
-                    "f8cow6r1TgeBGgaX": 4,
-                    "GoSwi4p9IlgbNO06": 5,
-                    "QwaF5vn8tkTHVaH5": 5,
-                    "gP9e2e2cRFWTrJfE": 3
+                    "6AFmGYqoxRsMxYpq": 1,
+                    "C4ObVQfFvX7fzvej": 1,
+                    "raUKJLSFscA5XURR": 1,
+                    "ok8YUvdJmpsdi8Un": 1,
+                    "07za504nq16lz3gR": 1,
+                    "lnYYxQhJEafhIyJ7": 2,
+                    "KnU89eSEO790RfLm": 3,
+                    "jnnPKMmioCHud8ZJ": 3,
+                    "v6Z1EBrfhUDLXyiV": 3,
+                    "lTmnjsllhAa03jem": 4,
+                    "cgrMdxgwO3XVhlW9": 4,
+                    "fBdw7IaeUgN6OBMp": 5,
+                    "CpnK8mDAN5oomp8P": 5
                   }
                 }
               }
             },
-            "_id": "yKHI1LsCt918cI7z",
+            "_id": "KUI77Qv1KO2oVY3n",
             "sort": 0
           },
           {
@@ -2648,7 +2650,7 @@
             "effects": [],
             "flags": {},
             "sort": 100000,
-            "_id": "Su03l0eyeD4V9ySu",
+            "_id": "6AFmGYqoxRsMxYpq",
             "folder": null
           },
           {
@@ -2696,7 +2698,7 @@
             "effects": [],
             "flags": {},
             "sort": 200000,
-            "_id": "39oQ2pWRxGu0Ql1m",
+            "_id": "C4ObVQfFvX7fzvej",
             "folder": null
           },
           {
@@ -2731,7 +2733,7 @@
               },
               "links": {
                 "supplements": [{ "uuid": "Compendium.pf1.feats.Item.GsjouI6B8X7BA5wN" }],
-                "children": [{ "uuid": ".Item.Au0cMaOzl61JCvKP" }]
+                "children": [{ "uuid": ".Item.skTVnPLBocdVWL8A" }]
               },
               "sources": [
                 { "id": "PZO1110", "pages": "59" },
@@ -2750,7 +2752,7 @@
             "effects": [],
             "flags": {},
             "sort": 300000,
-            "_id": "YVmpkOUAqndPqk2m",
+            "_id": "raUKJLSFscA5XURR",
             "folder": null
           },
           {
@@ -2796,7 +2798,7 @@
               },
               "links": {
                 "supplements": [{ "uuid": "Compendium.pf1.feats.Item.2aTFNMs3pW6nUBlr" }],
-                "children": [{ "uuid": ".Item.pd8S3EmraDZLOvEA" }]
+                "children": [{ "uuid": ".Item.K6VJrecNC4KPG9yV" }]
               },
               "showInCombat": true,
               "sources": [
@@ -2811,7 +2813,7 @@
             "effects": [],
             "flags": {},
             "sort": 400000,
-            "_id": "WsLLwVP44CDCYki8",
+            "_id": "ok8YUvdJmpsdi8Un",
             "folder": null
           },
           {
@@ -2848,7 +2850,7 @@
             "effects": [],
             "flags": {},
             "sort": 500000,
-            "_id": "oAXA7lElghGHdB4z",
+            "_id": "07za504nq16lz3gR",
             "folder": null
           },
           {
@@ -2879,7 +2881,7 @@
             "effects": [],
             "flags": {},
             "sort": 600000,
-            "_id": "8ojNN4ySMLoAKhqD",
+            "_id": "lnYYxQhJEafhIyJ7",
             "folder": null
           },
           {
@@ -2910,7 +2912,7 @@
             "effects": [],
             "flags": {},
             "sort": 700000,
-            "_id": "8zsT6ft3UYJHbPqK",
+            "_id": "KnU89eSEO790RfLm",
             "folder": null
           },
           {
@@ -2938,7 +2940,33 @@
             "effects": [],
             "flags": {},
             "sort": 800000,
-            "_id": "vExUX7ZMnIgJPBcB",
+            "_id": "jnnPKMmioCHud8ZJ",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.8VUae7CIgCidvSfg"
+            },
+            "name": "Still Mind",
+            "system": {
+              "abilityType": "ex",
+              "associations": { "classes": ["Monk", "Monk (Unchained)"] },
+              "contextNotes": {
+                "Oyj8xv1vz59j3bVG": {
+                  "target": "allSavingThrows",
+                  "text": "+[[2]] Bonus on saving throws against enchantment spells and effects"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "59" }],
+              "subType": "classFeat",
+              "class": "monk",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 900000,
+            "_id": "v6Z1EBrfhUDLXyiV",
             "folder": null
           },
           {
@@ -2971,7 +2999,7 @@
             "effects": [],
             "flags": {},
             "sort": 1000000,
-            "_id": "cELciDrzQlLx5uCm",
+            "_id": "lTmnjsllhAa03jem",
             "folder": null
           },
           {
@@ -2991,7 +3019,7 @@
             "effects": [],
             "flags": {},
             "sort": 1100000,
-            "_id": "f8cow6r1TgeBGgaX",
+            "_id": "cgrMdxgwO3XVhlW9",
             "folder": null
           },
           {
@@ -3021,7 +3049,7 @@
             "effects": [],
             "flags": {},
             "sort": 1200000,
-            "_id": "GoSwi4p9IlgbNO06",
+            "_id": "fBdw7IaeUgN6OBMp",
             "folder": null
           },
           {
@@ -3050,33 +3078,7 @@
             "effects": [],
             "flags": {},
             "sort": 1300000,
-            "_id": "QwaF5vn8tkTHVaH5",
-            "folder": null
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1.class-abilities.Item.8VUae7CIgCidvSfg"
-            },
-            "name": "Still Mind",
-            "system": {
-              "abilityType": "ex",
-              "associations": { "classes": ["Monk", "Monk (Unchained)"] },
-              "contextNotes": {
-                "Oyj8xv1vz59j3bVG": {
-                  "target": "allSavingThrows",
-                  "text": "+[[2]] Bonus on saving throws against enchantment spells and effects"
-                }
-              },
-              "sources": [{ "id": "PZO1110", "pages": "59" }],
-              "subType": "classFeat",
-              "class": "monk",
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "flags": {},
-            "sort": 900000,
-            "_id": "gP9e2e2cRFWTrJfE",
+            "_id": "CpnK8mDAN5oomp8P",
             "folder": null
           },
           {
@@ -3092,7 +3094,7 @@
             "effects": [],
             "flags": { "pf1": { "source": "Compendium.pf1.feats.Item.GsjouI6B8X7BA5wN" } },
             "sort": 1300000,
-            "_id": "Au0cMaOzl61JCvKP",
+            "_id": "skTVnPLBocdVWL8A",
             "folder": null
           },
           {
@@ -3108,23 +3110,37 @@
             "effects": [],
             "flags": { "pf1": { "source": "Compendium.pf1.feats.Item.2aTFNMs3pW6nUBlr" } },
             "sort": 1400000,
-            "_id": "pd8S3EmraDZLOvEA",
+            "_id": "K6VJrecNC4KPG9yV",
             "folder": null
           },
           {
-            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.2aTFNMs3pW6nUBlr" },
-            "name": "Improved Unarmed Strike",
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.ACEQfonKVqh0fwkK" },
+            "name": "Deflect Arrows",
             "system": {
-              "sources": [{ "id": "PZO1110", "pages": "115, 128" }],
+              "actions": {
+                "q00cixwhykshnyq6": {
+                  "_id": "q00cixwhykshnyq6",
+                  "activation": { "type": "free", "unchained": { "type": "free" } },
+                  "name": "Use",
+                  "sort": 0
+                }
+              },
+              "contextNotes": {
+                "S2NArwgapkOeY3zv": {
+                  "target": "ac",
+                  "text": "Avoid [[1]] ranged attack per round. You must have at least one free hand."
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "115, 121" }],
               "subType": "feat",
-              "tags": ["Combat", "Unarmed", "Offensive"],
+              "tags": ["Combat", "Combat Trick"],
               "alignments": {}
             },
             "type": "feat",
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "5LCOSMp6RQhjU7e6",
+            "_id": "53ukW7CYyGq8kn4n",
             "sort": 0
           },
           {
@@ -3155,7 +3171,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "Stgx7MJWEcmMYpJi",
+            "_id": "QCcYOfNp6E6RRcyC",
             "sort": 0
           },
           {
@@ -3192,7 +3208,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "YYnyU6IJp9pebDhP",
+            "_id": "M53nDzbUOUrOVPxS",
             "sort": 0
           },
           {
@@ -3211,61 +3227,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "tvE4wnYYq33umhIh",
-            "sort": 0
-          },
-          {
-            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.ACEQfonKVqh0fwkK" },
-            "name": "Deflect Arrows",
-            "system": {
-              "actions": {
-                "q00cixwhykshnyq6": {
-                  "_id": "q00cixwhykshnyq6",
-                  "activation": { "type": "free", "unchained": { "type": "free" } },
-                  "name": "Use",
-                  "sort": 0
-                }
-              },
-              "contextNotes": {
-                "S2NArwgapkOeY3zv": {
-                  "target": "ac",
-                  "text": "Avoid [[1]] ranged attack per round. You must have at least one free hand."
-                }
-              },
-              "sources": [{ "id": "PZO1110", "pages": "115, 121" }],
-              "subType": "feat",
-              "tags": ["Combat", "Combat Trick"],
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "folder": null,
-            "flags": {},
-            "_id": "5KD9EBycwi6sMS4b",
-            "sort": 0
-          },
-          {
-            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.8snLqsJN4LLL00Nq" },
-            "name": "Toughness",
-            "system": {
-              "changes": {
-                "bl5pemy2": {
-                  "_id": "bl5pemy2",
-                  "formula": "max(3, @attributes.hd.total)",
-                  "target": "mhp",
-                  "type": "untyped"
-                }
-              },
-              "sources": [{ "id": "PZO1110", "pages": "116, 135" }],
-              "subType": "feat",
-              "tags": ["General", "Defensive"],
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "folder": null,
-            "flags": {},
-            "_id": "xDacOL72gut0GcUK",
+            "_id": "iK5uK9nR4AE76Dfq",
             "sort": 0
           },
           {
@@ -3289,7 +3251,47 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "aswJ66ReuojDUi9j",
+            "_id": "R31tdjQI66dLKnEc",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.8snLqsJN4LLL00Nq" },
+            "name": "Toughness",
+            "system": {
+              "changes": {
+                "bl5pemy2": {
+                  "_id": "bl5pemy2",
+                  "formula": "max(3, @attributes.hd.total)",
+                  "target": "mhp",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "116, 135" }],
+              "subType": "feat",
+              "tags": ["General", "Defensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "EgCloBnlPXMdO4yc",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.2aTFNMs3pW6nUBlr" },
+            "name": "Improved Unarmed Strike",
+            "system": {
+              "sources": [{ "id": "PZO1110", "pages": "115, 128" }],
+              "subType": "feat",
+              "tags": ["Combat", "Unarmed", "Offensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "3JvVzRoJcvEWACvE",
             "sort": 0
           },
           {
@@ -3321,7 +3323,7 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "C93h1chMgVu4iPzP",
+            "_id": "sE29ghoGg1qHQa1E",
             "sort": 0
           },
           {
@@ -3365,7 +3367,7 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "XKUxceIl75R7K87E",
+            "_id": "aXYK4B7DuJ5Zi552",
             "sort": 0
           }
         ],
@@ -3375,7 +3377,7 @@
             "img": "icons/svg/unconscious.svg",
             "statuses": ["fatigued"],
             "showIcon": 2,
-            "_id": "HbwtR2TzDApawX6C",
+            "_id": "UrqgcL3t0oSZqDoI",
             "type": "base",
             "system": { "changes": [] },
             "disabled": false,
@@ -3399,9 +3401,9 @@
               "coreVersion": "14.370",
               "systemId": "pf1",
               "systemVersion": "11.11",
-              "createdTime": 1795403260699,
-              "modifiedTime": 1795403260699,
-              "lastModifiedBy": "uwWDnh8N1IHSXHMc",
+              "createdTime": 1795407352479,
+              "modifiedTime": 1795407352479,
+              "lastModifiedBy": "7UYomJpxzjJzDpJa",
               "compendiumSource": null,
               "duplicateSource": null,
               "exportSource": null
@@ -3412,7 +3414,7 @@
             "img": "systems/pf1/icons/conditions/shaken.svg",
             "statuses": ["shaken"],
             "showIcon": 2,
-            "_id": "SXcd95iI0mBgKGkU",
+            "_id": "MW5pTY1evcKOJDvb",
             "type": "base",
             "system": { "changes": [] },
             "disabled": false,
@@ -3436,9 +3438,9 @@
               "coreVersion": "14.370",
               "systemId": "pf1",
               "systemVersion": "11.11",
-              "createdTime": 1795403260837,
-              "modifiedTime": 1795403260837,
-              "lastModifiedBy": "uwWDnh8N1IHSXHMc",
+              "createdTime": 1795407352599,
+              "modifiedTime": 1795407352599,
+              "lastModifiedBy": "7UYomJpxzjJzDpJa",
               "compendiumSource": null,
               "duplicateSource": null,
               "exportSource": null
@@ -3506,7 +3508,8 @@
           "perform": -3,
           "bluff": -3
         }
-      }
+      },
+      "attacks": {}
     }
   }
 }

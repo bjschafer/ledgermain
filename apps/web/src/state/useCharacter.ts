@@ -21,7 +21,11 @@ import {
   resetAllCharacters,
 } from "../db/characters.js";
 import { attentionBadges, firstAttentionSection } from "../model/buildSections.js";
-import { abilityIncreasesByLevel, reconcileFavoredClassBonus } from "../model/doc.js";
+import {
+  abilityIncreasesByLevel,
+  reconcileFavoredClassBonus,
+  reconcileWeaponSnapshots,
+} from "../model/doc.js";
 import { migrateDoc } from "../model/migrations.js";
 import { HERO_POINT_CAP, heroPoints, heroPointsEnabled } from "../model/heroPoints.js";
 import { reconcileCurrentHp } from "../model/hp.js";
@@ -71,14 +75,15 @@ import {
 /**
  * Load-time normalization applied to every doc entering this hook's state
  * (initial load, switch/create/import/reset/delete, a remote pull landing on
- * the active doc, conflict resolution): strips granted cantrips a pre-change
- * doc may have stored directly (`reconcileGrantedCantrips`), then trims any
- * favored-class-bonus picks beyond what the character's favored-class levels
- * actually support (`reconcileFavoredClassBonus` — see its doc comment for
- * why a hand-edited/imported doc can otherwise carry too many).
+ * the active doc, conflict resolution). Catalog weapon snapshots are repaired
+ * without replacing player overrides; granted cantrips and favored-class
+ * bonuses are reconciled against the current class levels.
  */
 function reconcileLoadedDoc(doc: CharacterDoc, refData: RefData): CharacterDoc {
-  return reconcileFavoredClassBonus(reconcileGrantedCantrips(doc, refData), refData);
+  return reconcileWeaponSnapshots(
+    reconcileFavoredClassBonus(reconcileGrantedCantrips(doc, refData), refData),
+    refData,
+  );
 }
 
 export type LoadStatus = "loading" | "ready" | "error";

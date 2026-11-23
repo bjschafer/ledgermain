@@ -7,6 +7,7 @@ import { describe, expect, it } from "bun:test";
 
 import type { CharacterDoc, WeaponInstance } from "@pf1/schema";
 import { loadRefData } from "@pf1/data-pipeline";
+import { compute } from "@pf1/engine";
 
 import {
   addWeapon,
@@ -15,6 +16,7 @@ import {
   removeWeapon,
   replaceWeapon,
   updateWeapon,
+  reconcileWeaponSnapshots,
 } from "../src/model/doc.js";
 import { applyAbilitiesToWeapon, canonicalAbilityId } from "../src/model/abilities.js";
 import { featChoiceOptions } from "../src/model/feats.js";
@@ -340,6 +342,7 @@ describe("addWeaponFromRef()", () => {
       damageAbility: "str",
       category: "melee",
       damageDice: "1d8",
+      damageDiceSize: "med",
       critRange: 19, // 19 ≠ default 20 → stored
       group: "longsword",
       weaponGroups: ["blades-heavy"], // normalized from vendored "bladesHeavy"
@@ -541,6 +544,55 @@ describe("addWeaponFromRef()", () => {
   it("omits abilityInfo when no abilityInfo is passed (back-compat)", () => {
     const d = addWeaponFromRef(doc(), longswordRef, 1, "steel", ["keen"]);
     expect(d.build.weapons![0]!.abilityInfo).toBeUndefined();
+  });
+});
+
+describe("reconcileWeaponSnapshots()", () => {
+  const halfling = Object.values(ref.races).find((r) => r.name === "Halfling")!;
+
+  it("repairs a legacy catalog pick to Small dice without rewriting its stored dice", () => {
+    const empty = doc();
+    const legacy: CharacterDoc = {
+      ...empty,
+      identity: { ...empty.identity, race: halfling.id },
+      build: {
+        ...empty.build,
+        weapons: [{ ...LONGSWORD, weaponId: longswordRef.id }],
+      },
+    };
+    const repaired = reconcileWeaponSnapshots(legacy, ref);
+    expect(compute(repaired, ref).attacks[0]!.damageDice).toBe("1d6");
+    expect(repaired.build.weapons![0]!.damageDice).toBe("1d8");
+    expect(legacy.build.weapons![0]!.damageDiceSize).toBeUndefined();
+    expect(reconcileWeaponSnapshots(repaired, ref)).toBe(repaired);
+  });
+
+  it("preserves hand-entered dice and explicit sizes, including catalog-equivalent dice", () => {
+    let d = addWeapon(doc(), { ...LONGSWORD, weaponId: longswordRef.id, damageDice: "1d4" });
+    d = addWeapon(d, { ...LONGSWORD, weaponId: longswordRef.id, damageDiceSize: "sm" });
+    d = { ...d, identity: { ...d.identity, race: halfling.id } };
+    const repaired = reconcileWeaponSnapshots(d, ref);
+    expect(repaired).toBe(d);
+    expect(compute(repaired, ref).attacks.map((a) => a.damageDice)).toEqual(["1d4", "1d8"]);
+  });
+
+  it("does not overwrite a legacy thrown weapon's attack ability", () => {
+    const javelin = Object.values(ref.weapons).find((w) => w.name === "Javelin")!;
+    const d = addWeapon(doc(), {
+      name: "My javelin",
+      weaponId: javelin.id,
+      category: "ranged",
+      attackAbility: "str",
+      damageDice: javelin.damageDice,
+    });
+    expect(reconcileWeaponSnapshots(d, ref).build.weapons![0]!.attackAbility).toBe("str");
+  });
+
+  it("defaults legacy composite ratings to zero without replacing a specified rating", () => {
+    let d = addWeaponFromRef(doc(), compositeLongbowRef);
+    d = updateWeapon(d, 0, { strRating: undefined });
+    d = addWeapon(d, { ...d.build.weapons![0]!, name: "Rated bow", strRating: 3 });
+    expect(reconcileWeaponSnapshots(d, ref).build.weapons!.map((w) => w.strRating)).toEqual([0, 3]);
   });
 });
 

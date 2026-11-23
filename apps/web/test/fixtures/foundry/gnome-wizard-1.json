@@ -8,7 +8,11 @@
     "classes": [{ "name": "Wizard", "level": 1, "hp": 6 }],
     "feats": ["Toughness"],
     "skills": { "spellcraft": 1, "knowledge.arcana": 1, "perception": 1, "fly": 1 },
-    "items": [],
+    "items": [
+      { "pack": "pf1.weapons-and-ammo", "name": "Quarterstaff", "equipped": true },
+      { "pack": "pf1.weapons-and-ammo", "name": "Sling", "equipped": true },
+      { "pack": "pf1.weapons-and-ammo", "name": "Sling Bullet", "quantity": 1 }
+    ],
     "scenarios": { "base": {}, "enlarge": { "buffs": [{ "name": "Enlarge Person", "level": 1 }] } }
   },
   "scenarios": {
@@ -17,7 +21,7 @@
         "name": "gnome-wizard-1 [base]",
         "type": "character",
         "folder": "GuYuyoqdabfe4xZV",
-        "_id": "GHsWCYuONAILfqhx",
+        "_id": "CnUyXXwQsrnCgo35",
         "system": {
           "abilities": {
             "str": { "value": 8 },
@@ -60,7 +64,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "hG12aDKB0p1g3PAN",
+            "_id": "pr6Z3iUC2UercpzQ",
             "folder": null,
             "sort": 0
           },
@@ -81,7 +85,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "dqvJXs6Z8FcuNPOK",
+            "_id": "O8cEaSNvJNuLzmmE",
             "folder": null,
             "sort": 0
           },
@@ -103,7 +107,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "1XSjXc1dQRVZibXv",
+            "_id": "0a7jQTAMzXQETfRR",
             "folder": null,
             "sort": 0
           },
@@ -124,7 +128,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "fpi3WKgM8xZvtBdW",
+            "_id": "atfklZ0MrKEIou7D",
             "folder": null,
             "sort": 0
           },
@@ -182,7 +186,7 @@
             "type": "race",
             "effects": [],
             "flags": {},
-            "_id": "37K51CzIEly8nnT8",
+            "_id": "50yH8Qfa0tJR0c63",
             "sort": 0
           },
           {
@@ -242,17 +246,17 @@
               "pf1": {
                 "links": {
                   "classAssociations": {
-                    "IpNo4gZVaMCqEVDp": 1,
-                    "bFPwQgww3Arhf9bK": 1,
-                    "w2vYRNiufVDKJR3z": 1,
-                    "8DPNFKltUr0UNmuU": 1,
-                    "wVwNibdF1GFst6c0": 1,
-                    "4cO4217jXSa2GALO": 1
+                    "V5uxEwTzPd3iF7uR": 1,
+                    "yvmTXEvzEYyXfQvD": 1,
+                    "y9TSFvgpDX6EsWZ3": 1,
+                    "fqEvFCTsbWwFLN0o": 1,
+                    "XJw05PFgJua8b1MZ": 1,
+                    "Jb2wxSeZxvPUhl31": 1
                   }
                 }
               }
             },
-            "_id": "Tg4N18vyzOEEbFv7",
+            "_id": "hjuST8TywWl04VEn",
             "sort": 0
           },
           {
@@ -288,31 +292,12 @@
               },
               "restrictions": []
             },
-            "_id": "H9jfnD09E40Pd09Y",
+            "_id": "kI2D4n8UEzvtfvje",
             "effects": [],
             "folder": null,
             "sort": 0,
             "flags": {},
             "_stats": { "compendiumSource": null }
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1.class-abilities.Item.pW1PNlDcdGl7KuEa"
-            },
-            "name": "Arcane Bond",
-            "system": {
-              "associations": { "classes": ["Wizard"] },
-              "sources": [{ "id": "PZO1110", "pages": "78" }],
-              "subType": "classFeat",
-              "class": "wizard",
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "flags": {},
-            "sort": 100000,
-            "_id": "IpNo4gZVaMCqEVDp",
-            "folder": null
           },
           {
             "_stats": {
@@ -330,7 +315,7 @@
             "effects": [],
             "flags": {},
             "sort": 200000,
-            "_id": "bFPwQgww3Arhf9bK",
+            "_id": "V5uxEwTzPd3iF7uR",
             "folder": null
           },
           {
@@ -350,7 +335,7 @@
               },
               "links": {
                 "supplements": [{ "uuid": "Compendium.pf1.feats.Item.tlRu8SYjzA7WCHN7" }],
-                "children": [{ "uuid": ".Item.UIt1wrjntrvQDEQt" }]
+                "children": [{ "uuid": ".Item.FTMbVqArKK4bbvMa" }]
               },
               "sources": [{ "id": "PZO1110", "pages": "79" }],
               "subType": "classFeat",
@@ -361,49 +346,7 @@
             "effects": [],
             "flags": {},
             "sort": 300000,
-            "_id": "w2vYRNiufVDKJR3z",
-            "folder": null
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1.class-abilities.Item.4wdsdOkgv4uEkS9K"
-            },
-            "name": "Spellbooks (WIZ)",
-            "system": {
-              "associations": { "classes": ["Wizard"] },
-              "links": {
-                "supplements": [{ "uuid": "Compendium.pf1.items.Item.onurpjwtdogsedsg" }],
-                "children": [{ "uuid": ".Item.kswlnjvEHqWIDRVe" }]
-              },
-              "sources": [{ "id": "PZO1110", "pages": "79" }],
-              "subType": "classFeat",
-              "class": "wizard",
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "flags": {},
-            "sort": 500000,
-            "_id": "8DPNFKltUr0UNmuU",
-            "folder": null
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1.class-abilities.Item.LrjNAKP05lZq2tZZ"
-            },
-            "name": "Wizard Spells",
-            "system": {
-              "associations": { "classes": ["Wizard"] },
-              "sources": [{ "id": "PZO1110", "pages": "77" }],
-              "subType": "classFeat",
-              "class": "wizard",
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "flags": {},
-            "sort": 600000,
-            "_id": "wVwNibdF1GFst6c0",
+            "_id": "yvmTXEvzEYyXfQvD",
             "folder": null
           },
           {
@@ -440,7 +383,68 @@
             "effects": [],
             "flags": {},
             "sort": 400000,
-            "_id": "4cO4217jXSa2GALO",
+            "_id": "y9TSFvgpDX6EsWZ3",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.4wdsdOkgv4uEkS9K"
+            },
+            "name": "Spellbooks (WIZ)",
+            "system": {
+              "associations": { "classes": ["Wizard"] },
+              "links": {
+                "supplements": [{ "uuid": "Compendium.pf1.items.Item.onurpjwtdogsedsg" }],
+                "children": [{ "uuid": ".Item.X0FsZtjBrXo4Vwkt" }]
+              },
+              "sources": [{ "id": "PZO1110", "pages": "79" }],
+              "subType": "classFeat",
+              "class": "wizard",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 500000,
+            "_id": "fqEvFCTsbWwFLN0o",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.LrjNAKP05lZq2tZZ"
+            },
+            "name": "Wizard Spells",
+            "system": {
+              "associations": { "classes": ["Wizard"] },
+              "sources": [{ "id": "PZO1110", "pages": "77" }],
+              "subType": "classFeat",
+              "class": "wizard",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 600000,
+            "_id": "XJw05PFgJua8b1MZ",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.pW1PNlDcdGl7KuEa"
+            },
+            "name": "Arcane Bond",
+            "system": {
+              "associations": { "classes": ["Wizard"] },
+              "sources": [{ "id": "PZO1110", "pages": "78" }],
+              "subType": "classFeat",
+              "class": "wizard",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 100000,
+            "_id": "Jb2wxSeZxvPUhl31",
             "folder": null
           },
           {
@@ -456,7 +460,7 @@
             "effects": [],
             "flags": { "pf1": { "source": "Compendium.pf1.feats.Item.tlRu8SYjzA7WCHN7" } },
             "sort": 600000,
-            "_id": "UIt1wrjntrvQDEQt",
+            "_id": "FTMbVqArKK4bbvMa",
             "folder": null
           },
           {
@@ -478,7 +482,7 @@
             "effects": [],
             "flags": { "pf1": { "source": "Compendium.pf1.items.Item.onurpjwtdogsedsg" } },
             "sort": 0,
-            "_id": "kswlnjvEHqWIDRVe",
+            "_id": "X0FsZtjBrXo4Vwkt",
             "folder": null
           },
           {
@@ -502,7 +506,142 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "IPNBCpjsgvPSVBAq",
+            "_id": "2hJAtf1rlP3iagYf",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.weapons-and-ammo.Item.6eAg4BT0RM8tfyUN"
+            },
+            "folder": "3BIbUnQy7dC6EWdX",
+            "name": "Quarterstaff",
+            "system": {
+              "actions": {
+                "aqd01i3ja2dxrrcu": {
+                  "_id": "aqd01i3ja2dxrrcu",
+                  "ability": {
+                    "attack": "_default",
+                    "critMult": 2,
+                    "critRange": 20,
+                    "damage": "str"
+                  },
+                  "actionType": "mwak",
+                  "activation": { "type": "attack", "unchained": { "type": "attack" } },
+                  "damage": {
+                    "parts": [{ "formula": "sizeRoll(1, 6, @size)", "types": ["bludgeoning"] }]
+                  },
+                  "duration": { "units": "inst" },
+                  "extraAttacks": { "type": "standard" },
+                  "name": "Attack",
+                  "range": { "units": "melee", "value": "0" },
+                  "sort": 0
+                }
+              },
+              "baseTypes": ["Quarterstaff"],
+              "equipped": true,
+              "hands": 2,
+              "hardness": 10,
+              "held": "2h",
+              "hp": { "base": 10 },
+              "material": { "base": { "value": "wood" }, "addon": [] },
+              "price": { "base": 0, "unit": "gp" },
+              "properties": ["dbl", "mnk"],
+              "quantity": 1,
+              "sources": [
+                { "id": "PZO1110", "pages": "142, 148" },
+                { "id": "PZO1123", "pages": "17" }
+              ],
+              "subType": "simple",
+              "weaponGroups": ["double", "monk"],
+              "weaponSubtype": "2h",
+              "weight": { "value": 4 },
+              "alignments": {},
+              "mods": {}
+            },
+            "type": "weapon",
+            "effects": [],
+            "flags": {},
+            "_id": "1rzZ5Ln7FHsOaKQU",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.weapons-and-ammo.Item.cJV7OBm9KiF2WWiu"
+            },
+            "folder": "3BIbUnQy7dC6EWdX",
+            "name": "Sling",
+            "system": {
+              "actions": {
+                "m3cfkog7o9algr1t": {
+                  "_id": "m3cfkog7o9algr1t",
+                  "ability": {
+                    "attack": "_default",
+                    "critMult": 2,
+                    "critRange": 20,
+                    "damage": "str",
+                    "damageMult": 1
+                  },
+                  "actionType": "twak",
+                  "activation": { "type": "attack", "unchained": { "type": "attack" } },
+                  "ammo": { "type": "slingBullet" },
+                  "damage": {
+                    "parts": [{ "formula": "sizeRoll(1, 4, @size)", "types": ["bludgeoning"] }]
+                  },
+                  "duration": { "units": "inst" },
+                  "name": "Throw",
+                  "range": { "maxIncrements": 5, "units": "ft", "value": "50" },
+                  "sort": 0
+                }
+              },
+              "ammo": { "type": "slingBullet" },
+              "baseTypes": ["Sling"],
+              "equipped": true,
+              "hardness": 5,
+              "hp": { "base": 5 },
+              "material": { "base": { "value": "leather" }, "addon": [] },
+              "price": { "base": 0, "unit": "gp" },
+              "quantity": 1,
+              "sources": [
+                { "id": "PZO1110", "pages": "142, 148" },
+                { "id": "PZO9452", "pages": "0" }
+              ],
+              "subType": "simple",
+              "weaponGroups": ["thrown"],
+              "weaponSubtype": "ranged",
+              "alignments": {},
+              "mods": {}
+            },
+            "type": "weapon",
+            "effects": [],
+            "flags": {},
+            "_id": "uzAFqMycMqLiCZei",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.weapons-and-ammo.Item.UWVXKSouid1jDJSm"
+            },
+            "flags": { "pf1": {} },
+            "folder": "0gW0aJOeBes695zU",
+            "name": "Sling Bullet",
+            "system": {
+              "equipped": false,
+              "hardness": 5,
+              "hp": { "base": 1 },
+              "price": { "base": 1, "unit": "cp" },
+              "quantity": 1,
+              "sources": [
+                { "id": "PZO1110", "pages": "143, 145" },
+                { "id": "PZO1123", "pages": "22" }
+              ],
+              "subType": "slingBullet",
+              "weight": { "value": 0.5 },
+              "alignments": {},
+              "mods": {}
+            },
+            "type": "ammo",
+            "effects": [],
+            "_id": "v8bvSGfCloFJG29T",
             "sort": 0
           }
         ],
@@ -568,6 +707,26 @@
           "perform": 1,
           "bluff": 1
         }
+      },
+      "attacks": {
+        "Quarterstaff": {
+          "attack": [-1],
+          "damage": -2,
+          "dice": "1d4",
+          "formula": {
+            "attack": "1d20 + 1[Size] - 2[Strength]",
+            "damage": ["sizeRoll(1,6,3) - 2[Strength]"]
+          }
+        },
+        "Sling": {
+          "attack": [-1],
+          "damage": -2,
+          "dice": "1d3",
+          "formula": {
+            "attack": "1d20 + 1[Size] + 2[Dexterity] - 4[Proficiency Penalty]",
+            "damage": ["sizeRoll(1,4,3) - 2[Strength]"]
+          }
+        }
       }
     },
     "enlarge": {
@@ -575,7 +734,7 @@
         "name": "gnome-wizard-1 [enlarge]",
         "type": "character",
         "folder": "GuYuyoqdabfe4xZV",
-        "_id": "RySaxT7ZLe0Fi2bi",
+        "_id": "Dyg1DI39S04Ec7mZ",
         "system": {
           "abilities": {
             "str": { "value": 8 },
@@ -618,7 +777,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "32QpyvY3krCihTyx",
+            "_id": "tMsf7su6URflyq1H",
             "folder": null,
             "sort": 0
           },
@@ -639,7 +798,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "pQ9goNu9wsa6WfmM",
+            "_id": "JAQ9jQIcxOs9WYOm",
             "folder": null,
             "sort": 0
           },
@@ -661,7 +820,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "6xnZhoVAtRs5JSPt",
+            "_id": "6AxFIzRdo3JEAhiM",
             "folder": null,
             "sort": 0
           },
@@ -682,7 +841,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "UXA1tkN9Vqjkn0tB",
+            "_id": "hC8YcITvmEEvECOC",
             "folder": null,
             "sort": 0
           },
@@ -740,7 +899,7 @@
             "type": "race",
             "effects": [],
             "flags": {},
-            "_id": "n6iA0IOHQAxtdzpM",
+            "_id": "DdTTWTZ77nU4NOYn",
             "sort": 0
           },
           {
@@ -800,17 +959,17 @@
               "pf1": {
                 "links": {
                   "classAssociations": {
-                    "Xbdq1glvTHY0SGpt": 1,
-                    "rK0tBmsy2c55bNAJ": 1,
-                    "UrYFaRnFpUlGes2k": 1,
-                    "9CkBi2fvTdK8CqNL": 1,
-                    "5EgGrsqVzNq1wOhP": 1,
-                    "b6S9a4F2qndVIE46": 1
+                    "D5q5UCpql9JPw3Ru": 1,
+                    "xcoT495S9J1yd12G": 1,
+                    "5KonTICHDVcFIG5U": 1,
+                    "3uXT0txvcCvOO8kC": 1,
+                    "TkXAOVrWxijVFOCJ": 1,
+                    "2XBAefWUOLJubGJQ": 1
                   }
                 }
               }
             },
-            "_id": "1yTMU3KXjAuJ95Aw",
+            "_id": "T4QrUfvXf4IC9jwb",
             "sort": 0
           },
           {
@@ -846,7 +1005,7 @@
               },
               "restrictions": []
             },
-            "_id": "2CcTy7BfSenPBPnn",
+            "_id": "nOO07yYRsJFK7orn",
             "effects": [],
             "folder": null,
             "sort": 0,
@@ -869,7 +1028,7 @@
             "effects": [],
             "flags": {},
             "sort": 100000,
-            "_id": "Xbdq1glvTHY0SGpt",
+            "_id": "D5q5UCpql9JPw3Ru",
             "folder": null
           },
           {
@@ -889,7 +1048,7 @@
               },
               "links": {
                 "supplements": [{ "uuid": "Compendium.pf1.feats.Item.tlRu8SYjzA7WCHN7" }],
-                "children": [{ "uuid": ".Item.FbcVV531SemwpWfn" }]
+                "children": [{ "uuid": ".Item.xzuJdsMH93xp1Kh2" }]
               },
               "sources": [{ "id": "PZO1110", "pages": "79" }],
               "subType": "classFeat",
@@ -900,7 +1059,7 @@
             "effects": [],
             "flags": {},
             "sort": 300000,
-            "_id": "rK0tBmsy2c55bNAJ",
+            "_id": "xcoT495S9J1yd12G",
             "folder": null
           },
           {
@@ -937,7 +1096,7 @@
             "effects": [],
             "flags": {},
             "sort": 400000,
-            "_id": "UrYFaRnFpUlGes2k",
+            "_id": "5KonTICHDVcFIG5U",
             "folder": null
           },
           {
@@ -949,7 +1108,7 @@
               "associations": { "classes": ["Wizard"] },
               "links": {
                 "supplements": [{ "uuid": "Compendium.pf1.items.Item.onurpjwtdogsedsg" }],
-                "children": [{ "uuid": ".Item.22Tl7bXZpcc26zGr" }]
+                "children": [{ "uuid": ".Item.QKVPptOq9BqdNVuR" }]
               },
               "sources": [{ "id": "PZO1110", "pages": "79" }],
               "subType": "classFeat",
@@ -960,7 +1119,7 @@
             "effects": [],
             "flags": {},
             "sort": 500000,
-            "_id": "9CkBi2fvTdK8CqNL",
+            "_id": "3uXT0txvcCvOO8kC",
             "folder": null
           },
           {
@@ -979,7 +1138,7 @@
             "effects": [],
             "flags": {},
             "sort": 600000,
-            "_id": "5EgGrsqVzNq1wOhP",
+            "_id": "TkXAOVrWxijVFOCJ",
             "folder": null
           },
           {
@@ -998,7 +1157,7 @@
             "effects": [],
             "flags": {},
             "sort": 200000,
-            "_id": "b6S9a4F2qndVIE46",
+            "_id": "2XBAefWUOLJubGJQ",
             "folder": null
           },
           {
@@ -1014,7 +1173,7 @@
             "effects": [],
             "flags": { "pf1": { "source": "Compendium.pf1.feats.Item.tlRu8SYjzA7WCHN7" } },
             "sort": 600000,
-            "_id": "FbcVV531SemwpWfn",
+            "_id": "xzuJdsMH93xp1Kh2",
             "folder": null
           },
           {
@@ -1036,7 +1195,7 @@
             "effects": [],
             "flags": { "pf1": { "source": "Compendium.pf1.items.Item.onurpjwtdogsedsg" } },
             "sort": 0,
-            "_id": "22Tl7bXZpcc26zGr",
+            "_id": "QKVPptOq9BqdNVuR",
             "folder": null
           },
           {
@@ -1060,7 +1219,142 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "aIw3ahkk33SUj37g",
+            "_id": "rcxH0V2ixFEiQFfG",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.weapons-and-ammo.Item.6eAg4BT0RM8tfyUN"
+            },
+            "folder": "3BIbUnQy7dC6EWdX",
+            "name": "Quarterstaff",
+            "system": {
+              "actions": {
+                "aqd01i3ja2dxrrcu": {
+                  "_id": "aqd01i3ja2dxrrcu",
+                  "ability": {
+                    "attack": "_default",
+                    "critMult": 2,
+                    "critRange": 20,
+                    "damage": "str"
+                  },
+                  "actionType": "mwak",
+                  "activation": { "type": "attack", "unchained": { "type": "attack" } },
+                  "damage": {
+                    "parts": [{ "formula": "sizeRoll(1, 6, @size)", "types": ["bludgeoning"] }]
+                  },
+                  "duration": { "units": "inst" },
+                  "extraAttacks": { "type": "standard" },
+                  "name": "Attack",
+                  "range": { "units": "melee", "value": "0" },
+                  "sort": 0
+                }
+              },
+              "baseTypes": ["Quarterstaff"],
+              "equipped": true,
+              "hands": 2,
+              "hardness": 10,
+              "held": "2h",
+              "hp": { "base": 10 },
+              "material": { "base": { "value": "wood" }, "addon": [] },
+              "price": { "base": 0, "unit": "gp" },
+              "properties": ["dbl", "mnk"],
+              "quantity": 1,
+              "sources": [
+                { "id": "PZO1110", "pages": "142, 148" },
+                { "id": "PZO1123", "pages": "17" }
+              ],
+              "subType": "simple",
+              "weaponGroups": ["double", "monk"],
+              "weaponSubtype": "2h",
+              "weight": { "value": 4 },
+              "alignments": {},
+              "mods": {}
+            },
+            "type": "weapon",
+            "effects": [],
+            "flags": {},
+            "_id": "TRMEaqB44iL2pRa7",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.weapons-and-ammo.Item.cJV7OBm9KiF2WWiu"
+            },
+            "folder": "3BIbUnQy7dC6EWdX",
+            "name": "Sling",
+            "system": {
+              "actions": {
+                "m3cfkog7o9algr1t": {
+                  "_id": "m3cfkog7o9algr1t",
+                  "ability": {
+                    "attack": "_default",
+                    "critMult": 2,
+                    "critRange": 20,
+                    "damage": "str",
+                    "damageMult": 1
+                  },
+                  "actionType": "twak",
+                  "activation": { "type": "attack", "unchained": { "type": "attack" } },
+                  "ammo": { "type": "slingBullet" },
+                  "damage": {
+                    "parts": [{ "formula": "sizeRoll(1, 4, @size)", "types": ["bludgeoning"] }]
+                  },
+                  "duration": { "units": "inst" },
+                  "name": "Throw",
+                  "range": { "maxIncrements": 5, "units": "ft", "value": "50" },
+                  "sort": 0
+                }
+              },
+              "ammo": { "type": "slingBullet" },
+              "baseTypes": ["Sling"],
+              "equipped": true,
+              "hardness": 5,
+              "hp": { "base": 5 },
+              "material": { "base": { "value": "leather" }, "addon": [] },
+              "price": { "base": 0, "unit": "gp" },
+              "quantity": 1,
+              "sources": [
+                { "id": "PZO1110", "pages": "142, 148" },
+                { "id": "PZO9452", "pages": "0" }
+              ],
+              "subType": "simple",
+              "weaponGroups": ["thrown"],
+              "weaponSubtype": "ranged",
+              "alignments": {},
+              "mods": {}
+            },
+            "type": "weapon",
+            "effects": [],
+            "flags": {},
+            "_id": "Ksc8uq0qaG70TqHh",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.weapons-and-ammo.Item.UWVXKSouid1jDJSm"
+            },
+            "flags": { "pf1": {} },
+            "folder": "0gW0aJOeBes695zU",
+            "name": "Sling Bullet",
+            "system": {
+              "equipped": false,
+              "hardness": 5,
+              "hp": { "base": 1 },
+              "price": { "base": 1, "unit": "cp" },
+              "quantity": 1,
+              "sources": [
+                { "id": "PZO1110", "pages": "143, 145" },
+                { "id": "PZO1123", "pages": "22" }
+              ],
+              "subType": "slingBullet",
+              "weight": { "value": 0.5 },
+              "alignments": {},
+              "mods": {}
+            },
+            "type": "ammo",
+            "effects": [],
+            "_id": "PYHZKCD0NySLhJfj",
             "sort": 0
           },
           {
@@ -1099,7 +1393,7 @@
             "type": "buff",
             "effects": [],
             "flags": {},
-            "_id": "URR0GZv12gjA4moV",
+            "_id": "SW1pN2FiPZsXerib",
             "sort": 0
           }
         ],
@@ -1164,6 +1458,23 @@
           "senseMotive": 1,
           "perform": 1,
           "bluff": 1
+        }
+      },
+      "attacks": {
+        "Quarterstaff": {
+          "attack": [-1],
+          "damage": -1,
+          "dice": "1d6",
+          "formula": { "attack": "1d20 - 1[Strength]", "damage": ["sizeRoll(1,6,4) - 1[Strength]"] }
+        },
+        "Sling": {
+          "attack": [-3],
+          "damage": -1,
+          "dice": "1d4",
+          "formula": {
+            "attack": "1d20 + 1[Dexterity] - 4[Proficiency Penalty]",
+            "damage": ["sizeRoll(1,4,4) - 1[Strength]"]
+          }
         }
       }
     }

@@ -47,7 +47,7 @@
         "name": "half-orc-two-handed-fighter-5 [base]",
         "type": "character",
         "folder": "GuYuyoqdabfe4xZV",
-        "_id": "3ihAXob6PVB3XP2r",
+        "_id": "0Fe87Qs2vXTzr3Mw",
         "system": {
           "abilities": {
             "str": { "value": 16 },
@@ -90,7 +90,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "WToZNQ8eBZsu5qPI",
+            "_id": "nSzHBjEGkN6sEnco",
             "folder": null,
             "sort": 0
           },
@@ -111,7 +111,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "dF6u15DY1I4IZXys",
+            "_id": "ZLPTN0lhsJP3oQdQ",
             "folder": null,
             "sort": 0
           },
@@ -132,7 +132,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "XXnvOUvwO0cVdx8L",
+            "_id": "jyF9Pi0d9eLVpSHT",
             "folder": null,
             "sort": 0
           },
@@ -163,7 +163,7 @@
             "type": "race",
             "effects": [],
             "flags": {},
-            "_id": "Mu22ojwGYNmyxN4w",
+            "_id": "fFDXyfa7oZENzfTb",
             "sort": 0
           },
           {
@@ -218,15 +218,15 @@
               "pf1": {
                 "links": {
                   "classAssociations": {
-                    "kAUV2dHyE03WHpwH": 1,
-                    "MzOzNtZQKDRuVEiK": 2,
-                    "eB7WwZ7oSR3RRrSA": 3,
-                    "nF9fAwlRmK5kknG6": 5
+                    "gdKLm6cOIVfas6wl": 1,
+                    "xgoOYwaNGAc6Ot6c": 2,
+                    "FYnt2aOr8roCVSRp": 3,
+                    "Cy9CL39G2s0YF9d7": 5
                   }
                 }
               }
             },
-            "_id": "JeDDvvx6mdXExqks",
+            "_id": "Pn7xxAQeLB9Hak7m",
             "sort": 0
           },
           {
@@ -253,7 +253,7 @@
             "effects": [],
             "flags": {},
             "sort": 100000,
-            "_id": "kAUV2dHyE03WHpwH",
+            "_id": "gdKLm6cOIVfas6wl",
             "folder": null
           },
           {
@@ -304,7 +304,7 @@
             "type": "feat",
             "effects": [],
             "flags": {},
-            "_id": "zhiaSXrcUWsQG1O6",
+            "_id": "G2VQDbQAd6lpj9wH",
             "sort": 0
           },
           {
@@ -323,7 +323,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "SDIYiuM6rVDM4ArA",
+            "_id": "R0yypfcfI1TrvbMN",
             "sort": 0
           },
           {
@@ -342,7 +342,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "i8c7qYfWQ8liEFLA",
+            "_id": "NL8U6Zh27UIho5c9",
             "sort": 0
           },
           {
@@ -361,7 +361,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "qQLJ8WdEFP8yrqZz",
+            "_id": "YbEHlb80nn3D6XIK",
             "sort": 0
           },
           {
@@ -372,8 +372,8 @@
             "name": "Sacred Tattoo",
             "system": {
               "changes": {
-                "oo5sNAzV0kZWYjkf": {
-                  "_id": "oo5sNAzV0kZWYjkf",
+                "V5tvYueDfL5nR7VP": {
+                  "_id": "V5tvYueDfL5nR7VP",
                   "formula": "1",
                   "target": "allSavingThrows",
                   "type": "luck"
@@ -392,7 +392,7 @@
             "type": "feat",
             "effects": [],
             "flags": {},
-            "_id": "IzlFSEKWAOx0Dq24",
+            "_id": "bLhD6Oz0tCd4iZtc",
             "sort": 0
           },
           {
@@ -403,14 +403,14 @@
             "name": "Rock Climber",
             "system": {
               "changes": {
-                "CUAQjIsZ7HKmxJMG": {
-                  "_id": "CUAQjIsZ7HKmxJMG",
+                "ZTAM7kDAOaTIsxfT": {
+                  "_id": "ZTAM7kDAOaTIsxfT",
                   "formula": "1",
                   "target": "skill.acr",
                   "type": "racial"
                 },
-                "f1N84wsx2fZgM2M4": {
-                  "_id": "f1N84wsx2fZgM2M4",
+                "jvxMg9P7eUKAhtL5": {
+                  "_id": "jvxMg9P7eUKAhtL5",
                   "formula": "1",
                   "target": "skill.clm",
                   "type": "racial"
@@ -430,7 +430,7 @@
             "type": "feat",
             "effects": [],
             "flags": {},
-            "_id": "nL3AvYIPevBcMuM2",
+            "_id": "boG3LYlZkLmpObx9",
             "sort": 0
           },
           {
@@ -447,7 +447,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "cOT5srGaHUQR2Hvd",
+            "_id": "G4FiMf7BXb9FnQc3",
             "sort": 0
           },
           {
@@ -477,7 +477,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "OTFHePZoPHAt9tSA",
+            "_id": "JuCk4tdXtjVMZgE6",
             "sort": 0
           },
           {
@@ -501,7 +501,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "qbw4MvuMlcIcplWY",
+            "_id": "q58o5pkGtWC8sfea",
             "sort": 0
           },
           {
@@ -525,7 +525,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "jmf77nOSYFrNctA0",
+            "_id": "x8za28UOEerT3jzx",
             "sort": 0
           },
           {
@@ -549,7 +549,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "FVQ0OHXuNjVwAfCL",
+            "_id": "XGNAzx3GpXakCeC8",
             "sort": 0
           },
           {
@@ -573,7 +573,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "A8rEARnWXcdw5vEy",
+            "_id": "0kt2TtwrigXMm4or",
             "sort": 0
           },
           {
@@ -607,7 +607,7 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "0yZnm3cwlViFL9JX",
+            "_id": "4NvtIg1ZhkEBS9Da",
             "sort": 0
           }
         ],
@@ -673,14 +673,15 @@
           "perform": -1,
           "bluff": -1
         }
-      }
+      },
+      "attacks": {}
     },
     "buffs": {
       "actor": {
         "name": "half-orc-two-handed-fighter-5 [buffs]",
         "type": "character",
         "folder": "GuYuyoqdabfe4xZV",
-        "_id": "toDgqyRbLmsFyC0Q",
+        "_id": "zN9sK2hm2PA2smjz",
         "system": {
           "abilities": {
             "str": { "value": 16 },
@@ -723,7 +724,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "q25uTPW4wCPzWoWs",
+            "_id": "R533t5Nrr7uKb9Rb",
             "folder": null,
             "sort": 0
           },
@@ -744,7 +745,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "wJ9nXYSyRj8B0uPr",
+            "_id": "1pdsBiolf9mjD2n2",
             "folder": null,
             "sort": 0
           },
@@ -765,7 +766,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "qdIoJJGvPumb66rb",
+            "_id": "HqDMwldRhBqguRFy",
             "folder": null,
             "sort": 0
           },
@@ -796,7 +797,7 @@
             "type": "race",
             "effects": [],
             "flags": {},
-            "_id": "1VU7fuUEpVAHfs0L",
+            "_id": "Pr30SGO32tLSY2bN",
             "sort": 0
           },
           {
@@ -851,15 +852,15 @@
               "pf1": {
                 "links": {
                   "classAssociations": {
-                    "7aVw11OU2CgilfXh": 1,
-                    "5hUADeWZsXHjw2dW": 2,
-                    "MMIEkfvsnnGgtJ3y": 3,
-                    "R7eDak4qMp2GCj7P": 5
+                    "Og9cuSbVXcasfzlm": 1,
+                    "vFe8b5OXt94LAC0n": 2,
+                    "vQAGBatmsggjpc3y": 3,
+                    "MBLBFZVoDegJaYzX": 5
                   }
                 }
               }
             },
-            "_id": "ymPP9Zq5lPn3ejlA",
+            "_id": "WSuGadsFnbg2kdJF",
             "sort": 0
           },
           {
@@ -886,7 +887,7 @@
             "effects": [],
             "flags": {},
             "sort": 100000,
-            "_id": "7aVw11OU2CgilfXh",
+            "_id": "Og9cuSbVXcasfzlm",
             "folder": null
           },
           {
@@ -937,7 +938,7 @@
             "type": "feat",
             "effects": [],
             "flags": {},
-            "_id": "EwwdVB33YQVowfom",
+            "_id": "3T6nDvznAh176GXx",
             "sort": 0
           },
           {
@@ -956,7 +957,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "JDFNtUscanaEzN4t",
+            "_id": "vDgI4psfZrFQaPFg",
             "sort": 0
           },
           {
@@ -975,7 +976,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "6aMtioMTHnNK5fNi",
+            "_id": "7echi6rC5oTUfYHx",
             "sort": 0
           },
           {
@@ -994,7 +995,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "E4tu2lb0NSmOnere",
+            "_id": "lHwRx40XOigThID3",
             "sort": 0
           },
           {
@@ -1005,8 +1006,8 @@
             "name": "Sacred Tattoo",
             "system": {
               "changes": {
-                "oo5sNAzV0kZWYjkf": {
-                  "_id": "oo5sNAzV0kZWYjkf",
+                "V5tvYueDfL5nR7VP": {
+                  "_id": "V5tvYueDfL5nR7VP",
                   "formula": "1",
                   "target": "allSavingThrows",
                   "type": "luck"
@@ -1025,7 +1026,7 @@
             "type": "feat",
             "effects": [],
             "flags": {},
-            "_id": "Pfiye2titmW9sGPB",
+            "_id": "mkMsjpswA078AiCB",
             "sort": 0
           },
           {
@@ -1036,14 +1037,14 @@
             "name": "Rock Climber",
             "system": {
               "changes": {
-                "CUAQjIsZ7HKmxJMG": {
-                  "_id": "CUAQjIsZ7HKmxJMG",
+                "ZTAM7kDAOaTIsxfT": {
+                  "_id": "ZTAM7kDAOaTIsxfT",
                   "formula": "1",
                   "target": "skill.acr",
                   "type": "racial"
                 },
-                "f1N84wsx2fZgM2M4": {
-                  "_id": "f1N84wsx2fZgM2M4",
+                "jvxMg9P7eUKAhtL5": {
+                  "_id": "jvxMg9P7eUKAhtL5",
                   "formula": "1",
                   "target": "skill.clm",
                   "type": "racial"
@@ -1063,7 +1064,7 @@
             "type": "feat",
             "effects": [],
             "flags": {},
-            "_id": "o6DQZV9868ZFRSZC",
+            "_id": "SFhYh4pk6zFuHrJn",
             "sort": 0
           },
           {
@@ -1080,7 +1081,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "7MWB2m4ohqTuOGER",
+            "_id": "9DvMwi1dsEJtWAC3",
             "sort": 0
           },
           {
@@ -1110,7 +1111,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "Crnbpy3KSExnMbkf",
+            "_id": "uybZiRPiFOx0WqQ9",
             "sort": 0
           },
           {
@@ -1134,7 +1135,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "nSntqeMSZls1Eqqv",
+            "_id": "sJMZ0m3wRLYkM4cf",
             "sort": 0
           },
           {
@@ -1158,7 +1159,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "3Ej8O4H0e2xYhCWm",
+            "_id": "ozszXDUfebJQfUe2",
             "sort": 0
           },
           {
@@ -1182,7 +1183,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "sQAsT7cPeixEnmSO",
+            "_id": "V51FIuck9etrAKhK",
             "sort": 0
           },
           {
@@ -1206,7 +1207,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "H5scUcr8ZoeOFblw",
+            "_id": "x012TAHzALKMVnHR",
             "sort": 0
           },
           {
@@ -1240,7 +1241,7 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "ae80VVxxlFEIwCbk",
+            "_id": "OCCyMJceHTMJW4sC",
             "sort": 0
           },
           {
@@ -1277,7 +1278,7 @@
             "type": "buff",
             "effects": [],
             "flags": {},
-            "_id": "5MmjvX8xr0UXZfpx",
+            "_id": "J0GmZ6qTxf5LdLMD",
             "sort": 0
           },
           {
@@ -1302,7 +1303,7 @@
             "type": "buff",
             "effects": [],
             "flags": {},
-            "_id": "Ldh4YMcRs7CylXSr",
+            "_id": "vneuFPKqcANY8ici",
             "sort": 0
           }
         ],
@@ -1368,14 +1369,15 @@
           "perform": 1,
           "bluff": 1
         }
-      }
+      },
+      "attacks": {}
     },
     "conditions": {
       "actor": {
         "name": "half-orc-two-handed-fighter-5 [conditions]",
         "type": "character",
         "folder": "GuYuyoqdabfe4xZV",
-        "_id": "gDwZ8xTXidqvi28W",
+        "_id": "YhyR0cVBhbG3vl37",
         "system": {
           "abilities": {
             "str": { "value": 16 },
@@ -1418,7 +1420,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "YvwyVBg70qWeW81u",
+            "_id": "Fc6da3upj0OaCivQ",
             "folder": null,
             "sort": 0
           },
@@ -1439,7 +1441,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "SPA3wlUUS81cjUZN",
+            "_id": "zLyByDsgyhhxDE7V",
             "folder": null,
             "sort": 0
           },
@@ -1460,7 +1462,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "BfDwCkfxytJu6ceE",
+            "_id": "Xayrz3rFOYycD3Pe",
             "folder": null,
             "sort": 0
           },
@@ -1491,7 +1493,7 @@
             "type": "race",
             "effects": [],
             "flags": {},
-            "_id": "2bNCTugcoOxvfUHD",
+            "_id": "TIzq6yPXAQNc14CP",
             "sort": 0
           },
           {
@@ -1546,15 +1548,15 @@
               "pf1": {
                 "links": {
                   "classAssociations": {
-                    "K4lqFo9XNH6J70U3": 1,
-                    "1NdABhvQYks7cMB6": 2,
-                    "wOuIcYPoKSu0PCr0": 3,
-                    "8dCuPM6ZPMcfGIfh": 5
+                    "J2psuDET7COwm3Xn": 1,
+                    "IsennuN0R79Ow2nG": 2,
+                    "IHpnqo6kudQbYHQq": 3,
+                    "SdrzQoCj9trdhV1O": 5
                   }
                 }
               }
             },
-            "_id": "3cSVleLDjJRf64vG",
+            "_id": "9uZrwWrOa5k3vuiC",
             "sort": 0
           },
           {
@@ -1581,7 +1583,7 @@
             "effects": [],
             "flags": {},
             "sort": 100000,
-            "_id": "K4lqFo9XNH6J70U3",
+            "_id": "J2psuDET7COwm3Xn",
             "folder": null
           },
           {
@@ -1632,26 +1634,7 @@
             "type": "feat",
             "effects": [],
             "flags": {},
-            "_id": "l67IUK5uhodhqm14",
-            "sort": 0
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1e-archetypes.pf-arch-features.Item.Jvo6gb4U2KzAzWNB"
-            },
-            "name": "Weapon Training (Two-Handed Fighter)",
-            "system": {
-              "associations": { "classes": ["Fighter"] },
-              "sources": [{ "id": "PZO1115", "pages": "108" }],
-              "subType": "classFeat",
-              "tags": ["Two-Handed Fighter"],
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "folder": null,
-            "flags": {},
-            "_id": "gTQ2cv88fQ2P7chr",
+            "_id": "azeTWwJxDMfqS78g",
             "sort": 0
           },
           {
@@ -1670,7 +1653,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "UYy85bW4CQDgp8O4",
+            "_id": "TUZKFtTlkwGXQOmD",
             "sort": 0
           },
           {
@@ -1689,7 +1672,26 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "9pVUw08TxnsNiPC3",
+            "_id": "oL26OPLiz89hFad2",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1e-archetypes.pf-arch-features.Item.Jvo6gb4U2KzAzWNB"
+            },
+            "name": "Weapon Training (Two-Handed Fighter)",
+            "system": {
+              "associations": { "classes": ["Fighter"] },
+              "sources": [{ "id": "PZO1115", "pages": "108" }],
+              "subType": "classFeat",
+              "tags": ["Two-Handed Fighter"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "5jLULassH6FqgrmO",
             "sort": 0
           },
           {
@@ -1700,8 +1702,8 @@
             "name": "Sacred Tattoo",
             "system": {
               "changes": {
-                "oo5sNAzV0kZWYjkf": {
-                  "_id": "oo5sNAzV0kZWYjkf",
+                "V5tvYueDfL5nR7VP": {
+                  "_id": "V5tvYueDfL5nR7VP",
                   "formula": "1",
                   "target": "allSavingThrows",
                   "type": "luck"
@@ -1720,7 +1722,7 @@
             "type": "feat",
             "effects": [],
             "flags": {},
-            "_id": "lCCZS8p8SCIVYfCL",
+            "_id": "YecLHlkIzDn63kEA",
             "sort": 0
           },
           {
@@ -1731,14 +1733,14 @@
             "name": "Rock Climber",
             "system": {
               "changes": {
-                "CUAQjIsZ7HKmxJMG": {
-                  "_id": "CUAQjIsZ7HKmxJMG",
+                "ZTAM7kDAOaTIsxfT": {
+                  "_id": "ZTAM7kDAOaTIsxfT",
                   "formula": "1",
                   "target": "skill.acr",
                   "type": "racial"
                 },
-                "f1N84wsx2fZgM2M4": {
-                  "_id": "f1N84wsx2fZgM2M4",
+                "jvxMg9P7eUKAhtL5": {
+                  "_id": "jvxMg9P7eUKAhtL5",
                   "formula": "1",
                   "target": "skill.clm",
                   "type": "racial"
@@ -1758,24 +1760,7 @@
             "type": "feat",
             "effects": [],
             "flags": {},
-            "_id": "GfJZbqXLu266Nqa0",
-            "sort": 0
-          },
-          {
-            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.FUW5mIXHNBBIQ1Sq" },
-            "name": "Power Attack",
-            "system": {
-              "changeFlags": ["powerAttack"],
-              "sources": [{ "id": "PZO1110", "pages": "116, 131" }],
-              "subType": "feat",
-              "tags": ["Combat", "Offensive"],
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "folder": null,
-            "flags": {},
-            "_id": "RYQzmr2VpWf2NNZj",
+            "_id": "wEmnvDDle8WseYJK",
             "sort": 0
           },
           {
@@ -1805,7 +1790,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "v8O1hkmNi3LHr47E",
+            "_id": "ayZ4e6a93XjDeTkd",
             "sort": 0
           },
           {
@@ -1829,7 +1814,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "TNodR6O1iLFh0Dg5",
+            "_id": "VvGuMBQqX5IgQq02",
             "sort": 0
           },
           {
@@ -1853,7 +1838,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "KdviiVI1mtVx7WQS",
+            "_id": "jptRzQTeqHvbuaWk",
             "sort": 0
           },
           {
@@ -1877,7 +1862,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "ODrfVH8xtTK8kHNC",
+            "_id": "s5BUK0JNrKldO4mK",
             "sort": 0
           },
           {
@@ -1901,7 +1886,24 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "Srd9yWYVJWRgtyp6",
+            "_id": "KpPiSaJTuY882O00",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.FUW5mIXHNBBIQ1Sq" },
+            "name": "Power Attack",
+            "system": {
+              "changeFlags": ["powerAttack"],
+              "sources": [{ "id": "PZO1110", "pages": "116, 131" }],
+              "subType": "feat",
+              "tags": ["Combat", "Offensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "ET4vuBfzl3G5dh48",
             "sort": 0
           },
           {
@@ -1935,7 +1937,7 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "hsdp8E9sNWv77yBh",
+            "_id": "Vbb5qHxq4a8da7ft",
             "sort": 0
           }
         ],
@@ -1945,7 +1947,7 @@
             "img": "systems/pf1/icons/conditions/frightened.svg",
             "statuses": ["frightened"],
             "showIcon": 2,
-            "_id": "h59Xk2sg6bJaO0Eb",
+            "_id": "8ViXaoGLnWUJBmBt",
             "type": "base",
             "system": { "changes": [] },
             "disabled": false,
@@ -1969,8 +1971,8 @@
               "coreVersion": "14.370",
               "systemId": "pf1",
               "systemVersion": "11.11",
-              "createdTime": 1795402313121,
-              "modifiedTime": 1795402313121,
+              "createdTime": 1795407423773,
+              "modifiedTime": 1795407423773,
               "lastModifiedBy": "7UYomJpxzjJzDpJa",
               "compendiumSource": null,
               "duplicateSource": null,
@@ -2039,7 +2041,8 @@
           "perform": -3,
           "bluff": -3
         }
-      }
+      },
+      "attacks": {}
     }
   }
 }

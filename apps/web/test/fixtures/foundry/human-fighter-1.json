@@ -34,7 +34,7 @@
         "name": "human-fighter-1 [base]",
         "type": "character",
         "folder": "GuYuyoqdabfe4xZV",
-        "_id": "qprAYLnkgDhMSaT3",
+        "_id": "xkrQBsfAq5ajBx8C",
         "system": {
           "abilities": {
             "str": { "value": 16 },
@@ -77,7 +77,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "xDmlH4Faa4cWCs7Q",
+            "_id": "NHlcDkUSNTY71ABk",
             "folder": null,
             "sort": 0
           },
@@ -98,7 +98,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "A7YrwJzNjQZPg3jV",
+            "_id": "IXtvhwoLsyxdALw4",
             "folder": null,
             "sort": 0
           },
@@ -139,7 +139,7 @@
             "type": "race",
             "effects": [],
             "flags": {},
-            "_id": "kHueWgf9TkYm3FRX",
+            "_id": "wtFCjn1UB3dgFLjp",
             "sort": 0
           },
           {
@@ -190,8 +190,8 @@
             "type": "class",
             "effects": [],
             "folder": null,
-            "flags": { "pf1": { "links": { "classAssociations": { "6YoEofhMmhXquztn": 1 } } } },
-            "_id": "mnaDh6oHm7sqFaNX",
+            "flags": { "pf1": { "links": { "classAssociations": { "DCwAJH0XtslVifbZ": 1 } } } },
+            "_id": "qIaJQUmzJqjm7MIN",
             "sort": 0
           },
           {
@@ -218,7 +218,7 @@
             "effects": [],
             "flags": {},
             "sort": 100000,
-            "_id": "6YoEofhMmhXquztn",
+            "_id": "DCwAJH0XtslVifbZ",
             "folder": null
           },
           {
@@ -235,7 +235,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "jGhBSTPAok4cBamy",
+            "_id": "630y6ZYPugG8eGiz",
             "sort": 0
           },
           {
@@ -254,7 +254,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "hNdlWXjHqh8bCWOe",
+            "_id": "SF4o9bBGowxIP9L7",
             "sort": 0
           },
           {
@@ -278,7 +278,41 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "PuOXdBofom3z66p4",
+            "_id": "oW9uwzTQLSATiTsu",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.armors-and-shields.Item.nnDSj5NxUb9Q8z8S"
+            },
+            "folder": "33jGfHlDL34jvwnX",
+            "name": "Scale Mail",
+            "system": {
+              "armor": {
+                "acp": 4,
+                "dex": 3,
+                "material": { "base": { "value": "steel" }, "addon": [] },
+                "value": 5,
+                "alignments": {}
+              },
+              "baseTypes": ["Scale Mail"],
+              "equipmentSubtype": "mediumArmor",
+              "equipped": true,
+              "hardness": 10,
+              "hp": { "base": 25 },
+              "price": { "base": 50, "unit": "gp" },
+              "quantity": 1,
+              "slot": "armor",
+              "sources": [{ "id": "PZO1110", "pages": "151" }],
+              "spellFailure": 25,
+              "subType": "armor",
+              "weight": { "value": 30 },
+              "mods": {}
+            },
+            "type": "equipment",
+            "effects": [],
+            "flags": {},
+            "_id": "DTypeNxI9OaVkxXh",
             "sort": 0
           },
           {
@@ -326,7 +360,7 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "Jdy8ahiSGp3mnfcf",
+            "_id": "NQmFLq8lWWDTY9Dw",
             "sort": 0
           },
           {
@@ -379,7 +413,7 @@
             "type": "weapon",
             "effects": [],
             "flags": {},
-            "_id": "ip5rRsbm7wnZrisu",
+            "_id": "TFuRBVHMDtVwLVIn",
             "sort": 0
           },
           {
@@ -433,7 +467,7 @@
             "type": "weapon",
             "effects": [],
             "flags": {},
-            "_id": "4KrSySVpsGLoNA5P",
+            "_id": "Owb4vGpQUjxRH7Oa",
             "sort": 0
           },
           {
@@ -451,7 +485,7 @@
             },
             "type": "container",
             "effects": [],
-            "_id": "2SDBeOSQtvnE3jtE",
+            "_id": "XuH6zMu1MlZHybe7",
             "sort": 0
           },
           {
@@ -473,7 +507,7 @@
             },
             "type": "loot",
             "effects": [],
-            "_id": "WlZBopCzhj1b8i20",
+            "_id": "0HDq3jpAHZWFD67y",
             "sort": 0
           },
           {
@@ -495,7 +529,7 @@
             },
             "type": "loot",
             "effects": [],
-            "_id": "gSpHX3Qm6P4YKDZa",
+            "_id": "So0aczQbLCtbaPsj",
             "sort": 0
           },
           {
@@ -528,7 +562,7 @@
             "type": "loot",
             "effects": [],
             "flags": {},
-            "_id": "HfsrIVsC7vPBu6Pt",
+            "_id": "NzsePDQWJS6BEKyn",
             "sort": 0
           },
           {
@@ -550,7 +584,7 @@
             },
             "type": "loot",
             "effects": [],
-            "_id": "TXqKFMtxhmJQ5s1q",
+            "_id": "IQqiTte4OPkgWZIs",
             "sort": 0
           },
           {
@@ -573,7 +607,7 @@
             "type": "loot",
             "effects": [],
             "flags": {},
-            "_id": "O8U2Q51SBpRKFD4k",
+            "_id": "rhYa3upHWpX2Lrq5",
             "sort": 0
           },
           {
@@ -596,41 +630,7 @@
             "type": "container",
             "effects": [],
             "flags": {},
-            "_id": "nbykr6lSA110ylHW",
-            "sort": 0
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1.armors-and-shields.Item.nnDSj5NxUb9Q8z8S"
-            },
-            "folder": "33jGfHlDL34jvwnX",
-            "name": "Scale Mail",
-            "system": {
-              "armor": {
-                "acp": 4,
-                "dex": 3,
-                "material": { "base": { "value": "steel" }, "addon": [] },
-                "value": 5,
-                "alignments": {}
-              },
-              "baseTypes": ["Scale Mail"],
-              "equipmentSubtype": "mediumArmor",
-              "equipped": true,
-              "hardness": 10,
-              "hp": { "base": 25 },
-              "price": { "base": 50, "unit": "gp" },
-              "quantity": 1,
-              "slot": "armor",
-              "sources": [{ "id": "PZO1110", "pages": "151" }],
-              "spellFailure": 25,
-              "subType": "armor",
-              "weight": { "value": 30 },
-              "mods": {}
-            },
-            "type": "equipment",
-            "effects": [],
-            "flags": {},
-            "_id": "8O5MQ0BZyAz4SLpe",
+            "_id": "ZzkNZJcUR7GFgx3N",
             "sort": 0
           }
         ],
@@ -696,6 +696,26 @@
           "perform": -1,
           "bluff": -1
         }
+      },
+      "attacks": {
+        "Longsword": {
+          "attack": [5],
+          "damage": 4,
+          "dice": "1d8",
+          "formula": {
+            "attack": "1d20 + 4[Strength] + 1[Base Attack Bonus]",
+            "damage": ["sizeRoll(1,8,4) + 4[Strength]"]
+          }
+        },
+        "Greatsword": {
+          "attack": [5],
+          "damage": 6,
+          "dice": "2d6",
+          "formula": {
+            "attack": "1d20 + 4[Strength] + 1[Base Attack Bonus]",
+            "damage": ["sizeRoll(2,6,4) + 6[Strength]"]
+          }
+        }
       }
     },
     "buffs": {
@@ -703,7 +723,7 @@
         "name": "human-fighter-1 [buffs]",
         "type": "character",
         "folder": "GuYuyoqdabfe4xZV",
-        "_id": "cjdW4hs7E8KZd86U",
+        "_id": "DmGc7edtWDY56RF8",
         "system": {
           "abilities": {
             "str": { "value": 16 },
@@ -746,7 +766,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "XOw5YHxLzoW0Opwq",
+            "_id": "tNHtUiaF4Eynoz10",
             "folder": null,
             "sort": 0
           },
@@ -767,7 +787,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "6ytB6wtc4SIsZSkZ",
+            "_id": "nTX6uGvpYjCBxKhT",
             "folder": null,
             "sort": 0
           },
@@ -808,7 +828,7 @@
             "type": "race",
             "effects": [],
             "flags": {},
-            "_id": "L7NySkHAAu1BkA3m",
+            "_id": "1AEm7C79KTCDfops",
             "sort": 0
           },
           {
@@ -859,8 +879,8 @@
             "type": "class",
             "effects": [],
             "folder": null,
-            "flags": { "pf1": { "links": { "classAssociations": { "ajRGNgxnqdaCENqn": 1 } } } },
-            "_id": "MDD86LIpWdEgPi0D",
+            "flags": { "pf1": { "links": { "classAssociations": { "IDpVZIxVuq21juAC": 1 } } } },
+            "_id": "oMsEb9moDwzhRAVo",
             "sort": 0
           },
           {
@@ -887,8 +907,25 @@
             "effects": [],
             "flags": {},
             "sort": 100000,
-            "_id": "ajRGNgxnqdaCENqn",
+            "_id": "IDpVZIxVuq21juAC",
             "folder": null
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.FUW5mIXHNBBIQ1Sq" },
+            "name": "Power Attack",
+            "system": {
+              "changeFlags": ["powerAttack"],
+              "sources": [{ "id": "PZO1110", "pages": "116, 131" }],
+              "subType": "feat",
+              "tags": ["Combat", "Offensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "qH3ALqlpGuswKHGW",
+            "sort": 0
           },
           {
             "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.JreaiTHdyWFNj3Tb" },
@@ -906,7 +943,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "R4hdDUYo7weTmcba",
+            "_id": "dsF7ddY4yHhROIdy",
             "sort": 0
           },
           {
@@ -930,24 +967,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "GdMHPLBWJlX2kQ6C",
-            "sort": 0
-          },
-          {
-            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.FUW5mIXHNBBIQ1Sq" },
-            "name": "Power Attack",
-            "system": {
-              "changeFlags": ["powerAttack"],
-              "sources": [{ "id": "PZO1110", "pages": "116, 131" }],
-              "subType": "feat",
-              "tags": ["Combat", "Offensive"],
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "folder": null,
-            "flags": {},
-            "_id": "xfamHUkim7YbZDiN",
+            "_id": "L7FTevgyQlphIrOs",
             "sort": 0
           },
           {
@@ -981,7 +1001,7 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "N2p7D3yIN555sFYJ",
+            "_id": "BO7VEmI92joZll46",
             "sort": 0
           },
           {
@@ -1029,7 +1049,7 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "8tVyW5OR2JUEQ4zl",
+            "_id": "UFvvpzA7dLRn9Z5f",
             "sort": 0
           },
           {
@@ -1082,7 +1102,7 @@
             "type": "weapon",
             "effects": [],
             "flags": {},
-            "_id": "zVOGQ1nloX4xrh1e",
+            "_id": "Zd9Lob6867w8DjBH",
             "sort": 0
           },
           {
@@ -1136,7 +1156,7 @@
             "type": "weapon",
             "effects": [],
             "flags": {},
-            "_id": "ixI6FqMBt3C9C9Pk",
+            "_id": "jFQpz5If3yhFSnd9",
             "sort": 0
           },
           {
@@ -1154,7 +1174,7 @@
             },
             "type": "container",
             "effects": [],
-            "_id": "GQQxxBwiBBHzWUcA",
+            "_id": "DycQ9QU478LYEtBn",
             "sort": 0
           },
           {
@@ -1176,7 +1196,7 @@
             },
             "type": "loot",
             "effects": [],
-            "_id": "JQSZSlwnLO2LMsbU",
+            "_id": "Cy8BfwLETbBlnKCR",
             "sort": 0
           },
           {
@@ -1198,7 +1218,7 @@
             },
             "type": "loot",
             "effects": [],
-            "_id": "SIxstqIUjmVh8QsY",
+            "_id": "fk6K3Mqu5sf3zqPi",
             "sort": 0
           },
           {
@@ -1220,7 +1240,53 @@
             },
             "type": "loot",
             "effects": [],
-            "_id": "97AxvJRTvm4nRNjN",
+            "_id": "Mm5oqFWWuTE1JaMO",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.items.Item.5vrvV8Z68dhHLjAX" },
+            "folder": "hN7XSgK640IpD3iM",
+            "name": "Anvil, blacksmith (100 lbs)",
+            "system": {
+              "equipped": true,
+              "hp": { "base": 10 },
+              "price": { "base": 5, "unit": "gp" },
+              "quantity": 1,
+              "sources": [
+                { "id": "PZO1123", "pages": "77" },
+                { "id": "PZO9410", "pages": "19" },
+                { "id": "PZO1115", "pages": "184" }
+              ],
+              "subType": "tool",
+              "weight": { "value": 100 }
+            },
+            "type": "loot",
+            "effects": [],
+            "flags": {},
+            "_id": "3GhLnvWSpBLm41DZ",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.items.Item.dm72XBYOw8W3VGdU" },
+            "folder": "BzkdxtDgGZ96mdwR",
+            "name": "Chest, medium",
+            "system": {
+              "equipped": true,
+              "hp": { "base": 15 },
+              "price": { "base": 5, "unit": "gp" },
+              "quantity": 1,
+              "sources": [
+                { "id": "PZO1123", "pages": "56" },
+                { "id": "PZO1115", "pages": "181" },
+                { "id": "PZO9410", "pages": "19" },
+                { "id": "PZO1110", "pages": "158" }
+              ],
+              "weight": { "value": 50 }
+            },
+            "type": "container",
+            "effects": [],
+            "flags": {},
+            "_id": "Rs2f7EDE1OTSrOER",
             "sort": 0
           },
           {
@@ -1253,53 +1319,7 @@
             "type": "loot",
             "effects": [],
             "flags": {},
-            "_id": "zYfHmkXSP8pYOOpo",
-            "sort": 0
-          },
-          {
-            "_stats": { "compendiumSource": "Compendium.pf1.items.Item.5vrvV8Z68dhHLjAX" },
-            "folder": "hN7XSgK640IpD3iM",
-            "name": "Anvil, blacksmith (100 lbs)",
-            "system": {
-              "equipped": true,
-              "hp": { "base": 10 },
-              "price": { "base": 5, "unit": "gp" },
-              "quantity": 1,
-              "sources": [
-                { "id": "PZO1123", "pages": "77" },
-                { "id": "PZO9410", "pages": "19" },
-                { "id": "PZO1115", "pages": "184" }
-              ],
-              "subType": "tool",
-              "weight": { "value": 100 }
-            },
-            "type": "loot",
-            "effects": [],
-            "flags": {},
-            "_id": "eooV7xVcx7ZF7i82",
-            "sort": 0
-          },
-          {
-            "_stats": { "compendiumSource": "Compendium.pf1.items.Item.dm72XBYOw8W3VGdU" },
-            "folder": "BzkdxtDgGZ96mdwR",
-            "name": "Chest, medium",
-            "system": {
-              "equipped": true,
-              "hp": { "base": 15 },
-              "price": { "base": 5, "unit": "gp" },
-              "quantity": 1,
-              "sources": [
-                { "id": "PZO1123", "pages": "56" },
-                { "id": "PZO1115", "pages": "181" },
-                { "id": "PZO9410", "pages": "19" },
-                { "id": "PZO1110", "pages": "158" }
-              ],
-              "weight": { "value": 50 }
-            },
-            "type": "container",
-            "effects": [],
-            "flags": {},
-            "_id": "i3B2e0fjvfcRj812",
+            "_id": "mlieUdG6eP55Z95d",
             "sort": 0
           },
           {
@@ -1330,7 +1350,7 @@
             "type": "buff",
             "effects": [],
             "flags": {},
-            "_id": "nEt70GdJgJw6WlYV",
+            "_id": "5KKzxuUrUnGZRxGa",
             "sort": 0
           }
         ],
@@ -1396,6 +1416,26 @@
           "perform": -1,
           "bluff": -1
         }
+      },
+      "attacks": {
+        "Longsword": {
+          "attack": [6],
+          "damage": 4,
+          "dice": "1d8",
+          "formula": {
+            "attack": "1d20 + 4[Strength] + 1[Base Attack Bonus] + 1[Bless]",
+            "damage": ["sizeRoll(1,8,4) + 4[Strength]"]
+          }
+        },
+        "Greatsword": {
+          "attack": [6],
+          "damage": 6,
+          "dice": "2d6",
+          "formula": {
+            "attack": "1d20 + 4[Strength] + 1[Base Attack Bonus] + 1[Bless]",
+            "damage": ["sizeRoll(2,6,4) + 6[Strength]"]
+          }
+        }
       }
     },
     "conditions": {
@@ -1403,7 +1443,7 @@
         "name": "human-fighter-1 [conditions]",
         "type": "character",
         "folder": "GuYuyoqdabfe4xZV",
-        "_id": "Y0vyUJiM5NYGXnwB",
+        "_id": "yraSgJniBDK4FLFF",
         "system": {
           "abilities": {
             "str": { "value": 16 },
@@ -1446,7 +1486,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "hZgCvWn4k93SOtaE",
+            "_id": "vS1sfuonCiYvIkF7",
             "folder": null,
             "sort": 0
           },
@@ -1467,7 +1507,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "ziWLu1hxX3NxOOUJ",
+            "_id": "yzcWzdgE3BDoycNC",
             "folder": null,
             "sort": 0
           },
@@ -1508,7 +1548,7 @@
             "type": "race",
             "effects": [],
             "flags": {},
-            "_id": "see8YSIb3wEYI1Nd",
+            "_id": "8uzqIc65b6jGDKGU",
             "sort": 0
           },
           {
@@ -1559,8 +1599,8 @@
             "type": "class",
             "effects": [],
             "folder": null,
-            "flags": { "pf1": { "links": { "classAssociations": { "R5L79ku0YA0Fh5WZ": 1 } } } },
-            "_id": "MujMQxmXz84vmVUU",
+            "flags": { "pf1": { "links": { "classAssociations": { "62ro7SuGVb2ZbEK3": 1 } } } },
+            "_id": "UgQAA7eOWz2ZvDJ1",
             "sort": 0
           },
           {
@@ -1587,44 +1627,8 @@
             "effects": [],
             "flags": {},
             "sort": 100000,
-            "_id": "R5L79ku0YA0Fh5WZ",
+            "_id": "62ro7SuGVb2ZbEK3",
             "folder": null
-          },
-          {
-            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.FUW5mIXHNBBIQ1Sq" },
-            "name": "Power Attack",
-            "system": {
-              "changeFlags": ["powerAttack"],
-              "sources": [{ "id": "PZO1110", "pages": "116, 131" }],
-              "subType": "feat",
-              "tags": ["Combat", "Offensive"],
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "folder": null,
-            "flags": {},
-            "_id": "UQioJFx61Q65qmOz",
-            "sort": 0
-          },
-          {
-            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.JreaiTHdyWFNj3Tb" },
-            "name": "Dodge",
-            "system": {
-              "changes": {
-                "9onhsept": { "_id": "9onhsept", "formula": "1", "target": "ac", "type": "dodge" }
-              },
-              "sources": [{ "id": "PZO1110", "pages": "114, 122" }],
-              "subType": "feat",
-              "tags": ["Combat", "Defensive"],
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "folder": null,
-            "flags": {},
-            "_id": "8oVLurNyEwrUzboL",
-            "sort": 0
           },
           {
             "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.8snLqsJN4LLL00Nq" },
@@ -1647,7 +1651,43 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "oxrUvQWfGvXdaFC9",
+            "_id": "CC375gLv1uPddcE4",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.FUW5mIXHNBBIQ1Sq" },
+            "name": "Power Attack",
+            "system": {
+              "changeFlags": ["powerAttack"],
+              "sources": [{ "id": "PZO1110", "pages": "116, 131" }],
+              "subType": "feat",
+              "tags": ["Combat", "Offensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "KrtlUy6eTmVrKQu3",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.JreaiTHdyWFNj3Tb" },
+            "name": "Dodge",
+            "system": {
+              "changes": {
+                "9onhsept": { "_id": "9onhsept", "formula": "1", "target": "ac", "type": "dodge" }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "114, 122" }],
+              "subType": "feat",
+              "tags": ["Combat", "Defensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "eugH71MiRkBMK76D",
             "sort": 0
           },
           {
@@ -1681,7 +1721,7 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "JvIhzvsFbk5IiU9T",
+            "_id": "MJEhudc9BM3wro8h",
             "sort": 0
           },
           {
@@ -1729,7 +1769,7 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "OhVWNT7okW6E0R67",
+            "_id": "jiZrp2oomWeZh07t",
             "sort": 0
           },
           {
@@ -1782,7 +1822,7 @@
             "type": "weapon",
             "effects": [],
             "flags": {},
-            "_id": "yfkPRdaVBVMKwr3g",
+            "_id": "wRBS6EK2lY849e7i",
             "sort": 0
           },
           {
@@ -1836,25 +1876,29 @@
             "type": "weapon",
             "effects": [],
             "flags": {},
-            "_id": "AM2pC4wm7bCWrmO2",
+            "_id": "F1STMjFY7O1z0apc",
             "sort": 0
           },
           {
-            "_stats": { "compendiumSource": "Compendium.pf1.items.Item.1BaxoJjpGn6D7Jk0" },
-            "flags": { "pf1": { "container": "xHQnf15yV6edm5lz" } },
+            "_stats": { "compendiumSource": "Compendium.pf1.items.Item.0knejgHKvvzByqNH" },
+            "flags": { "pf1": { "container": "eRkG1d4hKYEgxuRa" } },
             "folder": "1uDzTmqE6tgpIano",
-            "name": "Backpack, common",
+            "name": "Bedroll",
             "system": {
+              "equipped": true,
               "hp": { "base": 10 },
-              "price": { "base": 2, "unit": "gp" },
+              "price": { "base": 1, "unit": "sp" },
               "quantity": 1,
-              "sources": [{ "id": "PZO1123", "pages": "58" }],
-              "weight": { "value": 2 },
-              "equipped": true
+              "sources": [
+                { "id": "PZO1123", "pages": "56" },
+                { "id": "PZO1110", "pages": "158" }
+              ],
+              "subType": "adventuring",
+              "weight": { "value": 5 }
             },
-            "type": "container",
+            "type": "loot",
             "effects": [],
-            "_id": "rIPyaRc9ClYoV2vJ",
+            "_id": "rHjdXqPdK70VRnI1",
             "sort": 0
           },
           {
@@ -1876,7 +1920,7 @@
             },
             "type": "loot",
             "effects": [],
-            "_id": "vQSqDbgJ9S209jSu",
+            "_id": "3lV4yzYejygjMFxU",
             "sort": 0
           },
           {
@@ -1909,7 +1953,7 @@
             "type": "loot",
             "effects": [],
             "flags": {},
-            "_id": "JPHVYGcJTh9uMyno",
+            "_id": "Y6qhfB8ZSDS4pzQN",
             "sort": 0
           },
           {
@@ -1931,29 +1975,7 @@
             },
             "type": "loot",
             "effects": [],
-            "_id": "bTZg7JJIPc04KHMO",
-            "sort": 0
-          },
-          {
-            "_stats": { "compendiumSource": "Compendium.pf1.items.Item.0knejgHKvvzByqNH" },
-            "flags": { "pf1": { "container": "eRkG1d4hKYEgxuRa" } },
-            "folder": "1uDzTmqE6tgpIano",
-            "name": "Bedroll",
-            "system": {
-              "equipped": true,
-              "hp": { "base": 10 },
-              "price": { "base": 1, "unit": "sp" },
-              "quantity": 1,
-              "sources": [
-                { "id": "PZO1123", "pages": "56" },
-                { "id": "PZO1110", "pages": "158" }
-              ],
-              "subType": "adventuring",
-              "weight": { "value": 5 }
-            },
-            "type": "loot",
-            "effects": [],
-            "_id": "7GHs2OORM48XmZVf",
+            "_id": "vYkrM4CEJ2PJAORg",
             "sort": 0
           },
           {
@@ -1976,7 +1998,7 @@
             "type": "loot",
             "effects": [],
             "flags": {},
-            "_id": "eGOSf3kadYQTdye1",
+            "_id": "hIRD2lNPVSrAKUM8",
             "sort": 0
           },
           {
@@ -1999,7 +2021,25 @@
             "type": "container",
             "effects": [],
             "flags": {},
-            "_id": "aTiHqjNRXZM54wRo",
+            "_id": "cyZnDYnmJrLmfJJD",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.items.Item.1BaxoJjpGn6D7Jk0" },
+            "flags": { "pf1": { "container": "xHQnf15yV6edm5lz" } },
+            "folder": "1uDzTmqE6tgpIano",
+            "name": "Backpack, common",
+            "system": {
+              "hp": { "base": 10 },
+              "price": { "base": 2, "unit": "gp" },
+              "quantity": 1,
+              "sources": [{ "id": "PZO1123", "pages": "58" }],
+              "weight": { "value": 2 },
+              "equipped": true
+            },
+            "type": "container",
+            "effects": [],
+            "_id": "pDvjbva8FMAkc6eu",
             "sort": 0
           }
         ],
@@ -2009,7 +2049,7 @@
             "img": "systems/pf1/icons/conditions/shaken.svg",
             "statuses": ["shaken"],
             "showIcon": 2,
-            "_id": "jpoit9EZm9u2MCbO",
+            "_id": "vkpjM30pnSj9gDmV",
             "type": "base",
             "system": { "changes": [] },
             "disabled": false,
@@ -2033,9 +2073,9 @@
               "coreVersion": "14.370",
               "systemId": "pf1",
               "systemVersion": "11.11",
-              "createdTime": 1795403241328,
-              "modifiedTime": 1795403241328,
-              "lastModifiedBy": "uwWDnh8N1IHSXHMc",
+              "createdTime": 1795407335660,
+              "modifiedTime": 1795407335660,
+              "lastModifiedBy": "7UYomJpxzjJzDpJa",
               "compendiumSource": null,
               "duplicateSource": null,
               "exportSource": null
@@ -2102,6 +2142,26 @@
           "senseMotive": -3,
           "perform": -3,
           "bluff": -3
+        }
+      },
+      "attacks": {
+        "Longsword": {
+          "attack": [3],
+          "damage": 4,
+          "dice": "1d8",
+          "formula": {
+            "attack": "1d20 + 4[Strength] + 1[Base Attack Bonus] - 2[Shaken]",
+            "damage": ["sizeRoll(1,8,4) + 4[Strength]"]
+          }
+        },
+        "Greatsword": {
+          "attack": [3],
+          "damage": 6,
+          "dice": "2d6",
+          "formula": {
+            "attack": "1d20 + 4[Strength] + 1[Base Attack Bonus] - 2[Shaken]",
+            "damage": ["sizeRoll(2,6,4) + 6[Strength]"]
+          }
         }
       }
     }

@@ -16,7 +16,10 @@ export const MARTIAL_SPECS: OracleSpec[] = [
       "Iron Will",
       "Improved Initiative",
       "Lightning Reflexes",
+      "Weapon Focus",
+      "Weapon Specialization",
     ],
+    choices: { feats: { "Weapon Focus": "longsword", "Weapon Specialization": "longsword" } },
     skills: { climb: 6, intimidate: 6, perception: 6 },
     items: [
       {
@@ -28,6 +31,33 @@ export const MARTIAL_SPECS: OracleSpec[] = [
       },
       { pack: "pf1.armors-and-shields", name: "Heavy Steel Shield", equipped: true },
       { pack: "pf1.items", name: "Cloak of Resistance +1", equipped: true },
+      {
+        pack: "pf1.weapons-and-ammo",
+        name: "Longsword",
+        equipped: true,
+        masterwork: true,
+        attacks: [
+          { id: "pa", powerAttack: true },
+          { id: "2h", held: "2h" },
+          { id: "2h-pa", held: "2h", powerAttack: true },
+        ],
+      },
+      {
+        pack: "pf1.weapons-and-ammo",
+        name: "Greatsword",
+        equipped: true,
+        enh: 1,
+        attacks: [{ id: "pa", powerAttack: true }],
+      },
+      {
+        pack: "pf1.weapons-and-ammo",
+        name: "Shortsword",
+        equipped: true,
+        attacks: [
+          { id: "oh", held: "oh" },
+          { id: "oh-pa", held: "oh", powerAttack: true },
+        ],
+      },
     ],
     scenarios: {
       base: {},
@@ -95,6 +125,7 @@ export const MARTIAL_SPECS: OracleSpec[] = [
       "Blind-Fight",
       "Combat Reflexes",
     ],
+    choices: { weaponTrainingGroups: ["blades-heavy", "bows"] },
     skills: { climb: 6, intimidate: 6, perception: 6, swim: 6 },
     items: [
       {
@@ -107,6 +138,13 @@ export const MARTIAL_SPECS: OracleSpec[] = [
       { pack: "pf1.armors-and-shields", name: "Heavy Steel Shield", equipped: true },
       { pack: "pf1.items", name: "Belt of Giant Strength +2", equipped: true },
       { pack: "pf1.items", name: "Cloak of Resistance +1", equipped: true },
+      {
+        pack: "pf1.weapons-and-ammo",
+        name: "Greatsword",
+        equipped: true,
+        enh: 2,
+        attacks: [{ id: "pa", powerAttack: true }],
+      },
     ],
     scenarios: {
       base: {},
@@ -134,6 +172,13 @@ export const MARTIAL_SPECS: OracleSpec[] = [
       { pack: "pf1.armors-and-shields", name: "Hide Armor", equipped: true },
       { pack: "pf1.armors-and-shields", name: "Heavy Wooden Shield", equipped: true },
       { pack: "pf1.items", name: "Cloak of Resistance +1", equipped: true },
+      {
+        pack: "pf1.weapons-and-ammo",
+        name: "Greataxe",
+        equipped: true,
+        masterwork: true,
+        attacks: [{ id: "pa", powerAttack: true }],
+      },
     ],
     scenarios: {
       base: {},
@@ -213,11 +258,22 @@ export const MARTIAL_SPECS: OracleSpec[] = [
       { pack: "pf1.armors-and-shields", name: "Chain Shirt", equipped: true, enh: 1 },
       { pack: "pf1.items", name: "Belt of Incredible Dexterity +2", equipped: true },
       { pack: "pf1.items", name: "Cloak of Resistance +1", equipped: true },
+      {
+        pack: "pf1.weapons-and-ammo",
+        name: "Composite Longbow",
+        equipped: true,
+        enh: 1,
+        strRating: 3,
+      },
+      { pack: "pf1.weapons-and-ammo", name: "Longbow", equipped: true },
+      { pack: "pf1.weapons-and-ammo", name: "Arrow", quantity: 40 },
+      { pack: "pf1.weapons-and-ammo", name: "Javelin", equipped: true },
     ],
     scenarios: {
       base: {},
       haste: { buffs: [{ name: "Haste", level: 6 }] },
       conditions: { conditions: ["entangled"] },
+      stronger: { buffs: [{ name: "Bull's Strength", level: 6 }] },
     },
   },
   {
@@ -226,7 +282,7 @@ export const MARTIAL_SPECS: OracleSpec[] = [
     alignment: "cn",
     abilities: { str: 12, dex: 16, con: 14, int: 10, wis: 10, cha: 12 },
     classes: [{ name: "Rogue", level: 6, hp: 33 }],
-    feats: ["Dodge", "Iron Will", "Toughness"],
+    feats: ["Dodge", "Iron Will", "Toughness", "Weapon Finesse"],
     skills: {
       acrobatics: 6,
       perception: 6,
@@ -238,6 +294,13 @@ export const MARTIAL_SPECS: OracleSpec[] = [
     items: [
       { pack: "pf1.armors-and-shields", name: "Studded Leather Armor", equipped: true, enh: 1 },
       { pack: "pf1.items", name: "Belt of Incredible Dexterity +2", equipped: true },
+      { pack: "pf1.weapons-and-ammo", name: "Rapier", equipped: true, enh: 1 },
+      {
+        pack: "pf1.weapons-and-ammo",
+        name: "Shortsword",
+        equipped: true,
+        attacks: [{ id: "oh", held: "oh" }],
+      },
     ],
     scenarios: {
       base: {},

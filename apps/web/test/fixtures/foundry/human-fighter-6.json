@@ -13,8 +13,11 @@
       "Dodge",
       "Iron Will",
       "Improved Initiative",
-      "Lightning Reflexes"
+      "Lightning Reflexes",
+      "Weapon Focus",
+      "Weapon Specialization"
     ],
+    "choices": { "feats": { "Weapon Focus": "longsword", "Weapon Specialization": "longsword" } },
     "skills": { "climb": 6, "intimidate": 6, "perception": 6 },
     "items": [
       {
@@ -25,7 +28,34 @@
         "material": { "id": "mithral", "maxDex": 5, "acp": 1, "spellFailure": 15 }
       },
       { "pack": "pf1.armors-and-shields", "name": "Heavy Steel Shield", "equipped": true },
-      { "pack": "pf1.items", "name": "Cloak of Resistance +1", "equipped": true }
+      { "pack": "pf1.items", "name": "Cloak of Resistance +1", "equipped": true },
+      {
+        "pack": "pf1.weapons-and-ammo",
+        "name": "Longsword",
+        "equipped": true,
+        "masterwork": true,
+        "attacks": [
+          { "id": "pa", "powerAttack": true },
+          { "id": "2h", "held": "2h" },
+          { "id": "2h-pa", "held": "2h", "powerAttack": true }
+        ]
+      },
+      {
+        "pack": "pf1.weapons-and-ammo",
+        "name": "Greatsword",
+        "equipped": true,
+        "enh": 1,
+        "attacks": [{ "id": "pa", "powerAttack": true }]
+      },
+      {
+        "pack": "pf1.weapons-and-ammo",
+        "name": "Shortsword",
+        "equipped": true,
+        "attacks": [
+          { "id": "oh", "held": "oh" },
+          { "id": "oh-pa", "held": "oh", "powerAttack": true }
+        ]
+      }
     ],
     "scenarios": {
       "base": {},
@@ -45,7 +75,7 @@
         "name": "human-fighter-6 [base]",
         "type": "character",
         "folder": "GuYuyoqdabfe4xZV",
-        "_id": "lYAMlaMhqGV6Eota",
+        "_id": "XLQLE1PBYN3xJ05g",
         "system": {
           "abilities": {
             "str": { "value": 16 },
@@ -88,7 +118,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "EKQXaYNMzykjJTjY",
+            "_id": "OFwNwUu1JdX216Jl",
             "folder": null,
             "sort": 0
           },
@@ -109,7 +139,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "7fowZgW0kvKAZUf9",
+            "_id": "R6IqGioRQbJMOMLF",
             "folder": null,
             "sort": 0
           },
@@ -130,7 +160,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "GlYOTIXjyqo8r4f5",
+            "_id": "ZlrAddpSPTmnpj4m",
             "folder": null,
             "sort": 0
           },
@@ -171,7 +201,7 @@
             "type": "race",
             "effects": [],
             "flags": {},
-            "_id": "pnVqBAGsLSNqm6aM",
+            "_id": "zWJ2zbHDwFTHmVRl",
             "sort": 0
           },
           {
@@ -226,43 +256,16 @@
               "pf1": {
                 "links": {
                   "classAssociations": {
-                    "nWpnt2DJh0LdnASe": 1,
-                    "E30RDjekMsurZxbp": 2,
-                    "LpzDCf94Hfytgqgf": 3,
-                    "abAhy97LilKjTLMC": 5
+                    "DWHnFa5fCXhgmRUX": 2,
+                    "3KPp51Vq0E85wcNg": 3,
+                    "pPQqhz174bDKDVzJ": 5,
+                    "Eh0UloeKRUKjNCvm": 1
                   }
                 }
               }
             },
-            "_id": "CChAN7LKTjIvJpmT",
+            "_id": "hAg6KrZqJxXVB5P3",
             "sort": 0
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1.class-abilities.Item.CV8BsY3ciUb9TA1Y"
-            },
-            "name": "Bonus Feats (FGT)",
-            "system": {
-              "associations": { "classes": ["Fighter"] },
-              "changes": {
-                "yoxm5fp1": {
-                  "_id": "yoxm5fp1",
-                  "formula": "1 + floor(@class.unlevel / 2)",
-                  "target": "bonusFeats",
-                  "type": "untyped"
-                }
-              },
-              "sources": [{ "id": "PZO1110", "pages": "55" }],
-              "subType": "classFeat",
-              "class": "fighter",
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "flags": {},
-            "sort": 100000,
-            "_id": "nWpnt2DJh0LdnASe",
-            "folder": null
           },
           {
             "_stats": {
@@ -287,7 +290,7 @@
             "effects": [],
             "flags": {},
             "sort": 200000,
-            "_id": "E30RDjekMsurZxbp",
+            "_id": "DWHnFa5fCXhgmRUX",
             "folder": null
           },
           {
@@ -322,7 +325,7 @@
             "effects": [],
             "flags": {},
             "sort": 300000,
-            "_id": "LpzDCf94Hfytgqgf",
+            "_id": "3KPp51Vq0E85wcNg",
             "folder": null
           },
           {
@@ -342,7 +345,34 @@
             "effects": [],
             "flags": {},
             "sort": 400000,
-            "_id": "abAhy97LilKjTLMC",
+            "_id": "pPQqhz174bDKDVzJ",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.CV8BsY3ciUb9TA1Y"
+            },
+            "name": "Bonus Feats (FGT)",
+            "system": {
+              "associations": { "classes": ["Fighter"] },
+              "changes": {
+                "yoxm5fp1": {
+                  "_id": "yoxm5fp1",
+                  "formula": "1 + floor(@class.unlevel / 2)",
+                  "target": "bonusFeats",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "55" }],
+              "subType": "classFeat",
+              "class": "fighter",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 100000,
+            "_id": "Eh0UloeKRUKjNCvm",
             "folder": null
           },
           {
@@ -359,7 +389,26 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "CoBlanfVdRmcVz90",
+            "_id": "c1oqbh64SnNgpM1G",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.JreaiTHdyWFNj3Tb" },
+            "name": "Dodge",
+            "system": {
+              "changes": {
+                "9onhsept": { "_id": "9onhsept", "formula": "1", "target": "ac", "type": "dodge" }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "114, 122" }],
+              "subType": "feat",
+              "tags": ["Combat", "Defensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "U1tJuRoFHqI7bjjq",
             "sort": 0
           },
           {
@@ -383,50 +432,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "433ParuKDMRXi9Vx",
-            "sort": 0
-          },
-          {
-            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.JreaiTHdyWFNj3Tb" },
-            "name": "Dodge",
-            "system": {
-              "changes": {
-                "9onhsept": { "_id": "9onhsept", "formula": "1", "target": "ac", "type": "dodge" }
-              },
-              "sources": [{ "id": "PZO1110", "pages": "114, 122" }],
-              "subType": "feat",
-              "tags": ["Combat", "Defensive"],
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "folder": null,
-            "flags": {},
-            "_id": "xNL7zNQBXgHENon8",
-            "sort": 0
-          },
-          {
-            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.iAbIGhm7T2OK9Brt" },
-            "name": "Iron Will",
-            "system": {
-              "changes": {
-                "vafl2kz4": {
-                  "_id": "vafl2kz4",
-                  "formula": "2",
-                  "target": "will",
-                  "type": "untyped"
-                }
-              },
-              "sources": [{ "id": "PZO1110", "pages": "115, 129" }],
-              "subType": "feat",
-              "tags": ["General", "Saving Throw"],
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "folder": null,
-            "flags": {},
-            "_id": "1aW7dAP2wV4Ea13R",
+            "_id": "KGUsELwvXqp39A2U",
             "sort": 0
           },
           {
@@ -450,7 +456,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "nBPTm7Rdcr3U015V",
+            "_id": "MQe3OQCexpkNPjbV",
             "sort": 0
           },
           {
@@ -474,7 +480,63 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "zDOPxPhbA6oCKoMY",
+            "_id": "G2Usr4GrQaYQXj6q",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.n250dFlbykAIAg5Z" },
+            "name": "Weapon Focus",
+            "system": {
+              "sources": [{ "id": "PZO1110", "pages": "117, 136" }],
+              "subType": "feat",
+              "tags": ["Combat", "Weapon", "Offensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "ilznnDL2jKLZI2ho",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.YLCvMNeAF9V31m1h" },
+            "name": "Weapon Specialization",
+            "system": {
+              "sources": [{ "id": "PZO1110", "pages": "117, 137" }],
+              "subType": "feat",
+              "tags": ["Combat", "Weapon", "Offensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "oiLTjlsasBcoJylm",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.iAbIGhm7T2OK9Brt" },
+            "name": "Iron Will",
+            "system": {
+              "changes": {
+                "vafl2kz4": {
+                  "_id": "vafl2kz4",
+                  "formula": "2",
+                  "target": "will",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "115, 129" }],
+              "subType": "feat",
+              "tags": ["General", "Saving Throw"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "rF61gdKS4MC5gWa5",
             "sort": 0
           },
           {
@@ -509,7 +571,7 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "bbIlMyPieFN3Jtvf",
+            "_id": "z1RfOwCVjLOiIlEB",
             "sort": 0
           },
           {
@@ -557,7 +619,7 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "7QqCzyYAhxRgNH89",
+            "_id": "3QFTq5FQgAcIuLyP",
             "sort": 0
           },
           {
@@ -606,7 +668,169 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "z4fnIUP8WL85ons8",
+            "_id": "RfLfKvE6kDhTAMw0",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.weapons-and-ammo.Item.zWRlna42PMJVX6un"
+            },
+            "folder": "ojvASzhaCGmnx8xQ",
+            "name": "Longsword",
+            "system": {
+              "actions": {
+                "jelb63mz9vrxa43c": {
+                  "_id": "jelb63mz9vrxa43c",
+                  "ability": {
+                    "attack": "_default",
+                    "critMult": 2,
+                    "critRange": 19,
+                    "damage": "str"
+                  },
+                  "actionType": "mwak",
+                  "activation": { "type": "attack", "unchained": { "type": "attack" } },
+                  "damage": {
+                    "parts": [{ "formula": "sizeRoll(1, 8, @size)", "types": ["slashing"] }]
+                  },
+                  "duration": { "units": "inst" },
+                  "extraAttacks": { "type": "standard" },
+                  "name": "Attack",
+                  "range": { "units": "melee", "value": "0" },
+                  "sort": 0
+                }
+              },
+              "baseTypes": ["Longsword"],
+              "equipped": true,
+              "hardness": 10,
+              "hp": { "base": 5 },
+              "material": { "base": { "value": "steel" }, "addon": [] },
+              "price": { "base": 15, "unit": "gp" },
+              "quantity": 1,
+              "sources": [
+                { "id": "PZO1110", "pages": "142, 147" },
+                { "id": "PZO1123", "pages": "18" }
+              ],
+              "subType": "martial",
+              "tags": ["Eastern"],
+              "weaponGroups": ["bladesHeavy"],
+              "weaponSubtype": "1h",
+              "weight": { "value": 4 },
+              "masterwork": true,
+              "alignments": {},
+              "mods": {}
+            },
+            "type": "weapon",
+            "effects": [],
+            "flags": {},
+            "_id": "xkcpbkdanw77GTbh",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.weapons-and-ammo.Item.oyUApQSVsAqzyjdz"
+            },
+            "folder": "ojvASzhaCGmnx8xQ",
+            "name": "Greatsword",
+            "system": {
+              "actions": {
+                "137kuv1fu5ds6swb": {
+                  "_id": "137kuv1fu5ds6swb",
+                  "ability": {
+                    "attack": "_default",
+                    "critMult": 2,
+                    "critRange": 19,
+                    "damage": "str"
+                  },
+                  "actionType": "mwak",
+                  "activation": { "type": "attack", "unchained": { "type": "attack" } },
+                  "damage": {
+                    "parts": [{ "formula": "sizeRoll(2, 6, @size)", "types": ["slashing"] }]
+                  },
+                  "duration": { "units": "inst" },
+                  "extraAttacks": { "type": "standard" },
+                  "name": "Attack",
+                  "range": { "units": "melee", "value": "0" },
+                  "sort": 0
+                }
+              },
+              "baseTypes": ["Greatsword"],
+              "equipped": true,
+              "hands": 2,
+              "hardness": 10,
+              "held": "2h",
+              "hp": { "base": 10 },
+              "material": { "base": { "value": "steel" }, "addon": [] },
+              "price": { "base": 50, "unit": "gp" },
+              "quantity": 1,
+              "sources": [
+                { "id": "PZO1110", "pages": "143, 146" },
+                { "id": "PZO1123", "pages": "18" }
+              ],
+              "subType": "martial",
+              "weaponGroups": ["bladesHeavy"],
+              "weaponSubtype": "2h",
+              "weight": { "value": 8 },
+              "enh": 1,
+              "alignments": {},
+              "mods": {}
+            },
+            "type": "weapon",
+            "effects": [],
+            "flags": {},
+            "_id": "CFR4fQNAVQY4o8Ef",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.weapons-and-ammo.Item.05rD6YP5sVSrKY28"
+            },
+            "folder": "ojvASzhaCGmnx8xQ",
+            "name": "Shortsword",
+            "system": {
+              "actions": {
+                "lkzee7hknlqx9chs": {
+                  "_id": "lkzee7hknlqx9chs",
+                  "ability": {
+                    "attack": "_default",
+                    "critMult": 2,
+                    "critRange": 19,
+                    "damage": "str"
+                  },
+                  "actionType": "mwak",
+                  "activation": { "type": "attack", "unchained": { "type": "attack" } },
+                  "damage": {
+                    "parts": [{ "formula": "sizeRoll(1, 6, @size)", "types": ["piercing"] }]
+                  },
+                  "duration": { "units": "inst" },
+                  "extraAttacks": { "type": "standard" },
+                  "name": "Attack",
+                  "range": { "units": "melee", "value": "0" },
+                  "sort": 0
+                }
+              },
+              "baseTypes": ["Shortsword"],
+              "equipped": true,
+              "hardness": 10,
+              "hp": { "base": 2 },
+              "material": { "base": { "value": "steel" }, "addon": [] },
+              "price": { "base": 10, "unit": "gp" },
+              "properties": ["fin"],
+              "quantity": 1,
+              "sources": [
+                { "id": "PZO1110", "pages": "142, 148" },
+                { "id": "PZO1123", "pages": "18" }
+              ],
+              "subType": "martial",
+              "weaponGroups": ["bladesLight"],
+              "weaponSubtype": "light",
+              "weight": { "value": 2 },
+              "alignments": {},
+              "mods": {}
+            },
+            "type": "weapon",
+            "effects": [],
+            "flags": {},
+            "_id": "Yqt38gqjsbJFuhOt",
             "sort": 0
           }
         ],
@@ -672,6 +896,89 @@
           "perform": -1,
           "bluff": -1
         }
+      },
+      "attacks": {
+        "Longsword": {
+          "attack": [11, 6],
+          "damage": 4,
+          "dice": "1d8",
+          "formula": {
+            "attack": "1d20 + 4[Strength] + 6[Base Attack Bonus] + 1[Masterwork]",
+            "damage": ["sizeRoll(1,8,4) + 4[Strength]"]
+          }
+        },
+        "Longsword.pa": {
+          "attack": [9, 4],
+          "damage": 8,
+          "dice": "1d8",
+          "formula": {
+            "attack": "1d20 + 4[Strength] - 2[Power Attack] + 6[Base Attack Bonus] + 1[Masterwork]",
+            "damage": ["sizeRoll(1,8,4) + 4[Strength] + 4[Power Attack]"]
+          }
+        },
+        "Longsword.2h": {
+          "attack": [11, 6],
+          "damage": 6,
+          "dice": "1d8",
+          "formula": {
+            "attack": "1d20 + 4[Strength] + 6[Base Attack Bonus] + 1[Masterwork]",
+            "damage": ["sizeRoll(1,8,4) + 6[Strength]"]
+          }
+        },
+        "Longsword.2h-pa": {
+          "attack": [9, 4],
+          "damage": 12,
+          "dice": "1d8",
+          "formula": {
+            "attack": "1d20 + 4[Strength] - 2[Power Attack] + 6[Base Attack Bonus] + 1[Masterwork]",
+            "damage": ["sizeRoll(1,8,4) + 6[Strength] + 6[Power Attack]"]
+          }
+        },
+        "Greatsword": {
+          "attack": [11, 6],
+          "damage": 7,
+          "dice": "2d6",
+          "formula": {
+            "attack": "1d20 + 4[Strength] + 6[Base Attack Bonus] + 1[Masterwork]",
+            "damage": ["sizeRoll(2,6,4) + (1)[Enhancement Bonus] + 6[Strength]"]
+          }
+        },
+        "Greatsword.pa": {
+          "attack": [9, 4],
+          "damage": 13,
+          "dice": "2d6",
+          "formula": {
+            "attack": "1d20 + 4[Strength] - 2[Power Attack] + 6[Base Attack Bonus] + 1[Masterwork]",
+            "damage": ["sizeRoll(2,6,4) + (1)[Enhancement Bonus] + 6[Strength] + 6[Power Attack]"]
+          }
+        },
+        "Shortsword": {
+          "attack": [10, 5],
+          "damage": 4,
+          "dice": "1d6",
+          "formula": {
+            "attack": "1d20 + 4[Strength] + 6[Base Attack Bonus]",
+            "damage": ["sizeRoll(1,6,4) + 4[Strength]"]
+          }
+        },
+        "Shortsword.oh": {
+          "attack": [10, 5],
+          "damage": 2,
+          "dice": "1d6",
+          "formula": {
+            "attack": "1d20 + 4[Strength] + 6[Base Attack Bonus]",
+            "damage": ["sizeRoll(1,6,4) + 2[Strength]"]
+          }
+        },
+        "Shortsword.oh-pa": {
+          "attack": [8, 3],
+          "damage": 4,
+          "dice": "1d6",
+          "formula": {
+            "attack": "1d20 + 4[Strength] - 2[Power Attack] + 6[Base Attack Bonus]",
+            "damage": ["sizeRoll(1,6,4) + 2[Strength] + 2[Power Attack]"]
+          }
+        }
       }
     },
     "buffs": {
@@ -679,7 +986,7 @@
         "name": "human-fighter-6 [buffs]",
         "type": "character",
         "folder": "GuYuyoqdabfe4xZV",
-        "_id": "s95m16T3zgDz67LM",
+        "_id": "dDlh8KqgXTpOfeEZ",
         "system": {
           "abilities": {
             "str": { "value": 16 },
@@ -722,7 +1029,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "NaDMU0NUc19ORLEh",
+            "_id": "G9grsf9YuOU2Uhui",
             "folder": null,
             "sort": 0
           },
@@ -743,7 +1050,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "B6BEulHv13XJDpKS",
+            "_id": "wofjLxLcs3e2LUe8",
             "folder": null,
             "sort": 0
           },
@@ -764,7 +1071,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "GNv4icLIVyjVRb2y",
+            "_id": "pDgKVEC36XrciVy5",
             "folder": null,
             "sort": 0
           },
@@ -805,7 +1112,7 @@
             "type": "race",
             "effects": [],
             "flags": {},
-            "_id": "Rt5NIVXaVzzcONW0",
+            "_id": "iRMmPQyVPELp23Vt",
             "sort": 0
           },
           {
@@ -860,42 +1167,16 @@
               "pf1": {
                 "links": {
                   "classAssociations": {
-                    "dcVffqTLNiWbLmoR": 2,
-                    "cZ3PFs3BQLrhpLcH": 1,
-                    "TA2BStDWctyGijVy": 5,
-                    "g0XRpEwZG74NpvPb": 3
+                    "LsQQWuQgIOMDSxvr": 1,
+                    "MH2u2x49ax8Bs7FL": 2,
+                    "1pgyXMj3AHt0rllH": 5,
+                    "n4RPQaGR9b7zJwRL": 3
                   }
                 }
               }
             },
-            "_id": "jnGsNWPL1uX9N2O4",
+            "_id": "0yf2oH7T4lXGSFMD",
             "sort": 0
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1.class-abilities.Item.h0Brxw6khcjlEf1T"
-            },
-            "name": "Bravery",
-            "system": {
-              "abilityType": "ex",
-              "associations": { "classes": ["Fighter"] },
-              "contextNotes": {
-                "8o852MvQnKASJDU4": {
-                  "target": "will",
-                  "text": "+[[floor((@class.level + 2) / 4)]] vs fear effects"
-                }
-              },
-              "sources": [{ "id": "PZO1110", "pages": "55" }],
-              "subType": "classFeat",
-              "class": "fighter",
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "flags": {},
-            "sort": 200000,
-            "_id": "dcVffqTLNiWbLmoR",
-            "folder": null
           },
           {
             "_stats": {
@@ -921,7 +1202,33 @@
             "effects": [],
             "flags": {},
             "sort": 100000,
-            "_id": "cZ3PFs3BQLrhpLcH",
+            "_id": "LsQQWuQgIOMDSxvr",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.h0Brxw6khcjlEf1T"
+            },
+            "name": "Bravery",
+            "system": {
+              "abilityType": "ex",
+              "associations": { "classes": ["Fighter"] },
+              "contextNotes": {
+                "8o852MvQnKASJDU4": {
+                  "target": "will",
+                  "text": "+[[floor((@class.level + 2) / 4)]] vs fear effects"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "55" }],
+              "subType": "classFeat",
+              "class": "fighter",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 200000,
+            "_id": "MH2u2x49ax8Bs7FL",
             "folder": null
           },
           {
@@ -941,7 +1248,7 @@
             "effects": [],
             "flags": {},
             "sort": 400000,
-            "_id": "TA2BStDWctyGijVy",
+            "_id": "1pgyXMj3AHt0rllH",
             "folder": null
           },
           {
@@ -976,7 +1283,7 @@
             "effects": [],
             "flags": {},
             "sort": 300000,
-            "_id": "g0XRpEwZG74NpvPb",
+            "_id": "n4RPQaGR9b7zJwRL",
             "folder": null
           },
           {
@@ -993,31 +1300,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "d0AreQHa34YScmLi",
-            "sort": 0
-          },
-          {
-            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.8snLqsJN4LLL00Nq" },
-            "name": "Toughness",
-            "system": {
-              "changes": {
-                "bl5pemy2": {
-                  "_id": "bl5pemy2",
-                  "formula": "max(3, @attributes.hd.total)",
-                  "target": "mhp",
-                  "type": "untyped"
-                }
-              },
-              "sources": [{ "id": "PZO1110", "pages": "116, 135" }],
-              "subType": "feat",
-              "tags": ["General", "Defensive"],
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "folder": null,
-            "flags": {},
-            "_id": "kDii7A4Oo799KSwh",
+            "_id": "4xy2AS5SaBpffb53",
             "sort": 0
           },
           {
@@ -1036,7 +1319,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "VxGOdLad60MGqIP7",
+            "_id": "viYjJRv8dl770vrN",
             "sort": 0
           },
           {
@@ -1060,31 +1343,31 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "9f9nbupx2CPWfiDP",
+            "_id": "Wyx8nR2tCw0112y4",
             "sort": 0
           },
           {
-            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.Uuiu3p982omhMEPj" },
-            "name": "Improved Initiative",
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.8snLqsJN4LLL00Nq" },
+            "name": "Toughness",
             "system": {
               "changes": {
-                "ign7okhi": {
-                  "_id": "ign7okhi",
-                  "formula": "4",
-                  "target": "init",
+                "bl5pemy2": {
+                  "_id": "bl5pemy2",
+                  "formula": "max(3, @attributes.hd.total)",
+                  "target": "mhp",
                   "type": "untyped"
                 }
               },
-              "sources": [{ "id": "PZO1110", "pages": "115, 127" }],
+              "sources": [{ "id": "PZO1110", "pages": "116, 135" }],
               "subType": "feat",
-              "tags": ["Combat"],
+              "tags": ["General", "Defensive"],
               "alignments": {}
             },
             "type": "feat",
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "19xDxLOt3GhPPsJ2",
+            "_id": "2nAvKKswjxKh07L1",
             "sort": 0
           },
           {
@@ -1108,7 +1391,98 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "Y9MVIJN8Cmq5C8uj",
+            "_id": "y5tv8w9VnsVulVAo",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.Uuiu3p982omhMEPj" },
+            "name": "Improved Initiative",
+            "system": {
+              "changes": {
+                "ign7okhi": {
+                  "_id": "ign7okhi",
+                  "formula": "4",
+                  "target": "init",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "115, 127" }],
+              "subType": "feat",
+              "tags": ["Combat"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "2a2zLfEFMtDIFwT3",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.YLCvMNeAF9V31m1h" },
+            "name": "Weapon Specialization",
+            "system": {
+              "sources": [{ "id": "PZO1110", "pages": "117, 137" }],
+              "subType": "feat",
+              "tags": ["Combat", "Weapon", "Offensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "IDMrhDaKBNRn5Nhf",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.n250dFlbykAIAg5Z" },
+            "name": "Weapon Focus",
+            "system": {
+              "sources": [{ "id": "PZO1110", "pages": "117, 136" }],
+              "subType": "feat",
+              "tags": ["Combat", "Weapon", "Offensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "gJ1cGLnIJBBN3Jqx",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.armors-and-shields.Item.5TzaS38RPAx1oj9p"
+            },
+            "folder": "33jGfHlDL34jvwnX",
+            "name": "Breastplate",
+            "system": {
+              "armor": {
+                "acp": 1,
+                "dex": 5,
+                "material": { "base": { "value": "mithral" }, "addon": [] },
+                "value": 6,
+                "enh": 1,
+                "alignments": {}
+              },
+              "baseTypes": ["Breastplate"],
+              "equipmentSubtype": "mediumArmor",
+              "equipped": true,
+              "hardness": 10,
+              "hp": { "base": 30 },
+              "price": { "base": 200, "unit": "gp" },
+              "quantity": 1,
+              "slot": "armor",
+              "sources": [{ "id": "PZO1110", "pages": "150, 151" }],
+              "spellFailure": 15,
+              "subType": "armor",
+              "weight": { "value": 30 },
+              "mods": {}
+            },
+            "type": "equipment",
+            "effects": [],
+            "flags": {},
+            "_id": "diSxDbgpd9geEWwb",
             "sort": 0
           },
           {
@@ -1156,7 +1530,7 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "xjerISiL0Z3d5Wyk",
+            "_id": "H1PUU0P3ojiGzDAM",
             "sort": 0
           },
           {
@@ -1205,42 +1579,200 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "lV1hoEPKdXnfVn7a",
+            "_id": "Ol84X9Cur998AJ6b",
             "sort": 0
           },
           {
             "_stats": {
-              "compendiumSource": "Compendium.pf1.armors-and-shields.Item.5TzaS38RPAx1oj9p"
+              "compendiumSource": "Compendium.pf1.weapons-and-ammo.Item.oyUApQSVsAqzyjdz"
             },
-            "folder": "33jGfHlDL34jvwnX",
-            "name": "Breastplate",
+            "folder": "ojvASzhaCGmnx8xQ",
+            "name": "Greatsword",
             "system": {
-              "armor": {
-                "acp": 1,
-                "dex": 5,
-                "material": { "base": { "value": "mithral" }, "addon": [] },
-                "value": 6,
-                "enh": 1,
-                "alignments": {}
+              "actions": {
+                "137kuv1fu5ds6swb": {
+                  "_id": "137kuv1fu5ds6swb",
+                  "ability": {
+                    "attack": "_default",
+                    "critMult": 2,
+                    "critRange": 19,
+                    "damage": "str"
+                  },
+                  "actionType": "mwak",
+                  "activation": { "type": "attack", "unchained": { "type": "attack" } },
+                  "damage": {
+                    "parts": [{ "formula": "sizeRoll(2, 6, @size)", "types": ["slashing"] }]
+                  },
+                  "duration": { "units": "inst" },
+                  "extraAttacks": { "type": "standard" },
+                  "name": "Attack",
+                  "range": { "units": "melee", "value": "0" },
+                  "sort": 0
+                }
               },
-              "baseTypes": ["Breastplate"],
-              "equipmentSubtype": "mediumArmor",
+              "baseTypes": ["Greatsword"],
               "equipped": true,
+              "hands": 2,
               "hardness": 10,
-              "hp": { "base": 30 },
-              "price": { "base": 200, "unit": "gp" },
+              "held": "2h",
+              "hp": { "base": 10 },
+              "material": { "base": { "value": "steel" }, "addon": [] },
+              "price": { "base": 50, "unit": "gp" },
               "quantity": 1,
-              "slot": "armor",
-              "sources": [{ "id": "PZO1110", "pages": "150, 151" }],
-              "spellFailure": 15,
-              "subType": "armor",
-              "weight": { "value": 30 },
+              "sources": [
+                { "id": "PZO1110", "pages": "143, 146" },
+                { "id": "PZO1123", "pages": "18" }
+              ],
+              "subType": "martial",
+              "weaponGroups": ["bladesHeavy"],
+              "weaponSubtype": "2h",
+              "weight": { "value": 8 },
+              "enh": 1,
+              "alignments": {},
               "mods": {}
             },
-            "type": "equipment",
+            "type": "weapon",
             "effects": [],
             "flags": {},
-            "_id": "68IzS9NoZSDOnssB",
+            "_id": "YAnaRDc4ymnE2bWW",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.weapons-and-ammo.Item.05rD6YP5sVSrKY28"
+            },
+            "folder": "ojvASzhaCGmnx8xQ",
+            "name": "Shortsword",
+            "system": {
+              "actions": {
+                "lkzee7hknlqx9chs": {
+                  "_id": "lkzee7hknlqx9chs",
+                  "ability": {
+                    "attack": "_default",
+                    "critMult": 2,
+                    "critRange": 19,
+                    "damage": "str"
+                  },
+                  "actionType": "mwak",
+                  "activation": { "type": "attack", "unchained": { "type": "attack" } },
+                  "damage": {
+                    "parts": [{ "formula": "sizeRoll(1, 6, @size)", "types": ["piercing"] }]
+                  },
+                  "duration": { "units": "inst" },
+                  "extraAttacks": { "type": "standard" },
+                  "name": "Attack",
+                  "range": { "units": "melee", "value": "0" },
+                  "sort": 0
+                }
+              },
+              "baseTypes": ["Shortsword"],
+              "equipped": true,
+              "hardness": 10,
+              "hp": { "base": 2 },
+              "material": { "base": { "value": "steel" }, "addon": [] },
+              "price": { "base": 10, "unit": "gp" },
+              "properties": ["fin"],
+              "quantity": 1,
+              "sources": [
+                { "id": "PZO1110", "pages": "142, 148" },
+                { "id": "PZO1123", "pages": "18" }
+              ],
+              "subType": "martial",
+              "weaponGroups": ["bladesLight"],
+              "weaponSubtype": "light",
+              "weight": { "value": 2 },
+              "alignments": {},
+              "mods": {}
+            },
+            "type": "weapon",
+            "effects": [],
+            "flags": {},
+            "_id": "I7p6NSCkVHCUdcL4",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.weapons-and-ammo.Item.zWRlna42PMJVX6un"
+            },
+            "folder": "ojvASzhaCGmnx8xQ",
+            "name": "Longsword",
+            "system": {
+              "actions": {
+                "jelb63mz9vrxa43c": {
+                  "_id": "jelb63mz9vrxa43c",
+                  "ability": {
+                    "attack": "_default",
+                    "critMult": 2,
+                    "critRange": 19,
+                    "damage": "str"
+                  },
+                  "actionType": "mwak",
+                  "activation": { "type": "attack", "unchained": { "type": "attack" } },
+                  "damage": {
+                    "parts": [{ "formula": "sizeRoll(1, 8, @size)", "types": ["slashing"] }]
+                  },
+                  "duration": { "units": "inst" },
+                  "extraAttacks": { "type": "standard" },
+                  "name": "Attack",
+                  "range": { "units": "melee", "value": "0" },
+                  "sort": 0
+                }
+              },
+              "baseTypes": ["Longsword"],
+              "equipped": true,
+              "hardness": 10,
+              "hp": { "base": 5 },
+              "material": { "base": { "value": "steel" }, "addon": [] },
+              "price": { "base": 15, "unit": "gp" },
+              "quantity": 1,
+              "sources": [
+                { "id": "PZO1110", "pages": "142, 147" },
+                { "id": "PZO1123", "pages": "18" }
+              ],
+              "subType": "martial",
+              "tags": ["Eastern"],
+              "weaponGroups": ["bladesHeavy"],
+              "weaponSubtype": "1h",
+              "weight": { "value": 4 },
+              "masterwork": true,
+              "alignments": {},
+              "mods": {}
+            },
+            "type": "weapon",
+            "effects": [],
+            "flags": {},
+            "_id": "S4yLihw9B5D5OkKt",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.buffs.Item.QYVZS8MfOKzjpCm1" },
+            "folder": "abSp08elNrsecBYc",
+            "name": "Bless",
+            "system": {
+              "changes": {
+                "e9subqu1": {
+                  "_id": "e9subqu1",
+                  "formula": "1",
+                  "target": "attack",
+                  "type": "morale"
+                }
+              },
+              "contextNotes": {
+                "cBdtzcfjCFDULxgX": {
+                  "target": "allSavingThrows",
+                  "text": "+[[1]] Morale vs Fear effects"
+                }
+              },
+              "duration": { "end": "initiative", "units": "minute", "value": "@item.level" },
+              "level": 1,
+              "sources": [{ "id": "PZO1110", "pages": "249" }],
+              "subType": "spell",
+              "active": true
+            },
+            "type": "buff",
+            "effects": [],
+            "flags": {},
+            "_id": "wtICnOd7lyj2o5GW",
             "sort": 0
           },
           {
@@ -1298,7 +1830,7 @@
             "type": "buff",
             "effects": [],
             "flags": {},
-            "_id": "ovMJdd2jqhoeOBsS",
+            "_id": "vUYXIOj2QDHiamj4",
             "sort": 0
           },
           {
@@ -1337,38 +1869,7 @@
             "type": "buff",
             "effects": [],
             "flags": {},
-            "_id": "le5htVM4EORM1yZA",
-            "sort": 0
-          },
-          {
-            "_stats": { "compendiumSource": "Compendium.pf1.buffs.Item.QYVZS8MfOKzjpCm1" },
-            "folder": "abSp08elNrsecBYc",
-            "name": "Bless",
-            "system": {
-              "changes": {
-                "e9subqu1": {
-                  "_id": "e9subqu1",
-                  "formula": "1",
-                  "target": "attack",
-                  "type": "morale"
-                }
-              },
-              "contextNotes": {
-                "cBdtzcfjCFDULxgX": {
-                  "target": "allSavingThrows",
-                  "text": "+[[1]] Morale vs Fear effects"
-                }
-              },
-              "duration": { "end": "initiative", "units": "minute", "value": "@item.level" },
-              "level": 1,
-              "sources": [{ "id": "PZO1110", "pages": "249" }],
-              "subType": "spell",
-              "active": true
-            },
-            "type": "buff",
-            "effects": [],
-            "flags": {},
-            "_id": "78Y2qrd2brsO7X4h",
+            "_id": "wst2sX7h5CkO4BUg",
             "sort": 0
           }
         ],
@@ -1434,6 +1935,89 @@
           "perform": -1,
           "bluff": -1
         }
+      },
+      "attacks": {
+        "Greatsword": {
+          "attack": [13, 8],
+          "damage": 8,
+          "dice": "3d6",
+          "formula": {
+            "attack": "1d20 - 1[Size] + 5[Strength] + 6[Base Attack Bonus] + 1[Bless] + 1[Haste] + 1[Masterwork]",
+            "damage": ["sizeRoll(2,6,5) + (1)[Enhancement Bonus] + 7[Strength]"]
+          }
+        },
+        "Greatsword.pa": {
+          "attack": [11, 6],
+          "damage": 14,
+          "dice": "3d6",
+          "formula": {
+            "attack": "1d20 - 1[Size] + 5[Strength] - 2[Power Attack] + 6[Base Attack Bonus] + 1[Bless] + 1[Haste] + 1[Masterwork]",
+            "damage": ["sizeRoll(2,6,5) + (1)[Enhancement Bonus] + 7[Strength] + 6[Power Attack]"]
+          }
+        },
+        "Shortsword": {
+          "attack": [12, 7],
+          "damage": 5,
+          "dice": "1d8",
+          "formula": {
+            "attack": "1d20 - 1[Size] + 5[Strength] + 6[Base Attack Bonus] + 1[Bless] + 1[Haste]",
+            "damage": ["sizeRoll(1,6,5) + 5[Strength]"]
+          }
+        },
+        "Shortsword.oh": {
+          "attack": [12, 7],
+          "damage": 2,
+          "dice": "1d8",
+          "formula": {
+            "attack": "1d20 - 1[Size] + 5[Strength] + 6[Base Attack Bonus] + 1[Bless] + 1[Haste]",
+            "damage": ["sizeRoll(1,6,5) + 2[Strength]"]
+          }
+        },
+        "Shortsword.oh-pa": {
+          "attack": [10, 5],
+          "damage": 4,
+          "dice": "1d8",
+          "formula": {
+            "attack": "1d20 - 1[Size] + 5[Strength] - 2[Power Attack] + 6[Base Attack Bonus] + 1[Bless] + 1[Haste]",
+            "damage": ["sizeRoll(1,6,5) + 2[Strength] + 2[Power Attack]"]
+          }
+        },
+        "Longsword": {
+          "attack": [13, 8],
+          "damage": 5,
+          "dice": "2d6",
+          "formula": {
+            "attack": "1d20 - 1[Size] + 5[Strength] + 6[Base Attack Bonus] + 1[Bless] + 1[Haste] + 1[Masterwork]",
+            "damage": ["sizeRoll(1,8,5) + 5[Strength]"]
+          }
+        },
+        "Longsword.pa": {
+          "attack": [11, 6],
+          "damage": 9,
+          "dice": "2d6",
+          "formula": {
+            "attack": "1d20 - 1[Size] + 5[Strength] - 2[Power Attack] + 6[Base Attack Bonus] + 1[Bless] + 1[Haste] + 1[Masterwork]",
+            "damage": ["sizeRoll(1,8,5) + 5[Strength] + 4[Power Attack]"]
+          }
+        },
+        "Longsword.2h": {
+          "attack": [13, 8],
+          "damage": 7,
+          "dice": "2d6",
+          "formula": {
+            "attack": "1d20 - 1[Size] + 5[Strength] + 6[Base Attack Bonus] + 1[Bless] + 1[Haste] + 1[Masterwork]",
+            "damage": ["sizeRoll(1,8,5) + 7[Strength]"]
+          }
+        },
+        "Longsword.2h-pa": {
+          "attack": [11, 6],
+          "damage": 13,
+          "dice": "2d6",
+          "formula": {
+            "attack": "1d20 - 1[Size] + 5[Strength] - 2[Power Attack] + 6[Base Attack Bonus] + 1[Bless] + 1[Haste] + 1[Masterwork]",
+            "damage": ["sizeRoll(1,8,5) + 7[Strength] + 6[Power Attack]"]
+          }
+        }
       }
     },
     "conditions": {
@@ -1441,7 +2025,7 @@
         "name": "human-fighter-6 [conditions]",
         "type": "character",
         "folder": "GuYuyoqdabfe4xZV",
-        "_id": "5UKLqeSJpOyXtvaP",
+        "_id": "BxwJMxnPAO58MORv",
         "system": {
           "abilities": {
             "str": { "value": 16 },
@@ -1484,7 +2068,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "Q0TchdRH7xePh8Pt",
+            "_id": "yaue4W651FzbCW6r",
             "folder": null,
             "sort": 0
           },
@@ -1505,7 +2089,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "UnOI5XtCTzvAFs9d",
+            "_id": "iWWfZOBG99TMGtoB",
             "folder": null,
             "sort": 0
           },
@@ -1526,7 +2110,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "9TvGSuPOTUY2koSW",
+            "_id": "gIhFnRot1seqFEOf",
             "folder": null,
             "sort": 0
           },
@@ -1567,7 +2151,7 @@
             "type": "race",
             "effects": [],
             "flags": {},
-            "_id": "3HERgzrb28yrznTN",
+            "_id": "Gl9VAVdzCkMrqsX8",
             "sort": 0
           },
           {
@@ -1622,16 +2206,43 @@
               "pf1": {
                 "links": {
                   "classAssociations": {
-                    "bN9qnIjUV4JeuHCF": 2,
-                    "eOgAHLXOk87FGFTk": 3,
-                    "eER5IpzF2UxLyihz": 5,
-                    "Yo22D3KadcUSaEvS": 1
+                    "WPjXlyggGiAhJkhc": 1,
+                    "BSwFv0iClkxSPHAH": 2,
+                    "5yPd2QZoWKrJd6uk": 3,
+                    "f8vUvJ3PTjjvyBG9": 5
                   }
                 }
               }
             },
-            "_id": "r7EDvTmC79H0qS3X",
+            "_id": "p78aEVAZvFTKRpMB",
             "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.CV8BsY3ciUb9TA1Y"
+            },
+            "name": "Bonus Feats (FGT)",
+            "system": {
+              "associations": { "classes": ["Fighter"] },
+              "changes": {
+                "yoxm5fp1": {
+                  "_id": "yoxm5fp1",
+                  "formula": "1 + floor(@class.unlevel / 2)",
+                  "target": "bonusFeats",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "55" }],
+              "subType": "classFeat",
+              "class": "fighter",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 100000,
+            "_id": "WPjXlyggGiAhJkhc",
+            "folder": null
           },
           {
             "_stats": {
@@ -1656,7 +2267,7 @@
             "effects": [],
             "flags": {},
             "sort": 200000,
-            "_id": "bN9qnIjUV4JeuHCF",
+            "_id": "BSwFv0iClkxSPHAH",
             "folder": null
           },
           {
@@ -1691,7 +2302,7 @@
             "effects": [],
             "flags": {},
             "sort": 300000,
-            "_id": "eOgAHLXOk87FGFTk",
+            "_id": "5yPd2QZoWKrJd6uk",
             "folder": null
           },
           {
@@ -1711,34 +2322,7 @@
             "effects": [],
             "flags": {},
             "sort": 400000,
-            "_id": "eER5IpzF2UxLyihz",
-            "folder": null
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1.class-abilities.Item.CV8BsY3ciUb9TA1Y"
-            },
-            "name": "Bonus Feats (FGT)",
-            "system": {
-              "associations": { "classes": ["Fighter"] },
-              "changes": {
-                "yoxm5fp1": {
-                  "_id": "yoxm5fp1",
-                  "formula": "1 + floor(@class.unlevel / 2)",
-                  "target": "bonusFeats",
-                  "type": "untyped"
-                }
-              },
-              "sources": [{ "id": "PZO1110", "pages": "55" }],
-              "subType": "classFeat",
-              "class": "fighter",
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "flags": {},
-            "sort": 100000,
-            "_id": "Yo22D3KadcUSaEvS",
+            "_id": "f8vUvJ3PTjjvyBG9",
             "folder": null
           },
           {
@@ -1755,7 +2339,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "ftg4qLFxIPb8Czpo",
+            "_id": "paFRDnNr3gUhfGzU",
             "sort": 0
           },
           {
@@ -1779,7 +2363,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "US7yUOoPiEGJzBKq",
+            "_id": "kUODZCqL5xCS9DY7",
             "sort": 0
           },
           {
@@ -1798,7 +2382,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "bZyDgiD3GONzKy8z",
+            "_id": "GcaZzWERLI2BEVLX",
             "sort": 0
           },
           {
@@ -1822,7 +2406,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "Bc7o3EqRWrKVGfkN",
+            "_id": "ReXqcJx4CaB8Gppt",
             "sort": 0
           },
           {
@@ -1846,7 +2430,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "JLhxx99nCp1caHBj",
+            "_id": "M6uKcrEHmoJGnDm4",
             "sort": 0
           },
           {
@@ -1870,7 +2454,39 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "v6bP0z8a9omI4BN7",
+            "_id": "Phu7geyGbyR8zxdy",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.YLCvMNeAF9V31m1h" },
+            "name": "Weapon Specialization",
+            "system": {
+              "sources": [{ "id": "PZO1110", "pages": "117, 137" }],
+              "subType": "feat",
+              "tags": ["Combat", "Weapon", "Offensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "32Y4ikhPTIYKQqVH",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.n250dFlbykAIAg5Z" },
+            "name": "Weapon Focus",
+            "system": {
+              "sources": [{ "id": "PZO1110", "pages": "117, 136" }],
+              "subType": "feat",
+              "tags": ["Combat", "Weapon", "Offensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "64pSTWrkaSDoNPC4",
             "sort": 0
           },
           {
@@ -1905,7 +2521,7 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "0OfOsamEF0nKnm92",
+            "_id": "ztCwSZ4bi55oSL4L",
             "sort": 0
           },
           {
@@ -1953,7 +2569,7 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "1JyBZo8Ijopi6b6I",
+            "_id": "AjqQQG3gOG53OdI7",
             "sort": 0
           },
           {
@@ -2002,7 +2618,169 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "fj9Sb2DDjOwxkUi3",
+            "_id": "uSmROJsKDxQ9DJI3",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.weapons-and-ammo.Item.zWRlna42PMJVX6un"
+            },
+            "folder": "ojvASzhaCGmnx8xQ",
+            "name": "Longsword",
+            "system": {
+              "actions": {
+                "jelb63mz9vrxa43c": {
+                  "_id": "jelb63mz9vrxa43c",
+                  "ability": {
+                    "attack": "_default",
+                    "critMult": 2,
+                    "critRange": 19,
+                    "damage": "str"
+                  },
+                  "actionType": "mwak",
+                  "activation": { "type": "attack", "unchained": { "type": "attack" } },
+                  "damage": {
+                    "parts": [{ "formula": "sizeRoll(1, 8, @size)", "types": ["slashing"] }]
+                  },
+                  "duration": { "units": "inst" },
+                  "extraAttacks": { "type": "standard" },
+                  "name": "Attack",
+                  "range": { "units": "melee", "value": "0" },
+                  "sort": 0
+                }
+              },
+              "baseTypes": ["Longsword"],
+              "equipped": true,
+              "hardness": 10,
+              "hp": { "base": 5 },
+              "material": { "base": { "value": "steel" }, "addon": [] },
+              "price": { "base": 15, "unit": "gp" },
+              "quantity": 1,
+              "sources": [
+                { "id": "PZO1110", "pages": "142, 147" },
+                { "id": "PZO1123", "pages": "18" }
+              ],
+              "subType": "martial",
+              "tags": ["Eastern"],
+              "weaponGroups": ["bladesHeavy"],
+              "weaponSubtype": "1h",
+              "weight": { "value": 4 },
+              "masterwork": true,
+              "alignments": {},
+              "mods": {}
+            },
+            "type": "weapon",
+            "effects": [],
+            "flags": {},
+            "_id": "Z6PZ66U6mokPkuf5",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.weapons-and-ammo.Item.oyUApQSVsAqzyjdz"
+            },
+            "folder": "ojvASzhaCGmnx8xQ",
+            "name": "Greatsword",
+            "system": {
+              "actions": {
+                "137kuv1fu5ds6swb": {
+                  "_id": "137kuv1fu5ds6swb",
+                  "ability": {
+                    "attack": "_default",
+                    "critMult": 2,
+                    "critRange": 19,
+                    "damage": "str"
+                  },
+                  "actionType": "mwak",
+                  "activation": { "type": "attack", "unchained": { "type": "attack" } },
+                  "damage": {
+                    "parts": [{ "formula": "sizeRoll(2, 6, @size)", "types": ["slashing"] }]
+                  },
+                  "duration": { "units": "inst" },
+                  "extraAttacks": { "type": "standard" },
+                  "name": "Attack",
+                  "range": { "units": "melee", "value": "0" },
+                  "sort": 0
+                }
+              },
+              "baseTypes": ["Greatsword"],
+              "equipped": true,
+              "hands": 2,
+              "hardness": 10,
+              "held": "2h",
+              "hp": { "base": 10 },
+              "material": { "base": { "value": "steel" }, "addon": [] },
+              "price": { "base": 50, "unit": "gp" },
+              "quantity": 1,
+              "sources": [
+                { "id": "PZO1110", "pages": "143, 146" },
+                { "id": "PZO1123", "pages": "18" }
+              ],
+              "subType": "martial",
+              "weaponGroups": ["bladesHeavy"],
+              "weaponSubtype": "2h",
+              "weight": { "value": 8 },
+              "enh": 1,
+              "alignments": {},
+              "mods": {}
+            },
+            "type": "weapon",
+            "effects": [],
+            "flags": {},
+            "_id": "tAFl4QCkmFnocdpP",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.weapons-and-ammo.Item.05rD6YP5sVSrKY28"
+            },
+            "folder": "ojvASzhaCGmnx8xQ",
+            "name": "Shortsword",
+            "system": {
+              "actions": {
+                "lkzee7hknlqx9chs": {
+                  "_id": "lkzee7hknlqx9chs",
+                  "ability": {
+                    "attack": "_default",
+                    "critMult": 2,
+                    "critRange": 19,
+                    "damage": "str"
+                  },
+                  "actionType": "mwak",
+                  "activation": { "type": "attack", "unchained": { "type": "attack" } },
+                  "damage": {
+                    "parts": [{ "formula": "sizeRoll(1, 6, @size)", "types": ["piercing"] }]
+                  },
+                  "duration": { "units": "inst" },
+                  "extraAttacks": { "type": "standard" },
+                  "name": "Attack",
+                  "range": { "units": "melee", "value": "0" },
+                  "sort": 0
+                }
+              },
+              "baseTypes": ["Shortsword"],
+              "equipped": true,
+              "hardness": 10,
+              "hp": { "base": 2 },
+              "material": { "base": { "value": "steel" }, "addon": [] },
+              "price": { "base": 10, "unit": "gp" },
+              "properties": ["fin"],
+              "quantity": 1,
+              "sources": [
+                { "id": "PZO1110", "pages": "142, 148" },
+                { "id": "PZO1123", "pages": "18" }
+              ],
+              "subType": "martial",
+              "weaponGroups": ["bladesLight"],
+              "weaponSubtype": "light",
+              "weight": { "value": 2 },
+              "alignments": {},
+              "mods": {}
+            },
+            "type": "weapon",
+            "effects": [],
+            "flags": {},
+            "_id": "MlSZuDftrGStWykd",
             "sort": 0
           }
         ],
@@ -2012,7 +2790,7 @@
             "img": "systems/pf1/icons/conditions/shaken.svg",
             "statuses": ["shaken"],
             "showIcon": 2,
-            "_id": "Fm7yLOjinhm39RSr",
+            "_id": "VNcAhXkz1cDOCARu",
             "type": "base",
             "system": { "changes": [] },
             "disabled": false,
@@ -2036,8 +2814,8 @@
               "coreVersion": "14.370",
               "systemId": "pf1",
               "systemVersion": "11.11",
-              "createdTime": 1795401509976,
-              "modifiedTime": 1795401509976,
+              "createdTime": 1795407333136,
+              "modifiedTime": 1795407333136,
               "lastModifiedBy": "7UYomJpxzjJzDpJa",
               "compendiumSource": null,
               "duplicateSource": null,
@@ -2049,7 +2827,7 @@
             "img": "icons/svg/unconscious.svg",
             "statuses": ["fatigued"],
             "showIcon": 2,
-            "_id": "8kGqQGkzPszmI6Ea",
+            "_id": "6O1AFtP01Glbk9O0",
             "type": "base",
             "system": { "changes": [] },
             "disabled": false,
@@ -2073,8 +2851,8 @@
               "coreVersion": "14.370",
               "systemId": "pf1",
               "systemVersion": "11.11",
-              "createdTime": 1795401510033,
-              "modifiedTime": 1795401510033,
+              "createdTime": 1795407333233,
+              "modifiedTime": 1795407333233,
               "lastModifiedBy": "7UYomJpxzjJzDpJa",
               "compendiumSource": null,
               "duplicateSource": null,
@@ -2142,6 +2920,89 @@
           "senseMotive": -3,
           "perform": -3,
           "bluff": -3
+        }
+      },
+      "attacks": {
+        "Longsword": {
+          "attack": [8, 3],
+          "damage": 3,
+          "dice": "1d8",
+          "formula": {
+            "attack": "1d20 + 3[Strength] + 6[Base Attack Bonus] - 2[Shaken] + 1[Masterwork]",
+            "damage": ["sizeRoll(1,8,4) + 3[Strength]"]
+          }
+        },
+        "Longsword.pa": {
+          "attack": [6, 1],
+          "damage": 7,
+          "dice": "1d8",
+          "formula": {
+            "attack": "1d20 + 3[Strength] - 2[Power Attack] + 6[Base Attack Bonus] - 2[Shaken] + 1[Masterwork]",
+            "damage": ["sizeRoll(1,8,4) + 3[Strength] + 4[Power Attack]"]
+          }
+        },
+        "Longsword.2h": {
+          "attack": [8, 3],
+          "damage": 4,
+          "dice": "1d8",
+          "formula": {
+            "attack": "1d20 + 3[Strength] + 6[Base Attack Bonus] - 2[Shaken] + 1[Masterwork]",
+            "damage": ["sizeRoll(1,8,4) + 4[Strength]"]
+          }
+        },
+        "Longsword.2h-pa": {
+          "attack": [6, 1],
+          "damage": 10,
+          "dice": "1d8",
+          "formula": {
+            "attack": "1d20 + 3[Strength] - 2[Power Attack] + 6[Base Attack Bonus] - 2[Shaken] + 1[Masterwork]",
+            "damage": ["sizeRoll(1,8,4) + 4[Strength] + 6[Power Attack]"]
+          }
+        },
+        "Greatsword": {
+          "attack": [8, 3],
+          "damage": 5,
+          "dice": "2d6",
+          "formula": {
+            "attack": "1d20 + 3[Strength] + 6[Base Attack Bonus] - 2[Shaken] + 1[Masterwork]",
+            "damage": ["sizeRoll(2,6,4) + (1)[Enhancement Bonus] + 4[Strength]"]
+          }
+        },
+        "Greatsword.pa": {
+          "attack": [6, 1],
+          "damage": 11,
+          "dice": "2d6",
+          "formula": {
+            "attack": "1d20 + 3[Strength] - 2[Power Attack] + 6[Base Attack Bonus] - 2[Shaken] + 1[Masterwork]",
+            "damage": ["sizeRoll(2,6,4) + (1)[Enhancement Bonus] + 4[Strength] + 6[Power Attack]"]
+          }
+        },
+        "Shortsword": {
+          "attack": [7, 2],
+          "damage": 3,
+          "dice": "1d6",
+          "formula": {
+            "attack": "1d20 + 3[Strength] + 6[Base Attack Bonus] - 2[Shaken]",
+            "damage": ["sizeRoll(1,6,4) + 3[Strength]"]
+          }
+        },
+        "Shortsword.oh": {
+          "attack": [7, 2],
+          "damage": 1,
+          "dice": "1d6",
+          "formula": {
+            "attack": "1d20 + 3[Strength] + 6[Base Attack Bonus] - 2[Shaken]",
+            "damage": ["sizeRoll(1,6,4) + 1[Strength]"]
+          }
+        },
+        "Shortsword.oh-pa": {
+          "attack": [5, 0],
+          "damage": 3,
+          "dice": "1d6",
+          "formula": {
+            "attack": "1d20 + 3[Strength] - 2[Power Attack] + 6[Base Attack Bonus] - 2[Shaken]",
+            "damage": ["sizeRoll(1,6,4) + 1[Strength] + 2[Power Attack]"]
+          }
         }
       }
     }

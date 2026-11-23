@@ -19,7 +19,14 @@
     "items": [
       { "pack": "pf1.armors-and-shields", "name": "Hide Armor", "equipped": true },
       { "pack": "pf1.armors-and-shields", "name": "Heavy Wooden Shield", "equipped": true },
-      { "pack": "pf1.items", "name": "Cloak of Resistance +1", "equipped": true }
+      { "pack": "pf1.items", "name": "Cloak of Resistance +1", "equipped": true },
+      {
+        "pack": "pf1.weapons-and-ammo",
+        "name": "Greataxe",
+        "equipped": true,
+        "masterwork": true,
+        "attacks": [{ "id": "pa", "powerAttack": true }]
+      }
     ],
     "scenarios": {
       "base": {},
@@ -33,7 +40,7 @@
         "name": "half-orc-barbarian-12 [base]",
         "type": "character",
         "folder": "GuYuyoqdabfe4xZV",
-        "_id": "wcHPVcR3NijMT5Qd",
+        "_id": "EREm6PuwCKVgQF8w",
         "system": {
           "abilities": {
             "str": { "value": 16 },
@@ -76,7 +83,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "9Hi88a9UZKkQj6Vo",
+            "_id": "t0ksn7UOlxzeLjT8",
             "folder": null,
             "sort": 0
           },
@@ -97,7 +104,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "0rVPlL1kD8h95r6I",
+            "_id": "PFrqtpQPThjadOD4",
             "folder": null,
             "sort": 0
           },
@@ -118,7 +125,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "arXw9gvn5e7cnNLD",
+            "_id": "MsBZZaVJxDP5Xxmm",
             "folder": null,
             "sort": 0
           },
@@ -139,7 +146,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "V1PXlhJjuw9JuYLN",
+            "_id": "H3ufqYgIku6N0RB7",
             "folder": null,
             "sort": 0
           },
@@ -176,7 +183,7 @@
             "type": "race",
             "effects": [],
             "flags": {},
-            "_id": "tF2JeaKMQjNaZRbc",
+            "_id": "TXtDwmkLpCCKJGrh",
             "sort": 0
           },
           {
@@ -237,19 +244,19 @@
               "pf1": {
                 "links": {
                   "classAssociations": {
-                    "jhUxzDUqzBSH2fJF": 1,
-                    "AYN4dgAhZRFkRRLc": 1,
-                    "RWhh2BSHcUtkk3Hx": 2,
-                    "BngPjD6LGrvDVxSH": 2,
-                    "vedYDSRwnzXQrLLm": 3,
-                    "IyBzfm8KypUtrfBr": 5,
-                    "TMqqdbcOOlV3xUGg": 7,
-                    "LVngn6xVRPqIQvcp": 11
+                    "Buf3qs1GaMCih0YE": 1,
+                    "dXTa0ZpwwQthsOeR": 1,
+                    "nRDxOMdnAb0uYZ9C": 2,
+                    "NZCH7khya1Uwly2E": 2,
+                    "urKilxekAJpiZVB4": 3,
+                    "3ey5DSVIRXVpZ8ho": 5,
+                    "a266EQUVAONDiA90": 7,
+                    "AttfMAKJT7s7mL4b": 11
                   }
                 }
               }
             },
-            "_id": "HbE13OLroQYa5VO0",
+            "_id": "jQvSzzBRQwm6FxJ0",
             "sort": 0
           },
           {
@@ -273,7 +280,7 @@
               "associations": { "classes": ["Barbarian"] },
               "links": {
                 "supplements": [{ "uuid": "Compendium.pf1.buffs.Item.UgjpRD8vtiSWRxuL" }],
-                "children": [{ "uuid": ".Item.lEtlQGUWmKNebdxH" }]
+                "children": [{ "uuid": ".Item.apbVYE25DjxgDm9W" }]
               },
               "sources": [{ "id": "PZO1110", "pages": "32" }],
               "subType": "classFeat",
@@ -289,7 +296,7 @@
             "effects": [],
             "flags": {},
             "sort": 100000,
-            "_id": "jhUxzDUqzBSH2fJF",
+            "_id": "Buf3qs1GaMCih0YE",
             "folder": null
           },
           {
@@ -320,7 +327,7 @@
             "effects": [],
             "flags": {},
             "sort": 200000,
-            "_id": "AYN4dgAhZRFkRRLc",
+            "_id": "dXTa0ZpwwQthsOeR",
             "folder": null
           },
           {
@@ -357,7 +364,7 @@
             "effects": [],
             "flags": {},
             "sort": 300000,
-            "_id": "RWhh2BSHcUtkk3Hx",
+            "_id": "nRDxOMdnAb0uYZ9C",
             "folder": null
           },
           {
@@ -377,7 +384,7 @@
             "effects": [],
             "flags": {},
             "sort": 400000,
-            "_id": "BngPjD6LGrvDVxSH",
+            "_id": "NZCH7khya1Uwly2E",
             "folder": null
           },
           {
@@ -407,7 +414,7 @@
             "effects": [],
             "flags": {},
             "sort": 500000,
-            "_id": "vedYDSRwnzXQrLLm",
+            "_id": "urKilxekAJpiZVB4",
             "folder": null
           },
           {
@@ -435,7 +442,7 @@
             "effects": [],
             "flags": {},
             "sort": 600000,
-            "_id": "IyBzfm8KypUtrfBr",
+            "_id": "3ey5DSVIRXVpZ8ho",
             "folder": null
           },
           {
@@ -458,7 +465,7 @@
             "effects": [],
             "flags": {},
             "sort": 700000,
-            "_id": "TMqqdbcOOlV3xUGg",
+            "_id": "a266EQUVAONDiA90",
             "folder": null
           },
           {
@@ -478,7 +485,7 @@
             "effects": [],
             "flags": {},
             "sort": 800000,
-            "_id": "LVngn6xVRPqIQvcp",
+            "_id": "AttfMAKJT7s7mL4b",
             "folder": null
           },
           {
@@ -534,8 +541,25 @@
             "effects": [],
             "flags": { "pf1": { "source": "Compendium.pf1.buffs.Item.UgjpRD8vtiSWRxuL" } },
             "sort": 0,
-            "_id": "lEtlQGUWmKNebdxH",
+            "_id": "apbVYE25DjxgDm9W",
             "folder": null
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.FUW5mIXHNBBIQ1Sq" },
+            "name": "Power Attack",
+            "system": {
+              "changeFlags": ["powerAttack"],
+              "sources": [{ "id": "PZO1110", "pages": "116, 131" }],
+              "subType": "feat",
+              "tags": ["Combat", "Offensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "MHi4RBR4IDypRcsf",
+            "sort": 0
           },
           {
             "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.8snLqsJN4LLL00Nq" },
@@ -558,7 +582,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "VzAQzK6gR4VKsVED",
+            "_id": "u93v6Z6eXrSfWD0y",
             "sort": 0
           },
           {
@@ -582,7 +606,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "uwlucZg5PnwBpf15",
+            "_id": "f50Vd4SnPMrqHX8o",
             "sort": 0
           },
           {
@@ -612,7 +636,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "Bo0rFFAexlIeuNgl",
+            "_id": "XF0qb83uuoZZrjJH",
             "sort": 0
           },
           {
@@ -642,7 +666,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "1b75eUHsfm7V8Ybo",
+            "_id": "tiFYAmd2FZCLzpbR",
             "sort": 0
           },
           {
@@ -666,24 +690,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "jr2RPUr0KudfKsO7",
-            "sort": 0
-          },
-          {
-            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.FUW5mIXHNBBIQ1Sq" },
-            "name": "Power Attack",
-            "system": {
-              "changeFlags": ["powerAttack"],
-              "sources": [{ "id": "PZO1110", "pages": "116, 131" }],
-              "subType": "feat",
-              "tags": ["Combat", "Offensive"],
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "folder": null,
-            "flags": {},
-            "_id": "HBDdm8XMxiQNmPYU",
+            "_id": "GQjk95Znvvz5KMWN",
             "sort": 0
           },
           {
@@ -717,7 +724,7 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "9l1G3vtCNTM3kjP0",
+            "_id": "L2LJdMXwY7hGFof8",
             "sort": 0
           },
           {
@@ -765,7 +772,7 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "oliyn2XEExIud0dg",
+            "_id": "GOqV4Z6I62wrQXkK",
             "sort": 0
           },
           {
@@ -814,7 +821,62 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "XW4loKoY7CyzUH2n",
+            "_id": "4wWBrxbqCF06lYrs",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.weapons-and-ammo.Item.Wx22UaMqWgCrYi7r"
+            },
+            "folder": "ojvASzhaCGmnx8xQ",
+            "name": "Greataxe",
+            "system": {
+              "actions": {
+                "mqsu8ycqg6lbdbna": {
+                  "_id": "mqsu8ycqg6lbdbna",
+                  "ability": {
+                    "attack": "_default",
+                    "critMult": 3,
+                    "critRange": 20,
+                    "damage": "str"
+                  },
+                  "actionType": "mwak",
+                  "activation": { "type": "attack", "unchained": { "type": "attack" } },
+                  "damage": {
+                    "parts": [{ "formula": "sizeRoll(1, 12, @size)", "types": ["slashing"] }]
+                  },
+                  "duration": { "units": "inst" },
+                  "extraAttacks": { "type": "standard" },
+                  "name": "Attack",
+                  "range": { "units": "melee", "value": "0" },
+                  "sort": 0
+                }
+              },
+              "baseTypes": ["Greataxe"],
+              "equipped": true,
+              "hands": 2,
+              "hardness": 10,
+              "held": "2h",
+              "hp": { "base": 10 },
+              "material": { "base": { "value": "steel" }, "addon": [] },
+              "price": { "base": 20, "unit": "gp" },
+              "quantity": 1,
+              "sources": [
+                { "id": "PZO1110", "pages": "143" },
+                { "id": "PZO1123", "pages": "18" }
+              ],
+              "subType": "martial",
+              "weaponGroups": ["axes"],
+              "weaponSubtype": "2h",
+              "weight": { "value": 12 },
+              "masterwork": true,
+              "alignments": {},
+              "mods": {}
+            },
+            "type": "weapon",
+            "effects": [],
+            "flags": {},
+            "_id": "oviSwzot73aChtlQ",
             "sort": 0
           }
         ],
@@ -880,6 +942,26 @@
           "perform": -1,
           "bluff": -1
         }
+      },
+      "attacks": {
+        "Greataxe": {
+          "attack": [17, 12, 7],
+          "damage": 6,
+          "dice": "1d12",
+          "formula": {
+            "attack": "1d20 + 4[Strength] + 12[Base Attack Bonus] + 1[Masterwork]",
+            "damage": ["sizeRoll(1,12,4) + 6[Strength]"]
+          }
+        },
+        "Greataxe.pa": {
+          "attack": [13, 8, 3],
+          "damage": 18,
+          "dice": "1d12",
+          "formula": {
+            "attack": "1d20 + 4[Strength] - 4[Power Attack] + 12[Base Attack Bonus] + 1[Masterwork]",
+            "damage": ["sizeRoll(1,12,4) + 6[Strength] + 12[Power Attack]"]
+          }
+        }
       }
     },
     "rage": {
@@ -887,7 +969,7 @@
         "name": "half-orc-barbarian-12 [rage]",
         "type": "character",
         "folder": "GuYuyoqdabfe4xZV",
-        "_id": "FpaBROWNGs1EbK6n",
+        "_id": "Kjg4iSBy0KQyIiM9",
         "system": {
           "abilities": {
             "str": { "value": 16 },
@@ -930,7 +1012,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "M3lD6VzPysCBgab9",
+            "_id": "tpFCc3bz5z1zRukb",
             "folder": null,
             "sort": 0
           },
@@ -951,7 +1033,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "W7gNtTC2n04hBjkG",
+            "_id": "jCUlb71AGWMHosJb",
             "folder": null,
             "sort": 0
           },
@@ -972,7 +1054,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "K7i4HDx6mWSMUUJQ",
+            "_id": "yIOhvBUh67vDoWet",
             "folder": null,
             "sort": 0
           },
@@ -993,7 +1075,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "2WMWubyPJO7qcHVS",
+            "_id": "qEDj30CnSSQ4iUun",
             "folder": null,
             "sort": 0
           },
@@ -1030,7 +1112,7 @@
             "type": "race",
             "effects": [],
             "flags": {},
-            "_id": "3H2HCdsfy0UIKRpx",
+            "_id": "KElsl9BLPU1gYRzq",
             "sort": 0
           },
           {
@@ -1091,19 +1173,19 @@
               "pf1": {
                 "links": {
                   "classAssociations": {
-                    "iiu5xFvCL74BRMSX": 1,
-                    "fS09yCZIspyqFD1Y": 1,
-                    "SLkDhVYfzFicxyKq": 2,
-                    "Ih7oYLCcqPKnUOxP": 2,
-                    "iJAL4G4p0E89MLRH": 3,
-                    "R17IbsrtlTz7FEdq": 7,
-                    "Z58S3aq3ZCiOTkhB": 5,
-                    "y3QqIC6YRUC3slpm": 11
+                    "zABsAuC3lvGnxNwC": 1,
+                    "IxnKGaOxDSg5NNjn": 1,
+                    "sYlkNSVBhikY8jdF": 2,
+                    "vP2PxD0zwYtslNJg": 2,
+                    "Uh1UjOYTbf0KsNSs": 3,
+                    "X9cVV6fH32AoRe63": 5,
+                    "sxCoVJrv6eDvt4cA": 7,
+                    "JkdkZ3BZgrTU6EaO": 11
                   }
                 }
               }
             },
-            "_id": "lkuGF9tJIWkV6YT0",
+            "_id": "mT8X5ZKdggdeMo2G",
             "sort": 0
           },
           {
@@ -1127,7 +1209,7 @@
               "associations": { "classes": ["Barbarian"] },
               "links": {
                 "supplements": [{ "uuid": "Compendium.pf1.buffs.Item.UgjpRD8vtiSWRxuL" }],
-                "children": [{ "uuid": ".Item.clVfG7OcvX72GXGK" }]
+                "children": [{ "uuid": ".Item.eoUzT6JURBL8Lh1M" }]
               },
               "sources": [{ "id": "PZO1110", "pages": "32" }],
               "subType": "classFeat",
@@ -1143,7 +1225,7 @@
             "effects": [],
             "flags": {},
             "sort": 100000,
-            "_id": "iiu5xFvCL74BRMSX",
+            "_id": "zABsAuC3lvGnxNwC",
             "folder": null
           },
           {
@@ -1174,7 +1256,7 @@
             "effects": [],
             "flags": {},
             "sort": 200000,
-            "_id": "fS09yCZIspyqFD1Y",
+            "_id": "IxnKGaOxDSg5NNjn",
             "folder": null
           },
           {
@@ -1211,7 +1293,7 @@
             "effects": [],
             "flags": {},
             "sort": 300000,
-            "_id": "SLkDhVYfzFicxyKq",
+            "_id": "sYlkNSVBhikY8jdF",
             "folder": null
           },
           {
@@ -1231,7 +1313,7 @@
             "effects": [],
             "flags": {},
             "sort": 400000,
-            "_id": "Ih7oYLCcqPKnUOxP",
+            "_id": "vP2PxD0zwYtslNJg",
             "folder": null
           },
           {
@@ -1261,30 +1343,7 @@
             "effects": [],
             "flags": {},
             "sort": 500000,
-            "_id": "iJAL4G4p0E89MLRH",
-            "folder": null
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1.class-abilities.Item.RENIeTVjWB7Mq6Mw"
-            },
-            "name": "Damage Reduction",
-            "system": {
-              "abilityType": "ex",
-              "associations": { "classes": ["Barbarian", "Bloodrager"] },
-              "sources": [
-                { "id": "PZO1110", "pages": "34" },
-                { "id": "PZO1129", "pages": "16" }
-              ],
-              "subType": "classFeat",
-              "class": "barbarian",
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "flags": {},
-            "sort": 700000,
-            "_id": "R17IbsrtlTz7FEdq",
+            "_id": "Uh1UjOYTbf0KsNSs",
             "folder": null
           },
           {
@@ -1312,7 +1371,30 @@
             "effects": [],
             "flags": {},
             "sort": 600000,
-            "_id": "Z58S3aq3ZCiOTkhB",
+            "_id": "X9cVV6fH32AoRe63",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.RENIeTVjWB7Mq6Mw"
+            },
+            "name": "Damage Reduction",
+            "system": {
+              "abilityType": "ex",
+              "associations": { "classes": ["Barbarian", "Bloodrager"] },
+              "sources": [
+                { "id": "PZO1110", "pages": "34" },
+                { "id": "PZO1129", "pages": "16" }
+              ],
+              "subType": "classFeat",
+              "class": "barbarian",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 700000,
+            "_id": "sxCoVJrv6eDvt4cA",
             "folder": null
           },
           {
@@ -1332,7 +1414,7 @@
             "effects": [],
             "flags": {},
             "sort": 800000,
-            "_id": "y3QqIC6YRUC3slpm",
+            "_id": "JkdkZ3BZgrTU6EaO",
             "folder": null
           },
           {
@@ -1388,7 +1470,7 @@
             "effects": [],
             "flags": { "pf1": { "source": "Compendium.pf1.buffs.Item.UgjpRD8vtiSWRxuL" } },
             "sort": 0,
-            "_id": "clVfG7OcvX72GXGK",
+            "_id": "eoUzT6JURBL8Lh1M",
             "folder": null
           },
           {
@@ -1412,7 +1494,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "UhnQmt1n3Ulefgrs",
+            "_id": "1snLP0Vk6FPDgZHy",
             "sort": 0
           },
           {
@@ -1436,7 +1518,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "htUk66kA49aFmzjp",
+            "_id": "9xjIyXR4OLefopNm",
             "sort": 0
           },
           {
@@ -1466,7 +1548,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "d2fOH4wJMCE46qZX",
+            "_id": "jmQ5jHkc2Z6AzQTb",
             "sort": 0
           },
           {
@@ -1496,7 +1578,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "5Ln2YH7QnOkKJfQw",
+            "_id": "jG6GNV0bmFhlllvn",
             "sort": 0
           },
           {
@@ -1520,7 +1602,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "YE3O4NMkptcoEX96",
+            "_id": "ZGmaJtUCNNI4Rgdt",
             "sort": 0
           },
           {
@@ -1537,7 +1619,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "MUdxSyFOixV4vaMG",
+            "_id": "eDSRgJX8qNdx5C4r",
             "sort": 0
           },
           {
@@ -1571,7 +1653,7 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "IWkK21v60B1EAh2r",
+            "_id": "aOlnuaIpY9sAxjof",
             "sort": 0
           },
           {
@@ -1619,7 +1701,7 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "4HbFu1hqE8mFV2X3",
+            "_id": "rS85RPZUjlgUOM2s",
             "sort": 0
           },
           {
@@ -1668,7 +1750,62 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "W4CaooYxqN3PeHhp",
+            "_id": "iax6WLkgJ4lwOPex",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.weapons-and-ammo.Item.Wx22UaMqWgCrYi7r"
+            },
+            "folder": "ojvASzhaCGmnx8xQ",
+            "name": "Greataxe",
+            "system": {
+              "actions": {
+                "mqsu8ycqg6lbdbna": {
+                  "_id": "mqsu8ycqg6lbdbna",
+                  "ability": {
+                    "attack": "_default",
+                    "critMult": 3,
+                    "critRange": 20,
+                    "damage": "str"
+                  },
+                  "actionType": "mwak",
+                  "activation": { "type": "attack", "unchained": { "type": "attack" } },
+                  "damage": {
+                    "parts": [{ "formula": "sizeRoll(1, 12, @size)", "types": ["slashing"] }]
+                  },
+                  "duration": { "units": "inst" },
+                  "extraAttacks": { "type": "standard" },
+                  "name": "Attack",
+                  "range": { "units": "melee", "value": "0" },
+                  "sort": 0
+                }
+              },
+              "baseTypes": ["Greataxe"],
+              "equipped": true,
+              "hands": 2,
+              "hardness": 10,
+              "held": "2h",
+              "hp": { "base": 10 },
+              "material": { "base": { "value": "steel" }, "addon": [] },
+              "price": { "base": 20, "unit": "gp" },
+              "quantity": 1,
+              "sources": [
+                { "id": "PZO1110", "pages": "143" },
+                { "id": "PZO1123", "pages": "18" }
+              ],
+              "subType": "martial",
+              "weaponGroups": ["axes"],
+              "weaponSubtype": "2h",
+              "weight": { "value": 12 },
+              "masterwork": true,
+              "alignments": {},
+              "mods": {}
+            },
+            "type": "weapon",
+            "effects": [],
+            "flags": {},
+            "_id": "HOEg9mvBsMyvcLil",
             "sort": 0
           },
           {
@@ -1725,7 +1862,7 @@
             "type": "buff",
             "effects": [],
             "flags": {},
-            "_id": "renVXr9YyWqM1OoZ",
+            "_id": "goY62XnGQPYK0w2J",
             "sort": 0
           }
         ],
@@ -1791,6 +1928,26 @@
           "perform": -1,
           "bluff": -1
         }
+      },
+      "attacks": {
+        "Greataxe": {
+          "attack": [20, 15, 10],
+          "damage": 10,
+          "dice": "1d12",
+          "formula": {
+            "attack": "1d20 + 7[Strength] + 12[Base Attack Bonus] + 1[Masterwork]",
+            "damage": ["sizeRoll(1,12,4) + 10[Strength]"]
+          }
+        },
+        "Greataxe.pa": {
+          "attack": [16, 11, 6],
+          "damage": 22,
+          "dice": "1d12",
+          "formula": {
+            "attack": "1d20 + 7[Strength] - 4[Power Attack] + 12[Base Attack Bonus] + 1[Masterwork]",
+            "damage": ["sizeRoll(1,12,4) + 10[Strength] + 12[Power Attack]"]
+          }
+        }
       }
     },
     "fatigued": {
@@ -1798,7 +1955,7 @@
         "name": "half-orc-barbarian-12 [fatigued]",
         "type": "character",
         "folder": "GuYuyoqdabfe4xZV",
-        "_id": "BbM1eQowVLwsVqe8",
+        "_id": "14vxYmYGClSKHi3p",
         "system": {
           "abilities": {
             "str": { "value": 16 },
@@ -1841,7 +1998,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "KPpWSIazbEwIC14m",
+            "_id": "HiVgZ2b680szgvRh",
             "folder": null,
             "sort": 0
           },
@@ -1862,7 +2019,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "0OSS9XJRqQ54I720",
+            "_id": "v8JCXvc9UFtcH4lA",
             "folder": null,
             "sort": 0
           },
@@ -1883,7 +2040,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "YNxu0oywLfdAZYW3",
+            "_id": "x0zx5okuJ5CxCBXh",
             "folder": null,
             "sort": 0
           },
@@ -1904,7 +2061,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "yC0qKOFQFoasEoqj",
+            "_id": "Rd3RbOU2urNVKRwy",
             "folder": null,
             "sort": 0
           },
@@ -1941,7 +2098,7 @@
             "type": "race",
             "effects": [],
             "flags": {},
-            "_id": "ol239J58scmzmaHy",
+            "_id": "c17u3ZTCmfQONC05",
             "sort": 0
           },
           {
@@ -2002,19 +2159,19 @@
               "pf1": {
                 "links": {
                   "classAssociations": {
-                    "QBL5Oe5Cdz7bxNcy": 1,
-                    "sK6pJuT031ZJ44jZ": 1,
-                    "LUjHnevt3lgin423": 2,
-                    "iA0MIulPaUmJ7bgg": 2,
-                    "GUq0yQq45flZa9tL": 3,
-                    "dCsiNnOn2juNQNXj": 5,
-                    "HxQJjxD9uj2b2Jym": 7,
-                    "sahwu1ZRun8szIL8": 11
+                    "MZslb3OsXyUPpm6y": 1,
+                    "VqgabcX46Z0zO0dh": 1,
+                    "Ec4zmCmzceknlUGk": 2,
+                    "yxRFAYtxEoch3tKp": 2,
+                    "L2D3VThc9x3ClgAS": 3,
+                    "AtDj2dsRemdLmfhE": 5,
+                    "GjxsE4TqTIby84Eg": 7,
+                    "XSeYVUsAEISNN7DZ": 11
                   }
                 }
               }
             },
-            "_id": "9i5rYVULmWbc86S8",
+            "_id": "451UDxdqh8YqNX7a",
             "sort": 0
           },
           {
@@ -2038,7 +2195,7 @@
               "associations": { "classes": ["Barbarian"] },
               "links": {
                 "supplements": [{ "uuid": "Compendium.pf1.buffs.Item.UgjpRD8vtiSWRxuL" }],
-                "children": [{ "uuid": ".Item.nJANo2lI4jueLoh2" }]
+                "children": [{ "uuid": ".Item.G4VXga9RjnDsriM4" }]
               },
               "sources": [{ "id": "PZO1110", "pages": "32" }],
               "subType": "classFeat",
@@ -2054,7 +2211,7 @@
             "effects": [],
             "flags": {},
             "sort": 100000,
-            "_id": "QBL5Oe5Cdz7bxNcy",
+            "_id": "MZslb3OsXyUPpm6y",
             "folder": null
           },
           {
@@ -2085,7 +2242,7 @@
             "effects": [],
             "flags": {},
             "sort": 200000,
-            "_id": "sK6pJuT031ZJ44jZ",
+            "_id": "VqgabcX46Z0zO0dh",
             "folder": null
           },
           {
@@ -2122,7 +2279,7 @@
             "effects": [],
             "flags": {},
             "sort": 300000,
-            "_id": "LUjHnevt3lgin423",
+            "_id": "Ec4zmCmzceknlUGk",
             "folder": null
           },
           {
@@ -2142,7 +2299,7 @@
             "effects": [],
             "flags": {},
             "sort": 400000,
-            "_id": "iA0MIulPaUmJ7bgg",
+            "_id": "yxRFAYtxEoch3tKp",
             "folder": null
           },
           {
@@ -2172,7 +2329,7 @@
             "effects": [],
             "flags": {},
             "sort": 500000,
-            "_id": "GUq0yQq45flZa9tL",
+            "_id": "L2D3VThc9x3ClgAS",
             "folder": null
           },
           {
@@ -2200,7 +2357,7 @@
             "effects": [],
             "flags": {},
             "sort": 600000,
-            "_id": "dCsiNnOn2juNQNXj",
+            "_id": "AtDj2dsRemdLmfhE",
             "folder": null
           },
           {
@@ -2223,7 +2380,7 @@
             "effects": [],
             "flags": {},
             "sort": 700000,
-            "_id": "HxQJjxD9uj2b2Jym",
+            "_id": "GjxsE4TqTIby84Eg",
             "folder": null
           },
           {
@@ -2243,7 +2400,7 @@
             "effects": [],
             "flags": {},
             "sort": 800000,
-            "_id": "sahwu1ZRun8szIL8",
+            "_id": "XSeYVUsAEISNN7DZ",
             "folder": null
           },
           {
@@ -2299,7 +2456,7 @@
             "effects": [],
             "flags": { "pf1": { "source": "Compendium.pf1.buffs.Item.UgjpRD8vtiSWRxuL" } },
             "sort": 0,
-            "_id": "nJANo2lI4jueLoh2",
+            "_id": "G4VXga9RjnDsriM4",
             "folder": null
           },
           {
@@ -2316,7 +2473,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "RFMGAOfUOpBs7BhE",
+            "_id": "nk3FLKYCreVQC1g8",
             "sort": 0
           },
           {
@@ -2340,7 +2497,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "qHmbIPYh0ZIoHslM",
+            "_id": "ZuqxMgKjxP9uoI14",
             "sort": 0
           },
           {
@@ -2364,7 +2521,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "AJA456eTS84dhA12",
+            "_id": "6vBmkUDkxpzunsFW",
             "sort": 0
           },
           {
@@ -2394,7 +2551,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "2RBL43al0ycSQL7u",
+            "_id": "rviWy9ykLR4bpTzO",
             "sort": 0
           },
           {
@@ -2424,7 +2581,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "x93I28dCWhK962CP",
+            "_id": "fMtxzpJYo4SPByFt",
             "sort": 0
           },
           {
@@ -2448,7 +2605,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "ABleuoGOFFPVfVtC",
+            "_id": "Hi4NniACQzFnx7fi",
             "sort": 0
           },
           {
@@ -2482,7 +2639,7 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "02rTR9gK573zEhVN",
+            "_id": "CwT0HKIMOZGkNVlZ",
             "sort": 0
           },
           {
@@ -2530,7 +2687,7 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "BLwBMArKupVyBzOH",
+            "_id": "Ty8FweJm7HjxWEz5",
             "sort": 0
           },
           {
@@ -2579,7 +2736,62 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "wXdpzDkQ5SrYQK16",
+            "_id": "VGScwYYddJnzS3hL",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.weapons-and-ammo.Item.Wx22UaMqWgCrYi7r"
+            },
+            "folder": "ojvASzhaCGmnx8xQ",
+            "name": "Greataxe",
+            "system": {
+              "actions": {
+                "mqsu8ycqg6lbdbna": {
+                  "_id": "mqsu8ycqg6lbdbna",
+                  "ability": {
+                    "attack": "_default",
+                    "critMult": 3,
+                    "critRange": 20,
+                    "damage": "str"
+                  },
+                  "actionType": "mwak",
+                  "activation": { "type": "attack", "unchained": { "type": "attack" } },
+                  "damage": {
+                    "parts": [{ "formula": "sizeRoll(1, 12, @size)", "types": ["slashing"] }]
+                  },
+                  "duration": { "units": "inst" },
+                  "extraAttacks": { "type": "standard" },
+                  "name": "Attack",
+                  "range": { "units": "melee", "value": "0" },
+                  "sort": 0
+                }
+              },
+              "baseTypes": ["Greataxe"],
+              "equipped": true,
+              "hands": 2,
+              "hardness": 10,
+              "held": "2h",
+              "hp": { "base": 10 },
+              "material": { "base": { "value": "steel" }, "addon": [] },
+              "price": { "base": 20, "unit": "gp" },
+              "quantity": 1,
+              "sources": [
+                { "id": "PZO1110", "pages": "143" },
+                { "id": "PZO1123", "pages": "18" }
+              ],
+              "subType": "martial",
+              "weaponGroups": ["axes"],
+              "weaponSubtype": "2h",
+              "weight": { "value": 12 },
+              "masterwork": true,
+              "alignments": {},
+              "mods": {}
+            },
+            "type": "weapon",
+            "effects": [],
+            "flags": {},
+            "_id": "4hxZ7eJgLGukHP49",
             "sort": 0
           }
         ],
@@ -2589,7 +2801,7 @@
             "img": "icons/svg/unconscious.svg",
             "statuses": ["fatigued"],
             "showIcon": 2,
-            "_id": "3I7lEse6MFuU7DII",
+            "_id": "t7TFflp9sBLQDb2b",
             "type": "base",
             "system": { "changes": [] },
             "disabled": false,
@@ -2613,9 +2825,9 @@
               "coreVersion": "14.370",
               "systemId": "pf1",
               "systemVersion": "11.11",
-              "createdTime": 1795403249718,
-              "modifiedTime": 1795403249718,
-              "lastModifiedBy": "uwWDnh8N1IHSXHMc",
+              "createdTime": 1795407342457,
+              "modifiedTime": 1795407342457,
+              "lastModifiedBy": "7UYomJpxzjJzDpJa",
               "compendiumSource": null,
               "duplicateSource": null,
               "exportSource": null
@@ -2682,6 +2894,26 @@
           "senseMotive": -1,
           "perform": -1,
           "bluff": -1
+        }
+      },
+      "attacks": {
+        "Greataxe": {
+          "attack": [16, 11, 6],
+          "damage": 4,
+          "dice": "1d12",
+          "formula": {
+            "attack": "1d20 + 3[Strength] + 12[Base Attack Bonus] + 1[Masterwork]",
+            "damage": ["sizeRoll(1,12,4) + 4[Strength]"]
+          }
+        },
+        "Greataxe.pa": {
+          "attack": [12, 7, 2],
+          "damage": 16,
+          "dice": "1d12",
+          "formula": {
+            "attack": "1d20 + 3[Strength] - 4[Power Attack] + 12[Base Attack Bonus] + 1[Masterwork]",
+            "damage": ["sizeRoll(1,12,4) + 4[Strength] + 12[Power Attack]"]
+          }
         }
       }
     }

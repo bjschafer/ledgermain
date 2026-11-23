@@ -49,6 +49,7 @@ import {
   setName,
   setRace,
   setSkillRank,
+  updateWeapon,
 } from "./doc.js";
 import { setAbilityAffliction, setNegativeLevels } from "./afflictions.js";
 import {
@@ -392,15 +393,36 @@ export function importFoundryActor(
           );
           break;
         }
+        const ref = refData.weapons[weaponId]!;
         doc = addWeaponFromRef(
           doc,
-          refData.weapons[weaponId]!,
+          ref,
           num(item.system.enh) ?? 0,
           undefined,
           undefined,
           item.system.masterwork === true,
         );
-        report.mapped.push(`Weapon: ${item.name}`);
+        // Foundry keeps a composite bow's rating as its attack's Strength cap.
+        const rating = ref.composite
+          ? values(item.system.actions)
+              .map((a) => (isDict(a.ability) ? num(a.ability.max) : undefined))
+              .find((max) => max != null)
+          : undefined;
+        if (rating != null) {
+          doc = updateWeapon(doc, doc.build.weapons!.length - 1, { strRating: rating });
+        }
+        report.mapped.push(`Weapon: ${item.name}${rating ? ` (Strength rating +${rating})` : ""}`);
+        break;
+      }
+      case "ammo": {
+        // Ammunition has no reference-data entry; it's carried gear.
+        const weight = isDict(item.system.weight) ? num(item.system.weight.value) : undefined;
+        const quantity = num(item.system.quantity);
+        doc = addCustomGearItem(doc, item.name, {
+          ...(weight != null ? { weight } : {}),
+          ...(quantity != null ? { quantity } : {}),
+        });
+        report.mapped.push(`Ammunition: ${item.name}${quantity != null ? ` ×${quantity}` : ""}`);
         break;
       }
       case "loot":

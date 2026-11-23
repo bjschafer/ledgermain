@@ -2185,6 +2185,36 @@ function normalizeWeaponInstance(weapon: WeaponInstance): WeaponInstance {
 }
 
 /**
+ * Catalog dice were snapshotted at Medium before their size was recorded.
+ * Repair only values still equal to the catalog: different dice and explicit
+ * sizes belong to the player. An old composite bow gets the default +0
+ * rating; the player must enter any higher rating.
+ *
+ * Attack ability is deliberately not refreshed: an old thrown weapon's Str
+ * snapshot is indistinguishable from a player override.
+ */
+export function reconcileWeaponSnapshots(doc: CharacterDoc, refData: RefData): CharacterDoc {
+  const stored = doc.build.weapons;
+  if (!stored) return doc;
+  let weapons: WeaponInstance[] | undefined;
+  for (const [i, w] of stored.entries()) {
+    const ref = w.weaponId ? refData.weapons[w.weaponId] : undefined;
+    if (!ref) continue;
+    const sizeMissing =
+      w.damageDiceSize === undefined && !!ref.damageDice && w.damageDice === ref.damageDice;
+    const ratingMissing = w.category === "ranged" && ref.composite && w.strRating === undefined;
+    if (!sizeMissing && !ratingMissing) continue;
+    weapons ??= [...stored];
+    weapons[i] = {
+      ...w,
+      ...(sizeMissing ? { damageDiceSize: "med" } : {}),
+      ...(ratingMissing ? { strRating: 0 } : {}),
+    };
+  }
+  return weapons ? { ...doc, build: { ...doc.build, weapons } } : doc;
+}
+
+/**
  * Append a weapon to `build.weapons`. The new entry is always added at the end.
  * No deduplication — the same weapon template may be added multiple times.
  */
@@ -2247,7 +2277,9 @@ export function addWeaponFromRef(
       ? { abilities: effectiveAbilities }
       : {}),
     ...(effectiveAbilities && effectiveAbilities.length > 0 && abilityInfo ? { abilityInfo } : {}),
-    ...(ref.damageDice ? { damageDice: ref.damageDice } : {}),
+    // Catalog dice are the Medium ones; the engine steps them to the wielder's size.
+    ...(ref.damageDice ? { damageDice: ref.damageDice, damageDiceSize: "med" as const } : {}),
+    ...(weapon.composite ? { strRating: 0 } : {}),
     ...(ref.critRange && ref.critRange !== 20 ? { critRange: ref.critRange } : {}),
     ...(ref.critMult && ref.critMult !== 2 ? { critMult: ref.critMult } : {}),
     ...(ref.damageMultiplier && ref.damageMultiplier !== 1

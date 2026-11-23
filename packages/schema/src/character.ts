@@ -3013,10 +3013,12 @@ export interface WeaponInstance {
   attackAbility: "str" | "dex";
   /**
    * Which ability modifier adds to the damage bonus.
-   * - `"str"` (default): STR × damageMultiplier for a melee weapon. A ranged
-   *   weapon left at the default gets NO ability damage at all (a bow's Str
-   *   bonus needs a composite-bow rating this app doesn't model yet) — `"str"`
-   *   is never applied on the ranged side.
+   * - `"str"` (default): STR × damageMultiplier for a melee weapon. On a
+   *   ranged weapon the default follows the PF1 Strength rules for ranged
+   *   weapons (CRB p. 144), keyed off the weapon's groups: a thrown weapon or
+   *   sling adds the full modifier, a composite bow adds it up to
+   *   {@link strRating}, any other bow takes only a penalty, and everything
+   *   else (crossbows, firearms) adds nothing. Never `damageMultiplier`-scaled.
    * - `"dex"`: melee — DEX × damageMultiplier, a hand-set override for a
    *   Dex-to-damage source the player wants to force on (e.g. Slashing Grace).
    *   Rogue (Unchained)'s Finesse Training (`build.rogueFinesseWeapons`)
@@ -3026,9 +3028,16 @@ export interface WeaponInstance {
    *   the escape hatch for an unmodeled Dex-to-damage source, or applied
    *   automatically for a firearm covered by the Gun Training family (`@pf1/
    *   engine` `gunTrainingMatches`, keyed off `build.gunTrainingPicks`).
-   * - `"none"`: no ability modifier to damage (ranged, finesse, thrown without STR).
+   * - `"none"`: no ability modifier to damage.
    */
   damageAbility?: "str" | "dex" | "none";
+  /**
+   * A composite bow's Strength rating: the most Strength bonus it adds to
+   * damage, with a -2 attack penalty when the wielder's Strength modifier is
+   * below it (CRB p. 147). Present only on a composite bow (0 for a plain
+   * composite); its presence is what marks the bow composite.
+   */
+  strRating?: number;
   /**
    * Multiplier applied to the damage ability modifier.
    * 1 = one-handed (default), 1.5 = two-handed, 0.5 = off-hand.
@@ -3046,6 +3055,13 @@ export interface WeaponInstance {
   material?: string;
   /** Damage dice string for display only, e.g. "1d8". The engine does not roll. */
   damageDice?: string;
+  /**
+   * The wielder size `damageDice` is written for. A weapon picked from the
+   * catalog carries the Medium dice, so it is `"med"` and a Small character's
+   * line steps them down. Absent for hand-entered dice, which are taken as
+   * written for the character's race size.
+   */
+  damageDiceSize?: SizeId;
   /**
    * Lower bound of the critical threat range. Default 20 (i.e. "20/×2").
    * Example: 19 produces the string "19–20/×N".

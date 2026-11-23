@@ -55,7 +55,7 @@
         "name": "elf-fighter-7-lore-warden [base]",
         "type": "character",
         "folder": "GuYuyoqdabfe4xZV",
-        "_id": "h8q6E1DBLYJKnjuE",
+        "_id": "BU871mrwle01AHGY",
         "system": {
           "abilities": {
             "str": { "value": 16 },
@@ -98,7 +98,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "8skFeJyBspBnos9H",
+            "_id": "nOP7mu1yCBrrrbK2",
             "folder": null,
             "sort": 0
           },
@@ -119,7 +119,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "ucpSxj4LKAnyTM82",
+            "_id": "iqZbQ8tKRGT1GPgk",
             "folder": null,
             "sort": 0
           },
@@ -141,7 +141,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "IFEYnje3exL2p8yA",
+            "_id": "6bNYxYOLx1z2Ptww",
             "folder": null,
             "sort": 0
           },
@@ -162,7 +162,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "2r5JYXQcGa9N34jO",
+            "_id": "tERjs9HTXab17ew7",
             "folder": null,
             "sort": 0
           },
@@ -184,7 +184,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "wQgsAaZqdYxfobQi",
+            "_id": "N3QVTGencgAyU6oT",
             "folder": null,
             "sort": 0
           },
@@ -242,7 +242,7 @@
             "type": "race",
             "effects": [],
             "flags": {},
-            "_id": "pl8K4BT1R9daeCIu",
+            "_id": "ZBVqqeihGRDxkfHk",
             "sort": 0
           },
           {
@@ -297,16 +297,16 @@
               "pf1": {
                 "links": {
                   "classAssociations": {
-                    "6WkS2b6GQPbR3isZ": 2,
-                    "0YhMwt8OFjZuax8H": 3,
-                    "lHa0FGOMOlRHLY3z": 1,
-                    "HtFZFwa7DJgXzbrd": 5,
-                    "SLDSx3lLdEb9o0zi": 7
+                    "Sq7rOAhsV3MOpIYk": 1,
+                    "C0STHmOJZzmqPMxW": 2,
+                    "eu2dtEyINpycqKKJ": 3,
+                    "iCN9h6YlL9prEc8v": 5,
+                    "iHSwfeCzpWmG8t99": 7
                   }
                 }
               }
             },
-            "_id": "em3GFLcgGLSn4lAj",
+            "_id": "j3T2ufUTiQpk46zn",
             "sort": 0
           },
           {
@@ -333,7 +333,7 @@
             "effects": [],
             "flags": {},
             "sort": 100000,
-            "_id": "lHa0FGOMOlRHLY3z",
+            "_id": "Sq7rOAhsV3MOpIYk",
             "folder": null
           },
           {
@@ -353,7 +353,7 @@
             "effects": [],
             "flags": {},
             "sort": 400000,
-            "_id": "HtFZFwa7DJgXzbrd",
+            "_id": "iCN9h6YlL9prEc8v",
             "folder": null
           },
           {
@@ -374,65 +374,8 @@
             "effects": [],
             "flags": {},
             "sort": 500000,
-            "_id": "SLDSx3lLdEb9o0zi",
+            "_id": "iHSwfeCzpWmG8t99",
             "folder": null
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1e-archetypes.pf-arch-features.Item.3cEKYeG1LdQSDnBL"
-            },
-            "name": "Scholastic (Lore Warden)",
-            "system": {
-              "associations": { "classes": ["Fighter"] },
-              "sources": [{ "id": "PZO1138", "pages": "144" }],
-              "subType": "classFeat",
-              "tags": ["Lore Warden"],
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "folder": null,
-            "flags": {},
-            "_id": "alweXJ3gvY5E1sQ4",
-            "sort": 0
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1e-archetypes.pf-arch-features.Item.PljsYRhpo5y36oi3"
-            },
-            "name": "Skill Over Strength (Lore Warden)",
-            "system": {
-              "associations": { "classes": ["Fighter"] },
-              "sources": [{ "id": "PZO1138", "pages": "144" }],
-              "subType": "classFeat",
-              "tags": ["Lore Warden"],
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "folder": null,
-            "flags": {},
-            "_id": "nokuzFc871dubLkT",
-            "sort": 0
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1e-archetypes.pf-arch-features.Item.XS96M6PBsbz2TLTc"
-            },
-            "name": "Swords Secret (Lore Warden)",
-            "system": {
-              "associations": { "classes": ["Fighter"] },
-              "sources": [{ "id": "PZO1138", "pages": "144" }],
-              "subType": "classFeat",
-              "tags": ["Lore Warden"],
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "folder": null,
-            "flags": {},
-            "_id": "SEEO191xeX2xyveA",
-            "sort": 0
           },
           {
             "_stats": {
@@ -466,7 +409,64 @@
             "type": "feat",
             "effects": [],
             "flags": {},
-            "_id": "Xc1dFDBW6mpj4Kll",
+            "_id": "UW6qK1OGpHQTd122",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1e-archetypes.pf-arch-features.Item.3cEKYeG1LdQSDnBL"
+            },
+            "name": "Scholastic (Lore Warden)",
+            "system": {
+              "associations": { "classes": ["Fighter"] },
+              "sources": [{ "id": "PZO1138", "pages": "144" }],
+              "subType": "classFeat",
+              "tags": ["Lore Warden"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "mnVVXLwi7wVWhV1l",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1e-archetypes.pf-arch-features.Item.PljsYRhpo5y36oi3"
+            },
+            "name": "Skill Over Strength (Lore Warden)",
+            "system": {
+              "associations": { "classes": ["Fighter"] },
+              "sources": [{ "id": "PZO1138", "pages": "144" }],
+              "subType": "classFeat",
+              "tags": ["Lore Warden"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "kfyRwb77GxctpNXx",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1e-archetypes.pf-arch-features.Item.XS96M6PBsbz2TLTc"
+            },
+            "name": "Swords Secret (Lore Warden)",
+            "system": {
+              "associations": { "classes": ["Fighter"] },
+              "sources": [{ "id": "PZO1138", "pages": "144" }],
+              "subType": "classFeat",
+              "tags": ["Lore Warden"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "vi3QRJAFOTFIbvIt",
             "sort": 0
           },
           {
@@ -490,31 +490,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "cKmZuJjuAGpe6vnl",
-            "sort": 0
-          },
-          {
-            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.iAbIGhm7T2OK9Brt" },
-            "name": "Iron Will",
-            "system": {
-              "changes": {
-                "vafl2kz4": {
-                  "_id": "vafl2kz4",
-                  "formula": "2",
-                  "target": "will",
-                  "type": "untyped"
-                }
-              },
-              "sources": [{ "id": "PZO1110", "pages": "115, 129" }],
-              "subType": "feat",
-              "tags": ["General", "Saving Throw"],
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "folder": null,
-            "flags": {},
-            "_id": "EN82Z3mH4I1G67vA",
+            "_id": "DZo7W5Asi7UaXme8",
             "sort": 0
           },
           {
@@ -538,7 +514,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "AYR6Js8EIKVAoyHw",
+            "_id": "3DgDicG5T7k2kssa",
             "sort": 0
           },
           {
@@ -562,7 +538,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "XNHVixAfnJoeMr5S",
+            "_id": "QsFRCM3G5NgrHnA3",
             "sort": 0
           },
           {
@@ -581,7 +557,23 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "iHOk5kq56vxStuD6",
+            "_id": "2lEAy5phUww9hdvM",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.R7L4SlGRlnThqFrP" },
+            "name": "Mobility",
+            "system": {
+              "sources": [{ "id": "PZO1110", "pages": "114, 130" }],
+              "subType": "feat",
+              "tags": ["Combat", "Movement", "Defensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "TJLgGVGfJ60PUddR",
             "sort": 0
           },
           {
@@ -607,7 +599,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "4hI7gX3Qk98WKF1t",
+            "_id": "3E8ATQ2taGw7vXoQ",
             "sort": 0
           },
           {
@@ -636,23 +628,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "VT0xqpujZd0GNd6h",
-            "sort": 0
-          },
-          {
-            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.R7L4SlGRlnThqFrP" },
-            "name": "Mobility",
-            "system": {
-              "sources": [{ "id": "PZO1110", "pages": "114, 130" }],
-              "subType": "feat",
-              "tags": ["Combat", "Movement", "Defensive"],
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "folder": null,
-            "flags": {},
-            "_id": "W9ItplPLE6JvYa3e",
+            "_id": "NaiT9K0RfU0J0Fai",
             "sort": 0
           },
           {
@@ -668,7 +644,31 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "OJoKiC240VO12f1Y",
+            "_id": "dSJrsGqdIW8cH5uj",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.iAbIGhm7T2OK9Brt" },
+            "name": "Iron Will",
+            "system": {
+              "changes": {
+                "vafl2kz4": {
+                  "_id": "vafl2kz4",
+                  "formula": "2",
+                  "target": "will",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "115, 129" }],
+              "subType": "feat",
+              "tags": ["General", "Saving Throw"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "T0Tf8MOdC0fM7xk3",
             "sort": 0
           },
           {
@@ -702,7 +702,7 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "ghOGV922iPjMMy85",
+            "_id": "67JZow0Zi0O2UpWw",
             "sort": 0
           },
           {
@@ -750,7 +750,7 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "GuZ3ep7DNI7yadHM",
+            "_id": "a5UZsqumd03TRNN1",
             "sort": 0
           },
           {
@@ -794,7 +794,7 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "WLpxUfbVfQYjPGm2",
+            "_id": "IQobsB0zWA3tuBfq",
             "sort": 0
           }
         ],
@@ -860,14 +860,15 @@
           "perform": 0,
           "bluff": 0
         }
-      }
+      },
+      "attacks": {}
     },
     "buffs": {
       "actor": {
         "name": "elf-fighter-7-lore-warden [buffs]",
         "type": "character",
         "folder": "GuYuyoqdabfe4xZV",
-        "_id": "aKvPDg4eG8dqb1Tw",
+        "_id": "vZ3vkUGzKsjEPKqU",
         "system": {
           "abilities": {
             "str": { "value": 16 },
@@ -910,7 +911,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "ElqT2tcJfYgkY1C6",
+            "_id": "GrCUce16BFzd9tWb",
             "folder": null,
             "sort": 0
           },
@@ -931,7 +932,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "tsjLCdRB9NcXTp8c",
+            "_id": "pQlLSm5JniucDmDh",
             "folder": null,
             "sort": 0
           },
@@ -953,7 +954,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "fsflOF8MHwy2dOko",
+            "_id": "tRb54s2dPS907jcN",
             "folder": null,
             "sort": 0
           },
@@ -974,7 +975,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "cP8SQB5a9tH7pNE8",
+            "_id": "kNsJ15mStoqeul3B",
             "folder": null,
             "sort": 0
           },
@@ -996,7 +997,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "gnKTHi3ZK85muGzx",
+            "_id": "Zlu7qoxfLlwEpeXp",
             "folder": null,
             "sort": 0
           },
@@ -1054,7 +1055,7 @@
             "type": "race",
             "effects": [],
             "flags": {},
-            "_id": "yGqTbKGf72Hg6Sm9",
+            "_id": "7Vkpbj88utXBmxTG",
             "sort": 0
           },
           {
@@ -1109,16 +1110,16 @@
               "pf1": {
                 "links": {
                   "classAssociations": {
-                    "6GqcZpuGzJXCyPij": 1,
-                    "oSk6ZQZ09DA66MRP": 2,
-                    "5D3a3khDdEvo6NqG": 3,
-                    "QVa6M3Wp2PXUgwpq": 5,
-                    "9FXDRb4PlJWQsoPk": 7
+                    "0FtsnNQVBJA3N6A5": 1,
+                    "FJzqEdTRDoBMEegM": 2,
+                    "LhVAmcQhyCmzzafp": 3,
+                    "bnr0B0PgfunJxNU4": 5,
+                    "ZTHvQ4QZ4pVy82J5": 7
                   }
                 }
               }
             },
-            "_id": "Cdd1gJ8WQsH4JDnn",
+            "_id": "y0hwP8fXaGEDtDeM",
             "sort": 0
           },
           {
@@ -1145,7 +1146,7 @@
             "effects": [],
             "flags": {},
             "sort": 100000,
-            "_id": "6GqcZpuGzJXCyPij",
+            "_id": "0FtsnNQVBJA3N6A5",
             "folder": null
           },
           {
@@ -1165,7 +1166,7 @@
             "effects": [],
             "flags": {},
             "sort": 400000,
-            "_id": "QVa6M3Wp2PXUgwpq",
+            "_id": "bnr0B0PgfunJxNU4",
             "folder": null
           },
           {
@@ -1186,7 +1187,7 @@
             "effects": [],
             "flags": {},
             "sort": 500000,
-            "_id": "9FXDRb4PlJWQsoPk",
+            "_id": "ZTHvQ4QZ4pVy82J5",
             "folder": null
           },
           {
@@ -1221,7 +1222,7 @@
             "type": "feat",
             "effects": [],
             "flags": {},
-            "_id": "E85FpKHUzs2wrhHE",
+            "_id": "gQDjWOrXrz4fCXfG",
             "sort": 0
           },
           {
@@ -1240,7 +1241,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "Qj1KDk20ob9dfoQN",
+            "_id": "MTo3njU0s0tAp6Vf",
             "sort": 0
           },
           {
@@ -1259,7 +1260,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "wew2lI3UO9NEvZCn",
+            "_id": "wS0hGPfGQjJAzLzN",
             "sort": 0
           },
           {
@@ -1278,7 +1279,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "Zk0KKAnypyyN4TXK",
+            "_id": "dzgn4oNHrSp5fhuk",
             "sort": 0
           },
           {
@@ -1302,7 +1303,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "QJ2huREbOCCGhGXF",
+            "_id": "mo1F97FdXG4875PM",
             "sort": 0
           },
           {
@@ -1326,7 +1327,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "6YIpw7h80gtrx4Y4",
+            "_id": "esCOjDBIp6OxvubA",
             "sort": 0
           },
           {
@@ -1350,7 +1351,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "aCoaOfzh6sHXfsn3",
+            "_id": "EYoOPx12YA35bOuH",
             "sort": 0
           },
           {
@@ -1374,7 +1375,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "Bf4SHt2VZSkRWk66",
+            "_id": "urtjrnIs2wPwj9S7",
             "sort": 0
           },
           {
@@ -1393,7 +1394,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "jGnImLLgbCyTCfdQ",
+            "_id": "WczVpZlP1Mvvh5v4",
             "sort": 0
           },
           {
@@ -1409,7 +1410,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "dH9aPY5ktmzgpOZM",
+            "_id": "lLzjQmY0XpBE70QX",
             "sort": 0
           },
           {
@@ -1435,7 +1436,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "VBrkjY8qlAHFgvWd",
+            "_id": "rex4LZTkIGaYhOeV",
             "sort": 0
           },
           {
@@ -1464,7 +1465,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "YHOM7gjEIA9JL6AA",
+            "_id": "b2XrcbYkVZZKcEL1",
             "sort": 0
           },
           {
@@ -1480,7 +1481,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "BwAX3DRwzTs1KUVw",
+            "_id": "VcmvM03P5Dws6uog",
             "sort": 0
           },
           {
@@ -1514,7 +1515,7 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "hxzItmP9JL8J3c18",
+            "_id": "cEB0MjLiDAzVr3ou",
             "sort": 0
           },
           {
@@ -1562,7 +1563,7 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "xI2Mvxw9jsDTUXZE",
+            "_id": "Pxhsr6ToGYbgsyh5",
             "sort": 0
           },
           {
@@ -1606,7 +1607,7 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "V66MprUNMuS1Cobk",
+            "_id": "BGryCBTdFFco57Er",
             "sort": 0
           },
           {
@@ -1626,7 +1627,7 @@
             "type": "buff",
             "effects": [],
             "flags": {},
-            "_id": "legNAgByAHdEjgfM",
+            "_id": "87uQHw3j3er3qGhG",
             "sort": 0
           },
           {
@@ -1651,7 +1652,7 @@
             "type": "buff",
             "effects": [],
             "flags": {},
-            "_id": "R8H6DFxVmPway9RM",
+            "_id": "mninxdjYggeTAYUJ",
             "sort": 0
           }
         ],
@@ -1717,14 +1718,15 @@
           "perform": 0,
           "bluff": 0
         }
-      }
+      },
+      "attacks": {}
     },
     "shaken": {
       "actor": {
         "name": "elf-fighter-7-lore-warden [shaken]",
         "type": "character",
         "folder": "GuYuyoqdabfe4xZV",
-        "_id": "5ltVYX9AZUujI1vH",
+        "_id": "ITzhFpWtr7v5BFGa",
         "system": {
           "abilities": {
             "str": { "value": 16 },
@@ -1767,7 +1769,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "GOtvTD5QRgHjAV6A",
+            "_id": "bHlY9Ni6aLkvfA1v",
             "folder": null,
             "sort": 0
           },
@@ -1788,7 +1790,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "g9j4KWcajtn4cNh9",
+            "_id": "8MbCw6oSzJybEvwx",
             "folder": null,
             "sort": 0
           },
@@ -1810,7 +1812,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "n3644c8AbLNpl0Zk",
+            "_id": "61MwNljTbRGiA4jx",
             "folder": null,
             "sort": 0
           },
@@ -1831,7 +1833,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "w6FQ1IDovKqUmKLi",
+            "_id": "lVQrpReUnNBea5Fl",
             "folder": null,
             "sort": 0
           },
@@ -1853,7 +1855,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "XcmhoKxyNcnSJR19",
+            "_id": "iNxe77jl75aGphEy",
             "folder": null,
             "sort": 0
           },
@@ -1911,7 +1913,7 @@
             "type": "race",
             "effects": [],
             "flags": {},
-            "_id": "iKSdGIQA2gq7n3LY",
+            "_id": "BbMWRKBUIZaLtlyW",
             "sort": 0
           },
           {
@@ -1966,16 +1968,16 @@
               "pf1": {
                 "links": {
                   "classAssociations": {
-                    "lDJ7ZkBiI0XaZfDX": 1,
-                    "399GpX1eLoB0rrXi": 2,
-                    "CTDcqyrVKlbysWIx": 3,
-                    "BnChRrFJ1aP3ZJwX": 5,
-                    "weJJ1lBhvBP7p4Uy": 7
+                    "LRfTfhWMVbAvkZaG": 1,
+                    "fQyOlenGpTZUafao": 2,
+                    "Xpz6kZVgV6VbhTMc": 3,
+                    "zKnerFn9UZGoMxR3": 5,
+                    "ZupI1d28xatONkvB": 7
                   }
                 }
               }
             },
-            "_id": "2w0IzxAyWXnY7f9h",
+            "_id": "B7ZerY7WCGZmfxS1",
             "sort": 0
           },
           {
@@ -2002,7 +2004,7 @@
             "effects": [],
             "flags": {},
             "sort": 100000,
-            "_id": "lDJ7ZkBiI0XaZfDX",
+            "_id": "LRfTfhWMVbAvkZaG",
             "folder": null
           },
           {
@@ -2022,7 +2024,7 @@
             "effects": [],
             "flags": {},
             "sort": 400000,
-            "_id": "BnChRrFJ1aP3ZJwX",
+            "_id": "zKnerFn9UZGoMxR3",
             "folder": null
           },
           {
@@ -2043,7 +2045,7 @@
             "effects": [],
             "flags": {},
             "sort": 500000,
-            "_id": "weJJ1lBhvBP7p4Uy",
+            "_id": "ZupI1d28xatONkvB",
             "folder": null
           },
           {
@@ -2078,7 +2080,7 @@
             "type": "feat",
             "effects": [],
             "flags": {},
-            "_id": "S0B7H1s4y6VXgwNP",
+            "_id": "wL5d9nfoOt0LxbZM",
             "sort": 0
           },
           {
@@ -2097,7 +2099,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "2VKjUSAHxEcpW9Lj",
+            "_id": "NkR3eZjIGLw60NYm",
             "sort": 0
           },
           {
@@ -2116,7 +2118,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "t9TqphFjTJV6AB2F",
+            "_id": "GhKlaqlNK6nKIDOF",
             "sort": 0
           },
           {
@@ -2135,7 +2137,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "C2TFvm9fRkXLhvfA",
+            "_id": "xYaWvRhrUJRI5TfU",
             "sort": 0
           },
           {
@@ -2159,7 +2161,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "D9C9vGGERCjoQplF",
+            "_id": "rF26Dhg2ipaKofUR",
             "sort": 0
           },
           {
@@ -2183,7 +2185,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "dNktEokB3JzMZTAY",
+            "_id": "EGdHPQ8rAuqobHfN",
             "sort": 0
           },
           {
@@ -2207,31 +2209,26 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "iZHKw3Vya4Hvr3eB",
+            "_id": "t94e3f0DmtNsmL4u",
             "sort": 0
           },
           {
-            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.0bZf3SDkvVOe2ujH" },
-            "name": "Lightning Reflexes",
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.JreaiTHdyWFNj3Tb" },
+            "name": "Dodge",
             "system": {
               "changes": {
-                "ni86uxwa": {
-                  "_id": "ni86uxwa",
-                  "formula": "2",
-                  "target": "ref",
-                  "type": "untyped"
-                }
+                "9onhsept": { "_id": "9onhsept", "formula": "1", "target": "ac", "type": "dodge" }
               },
-              "sources": [{ "id": "PZO1110", "pages": "115, 130" }],
+              "sources": [{ "id": "PZO1110", "pages": "114, 122" }],
               "subType": "feat",
-              "tags": ["General", "Saving Throw"],
+              "tags": ["Combat", "Defensive"],
               "alignments": {}
             },
             "type": "feat",
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "9oLdYdPDues3LLWH",
+            "_id": "yCJ9zkNxRAyQ6mz7",
             "sort": 0
           },
           {
@@ -2247,7 +2244,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "RNdEH1FkQGJ4Pwge",
+            "_id": "BleRMYaUyv2MXxza",
             "sort": 0
           },
           {
@@ -2273,26 +2270,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "sscuowhw4Z3ECvKA",
-            "sort": 0
-          },
-          {
-            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.JreaiTHdyWFNj3Tb" },
-            "name": "Dodge",
-            "system": {
-              "changes": {
-                "9onhsept": { "_id": "9onhsept", "formula": "1", "target": "ac", "type": "dodge" }
-              },
-              "sources": [{ "id": "PZO1110", "pages": "114, 122" }],
-              "subType": "feat",
-              "tags": ["Combat", "Defensive"],
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "folder": null,
-            "flags": {},
-            "_id": "U60qiRUtgVKtpoeQ",
+            "_id": "94PcJopgBs47A0sA",
             "sort": 0
           },
           {
@@ -2321,7 +2299,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "SWdy0nJUJlCeM25Z",
+            "_id": "aLucrRPDi97jADPv",
             "sort": 0
           },
           {
@@ -2337,7 +2315,31 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "UlMQmce0fbWHG1tB",
+            "_id": "lK58D2nVMoT0gplZ",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.0bZf3SDkvVOe2ujH" },
+            "name": "Lightning Reflexes",
+            "system": {
+              "changes": {
+                "ni86uxwa": {
+                  "_id": "ni86uxwa",
+                  "formula": "2",
+                  "target": "ref",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "115, 130" }],
+              "subType": "feat",
+              "tags": ["General", "Saving Throw"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "Dgy5HHgOnYTH72Qa",
             "sort": 0
           },
           {
@@ -2371,7 +2373,7 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "IocQTToFY7loZKuj",
+            "_id": "ywpqRlhLhqsKgmxk",
             "sort": 0
           },
           {
@@ -2419,7 +2421,7 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "pkjfTykswfDtecYW",
+            "_id": "HkLR7i4HTuov73iY",
             "sort": 0
           },
           {
@@ -2463,7 +2465,7 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "8npUWKyzoBw4Bf2G",
+            "_id": "Lm6s79IY7QWZzVCu",
             "sort": 0
           }
         ],
@@ -2473,7 +2475,7 @@
             "img": "systems/pf1/icons/conditions/shaken.svg",
             "statuses": ["shaken"],
             "showIcon": 2,
-            "_id": "KbOrHsnKTcNO6Y9B",
+            "_id": "VRiJ2WhhbMytM7Lt",
             "type": "base",
             "system": { "changes": [] },
             "disabled": false,
@@ -2497,9 +2499,9 @@
               "coreVersion": "14.370",
               "systemId": "pf1",
               "systemVersion": "11.11",
-              "createdTime": 1795403661801,
-              "modifiedTime": 1795403661801,
-              "lastModifiedBy": "AKnVcnI4fMKGUzTH",
+              "createdTime": 1795407443298,
+              "modifiedTime": 1795407443298,
+              "lastModifiedBy": "7UYomJpxzjJzDpJa",
               "compendiumSource": null,
               "duplicateSource": null,
               "exportSource": null
@@ -2567,7 +2569,8 @@
           "perform": -2,
           "bluff": -2
         }
-      }
+      },
+      "attacks": {}
     }
   }
 }

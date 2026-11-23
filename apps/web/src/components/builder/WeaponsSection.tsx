@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 
-import type { RefData, WeaponInstance, WeaponRef } from "@pf1/schema";
+import { scaleWeaponDamageDice } from "@pf1/engine";
+import type { RefData, SizeId, WeaponInstance, WeaponRef } from "@pf1/schema";
 
 import { addWeapon, addWeaponFromRef, removeWeapon, replaceWeapon } from "../../model/doc.js";
 import {
@@ -11,6 +12,7 @@ import {
   canonicalAbilityId,
   sanitizeAbilities,
 } from "../../model/abilities.js";
+import { sizeLabel } from "../../model/polymorph.js";
 import { WEAPON_MATERIALS } from "../../model/materials.js";
 import { type Quote, weaponQuote } from "../../model/purchase.js";
 import {
@@ -78,12 +80,14 @@ const BLANK_WEAPON: WeaponInstance = {
 function WeaponForm({
   initial,
   refData,
+  raceSize,
   onSave,
   onCancel,
   saveLabel,
 }: {
   initial: WeaponInstance;
   refData: RefData;
+  raceSize: SizeId;
   onSave: (w: WeaponInstance) => void;
   onCancel: () => void;
   saveLabel: string;
@@ -93,6 +97,7 @@ function WeaponForm({
     (initial.abilities ?? []).map(canonicalAbilityId),
   );
   const [abilityInfo, setAbilityInfo] = useState<AbilityInfo>(initial.abilityInfo ?? {});
+  const catalogRef = form.weaponId ? refData.weapons[form.weaponId] : undefined;
   const enh = form.enhancement ?? 0;
 
   const catalog = useMemo(() => buildAbilityCatalog(refData.itemAbilities), [refData]);
@@ -131,7 +136,6 @@ function WeaponForm({
     // back. These three fields therefore belong to the abilities on a weapon
     // picked from the catalog; a hand-entered weapon has no catalog entry and
     // keeps whatever the player typed.
-    const catalogRef = form.weaponId ? refData.weapons[form.weaponId] : undefined;
     const derived = catalogRef
       ? applyAbilitiesToWeapon(catalogRef, (form.enhancement ?? 0) >= 1 ? abilities : [])
       : undefined;
@@ -155,6 +159,7 @@ function WeaponForm({
     if (weapon.critRange === 20) delete weapon.critRange;
     if (weapon.critMult === 2) delete weapon.critMult;
     if (weapon.damageMultiplier === 1) delete weapon.damageMultiplier;
+    if (weapon.category !== "ranged" || weapon.strRating === undefined) delete weapon.strRating;
     if (!weapon.material || weapon.material === "steel") delete weapon.material;
     if (!weapon.abilities) delete weapon.abilities;
     if (!weapon.abilityInfo) delete weapon.abilityInfo;
@@ -273,6 +278,15 @@ function WeaponForm({
             ))}
           </select>
         </label>
+        {catalogRef && form.attackAbility !== catalogRef.attackAbility && (
+          <button
+            type="button"
+            className="btn-ghost"
+            onClick={() => field("attackAbility", catalogRef.attackAbility)}
+          >
+            Use catalog attack ability ({catalogRef.attackAbility.toUpperCase()})
+          </button>
+        )}
         <label className="field">
           <span>Damage ability</span>
           <select
@@ -299,14 +313,40 @@ function WeaponForm({
             ))}
           </select>
         </label>
+        {form.category === "ranged" && (
+          <label className="field">
+            <span>Composite Strength rating</span>
+            <input
+              type="number"
+              value={form.strRating ?? ""}
+              min={0}
+              placeholder="Not composite"
+              onChange={(e) =>
+                field(
+                  "strRating",
+                  e.target.value === ""
+                    ? undefined
+                    : Math.max(0, Math.trunc(Number(e.target.value))),
+                )
+              }
+            />
+          </label>
+        )}
         <label className="field">
-          <span>Damage dice (display only)</span>
+          <span>Damage dice ({sizeLabel(form.damageDiceSize ?? raceSize)}, display only)</span>
           <input
             type="text"
             value={form.damageDice ?? ""}
             placeholder="1d8"
-            onChange={(e) => field("damageDice", e.target.value)}
+            onChange={(e) =>
+              setForm((f) => ({
+                ...f,
+                damageDice: e.target.value,
+                damageDiceSize: raceSize,
+              }))
+            }
           />
+          <small>Editing uses your race's normal size: {sizeLabel(raceSize)}.</small>
         </label>
         <label className="field">
           <span>Critical range (low end, default 20)</span>
@@ -424,15 +464,22 @@ function WeaponForm({
   );
 }
 
-/** Render a concise one-line summary for a weapon in the list. */
-function weaponMeta(w: WeaponInstance): string {
+/**
+ * Render a concise one-line summary for a weapon in the list. Dice are shown
+ * for the character's race size, before anything that changes it in play.
+ */
+function weaponMeta(w: WeaponInstance, size: SizeId): string {
   const parts: string[] = [];
   if (w.proficiency) parts.push(w.proficiency);
   parts.push(w.category ?? "melee");
   parts.push(`${w.attackAbility.toUpperCase()} to hit`);
   if (w.masterwork && (w.enhancement ?? 0) === 0) parts.push("masterwork");
+  if (w.strRating !== undefined) parts.push(`composite +${w.strRating}`);
   if (w.damageDice || (w.enhancement ?? 0) > 0) {
-    const dmg = [w.damageDice, (w.enhancement ?? 0) > 0 ? `+${w.enhancement} enh` : null]
+    const dice = w.damageDice
+      ? scaleWeaponDamageDice(w.damageDice, w.damageDiceSize ?? size, size)
+      : null;
+    const dmg = [dice, (w.enhancement ?? 0) > 0 ? `+${w.enhancement} enh` : null]
       .filter(Boolean)
       .join(" ");
     parts.push(dmg);
@@ -477,6 +524,7 @@ export function WeaponsSection({ doc, refData, update }: BuilderProps) {
   const [payFromPurse] = usePayFromPurse();
   const purchase = usePurchase(update);
   const weapons = doc.build.weapons ?? [];
+  const raceSize: SizeId = refData.races[doc.identity.race]?.size ?? "med";
 
   const catalog = useMemo(() => buildAbilityCatalog(refData.itemAbilities), [refData]);
   const weaponAbilityOptions = useMemo(
@@ -603,6 +651,7 @@ export function WeaponsSection({ doc, refData, update }: BuilderProps) {
                 <WeaponForm
                   initial={w}
                   refData={refData}
+                  raceSize={raceSize}
                   onSave={(updated) => handleEdit(i, updated)}
                   onCancel={() => setEditingIndex(null)}
                   saveLabel="Save changes"
@@ -612,7 +661,7 @@ export function WeaponsSection({ doc, refData, update }: BuilderProps) {
               <div key={i} className="gear-row">
                 <div className="gear-main">
                   <div className="gear-name">{w.name}</div>
-                  <div className="gear-meta">{weaponMeta(w)}</div>
+                  <div className="gear-meta">{weaponMeta(w, raceSize)}</div>
                 </div>
                 {staleUnarmedDamage(w, doc, refData) ? (
                   <button
@@ -795,6 +844,7 @@ export function WeaponsSection({ doc, refData, update }: BuilderProps) {
               <WeaponForm
                 initial={BLANK_WEAPON}
                 refData={refData}
+                raceSize={raceSize}
                 onSave={handleAdd}
                 onCancel={closeAddCard}
                 saveLabel="Add to weapons"

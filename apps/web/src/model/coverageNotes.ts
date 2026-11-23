@@ -117,6 +117,12 @@ export const COVERAGE_NOTES: readonly CoverageNote[] = [
       "The flurry line keys off the vendored monk weapon group plus the synthesized unarmed strike, so an archetype that swaps the list, or a non-monk class granted flurry as a monk of its own level, has no way to say so.",
   },
   {
+    category: "Draw and reload actions",
+    note: "Weapon attack sequences show your potential attacks, not the actions needed to draw or reload. Throwing several weapons usually needs Quick Draw; crossbows and slings need reload time. Count only the attacks you can make with the actions available.",
+    issueDetail:
+      "Draw/reload action economy, Rapid Reload and Crossbow Mastery do not constrain iterative attack sequences. Hand state and loaded ammunition are not tracked.",
+  },
+  {
     category: "Combat stance feats",
     note: "Most Style feats toggle as a reminder without moving numbers: only a stance whose whole benefit is a flat bonus is applied. Crane Riposte's smaller attack penalty and Crane Wing's dodge bonus against melee stay rules text while Fighting Defensively is on.",
     issueDetail:

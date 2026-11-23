@@ -17,9 +17,15 @@ export const ARCANE_SPECS: OracleSpec[] = [
       linguistics: 6,
       fly: 6,
     },
+    // A low-Strength penalty reaches a plain longbow's damage but not a
+    // crossbow's (CRB p. 144). Elves are proficient with the longbow.
     items: [
       { pack: "pf1.items", name: "Headband of Vast Intelligence +2", equipped: true },
       { pack: "pf1.items", name: "Ring of Protection +1", equipped: true },
+      { pack: "pf1.weapons-and-ammo", name: "Longbow", equipped: true },
+      { pack: "pf1.weapons-and-ammo", name: "Arrow", quantity: 20 },
+      { pack: "pf1.weapons-and-ammo", name: "Light Crossbow", equipped: true },
+      { pack: "pf1.weapons-and-ammo", name: "Crossbow Bolt", quantity: 10 },
     ],
     scenarios: {
       base: {},
@@ -43,7 +49,15 @@ export const ARCANE_SPECS: OracleSpec[] = [
     classes: [{ name: "Wizard", level: 1, hp: 6 }],
     feats: ["Toughness"],
     skills: { spellcraft: 1, "knowledge.arcana": 1, perception: 1, fly: 1 },
-    items: [],
+    // Small weapons: their dice step down from the Medium table, and back up
+    // under Enlarge Person. A sling takes the full Strength penalty (CRB
+    // p. 144); wizards aren't proficient with it. Carrying more tips Foundry
+    // into a medium load once enlarged.
+    items: [
+      { pack: "pf1.weapons-and-ammo", name: "Quarterstaff", equipped: true },
+      { pack: "pf1.weapons-and-ammo", name: "Sling", equipped: true },
+      { pack: "pf1.weapons-and-ammo", name: "Sling Bullet", quantity: 1 },
+    ],
     scenarios: {
       base: {},
       enlarge: { buffs: [{ name: "Enlarge Person", level: 1 }] },

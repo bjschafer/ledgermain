@@ -33,7 +33,7 @@
         "name": "human-oracle-6 [base]",
         "type": "character",
         "folder": "GuYuyoqdabfe4xZV",
-        "_id": "mIFtCJcfVvUBDs9g",
+        "_id": "EuniKKeFf836oFcI",
         "system": {
           "abilities": {
             "str": { "value": 10 },
@@ -77,7 +77,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "RRxrXQq9MLBTwK7t",
+            "_id": "5UIX9yB1kH0xBEzz",
             "folder": null,
             "sort": 0
           },
@@ -98,7 +98,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "8eGTyqHTP685jzmw",
+            "_id": "AUc3WurK4RKKgeoH",
             "folder": null,
             "sort": 0
           },
@@ -119,7 +119,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "68bobUm1CTHsOwhB",
+            "_id": "ZTO52yHtQ8ODEWV9",
             "folder": null,
             "sort": 0
           },
@@ -140,7 +140,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "kzYOjjraDHTa7rkr",
+            "_id": "Kh7pEP5k5T3ED8Sh",
             "folder": null,
             "sort": 0
           },
@@ -181,7 +181,7 @@
             "type": "race",
             "effects": [],
             "flags": {},
-            "_id": "tgHAoh0e4NAruN1r",
+            "_id": "asRFQvV50CsExW3e",
             "sort": 0
           },
           {
@@ -244,17 +244,17 @@
               "pf1": {
                 "links": {
                   "classAssociations": {
-                    "3yRDhALxSPsSmDEy": 1,
-                    "8tQjNuIDTkbYVVHE": 1,
-                    "sxMNgCBGRBnRhdhm": 1,
-                    "twEmTqrsszGmP6pl": 1,
-                    "8pg5CE5WAMSuKwkc": 1,
-                    "5824QMTsz3nf9Sdo": 4
+                    "U8JwPXhGaEsRCQxN": 1,
+                    "daZI8vWBXdNoqQjv": 1,
+                    "0BD4vKXHgijkMiKr": 1,
+                    "hcl8rK8VaW9WZaVt": 1,
+                    "ezjzYYwET3qj5X1L": 4,
+                    "VvrQwQMQ6lP9Pu4t": 1
                   }
                 }
               }
             },
-            "_id": "wi80KBM3Sg2cAdLl",
+            "_id": "TTfvcDk7xaUd2PBJ",
             "sort": 0
           },
           {
@@ -290,31 +290,12 @@
               },
               "restrictions": []
             },
-            "_id": "tEAjP8inXk7Tglji",
+            "_id": "jg7hVWHRizLeP51e",
             "effects": [],
             "folder": null,
             "sort": 0,
             "flags": {},
             "_stats": { "compendiumSource": null }
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1.class-abilities.Item.ZhQM4K4dqStS6qRn"
-            },
-            "name": "Mystery",
-            "system": {
-              "associations": { "classes": ["Oracle"] },
-              "sources": [{ "id": "PZO1115", "pages": "43" }],
-              "subType": "classFeat",
-              "class": "oracle",
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "flags": {},
-            "sort": 100000,
-            "_id": "3yRDhALxSPsSmDEy",
-            "folder": null
           },
           {
             "_stats": {
@@ -333,7 +314,7 @@
             "effects": [],
             "flags": {},
             "sort": 200000,
-            "_id": "8tQjNuIDTkbYVVHE",
+            "_id": "U8JwPXhGaEsRCQxN",
             "folder": null
           },
           {
@@ -352,7 +333,7 @@
             "effects": [],
             "flags": {},
             "sort": 300000,
-            "_id": "sxMNgCBGRBnRhdhm",
+            "_id": "daZI8vWBXdNoqQjv",
             "folder": null
           },
           {
@@ -377,7 +358,7 @@
             "effects": [],
             "flags": {},
             "sort": 400000,
-            "_id": "twEmTqrsszGmP6pl",
+            "_id": "0BD4vKXHgijkMiKr",
             "folder": null
           },
           {
@@ -396,7 +377,7 @@
             "effects": [],
             "flags": {},
             "sort": 500000,
-            "_id": "8pg5CE5WAMSuKwkc",
+            "_id": "hcl8rK8VaW9WZaVt",
             "folder": null
           },
           {
@@ -415,7 +396,26 @@
             "effects": [],
             "flags": {},
             "sort": 600000,
-            "_id": "5824QMTsz3nf9Sdo",
+            "_id": "ezjzYYwET3qj5X1L",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.ZhQM4K4dqStS6qRn"
+            },
+            "name": "Mystery",
+            "system": {
+              "associations": { "classes": ["Oracle"] },
+              "sources": [{ "id": "PZO1115", "pages": "43" }],
+              "subType": "classFeat",
+              "class": "oracle",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 100000,
+            "_id": "VvrQwQMQ6lP9Pu4t",
             "folder": null
           },
           {
@@ -439,7 +439,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "EgXqUZtCHJSYxhRw",
+            "_id": "G69z6URUdbR5ZMvr",
             "sort": 0
           },
           {
@@ -463,7 +463,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "SiOLZn5v5Ii7gEiq",
+            "_id": "7GCVPIfISUwKvjZg",
             "sort": 0
           },
           {
@@ -487,7 +487,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "Lzve3SFSqhKJbkOr",
+            "_id": "ZsvjWkno5AAWaCjf",
             "sort": 0
           },
           {
@@ -511,7 +511,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "EIV8Pifbjyz6Sw5l",
+            "_id": "at2xf4VfSSeo87MA",
             "sort": 0
           },
           {
@@ -546,7 +546,7 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "Irtu4Ki2xwHNuhH3",
+            "_id": "hvdo4iadrvS6ZXME",
             "sort": 0
           },
           {
@@ -595,7 +595,7 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "ZdS9315Urn2sxzX3",
+            "_id": "ZHZatrpIxLxjKwPm",
             "sort": 0
           },
           {
@@ -639,7 +639,7 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "Vfxf2ICqZJzaMxQk",
+            "_id": "6wlEGbfDfP2h2JeW",
             "sort": 0
           }
         ],
@@ -705,14 +705,15 @@
           "perform": 5,
           "bluff": 5
         }
-      }
+      },
+      "attacks": {}
     },
     "buffs": {
       "actor": {
         "name": "human-oracle-6 [buffs]",
         "type": "character",
         "folder": "GuYuyoqdabfe4xZV",
-        "_id": "93kA19VgDwhM5pY7",
+        "_id": "ub6PKLh0mKRzOpnh",
         "system": {
           "abilities": {
             "str": { "value": 10 },
@@ -756,7 +757,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "4TZ7TgwUqDMFnPVi",
+            "_id": "Sf6wMPWzYjmlUwIA",
             "folder": null,
             "sort": 0
           },
@@ -777,7 +778,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "juKACpDfANk8JzZL",
+            "_id": "xSCBNaBh1i4IEW9x",
             "folder": null,
             "sort": 0
           },
@@ -798,7 +799,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "xKSwbIlobMAOJXJQ",
+            "_id": "02nD491DAlb68qLC",
             "folder": null,
             "sort": 0
           },
@@ -819,7 +820,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "1jGZnqGra5WzyAMl",
+            "_id": "FHSdqi8rcqFuBAzE",
             "folder": null,
             "sort": 0
           },
@@ -860,7 +861,7 @@
             "type": "race",
             "effects": [],
             "flags": {},
-            "_id": "bFTpjbZU9aZFWp8X",
+            "_id": "jpGGs8cnTexYfFnP",
             "sort": 0
           },
           {
@@ -923,17 +924,17 @@
               "pf1": {
                 "links": {
                   "classAssociations": {
-                    "PIJkZNHJWnahcibs": 1,
-                    "3o2PB5dmKrYbjzac": 1,
-                    "A347FbcZ1NpN992t": 1,
-                    "ioWOnpJskasIbmHQ": 1,
-                    "T003V6gGvtUK62yJ": 4,
-                    "YAMa86hULB4IbciF": 1
+                    "UXK2F92f0qiaN0ll": 1,
+                    "UpEiB9L88oTCvdLZ": 1,
+                    "lgPQsfL5TFvPuZHe": 1,
+                    "Gh1sh1ZrluaY4auJ": 1,
+                    "0OpMOVa7Exdb3zu2": 1,
+                    "UEtau6KwwOmI1MWe": 4
                   }
                 }
               }
             },
-            "_id": "0nayXJcxVzhiybQf",
+            "_id": "RFWkxUK1Di70S8y9",
             "sort": 0
           },
           {
@@ -969,7 +970,7 @@
               },
               "restrictions": []
             },
-            "_id": "tV7IKCkajXvRXbEt",
+            "_id": "U7vDyr2VWwnqdjpS",
             "effects": [],
             "folder": null,
             "sort": 0,
@@ -992,7 +993,7 @@
             "effects": [],
             "flags": {},
             "sort": 100000,
-            "_id": "PIJkZNHJWnahcibs",
+            "_id": "UXK2F92f0qiaN0ll",
             "folder": null
           },
           {
@@ -1012,7 +1013,26 @@
             "effects": [],
             "flags": {},
             "sort": 200000,
-            "_id": "3o2PB5dmKrYbjzac",
+            "_id": "UpEiB9L88oTCvdLZ",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.adu4NROFqgwv70sw"
+            },
+            "name": "Revelation",
+            "system": {
+              "associations": { "classes": ["Oracle"] },
+              "sources": [{ "id": "PZO1115", "pages": "45" }],
+              "subType": "classFeat",
+              "class": "oracle",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 300000,
+            "_id": "lgPQsfL5TFvPuZHe",
             "folder": null
           },
           {
@@ -1037,7 +1057,7 @@
             "effects": [],
             "flags": {},
             "sort": 400000,
-            "_id": "A347FbcZ1NpN992t",
+            "_id": "Gh1sh1ZrluaY4auJ",
             "folder": null
           },
           {
@@ -1056,7 +1076,7 @@
             "effects": [],
             "flags": {},
             "sort": 500000,
-            "_id": "ioWOnpJskasIbmHQ",
+            "_id": "0OpMOVa7Exdb3zu2",
             "folder": null
           },
           {
@@ -1075,26 +1095,7 @@
             "effects": [],
             "flags": {},
             "sort": 600000,
-            "_id": "T003V6gGvtUK62yJ",
-            "folder": null
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1.class-abilities.Item.adu4NROFqgwv70sw"
-            },
-            "name": "Revelation",
-            "system": {
-              "associations": { "classes": ["Oracle"] },
-              "sources": [{ "id": "PZO1115", "pages": "45" }],
-              "subType": "classFeat",
-              "class": "oracle",
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "flags": {},
-            "sort": 300000,
-            "_id": "YAMa86hULB4IbciF",
+            "_id": "UEtau6KwwOmI1MWe",
             "folder": null
           },
           {
@@ -1118,7 +1119,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "0LEjxy5EMIjdTbEi",
+            "_id": "yvZwlZ1ESYrSjvg7",
             "sort": 0
           },
           {
@@ -1142,7 +1143,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "K90TBPiXWy6YgFA3",
+            "_id": "hTzv2NVNjBMuzPC0",
             "sort": 0
           },
           {
@@ -1166,7 +1167,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "KHRaPfZZaxccesn3",
+            "_id": "H6OqrA4cx9RT225Y",
             "sort": 0
           },
           {
@@ -1190,7 +1191,42 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "Uaq6mXXvcO34uOqK",
+            "_id": "geFaQXKzzq6wxa4C",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.armors-and-shields.Item.iGu21zy6QtroUZ4O"
+            },
+            "folder": "LQyo9lDGQU29eyig",
+            "name": "Chain Shirt",
+            "system": {
+              "armor": {
+                "acp": 2,
+                "dex": 4,
+                "material": { "base": { "value": "steel" }, "addon": [] },
+                "value": 4,
+                "enh": 1,
+                "alignments": {}
+              },
+              "baseTypes": ["Chain Shirt"],
+              "equipmentSubtype": "lightArmor",
+              "equipped": true,
+              "hardness": 10,
+              "hp": { "base": 20 },
+              "price": { "base": 100, "unit": "gp" },
+              "quantity": 1,
+              "slot": "armor",
+              "sources": [{ "id": "PZO1110", "pages": "150, 151" }],
+              "spellFailure": 20,
+              "subType": "armor",
+              "weight": { "value": 25 },
+              "mods": {}
+            },
+            "type": "equipment",
+            "effects": [],
+            "flags": {},
+            "_id": "zpO0NZGQ1tuz2OSF",
             "sort": 0
           },
           {
@@ -1239,7 +1275,7 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "xAxRjcbbiBglIIly",
+            "_id": "o20vvsBJcdMOGLnG",
             "sort": 0
           },
           {
@@ -1283,87 +1319,7 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "gsC0f4e8hv95fdvv",
-            "sort": 0
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1.armors-and-shields.Item.iGu21zy6QtroUZ4O"
-            },
-            "folder": "LQyo9lDGQU29eyig",
-            "name": "Chain Shirt",
-            "system": {
-              "armor": {
-                "acp": 2,
-                "dex": 4,
-                "material": { "base": { "value": "steel" }, "addon": [] },
-                "value": 4,
-                "enh": 1,
-                "alignments": {}
-              },
-              "baseTypes": ["Chain Shirt"],
-              "equipmentSubtype": "lightArmor",
-              "equipped": true,
-              "hardness": 10,
-              "hp": { "base": 20 },
-              "price": { "base": 100, "unit": "gp" },
-              "quantity": 1,
-              "slot": "armor",
-              "sources": [{ "id": "PZO1110", "pages": "150, 151" }],
-              "spellFailure": 20,
-              "subType": "armor",
-              "weight": { "value": 25 },
-              "mods": {}
-            },
-            "type": "equipment",
-            "effects": [],
-            "flags": {},
-            "_id": "33pcB4EdeyI00FhQ",
-            "sort": 0
-          },
-          {
-            "_stats": { "compendiumSource": "Compendium.pf1.buffs.Item.WgCWQxR53UdVSGPB" },
-            "folder": "abSp08elNrsecBYc",
-            "name": "Shield of Faith",
-            "system": {
-              "changes": {
-                "qrnq0w11": {
-                  "_id": "qrnq0w11",
-                  "formula": "2 + min(3, floor(@item.level / 6))",
-                  "target": "ac",
-                  "type": "deflection"
-                }
-              },
-              "duration": { "end": "initiative", "units": "minute", "value": "@item.level" },
-              "level": 6,
-              "sources": [{ "id": "PZO1110", "pages": "342" }],
-              "subType": "spell",
-              "active": true
-            },
-            "type": "buff",
-            "effects": [],
-            "flags": {},
-            "_id": "zrOqMiCZHxgyJjTf",
-            "sort": 0
-          },
-          {
-            "_stats": { "compendiumSource": "Compendium.pf1.buffs.Item.KsgdOd5vzGu7UDBe" },
-            "folder": "abSp08elNrsecBYc",
-            "name": "Eagle's Splendor",
-            "system": {
-              "changes": {
-                "rzpoixra": { "_id": "rzpoixra", "formula": "4", "target": "cha", "type": "enh" }
-              },
-              "duration": { "end": "initiative", "units": "minute", "value": "@item.level" },
-              "level": 6,
-              "sources": [{ "id": "PZO1110", "pages": "275" }],
-              "subType": "spell",
-              "active": true
-            },
-            "type": "buff",
-            "effects": [],
-            "flags": {},
-            "_id": "Btk3N9UEk7p0pRLo",
+            "_id": "16KLqwejeu74cBQ6",
             "sort": 0
           },
           {
@@ -1394,7 +1350,52 @@
             "type": "buff",
             "effects": [],
             "flags": {},
-            "_id": "yuR97fNpPpIAtv7g",
+            "_id": "x4tGlywQOLLtIPjB",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.buffs.Item.WgCWQxR53UdVSGPB" },
+            "folder": "abSp08elNrsecBYc",
+            "name": "Shield of Faith",
+            "system": {
+              "changes": {
+                "qrnq0w11": {
+                  "_id": "qrnq0w11",
+                  "formula": "2 + min(3, floor(@item.level / 6))",
+                  "target": "ac",
+                  "type": "deflection"
+                }
+              },
+              "duration": { "end": "initiative", "units": "minute", "value": "@item.level" },
+              "level": 6,
+              "sources": [{ "id": "PZO1110", "pages": "342" }],
+              "subType": "spell",
+              "active": true
+            },
+            "type": "buff",
+            "effects": [],
+            "flags": {},
+            "_id": "4xRXoaw11S1BQrUj",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.buffs.Item.KsgdOd5vzGu7UDBe" },
+            "folder": "abSp08elNrsecBYc",
+            "name": "Eagle's Splendor",
+            "system": {
+              "changes": {
+                "rzpoixra": { "_id": "rzpoixra", "formula": "4", "target": "cha", "type": "enh" }
+              },
+              "duration": { "end": "initiative", "units": "minute", "value": "@item.level" },
+              "level": 6,
+              "sources": [{ "id": "PZO1110", "pages": "275" }],
+              "subType": "spell",
+              "active": true
+            },
+            "type": "buff",
+            "effects": [],
+            "flags": {},
+            "_id": "99ZlsNSGGkYPFvoD",
             "sort": 0
           }
         ],
@@ -1460,14 +1461,15 @@
           "perform": 6,
           "bluff": 6
         }
-      }
+      },
+      "attacks": {}
     },
     "conditions": {
       "actor": {
         "name": "human-oracle-6 [conditions]",
         "type": "character",
         "folder": "GuYuyoqdabfe4xZV",
-        "_id": "ouU3L2dIGCxeFxXf",
+        "_id": "cLzBJzxJ2pPKBulG",
         "system": {
           "abilities": {
             "str": { "value": 10 },
@@ -1511,7 +1513,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "ippchKYhJ7Hkzcqr",
+            "_id": "73iPHPN81UZ9TC51",
             "folder": null,
             "sort": 0
           },
@@ -1532,7 +1534,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "UQ58oetfggPc3gFE",
+            "_id": "o9sFJIMq7ynVxNPv",
             "folder": null,
             "sort": 0
           },
@@ -1553,7 +1555,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "IMBIh8aHVeoNJWM6",
+            "_id": "A4vjBKB1A3EGxiZo",
             "folder": null,
             "sort": 0
           },
@@ -1574,7 +1576,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "RrTDBndXNgF1CBtG",
+            "_id": "VKubcsrB8ePEMa8k",
             "folder": null,
             "sort": 0
           },
@@ -1615,7 +1617,7 @@
             "type": "race",
             "effects": [],
             "flags": {},
-            "_id": "4DPM2JowQHBiNkUO",
+            "_id": "PEpWK5u2Pqo4VGeg",
             "sort": 0
           },
           {
@@ -1678,17 +1680,17 @@
               "pf1": {
                 "links": {
                   "classAssociations": {
-                    "pCQB8odQjgWc9NLd": 1,
-                    "WQn8AzlQEtGS97cU": 1,
-                    "Z2oUQ0g1JdZzv5Q2": 1,
-                    "Am5zE0st5m1GM0RU": 1,
-                    "sbPYkzzTjzGvOMC9": 4,
-                    "HmZ50i4lj0VY1ksA": 1
+                    "cTMmz2iILCttXE02": 1,
+                    "RdcIT6IhMZAzwjq0": 1,
+                    "8a6ly4xsAAqLMzsn": 1,
+                    "ONV1VNnDhwQHSV1v": 4,
+                    "ZBjzKBxDYKBfhGr5": 1,
+                    "4RLoJqIwuV95pE5c": 1
                   }
                 }
               }
             },
-            "_id": "Kat4S5xYJIuZmo9d",
+            "_id": "zm2u53e0kunVhLr1",
             "sort": 0
           },
           {
@@ -1724,31 +1726,12 @@
               },
               "restrictions": []
             },
-            "_id": "Asq7NJntlFinNbUR",
+            "_id": "8bmI0T3pshOO190k",
             "effects": [],
             "folder": null,
             "sort": 0,
             "flags": {},
             "_stats": { "compendiumSource": null }
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1.class-abilities.Item.ZhQM4K4dqStS6qRn"
-            },
-            "name": "Mystery",
-            "system": {
-              "associations": { "classes": ["Oracle"] },
-              "sources": [{ "id": "PZO1115", "pages": "43" }],
-              "subType": "classFeat",
-              "class": "oracle",
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "flags": {},
-            "sort": 100000,
-            "_id": "pCQB8odQjgWc9NLd",
-            "folder": null
           },
           {
             "_stats": {
@@ -1767,64 +1750,7 @@
             "effects": [],
             "flags": {},
             "sort": 200000,
-            "_id": "WQn8AzlQEtGS97cU",
-            "folder": null
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1.class-abilities.Item.adu4NROFqgwv70sw"
-            },
-            "name": "Revelation",
-            "system": {
-              "associations": { "classes": ["Oracle"] },
-              "sources": [{ "id": "PZO1115", "pages": "45" }],
-              "subType": "classFeat",
-              "class": "oracle",
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "flags": {},
-            "sort": 300000,
-            "_id": "Z2oUQ0g1JdZzv5Q2",
-            "folder": null
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1.class-abilities.Item.72r8mMxzMNWpdt0D"
-            },
-            "name": "Oracle Spells",
-            "system": {
-              "associations": { "classes": ["Oracle"] },
-              "sources": [{ "id": "PZO1115", "pages": "42" }],
-              "subType": "classFeat",
-              "class": "oracle",
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "flags": {},
-            "sort": 500000,
-            "_id": "Am5zE0st5m1GM0RU",
-            "folder": null
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1.class-abilities.Item.dopWa3n4mgTGpTYi"
-            },
-            "name": "Exchange Spell (High)",
-            "system": {
-              "associations": { "classes": ["Oracle", "Psychic", "Sorcerer"] },
-              "sources": [{ "id": "PZO1110", "pages": "71" }],
-              "subType": "classFeat",
-              "class": "oracle",
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "flags": {},
-            "sort": 600000,
-            "_id": "sbPYkzzTjzGvOMC9",
+            "_id": "cTMmz2iILCttXE02",
             "folder": null
           },
           {
@@ -1849,7 +1775,83 @@
             "effects": [],
             "flags": {},
             "sort": 400000,
-            "_id": "HmZ50i4lj0VY1ksA",
+            "_id": "RdcIT6IhMZAzwjq0",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.72r8mMxzMNWpdt0D"
+            },
+            "name": "Oracle Spells",
+            "system": {
+              "associations": { "classes": ["Oracle"] },
+              "sources": [{ "id": "PZO1115", "pages": "42" }],
+              "subType": "classFeat",
+              "class": "oracle",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 500000,
+            "_id": "8a6ly4xsAAqLMzsn",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.dopWa3n4mgTGpTYi"
+            },
+            "name": "Exchange Spell (High)",
+            "system": {
+              "associations": { "classes": ["Oracle", "Psychic", "Sorcerer"] },
+              "sources": [{ "id": "PZO1110", "pages": "71" }],
+              "subType": "classFeat",
+              "class": "oracle",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 600000,
+            "_id": "ONV1VNnDhwQHSV1v",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.adu4NROFqgwv70sw"
+            },
+            "name": "Revelation",
+            "system": {
+              "associations": { "classes": ["Oracle"] },
+              "sources": [{ "id": "PZO1115", "pages": "45" }],
+              "subType": "classFeat",
+              "class": "oracle",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 300000,
+            "_id": "ZBjzKBxDYKBfhGr5",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.ZhQM4K4dqStS6qRn"
+            },
+            "name": "Mystery",
+            "system": {
+              "associations": { "classes": ["Oracle"] },
+              "sources": [{ "id": "PZO1115", "pages": "43" }],
+              "subType": "classFeat",
+              "class": "oracle",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 100000,
+            "_id": "4RLoJqIwuV95pE5c",
             "folder": null
           },
           {
@@ -1873,7 +1875,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "43w8eOft351lE95Y",
+            "_id": "0TGgd7bcrmboOzfA",
             "sort": 0
           },
           {
@@ -1897,7 +1899,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "ttoD9M1BwGyPbobL",
+            "_id": "d0WGC5q4yjqXKcRn",
             "sort": 0
           },
           {
@@ -1921,7 +1923,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "g5BX9O0E1DhIDI3D",
+            "_id": "JBdytGmtA4cPgPN4",
             "sort": 0
           },
           {
@@ -1945,7 +1947,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "eyjowYoAcW94NYlm",
+            "_id": "bFpDuBWEsGhNXrY4",
             "sort": 0
           },
           {
@@ -1980,51 +1982,7 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "pa8TEiFwDf0uSauL",
-            "sort": 0
-          },
-          {
-            "_stats": { "compendiumSource": "Compendium.pf1.items.Item.sv1iKPTOpaiZMOWk" },
-            "folder": "LhglMTF2yolyMayX",
-            "name": "Headband of Alluring Charisma +2",
-            "system": {
-              "armor": {
-                "material": {
-                  "base": { "value": "leather" },
-                  "normal": { "value": "leather" },
-                  "addon": []
-                },
-                "alignments": {}
-              },
-              "aura": { "school": "trs" },
-              "changes": {
-                "3829rluc": { "_id": "3829rluc", "formula": "2", "target": "cha", "type": "enh" }
-              },
-              "cl": 8,
-              "creation": {
-                "cost": { "unit": "gp", "value": 2000 },
-                "description": "<p>@UUID[Compendium.pf1.feats.Item.tD76K8QGco9scT0r]{Craft Wondrous Item}, @UUID[Compendium.pf1.spells.Item.d4oubr5bdoo8w1ev]{Eagle's Splendor}</p>"
-              },
-              "equipmentSubtype": "lightArmor",
-              "equipped": true,
-              "hp": { "base": 10 },
-              "price": { "base": 4000, "unit": "gp" },
-              "quantity": 1,
-              "resizing": true,
-              "slot": "headband",
-              "sources": [
-                { "id": "PZO1123", "pages": "248" },
-                { "id": "PZO1110", "pages": "516" }
-              ],
-              "subType": "wondrous",
-              "unidentified": { "name": "Headband", "price": { "base": 0, "unit": "gp" } },
-              "weight": { "value": 1 },
-              "mods": {}
-            },
-            "type": "equipment",
-            "effects": [],
-            "flags": {},
-            "_id": "ZDwew8XXW2lWgcxK",
+            "_id": "JHaq9QPq6MRZxnhK",
             "sort": 0
           },
           {
@@ -2073,7 +2031,51 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "PP91eX708EJbXOcD",
+            "_id": "ZqnyL4dcv7bLEKQ4",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.items.Item.sv1iKPTOpaiZMOWk" },
+            "folder": "LhglMTF2yolyMayX",
+            "name": "Headband of Alluring Charisma +2",
+            "system": {
+              "armor": {
+                "material": {
+                  "base": { "value": "leather" },
+                  "normal": { "value": "leather" },
+                  "addon": []
+                },
+                "alignments": {}
+              },
+              "aura": { "school": "trs" },
+              "changes": {
+                "3829rluc": { "_id": "3829rluc", "formula": "2", "target": "cha", "type": "enh" }
+              },
+              "cl": 8,
+              "creation": {
+                "cost": { "unit": "gp", "value": 2000 },
+                "description": "<p>@UUID[Compendium.pf1.feats.Item.tD76K8QGco9scT0r]{Craft Wondrous Item}, @UUID[Compendium.pf1.spells.Item.d4oubr5bdoo8w1ev]{Eagle's Splendor}</p>"
+              },
+              "equipmentSubtype": "lightArmor",
+              "equipped": true,
+              "hp": { "base": 10 },
+              "price": { "base": 4000, "unit": "gp" },
+              "quantity": 1,
+              "resizing": true,
+              "slot": "headband",
+              "sources": [
+                { "id": "PZO1123", "pages": "248" },
+                { "id": "PZO1110", "pages": "516" }
+              ],
+              "subType": "wondrous",
+              "unidentified": { "name": "Headband", "price": { "base": 0, "unit": "gp" } },
+              "weight": { "value": 1 },
+              "mods": {}
+            },
+            "type": "equipment",
+            "effects": [],
+            "flags": {},
+            "_id": "dWNVgAlBOWaKqDCg",
             "sort": 0
           }
         ],
@@ -2083,7 +2085,7 @@
             "img": "systems/pf1/icons/conditions/shaken.svg",
             "statuses": ["shaken"],
             "showIcon": 2,
-            "_id": "2mMq8sN2XE1iXkWh",
+            "_id": "rJ3nStNrq8Ln8zRD",
             "type": "base",
             "system": { "changes": [] },
             "disabled": false,
@@ -2107,9 +2109,9 @@
               "coreVersion": "14.370",
               "systemId": "pf1",
               "systemVersion": "11.11",
-              "createdTime": 1795403174707,
-              "modifiedTime": 1795403174707,
-              "lastModifiedBy": "jnrEqpgUjbAxjuLp",
+              "createdTime": 1795407408085,
+              "modifiedTime": 1795407408085,
+              "lastModifiedBy": "7UYomJpxzjJzDpJa",
               "compendiumSource": null,
               "duplicateSource": null,
               "exportSource": null
@@ -2177,14 +2179,15 @@
           "perform": 3,
           "bluff": 3
         }
-      }
+      },
+      "attacks": {}
     },
     "negativeLevels": {
       "actor": {
         "name": "human-oracle-6 [negativeLevels]",
         "type": "character",
         "folder": "GuYuyoqdabfe4xZV",
-        "_id": "roqbY9mKgsmYILIQ",
+        "_id": "NzNVsYcUxQYrRUCZ",
         "system": {
           "abilities": {
             "str": { "value": 10 },
@@ -2229,7 +2232,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "Ml56oJkKT6YiWQ2i",
+            "_id": "qnMN1o7shzWdLCFN",
             "folder": null,
             "sort": 0
           },
@@ -2250,7 +2253,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "mA8s4wQBKzQ0iiOc",
+            "_id": "LNpDdP7O1sxhKHjg",
             "folder": null,
             "sort": 0
           },
@@ -2271,7 +2274,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "Pxhq08mG5JyR8BTw",
+            "_id": "0Ae3ezPA4cCC6plP",
             "folder": null,
             "sort": 0
           },
@@ -2292,7 +2295,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "m2vw5l92ohpKQaiP",
+            "_id": "zpHj0fNk3E5Xosdj",
             "folder": null,
             "sort": 0
           },
@@ -2333,7 +2336,7 @@
             "type": "race",
             "effects": [],
             "flags": {},
-            "_id": "eLKm0Q6bva3SrB6K",
+            "_id": "NWubLt3JhxajZ73y",
             "sort": 0
           },
           {
@@ -2396,17 +2399,17 @@
               "pf1": {
                 "links": {
                   "classAssociations": {
-                    "oHECAomYdtRPgwaq": 1,
-                    "Cm8GTXsBFc5RgTDt": 1,
-                    "88R4bjvPDk2qCdtW": 1,
-                    "OFGnZ9IQ73e3Aph8": 4,
-                    "VVGyin8kPHDAlgaL": 1,
-                    "7ggHxB2RqTn9FQUC": 1
+                    "giBI1JknBQYSSUP8": 1,
+                    "voqpsepELL7CtoJB": 1,
+                    "qQp8jwsY4ChDFV4D": 1,
+                    "O1OXB8t9aXXyFiOi": 1,
+                    "pG6ohSXyGwZX64IF": 1,
+                    "eg3XNYl68h1YiJP8": 4
                   }
                 }
               }
             },
-            "_id": "FIymCKgN9Tni6fUD",
+            "_id": "qsjjlsNyxnAtivHa",
             "sort": 0
           },
           {
@@ -2442,12 +2445,31 @@
               },
               "restrictions": []
             },
-            "_id": "Gh4uecrFkKWKyfV9",
+            "_id": "YAtBBYk1uMmfRIMD",
             "effects": [],
             "folder": null,
             "sort": 0,
             "flags": {},
             "_stats": { "compendiumSource": null }
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.ZhQM4K4dqStS6qRn"
+            },
+            "name": "Mystery",
+            "system": {
+              "associations": { "classes": ["Oracle"] },
+              "sources": [{ "id": "PZO1115", "pages": "43" }],
+              "subType": "classFeat",
+              "class": "oracle",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 100000,
+            "_id": "giBI1JknBQYSSUP8",
+            "folder": null
           },
           {
             "_stats": {
@@ -2466,7 +2488,7 @@
             "effects": [],
             "flags": {},
             "sort": 200000,
-            "_id": "oHECAomYdtRPgwaq",
+            "_id": "voqpsepELL7CtoJB",
             "folder": null
           },
           {
@@ -2485,7 +2507,7 @@
             "effects": [],
             "flags": {},
             "sort": 300000,
-            "_id": "Cm8GTXsBFc5RgTDt",
+            "_id": "qQp8jwsY4ChDFV4D",
             "folder": null
           },
           {
@@ -2510,45 +2532,7 @@
             "effects": [],
             "flags": {},
             "sort": 400000,
-            "_id": "88R4bjvPDk2qCdtW",
-            "folder": null
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1.class-abilities.Item.dopWa3n4mgTGpTYi"
-            },
-            "name": "Exchange Spell (High)",
-            "system": {
-              "associations": { "classes": ["Oracle", "Psychic", "Sorcerer"] },
-              "sources": [{ "id": "PZO1110", "pages": "71" }],
-              "subType": "classFeat",
-              "class": "oracle",
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "flags": {},
-            "sort": 600000,
-            "_id": "OFGnZ9IQ73e3Aph8",
-            "folder": null
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1.class-abilities.Item.ZhQM4K4dqStS6qRn"
-            },
-            "name": "Mystery",
-            "system": {
-              "associations": { "classes": ["Oracle"] },
-              "sources": [{ "id": "PZO1115", "pages": "43" }],
-              "subType": "classFeat",
-              "class": "oracle",
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "flags": {},
-            "sort": 100000,
-            "_id": "VVGyin8kPHDAlgaL",
+            "_id": "O1OXB8t9aXXyFiOi",
             "folder": null
           },
           {
@@ -2567,32 +2551,27 @@
             "effects": [],
             "flags": {},
             "sort": 500000,
-            "_id": "7ggHxB2RqTn9FQUC",
+            "_id": "pG6ohSXyGwZX64IF",
             "folder": null
           },
           {
-            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.8snLqsJN4LLL00Nq" },
-            "name": "Toughness",
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.dopWa3n4mgTGpTYi"
+            },
+            "name": "Exchange Spell (High)",
             "system": {
-              "changes": {
-                "bl5pemy2": {
-                  "_id": "bl5pemy2",
-                  "formula": "max(3, @attributes.hd.total)",
-                  "target": "mhp",
-                  "type": "untyped"
-                }
-              },
-              "sources": [{ "id": "PZO1110", "pages": "116, 135" }],
-              "subType": "feat",
-              "tags": ["General", "Defensive"],
+              "associations": { "classes": ["Oracle", "Psychic", "Sorcerer"] },
+              "sources": [{ "id": "PZO1110", "pages": "71" }],
+              "subType": "classFeat",
+              "class": "oracle",
               "alignments": {}
             },
             "type": "feat",
             "effects": [],
-            "folder": null,
             "flags": {},
-            "_id": "d0zRrdhnlZqzCQ8z",
-            "sort": 0
+            "sort": 600000,
+            "_id": "eg3XNYl68h1YiJP8",
+            "folder": null
           },
           {
             "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.iAbIGhm7T2OK9Brt" },
@@ -2615,7 +2594,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "WTjw1BIHMA7GGfHm",
+            "_id": "Ay1oPfGQQbg32Z2r",
             "sort": 0
           },
           {
@@ -2639,7 +2618,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "UbkyjvWQgtWw5Uis",
+            "_id": "DhDdoPfnwroB3m6X",
             "sort": 0
           },
           {
@@ -2663,7 +2642,31 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "8ygNuBrtqw9N8qdU",
+            "_id": "VCXDkdSgNVr0Denu",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.8snLqsJN4LLL00Nq" },
+            "name": "Toughness",
+            "system": {
+              "changes": {
+                "bl5pemy2": {
+                  "_id": "bl5pemy2",
+                  "formula": "max(3, @attributes.hd.total)",
+                  "target": "mhp",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "116, 135" }],
+              "subType": "feat",
+              "tags": ["General", "Defensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "EfC5wa1Yg5z5VXG5",
             "sort": 0
           },
           {
@@ -2698,7 +2701,7 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "XVRvnUx4f89vjPTL",
+            "_id": "TevceaoSPcTkCSLz",
             "sort": 0
           },
           {
@@ -2747,7 +2750,7 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "wYmMea16rG0n8zr3",
+            "_id": "LVpLxBRKhNVrmXdL",
             "sort": 0
           },
           {
@@ -2791,7 +2794,7 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "JHVsJNSfsCmjgQtV",
+            "_id": "K5l6qOnv5tthRspf",
             "sort": 0
           }
         ],
@@ -2857,7 +2860,8 @@
           "perform": 4,
           "bluff": 4
         }
-      }
+      },
+      "attacks": {}
     }
   }
 }

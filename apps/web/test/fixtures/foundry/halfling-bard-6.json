@@ -36,7 +36,7 @@
         "name": "halfling-bard-6 [base]",
         "type": "character",
         "folder": "GuYuyoqdabfe4xZV",
-        "_id": "SUUEVWJT4Blo8TU6",
+        "_id": "DTwKRlfH78Ir44vq",
         "system": {
           "abilities": {
             "str": { "value": 10 },
@@ -79,7 +79,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "DLVKP7CyZwOmxE4H",
+            "_id": "xPgfEoLC5IRhRytt",
             "folder": null,
             "sort": 0
           },
@@ -100,7 +100,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "iPX6DM4E9Bp1pYAa",
+            "_id": "xhVAEDT0NBkL8VWR",
             "folder": null,
             "sort": 0
           },
@@ -121,7 +121,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "mzKU409JNxjOsS6E",
+            "_id": "e1wGOObrQbs6zFXt",
             "folder": null,
             "sort": 0
           },
@@ -142,7 +142,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "In3gUHhCzeBWgz8a",
+            "_id": "efvKWzRe92RXOucu",
             "folder": null,
             "sort": 0
           },
@@ -163,7 +163,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "4haXk3M0l7oS6rAP",
+            "_id": "o1tCzKuU3XYexmE8",
             "folder": null,
             "sort": 0
           },
@@ -184,7 +184,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "9um90789NPKoyN9n",
+            "_id": "ZhLEkgi1rAL2mMPT",
             "folder": null,
             "sort": 0
           },
@@ -251,7 +251,7 @@
             "type": "race",
             "effects": [],
             "flags": {},
-            "_id": "fu1akjNge5e62ist",
+            "_id": "YNLQ10J7HqLJ4We4",
             "sort": 0
           },
           {
@@ -347,25 +347,25 @@
               "pf1": {
                 "links": {
                   "classAssociations": {
-                    "nW0ve1wM99L46UGt": 1,
-                    "OMT4bDpUJh7F2BOQ": 1,
-                    "ecDSvvShON9uecfX": 1,
-                    "drAPxv02t0aVYeAT": 1,
-                    "HrpgMMwQpX1SECaL": 1,
-                    "PVyMFV4QjEarSGxw": 1,
-                    "lLSHGM4NyIjldimA": 1,
-                    "2NRP29LsPf6B2ifb": 2,
-                    "V5FtBPIZiEqeef6J": 2,
-                    "TXzy8NGo9qVcGRaS": 3,
-                    "iBHg0hwCrsPnrmj1": 5,
-                    "tBgVeFiPS3kaKfMZ": 5,
-                    "EwrCDHzwRjpBdJyl": 6,
-                    "U0EdRaUEZze5Fn4L": 1
+                    "w72vR2ZXMMpIDsLL": 1,
+                    "ZoUNLzeINYasJWDq": 1,
+                    "3zIovzZ9T6k5YGe9": 1,
+                    "m37FOtAgkElwqP0D": 1,
+                    "6mkbVEJ2ASwfCnO9": 1,
+                    "pET4wtCdMni3PLzQ": 1,
+                    "kPU9CDJzTixMHZXi": 1,
+                    "5sMymOoNy23XLd56": 1,
+                    "AZIJupNvAUQ0o5lS": 2,
+                    "WGHX5yM4oOHoAtkt": 2,
+                    "fEFfT9P88Ysjypox": 3,
+                    "2Qz5Y7S8LFhUMX21": 5,
+                    "f1DKto2AVIDSwcH3": 5,
+                    "ggy3WRydzAkHEmYz": 6
                   }
                 }
               }
             },
-            "_id": "GL0XlZlGJThd1jD9",
+            "_id": "cOXtU5sLEw2vzgDH",
             "sort": 0
           },
           {
@@ -401,12 +401,40 @@
               },
               "restrictions": []
             },
-            "_id": "EX21yyGUalzegymz",
+            "_id": "zCSGpBOyRnx8CGY8",
             "effects": [],
             "folder": null,
             "sort": 0,
             "flags": {},
             "_stats": { "compendiumSource": null }
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.Pb9pxYrx6tS87euP"
+            },
+            "name": "Bardic Knowledge",
+            "system": {
+              "abilityType": "ex",
+              "associations": { "classes": ["Bard", "Skald"] },
+              "changes": {
+                "6sscr87o": {
+                  "_id": "6sscr87o",
+                  "formula": "max(1, floor(@class.unlevel / 2))",
+                  "target": "skill.knowledge",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "35" }],
+              "subType": "classFeat",
+              "class": "bard",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 100000,
+            "_id": "w72vR2ZXMMpIDsLL",
+            "folder": null
           },
           {
             "_stats": {
@@ -418,7 +446,7 @@
               "associations": { "classes": ["Bard"] },
               "links": {
                 "supplements": [{ "uuid": "Compendium.pf1.buffs.Item.3p34GJemfcLdKckV" }],
-                "children": [{ "uuid": ".Item.ju0PTtqLmFhCNb6l" }]
+                "children": [{ "uuid": ".Item.rzxN5bqAGkWkYwaa" }]
               },
               "sources": [{ "id": "PZO1110", "pages": "37" }],
               "subType": "classFeat",
@@ -429,7 +457,7 @@
             "effects": [],
             "flags": {},
             "sort": 200000,
-            "_id": "nW0ve1wM99L46UGt",
+            "_id": "ZoUNLzeINYasJWDq",
             "folder": null
           },
           {
@@ -449,7 +477,7 @@
             "effects": [],
             "flags": {},
             "sort": 300000,
-            "_id": "OMT4bDpUJh7F2BOQ",
+            "_id": "3zIovzZ9T6k5YGe9",
             "folder": null
           },
           {
@@ -486,35 +514,7 @@
             "effects": [],
             "flags": {},
             "sort": 400000,
-            "_id": "ecDSvvShON9uecfX",
-            "folder": null
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1.class-abilities.Item.Pb9pxYrx6tS87euP"
-            },
-            "name": "Bardic Knowledge",
-            "system": {
-              "abilityType": "ex",
-              "associations": { "classes": ["Bard", "Skald"] },
-              "changes": {
-                "6sscr87o": {
-                  "_id": "6sscr87o",
-                  "formula": "max(1, floor(@class.unlevel / 2))",
-                  "target": "skill.knowledge",
-                  "type": "untyped"
-                }
-              },
-              "sources": [{ "id": "PZO1110", "pages": "35" }],
-              "subType": "classFeat",
-              "class": "bard",
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "flags": {},
-            "sort": 100000,
-            "_id": "drAPxv02t0aVYeAT",
+            "_id": "m37FOtAgkElwqP0D",
             "folder": null
           },
           {
@@ -534,7 +534,7 @@
             "effects": [],
             "flags": {},
             "sort": 500000,
-            "_id": "HrpgMMwQpX1SECaL",
+            "_id": "6mkbVEJ2ASwfCnO9",
             "folder": null
           },
           {
@@ -554,7 +554,44 @@
             "effects": [],
             "flags": {},
             "sort": 600000,
-            "_id": "PVyMFV4QjEarSGxw",
+            "_id": "pET4wtCdMni3PLzQ",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.IPy4aqFYbOppaqKC"
+            },
+            "name": "Cantrips",
+            "system": {
+              "associations": {
+                "classes": [
+                  "Arcanist",
+                  "Bard",
+                  "Magus",
+                  "Skald",
+                  "Sorcerer",
+                  "Summoner",
+                  "Summoner (Unchained)",
+                  "Witch",
+                  "Wizard"
+                ]
+              },
+              "sources": [
+                { "id": "PZO1110", "pages": "34, 70, 77" },
+                { "id": "PZO1115", "pages": "54, 65" },
+                { "id": "PZO1117", "pages": "9" },
+                { "id": "PZO1131", "pages": "25" },
+                { "id": "PZO1129", "pages": "8, 49" }
+              ],
+              "subType": "classFeat",
+              "class": "bard",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 700000,
+            "_id": "kPU9CDJzTixMHZXi",
             "folder": null
           },
           {
@@ -573,7 +610,7 @@
             "effects": [],
             "flags": {},
             "sort": 800000,
-            "_id": "lLSHGM4NyIjldimA",
+            "_id": "5sMymOoNy23XLd56",
             "folder": null
           },
           {
@@ -593,7 +630,7 @@
             "effects": [],
             "flags": {},
             "sort": 900000,
-            "_id": "2NRP29LsPf6B2ifb",
+            "_id": "AZIJupNvAUQ0o5lS",
             "folder": null
           },
           {
@@ -613,7 +650,7 @@
             "effects": [],
             "flags": {},
             "sort": 1000000,
-            "_id": "V5FtBPIZiEqeef6J",
+            "_id": "WGHX5yM4oOHoAtkt",
             "folder": null
           },
           {
@@ -633,7 +670,7 @@
             "effects": [],
             "flags": {},
             "sort": 1100000,
-            "_id": "TXzy8NGo9qVcGRaS",
+            "_id": "fEFfT9P88Ysjypox",
             "folder": null
           },
           {
@@ -671,7 +708,7 @@
             "effects": [],
             "flags": {},
             "sort": 1200000,
-            "_id": "iBHg0hwCrsPnrmj1",
+            "_id": "2Qz5Y7S8LFhUMX21",
             "folder": null
           },
           {
@@ -704,7 +741,7 @@
             "effects": [],
             "flags": {},
             "sort": 1300000,
-            "_id": "tBgVeFiPS3kaKfMZ",
+            "_id": "f1DKto2AVIDSwcH3",
             "folder": null
           },
           {
@@ -724,44 +761,7 @@
             "effects": [],
             "flags": {},
             "sort": 1400000,
-            "_id": "EwrCDHzwRjpBdJyl",
-            "folder": null
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1.class-abilities.Item.IPy4aqFYbOppaqKC"
-            },
-            "name": "Cantrips",
-            "system": {
-              "associations": {
-                "classes": [
-                  "Arcanist",
-                  "Bard",
-                  "Magus",
-                  "Skald",
-                  "Sorcerer",
-                  "Summoner",
-                  "Summoner (Unchained)",
-                  "Witch",
-                  "Wizard"
-                ]
-              },
-              "sources": [
-                { "id": "PZO1110", "pages": "34, 70, 77" },
-                { "id": "PZO1115", "pages": "54, 65" },
-                { "id": "PZO1117", "pages": "9" },
-                { "id": "PZO1131", "pages": "25" },
-                { "id": "PZO1129", "pages": "8, 49" }
-              ],
-              "subType": "classFeat",
-              "class": "bard",
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "flags": {},
-            "sort": 700000,
-            "_id": "U0EdRaUEZze5Fn4L",
+            "_id": "ggy3WRydzAkHEmYz",
             "folder": null
           },
           {
@@ -796,7 +796,7 @@
             "effects": [],
             "flags": { "pf1": { "source": "Compendium.pf1.buffs.Item.3p34GJemfcLdKckV" } },
             "sort": 0,
-            "_id": "ju0PTtqLmFhCNb6l",
+            "_id": "rzxN5bqAGkWkYwaa",
             "folder": null
           },
           {
@@ -820,7 +820,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "PBAdFqyeIEGHysEO",
+            "_id": "t5u57EZyPin1WSl1",
             "sort": 0
           },
           {
@@ -835,7 +835,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "VYZdzMlwdo6DLmSM",
+            "_id": "9yOrcpfJnzVx3eVU",
             "sort": 0
           },
           {
@@ -851,7 +851,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "NZSS8Q488pOjC3Be",
+            "_id": "aTgYDuvAAJPYr3PM",
             "sort": 0
           },
           {
@@ -884,7 +884,7 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "EhQRb2e22hWcaQ6z",
+            "_id": "WfVHnURc2nJ7FxMa",
             "sort": 0
           },
           {
@@ -933,7 +933,7 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "oLemL5QAX2sriz40",
+            "_id": "G9O6xsrL1Lt5w1Q8",
             "sort": 0
           }
         ],
@@ -999,14 +999,15 @@
           "perform": 4,
           "bluff": 13
         }
-      }
+      },
+      "attacks": {}
     },
     "performance": {
       "actor": {
         "name": "halfling-bard-6 [performance]",
         "type": "character",
         "folder": "GuYuyoqdabfe4xZV",
-        "_id": "xbiM9KxLh0vy3qDa",
+        "_id": "SX28vXUwFk7fe0Uu",
         "system": {
           "abilities": {
             "str": { "value": 10 },
@@ -1049,7 +1050,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "TaKR9oDbXs2QvIZb",
+            "_id": "vyShOu6HMaxT3w1z",
             "folder": null,
             "sort": 0
           },
@@ -1070,7 +1071,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "yDMBbWfFTmDGauRy",
+            "_id": "2Uc85DKnbrKglsPH",
             "folder": null,
             "sort": 0
           },
@@ -1091,7 +1092,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "pQcg2vqKOxBERhuM",
+            "_id": "EHQRZ2G0SgbyM0d9",
             "folder": null,
             "sort": 0
           },
@@ -1112,7 +1113,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "ZRnQtDvwcezJwGce",
+            "_id": "sI8Eco2IczIu5Ont",
             "folder": null,
             "sort": 0
           },
@@ -1133,7 +1134,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "iKmkqtKOfMFQfT62",
+            "_id": "2nSW3eFP3JMpk5G4",
             "folder": null,
             "sort": 0
           },
@@ -1154,7 +1155,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "ZH4HEbw2gzbBdksO",
+            "_id": "W9ym6f8mRA5xNaSJ",
             "folder": null,
             "sort": 0
           },
@@ -1221,7 +1222,7 @@
             "type": "race",
             "effects": [],
             "flags": {},
-            "_id": "bap3AKAntZg0XeTa",
+            "_id": "DF7ExZiCsQy0mRYj",
             "sort": 0
           },
           {
@@ -1317,25 +1318,25 @@
               "pf1": {
                 "links": {
                   "classAssociations": {
-                    "PeVLcu7LR9bYmYMZ": 1,
-                    "5tH0SMAPyfEC5dgN": 1,
-                    "fDCxqQcRv9OEbi4T": 1,
-                    "3uszIRpgDLeuVbDX": 1,
-                    "HzC7JGecAEhaGAtG": 1,
-                    "fWfJIY9kWQvMmnIG": 1,
-                    "9YfkjPvHxQEDATCd": 1,
-                    "DrDQXbxdYpNDEhsL": 2,
-                    "onig80LUzyAjTjyl": 5,
-                    "woMiNRgxdS4HQpSG": 2,
-                    "Jr1HThtu9bMPXi8D": 1,
-                    "IPGCIGjzTVPjtTgn": 5,
-                    "TC3DUFDhaekQXsoA": 3,
-                    "Kxt2D0VK3e0aGjE7": 6
+                    "SYFBDCEIFXfscq9M": 1,
+                    "9W8IB45H4KV2P9v4": 1,
+                    "8tUjmr6vDXziYQsH": 1,
+                    "VjTtFvA4wHwT3K0O": 1,
+                    "E65TjZBwbIcabXC4": 1,
+                    "zDNDSAgfamgiriky": 2,
+                    "fU0PdIbj8L97RD3G": 2,
+                    "JE9SLz5WvWyHTfb4": 3,
+                    "PhCjPCLUnz7umizd": 5,
+                    "nJTLKkZKPm4J6YXN": 5,
+                    "6JrWQti05kTjXHAV": 6,
+                    "03m6OPY8FdThQ0j8": 1,
+                    "gVWeZNNH48YJ2ifT": 1,
+                    "qgpyRqM4eP4Cpk99": 1
                   }
                 }
               }
             },
-            "_id": "99xzGrCG83szPyfO",
+            "_id": "XtWHFyIljgLiVVET",
             "sort": 0
           },
           {
@@ -1371,7 +1372,7 @@
               },
               "restrictions": []
             },
-            "_id": "orJzt2BlLfuIDJAn",
+            "_id": "XQnKnWM5qUeLp6yp",
             "effects": [],
             "folder": null,
             "sort": 0,
@@ -1403,17 +1404,21 @@
             "effects": [],
             "flags": {},
             "sort": 100000,
-            "_id": "PeVLcu7LR9bYmYMZ",
+            "_id": "SYFBDCEIFXfscq9M",
             "folder": null
           },
           {
             "_stats": {
-              "compendiumSource": "Compendium.pf1.class-abilities.Item.tWE66WvFjS1o0S4y"
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.h56K6HEBOItImPPL"
             },
-            "name": "Fascinate",
+            "name": "Inspire Courage",
             "system": {
               "abilityType": "su",
               "associations": { "classes": ["Bard"] },
+              "links": {
+                "supplements": [{ "uuid": "Compendium.pf1.buffs.Item.3p34GJemfcLdKckV" }],
+                "children": [{ "uuid": ".Item.n8Gv4jaRHlQfyp9X" }]
+              },
               "sources": [{ "id": "PZO1110", "pages": "37" }],
               "subType": "classFeat",
               "class": "bard",
@@ -1422,121 +1427,8 @@
             "type": "feat",
             "effects": [],
             "flags": {},
-            "sort": 300000,
-            "_id": "5tH0SMAPyfEC5dgN",
-            "folder": null
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1.class-abilities.Item.ZfCUTi1MiLgR4T7I"
-            },
-            "name": "Bardic Performance",
-            "system": {
-              "actions": {
-                "ohyjhnb4bta2gy9g": {
-                  "_id": "ohyjhnb4bta2gy9g",
-                  "activation": {
-                    "type": "standard",
-                    "unchained": { "cost": 2, "type": "action" }
-                  },
-                  "duration": { "units": "round" },
-                  "name": "Use",
-                  "range": { "units": "seeText" },
-                  "sort": 0
-                }
-              },
-              "associations": { "classes": ["Bard"] },
-              "sources": [{ "id": "PZO1110", "pages": "35" }],
-              "subType": "classFeat",
-              "tag": "bardicPerformance",
-              "uses": {
-                "maxFormula": "4 + @abilities.cha.mod + ((@class.unlevel * 2) - 2)",
-                "per": "day"
-              },
-              "class": "bard",
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "flags": {},
-            "sort": 400000,
-            "_id": "fDCxqQcRv9OEbi4T",
-            "folder": null
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1.class-abilities.Item.Kq3GVZ1yMv3ERQCJ"
-            },
-            "name": "Distraction",
-            "system": {
-              "abilityType": "su",
-              "associations": { "classes": ["Bard"] },
-              "sources": [{ "id": "PZO1110", "pages": "36" }],
-              "subType": "classFeat",
-              "class": "bard",
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "flags": {},
-            "sort": 600000,
-            "_id": "3uszIRpgDLeuVbDX",
-            "folder": null
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1.class-abilities.Item.IPy4aqFYbOppaqKC"
-            },
-            "name": "Cantrips",
-            "system": {
-              "associations": {
-                "classes": [
-                  "Arcanist",
-                  "Bard",
-                  "Magus",
-                  "Skald",
-                  "Sorcerer",
-                  "Summoner",
-                  "Summoner (Unchained)",
-                  "Witch",
-                  "Wizard"
-                ]
-              },
-              "sources": [
-                { "id": "PZO1110", "pages": "34, 70, 77" },
-                { "id": "PZO1115", "pages": "54, 65" },
-                { "id": "PZO1117", "pages": "9" },
-                { "id": "PZO1131", "pages": "25" },
-                { "id": "PZO1129", "pages": "8, 49" }
-              ],
-              "subType": "classFeat",
-              "class": "bard",
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "flags": {},
-            "sort": 700000,
-            "_id": "HzC7JGecAEhaGAtG",
-            "folder": null
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1.class-abilities.Item.S4VHXq1asXBwaRwo"
-            },
-            "name": "Bard Spells",
-            "system": {
-              "associations": { "classes": ["Bard"] },
-              "sources": [{ "id": "PZO1110", "pages": "35" }],
-              "subType": "classFeat",
-              "class": "bard",
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "flags": {},
-            "sort": 800000,
-            "_id": "fWfJIY9kWQvMmnIG",
+            "sort": 200000,
+            "_id": "9W8IB45H4KV2P9v4",
             "folder": null
           },
           {
@@ -1556,7 +1448,66 @@
             "effects": [],
             "flags": {},
             "sort": 500000,
-            "_id": "9YfkjPvHxQEDATCd",
+            "_id": "8tUjmr6vDXziYQsH",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.tWE66WvFjS1o0S4y"
+            },
+            "name": "Fascinate",
+            "system": {
+              "abilityType": "su",
+              "associations": { "classes": ["Bard"] },
+              "sources": [{ "id": "PZO1110", "pages": "37" }],
+              "subType": "classFeat",
+              "class": "bard",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 300000,
+            "_id": "VjTtFvA4wHwT3K0O",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.S4VHXq1asXBwaRwo"
+            },
+            "name": "Bard Spells",
+            "system": {
+              "associations": { "classes": ["Bard"] },
+              "sources": [{ "id": "PZO1110", "pages": "35" }],
+              "subType": "classFeat",
+              "class": "bard",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 800000,
+            "_id": "E65TjZBwbIcabXC4",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.HAqAsb5H56C6cZm3"
+            },
+            "name": "Versatile Performance",
+            "system": {
+              "abilityType": "ex",
+              "associations": { "classes": ["Bard"] },
+              "sources": [{ "id": "PZO1110", "pages": "38" }],
+              "subType": "classFeat",
+              "class": "bard",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 900000,
+            "_id": "zDNDSAgfamgiriky",
             "folder": null
           },
           {
@@ -1576,7 +1527,27 @@
             "effects": [],
             "flags": {},
             "sort": 1000000,
-            "_id": "DrDQXbxdYpNDEhsL",
+            "_id": "fU0PdIbj8L97RD3G",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.2M56kfIOws5yYtxq"
+            },
+            "name": "Inspire Competence",
+            "system": {
+              "abilityType": "su",
+              "associations": { "classes": ["Bard"] },
+              "sources": [{ "id": "PZO1110", "pages": "37" }],
+              "subType": "classFeat",
+              "class": "bard",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 1100000,
+            "_id": "JE9SLz5WvWyHTfb4",
             "folder": null
           },
           {
@@ -1614,51 +1585,7 @@
             "effects": [],
             "flags": {},
             "sort": 1200000,
-            "_id": "onig80LUzyAjTjyl",
-            "folder": null
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1.class-abilities.Item.HAqAsb5H56C6cZm3"
-            },
-            "name": "Versatile Performance",
-            "system": {
-              "abilityType": "ex",
-              "associations": { "classes": ["Bard"] },
-              "sources": [{ "id": "PZO1110", "pages": "38" }],
-              "subType": "classFeat",
-              "class": "bard",
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "flags": {},
-            "sort": 900000,
-            "_id": "woMiNRgxdS4HQpSG",
-            "folder": null
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1.class-abilities.Item.h56K6HEBOItImPPL"
-            },
-            "name": "Inspire Courage",
-            "system": {
-              "abilityType": "su",
-              "associations": { "classes": ["Bard"] },
-              "links": {
-                "supplements": [{ "uuid": "Compendium.pf1.buffs.Item.3p34GJemfcLdKckV" }],
-                "children": [{ "uuid": ".Item.H8UBiwpYBMsdCC50" }]
-              },
-              "sources": [{ "id": "PZO1110", "pages": "37" }],
-              "subType": "classFeat",
-              "class": "bard",
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "flags": {},
-            "sort": 200000,
-            "_id": "Jr1HThtu9bMPXi8D",
+            "_id": "PhCjPCLUnz7umizd",
             "folder": null
           },
           {
@@ -1691,27 +1618,7 @@
             "effects": [],
             "flags": {},
             "sort": 1300000,
-            "_id": "IPGCIGjzTVPjtTgn",
-            "folder": null
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1.class-abilities.Item.2M56kfIOws5yYtxq"
-            },
-            "name": "Inspire Competence",
-            "system": {
-              "abilityType": "su",
-              "associations": { "classes": ["Bard"] },
-              "sources": [{ "id": "PZO1110", "pages": "37" }],
-              "subType": "classFeat",
-              "class": "bard",
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "flags": {},
-            "sort": 1100000,
-            "_id": "TC3DUFDhaekQXsoA",
+            "_id": "nJTLKkZKPm4J6YXN",
             "folder": null
           },
           {
@@ -1731,7 +1638,101 @@
             "effects": [],
             "flags": {},
             "sort": 1400000,
-            "_id": "Kxt2D0VK3e0aGjE7",
+            "_id": "6JrWQti05kTjXHAV",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.ZfCUTi1MiLgR4T7I"
+            },
+            "name": "Bardic Performance",
+            "system": {
+              "actions": {
+                "ohyjhnb4bta2gy9g": {
+                  "_id": "ohyjhnb4bta2gy9g",
+                  "activation": {
+                    "type": "standard",
+                    "unchained": { "cost": 2, "type": "action" }
+                  },
+                  "duration": { "units": "round" },
+                  "name": "Use",
+                  "range": { "units": "seeText" },
+                  "sort": 0
+                }
+              },
+              "associations": { "classes": ["Bard"] },
+              "sources": [{ "id": "PZO1110", "pages": "35" }],
+              "subType": "classFeat",
+              "tag": "bardicPerformance",
+              "uses": {
+                "maxFormula": "4 + @abilities.cha.mod + ((@class.unlevel * 2) - 2)",
+                "per": "day"
+              },
+              "class": "bard",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 400000,
+            "_id": "03m6OPY8FdThQ0j8",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.Kq3GVZ1yMv3ERQCJ"
+            },
+            "name": "Distraction",
+            "system": {
+              "abilityType": "su",
+              "associations": { "classes": ["Bard"] },
+              "sources": [{ "id": "PZO1110", "pages": "36" }],
+              "subType": "classFeat",
+              "class": "bard",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 600000,
+            "_id": "gVWeZNNH48YJ2ifT",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.IPy4aqFYbOppaqKC"
+            },
+            "name": "Cantrips",
+            "system": {
+              "associations": {
+                "classes": [
+                  "Arcanist",
+                  "Bard",
+                  "Magus",
+                  "Skald",
+                  "Sorcerer",
+                  "Summoner",
+                  "Summoner (Unchained)",
+                  "Witch",
+                  "Wizard"
+                ]
+              },
+              "sources": [
+                { "id": "PZO1110", "pages": "34, 70, 77" },
+                { "id": "PZO1115", "pages": "54, 65" },
+                { "id": "PZO1117", "pages": "9" },
+                { "id": "PZO1131", "pages": "25" },
+                { "id": "PZO1129", "pages": "8, 49" }
+              ],
+              "subType": "classFeat",
+              "class": "bard",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 700000,
+            "_id": "qgpyRqM4eP4Cpk99",
             "folder": null
           },
           {
@@ -1766,7 +1767,7 @@
             "effects": [],
             "flags": { "pf1": { "source": "Compendium.pf1.buffs.Item.3p34GJemfcLdKckV" } },
             "sort": 0,
-            "_id": "H8UBiwpYBMsdCC50",
+            "_id": "n8Gv4jaRHlQfyp9X",
             "folder": null
           },
           {
@@ -1790,7 +1791,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "RNBLbSV4d4cjjfeV",
+            "_id": "OmfSOqYFCgZSU7Aa",
             "sort": 0
           },
           {
@@ -1805,7 +1806,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "oLwW6m5741WZpy3V",
+            "_id": "BO5vcVIegDUwIqC6",
             "sort": 0
           },
           {
@@ -1821,7 +1822,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "9c76NQ1THVc5ZLSD",
+            "_id": "lrM5QheaCkLqY5Pv",
             "sort": 0
           },
           {
@@ -1854,7 +1855,7 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "eCc4zVs7dPwygNGl",
+            "_id": "hO5ADDtEBFqz9LtI",
             "sort": 0
           },
           {
@@ -1903,7 +1904,7 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "xOuYnUfn38qgUQzW",
+            "_id": "7FzWqi5sKx48KltQ",
             "sort": 0
           },
           {
@@ -1939,7 +1940,7 @@
             "type": "buff",
             "effects": [],
             "flags": {},
-            "_id": "dZkbT3ovKYm2zp6y",
+            "_id": "TEgszyLIdD1WdBQp",
             "sort": 0
           },
           {
@@ -1997,7 +1998,7 @@
             "type": "buff",
             "effects": [],
             "flags": {},
-            "_id": "0Cy3FxEFfUFAc8qN",
+            "_id": "2yOXZi5EhQ2uWMwc",
             "sort": 0
           }
         ],
@@ -2063,14 +2064,15 @@
           "perform": 4,
           "bluff": 13
         }
-      }
+      },
+      "attacks": {}
     },
     "conditions": {
       "actor": {
         "name": "halfling-bard-6 [conditions]",
         "type": "character",
         "folder": "GuYuyoqdabfe4xZV",
-        "_id": "aC98WqJJHVecvygj",
+        "_id": "t6M8dLQFEQ6vOghE",
         "system": {
           "abilities": {
             "str": { "value": 10 },
@@ -2113,7 +2115,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "I80M1Hy4RwwONrIr",
+            "_id": "BwDrnih5cOqvmUew",
             "folder": null,
             "sort": 0
           },
@@ -2134,7 +2136,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "D5CipA8tUzDVXjBF",
+            "_id": "47cUszLsQ8meG5qV",
             "folder": null,
             "sort": 0
           },
@@ -2155,7 +2157,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "VnkmJ8jEXcis7vfq",
+            "_id": "IrE5GedhcnPWNVCD",
             "folder": null,
             "sort": 0
           },
@@ -2176,7 +2178,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "peT66n61ezHOHP8y",
+            "_id": "xd4Rx62BH3UugYZ3",
             "folder": null,
             "sort": 0
           },
@@ -2197,7 +2199,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "yLqYXkBcFMp17q7h",
+            "_id": "V3HRuhl90iwVsy2K",
             "folder": null,
             "sort": 0
           },
@@ -2218,7 +2220,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "rM662qmFvH5hkgsN",
+            "_id": "wahLTXVp027WHc9A",
             "folder": null,
             "sort": 0
           },
@@ -2285,7 +2287,7 @@
             "type": "race",
             "effects": [],
             "flags": {},
-            "_id": "FgiAVrynxlHnCuhw",
+            "_id": "uxeEFyCNZIRZBnsw",
             "sort": 0
           },
           {
@@ -2381,25 +2383,25 @@
               "pf1": {
                 "links": {
                   "classAssociations": {
-                    "qqYTKTxuH7TOMSh1": 1,
-                    "CyEoTV2KvFc7sEUv": 1,
-                    "rfAbQqdnz4UPG2FS": 1,
-                    "AkzCxqhtoSNwjSe0": 1,
-                    "1YS3hHCY54DmnMns": 1,
-                    "uFpVFZDoBrkzNeIr": 1,
-                    "V62iLBThRClxUvsO": 1,
-                    "AG1AKwQa3aFKqxZt": 2,
-                    "JrR0h3CJB0UOQGJ3": 2,
-                    "DJBDscAnUyZnHVzZ": 3,
-                    "D9rhTGVQ657nmelq": 5,
-                    "ZYyqmGuCSQZzANF3": 5,
-                    "jrKorjfPh5q6nmkA": 6,
-                    "bpuF8VKKIXMikcWF": 1
+                    "CIlk9racn2VL3n6q": 1,
+                    "8GWsVgu0Pj8ldq5P": 1,
+                    "XXo3U2FMajZbehXv": 1,
+                    "jbAwCacr7klFD8Fl": 1,
+                    "ZaCTvG4l0fbWDape": 1,
+                    "Gx2COBBqxCpkmxEM": 1,
+                    "iJGH7GI5vVs4mXqH": 1,
+                    "Pr0Lh9CF2BGKHH6s": 1,
+                    "iKpc1MQk6BMupyYD": 2,
+                    "HrtOhC6VllUUSFvm": 2,
+                    "CE0NUueUtlsooJ9f": 3,
+                    "fGMU6thZ8bN07Erm": 5,
+                    "oBzo2KuM02jmdrlB": 5,
+                    "VDZ8xvtkF3xaWHWU": 6
                   }
                 }
               }
             },
-            "_id": "rDlO1ZmoaFzKfRrb",
+            "_id": "s2OIWozocFhKENhh",
             "sort": 0
           },
           {
@@ -2435,7 +2437,7 @@
               },
               "restrictions": []
             },
-            "_id": "c2cjJJPGY2Gn5k40",
+            "_id": "JQlWBhLm5EAHVpzX",
             "effects": [],
             "folder": null,
             "sort": 0,
@@ -2467,7 +2469,7 @@
             "effects": [],
             "flags": {},
             "sort": 100000,
-            "_id": "qqYTKTxuH7TOMSh1",
+            "_id": "CIlk9racn2VL3n6q",
             "folder": null
           },
           {
@@ -2480,7 +2482,7 @@
               "associations": { "classes": ["Bard"] },
               "links": {
                 "supplements": [{ "uuid": "Compendium.pf1.buffs.Item.3p34GJemfcLdKckV" }],
-                "children": [{ "uuid": ".Item.QE4bIfXUM0bw7lvT" }]
+                "children": [{ "uuid": ".Item.GUosbBrZJl1AngWj" }]
               },
               "sources": [{ "id": "PZO1110", "pages": "37" }],
               "subType": "classFeat",
@@ -2491,7 +2493,7 @@
             "effects": [],
             "flags": {},
             "sort": 200000,
-            "_id": "CyEoTV2KvFc7sEUv",
+            "_id": "8GWsVgu0Pj8ldq5P",
             "folder": null
           },
           {
@@ -2511,7 +2513,7 @@
             "effects": [],
             "flags": {},
             "sort": 300000,
-            "_id": "rfAbQqdnz4UPG2FS",
+            "_id": "XXo3U2FMajZbehXv",
             "folder": null
           },
           {
@@ -2548,7 +2550,7 @@
             "effects": [],
             "flags": {},
             "sort": 400000,
-            "_id": "AkzCxqhtoSNwjSe0",
+            "_id": "jbAwCacr7klFD8Fl",
             "folder": null
           },
           {
@@ -2568,7 +2570,7 @@
             "effects": [],
             "flags": {},
             "sort": 500000,
-            "_id": "1YS3hHCY54DmnMns",
+            "_id": "ZaCTvG4l0fbWDape",
             "folder": null
           },
           {
@@ -2588,7 +2590,7 @@
             "effects": [],
             "flags": {},
             "sort": 600000,
-            "_id": "uFpVFZDoBrkzNeIr",
+            "_id": "Gx2COBBqxCpkmxEM",
             "folder": null
           },
           {
@@ -2625,7 +2627,26 @@
             "effects": [],
             "flags": {},
             "sort": 700000,
-            "_id": "V62iLBThRClxUvsO",
+            "_id": "iJGH7GI5vVs4mXqH",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.S4VHXq1asXBwaRwo"
+            },
+            "name": "Bard Spells",
+            "system": {
+              "associations": { "classes": ["Bard"] },
+              "sources": [{ "id": "PZO1110", "pages": "35" }],
+              "subType": "classFeat",
+              "class": "bard",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 800000,
+            "_id": "Pr0Lh9CF2BGKHH6s",
             "folder": null
           },
           {
@@ -2645,7 +2666,7 @@
             "effects": [],
             "flags": {},
             "sort": 900000,
-            "_id": "AG1AKwQa3aFKqxZt",
+            "_id": "iKpc1MQk6BMupyYD",
             "folder": null
           },
           {
@@ -2665,7 +2686,7 @@
             "effects": [],
             "flags": {},
             "sort": 1000000,
-            "_id": "JrR0h3CJB0UOQGJ3",
+            "_id": "HrtOhC6VllUUSFvm",
             "folder": null
           },
           {
@@ -2685,7 +2706,7 @@
             "effects": [],
             "flags": {},
             "sort": 1100000,
-            "_id": "DJBDscAnUyZnHVzZ",
+            "_id": "CE0NUueUtlsooJ9f",
             "folder": null
           },
           {
@@ -2723,7 +2744,7 @@
             "effects": [],
             "flags": {},
             "sort": 1200000,
-            "_id": "D9rhTGVQ657nmelq",
+            "_id": "fGMU6thZ8bN07Erm",
             "folder": null
           },
           {
@@ -2756,7 +2777,7 @@
             "effects": [],
             "flags": {},
             "sort": 1300000,
-            "_id": "ZYyqmGuCSQZzANF3",
+            "_id": "oBzo2KuM02jmdrlB",
             "folder": null
           },
           {
@@ -2776,26 +2797,7 @@
             "effects": [],
             "flags": {},
             "sort": 1400000,
-            "_id": "jrKorjfPh5q6nmkA",
-            "folder": null
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1.class-abilities.Item.S4VHXq1asXBwaRwo"
-            },
-            "name": "Bard Spells",
-            "system": {
-              "associations": { "classes": ["Bard"] },
-              "sources": [{ "id": "PZO1110", "pages": "35" }],
-              "subType": "classFeat",
-              "class": "bard",
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "flags": {},
-            "sort": 800000,
-            "_id": "bpuF8VKKIXMikcWF",
+            "_id": "VDZ8xvtkF3xaWHWU",
             "folder": null
           },
           {
@@ -2830,7 +2832,7 @@
             "effects": [],
             "flags": { "pf1": { "source": "Compendium.pf1.buffs.Item.3p34GJemfcLdKckV" } },
             "sort": 0,
-            "_id": "QE4bIfXUM0bw7lvT",
+            "_id": "GUosbBrZJl1AngWj",
             "folder": null
           },
           {
@@ -2854,7 +2856,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "RecNIgCcO9e2RhiE",
+            "_id": "gT8RWANj54imPuwc",
             "sort": 0
           },
           {
@@ -2869,7 +2871,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "shra3gF4MDlP7Pdi",
+            "_id": "fZ7gYuDO8xDSvXQx",
             "sort": 0
           },
           {
@@ -2885,40 +2887,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "rmGQpXmvKq9r0fpK",
-            "sort": 0
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1.armors-and-shields.Item.6YCQkebsf4vR508H"
-            },
-            "folder": "LQyo9lDGQU29eyig",
-            "name": "Leather Armor",
-            "system": {
-              "armor": {
-                "dex": 6,
-                "material": { "base": { "value": "leather" }, "addon": [] },
-                "value": 2,
-                "alignments": {}
-              },
-              "baseTypes": ["Leather Armor"],
-              "equipmentSubtype": "lightArmor",
-              "equipped": true,
-              "hardness": 2,
-              "hp": { "base": 10 },
-              "price": { "base": 10, "unit": "gp" },
-              "quantity": 1,
-              "slot": "armor",
-              "sources": [{ "id": "PZO1110", "pages": "151" }],
-              "spellFailure": 10,
-              "subType": "armor",
-              "weight": { "value": 15 },
-              "mods": {}
-            },
-            "type": "equipment",
-            "effects": [],
-            "flags": {},
-            "_id": "PiN1rJZIBIBD19HS",
+            "_id": "hXCZyasHiSZtMIsj",
             "sort": 0
           },
           {
@@ -2967,7 +2936,40 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "VpA1tTMb0xMhMZ7t",
+            "_id": "KeTwWul4ob3Fk4iA",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.armors-and-shields.Item.6YCQkebsf4vR508H"
+            },
+            "folder": "LQyo9lDGQU29eyig",
+            "name": "Leather Armor",
+            "system": {
+              "armor": {
+                "dex": 6,
+                "material": { "base": { "value": "leather" }, "addon": [] },
+                "value": 2,
+                "alignments": {}
+              },
+              "baseTypes": ["Leather Armor"],
+              "equipmentSubtype": "lightArmor",
+              "equipped": true,
+              "hardness": 2,
+              "hp": { "base": 10 },
+              "price": { "base": 10, "unit": "gp" },
+              "quantity": 1,
+              "slot": "armor",
+              "sources": [{ "id": "PZO1110", "pages": "151" }],
+              "spellFailure": 10,
+              "subType": "armor",
+              "weight": { "value": 15 },
+              "mods": {}
+            },
+            "type": "equipment",
+            "effects": [],
+            "flags": {},
+            "_id": "eoxEMA2MqXvIDXql",
             "sort": 0
           }
         ],
@@ -2977,7 +2979,7 @@
             "img": "systems/pf1/icons/conditions/shaken.svg",
             "statuses": ["shaken"],
             "showIcon": 2,
-            "_id": "StzUOxatdAtVyDup",
+            "_id": "0E8KNCzNCF2rx60R",
             "type": "base",
             "system": { "changes": [] },
             "disabled": false,
@@ -3001,9 +3003,9 @@
               "coreVersion": "14.370",
               "systemId": "pf1",
               "systemVersion": "11.11",
-              "createdTime": 1795403366988,
-              "modifiedTime": 1795403366988,
-              "lastModifiedBy": "08c2qWYVGcqr90R5",
+              "createdTime": 1795407383522,
+              "modifiedTime": 1795407383522,
+              "lastModifiedBy": "7UYomJpxzjJzDpJa",
               "compendiumSource": null,
               "duplicateSource": null,
               "exportSource": null
@@ -3071,7 +3073,8 @@
           "perform": 2,
           "bluff": 11
         }
-      }
+      },
+      "attacks": {}
     }
   }
 }

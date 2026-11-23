@@ -21,7 +21,7 @@ export interface Divergence {
    * out only for a systematic departure that holds for every scenario (and,
    * with actor `*`, every fixture) the entry covers.
    */
-  values?: { foundry: number; ledgermain: number };
+  values?: { foundry: number | string; ledgermain: number | string };
   verdict: "foundry-departs" | "representational";
   /** Rulebook source and page for the call. */
   citation: string;
@@ -46,11 +46,23 @@ const NEGATIVE_LEVEL_INITIATIVE = {
   why: "An initiative check is a Dexterity check, and each negative level is -1 on ability checks. Foundry leaves initiative out.",
 } as const;
 
+const WEAPON_FOCUS_SPECIALIZATION = {
+  verdict: "foundry-departs",
+  citation: "CRB pp. 136–137",
+  why: "Weapon Focus is +1 on attacks with the chosen weapon; Weapon Specialization is +2 on damage. The Foundry feat items carry neither a weapon pick nor mechanical effects. The spec picks longsword only in Ledgermain, leaving the greatsword and shortsword unaffected.",
+} as const;
+
+const WEAPON_TRAINING = {
+  verdict: "foundry-departs",
+  citation: "CRB p. 56",
+  why: "Weapon Training grants +1 on attack and damage with the first group at 5th level, increasing by +1 every four levels. At fighter 12, heavy blades get +2. Foundry's feature item carries no effects or group picks; the spec picks the group only in Ledgermain.",
+} as const;
+
 /** Pinned rows for one fixture scenario: `[stat, foundry, ledgermain]`. */
 function pinned(
   actor: string,
   scenario: string,
-  rows: [stat: string, foundry: number, ledgermain: number][],
+  rows: [stat: string, foundry: number | string, ledgermain: number | string][],
   entry: Pick<Divergence, "verdict" | "citation" | "why">,
 ): Divergence[] {
   return rows.map(([stat, foundry, ledgermain]) => ({
@@ -63,6 +75,96 @@ function pinned(
 }
 
 export const DIVERGENCES: Divergence[] = [
+  ...[
+    ["base", "10", "10/5"],
+    ["haste", "11", "11/6"],
+    ["conditions", "6", "6/1"],
+    ["stronger", "10", "10/5"],
+  ].flatMap(([scenario, foundry, ledgermain]) =>
+    pinned("human-ranger-6", scenario!, [["attacks.Javelin.attack", foundry!, ledgermain!]], {
+      verdict: "representational",
+      citation: "CRB pp. 132, 183, 187",
+      why: "The sheet shows the potential BAB full-attack sequence, not the actions needed to draw or reload. Foundry's javelin action emits one throw. Quick Draw or weapons already in hand can allow more throws; neither tool tracks that hand state.",
+    }),
+  ),
+  ...pinned(
+    "human-fighter-6",
+    "base",
+    [
+      ["attacks.Longsword.attack", "11/6", "12/7"],
+      ["attacks.Longsword.damage", 4, 6],
+      ["attacks.Longsword.pa.attack", "9/4", "10/5"],
+      ["attacks.Longsword.pa.damage", 8, 10],
+      ["attacks.Longsword.2h.attack", "11/6", "12/7"],
+      ["attacks.Longsword.2h.damage", 6, 8],
+      ["attacks.Longsword.2h-pa.attack", "9/4", "10/5"],
+      ["attacks.Longsword.2h-pa.damage", 12, 14],
+    ],
+    WEAPON_FOCUS_SPECIALIZATION,
+  ),
+  ...pinned(
+    "human-fighter-6",
+    "buffs",
+    [
+      ["attacks.Longsword.attack", "13/8", "14/9"],
+      ["attacks.Longsword.damage", 5, 7],
+      ["attacks.Longsword.pa.attack", "11/6", "12/7"],
+      ["attacks.Longsword.pa.damage", 9, 11],
+      ["attacks.Longsword.2h.attack", "13/8", "14/9"],
+      ["attacks.Longsword.2h.damage", 7, 9],
+      ["attacks.Longsword.2h-pa.attack", "11/6", "12/7"],
+      ["attacks.Longsword.2h-pa.damage", 13, 15],
+    ],
+    WEAPON_FOCUS_SPECIALIZATION,
+  ),
+  ...pinned(
+    "human-fighter-6",
+    "conditions",
+    [
+      ["attacks.Longsword.attack", "8/3", "9/4"],
+      ["attacks.Longsword.damage", 3, 5],
+      ["attacks.Longsword.pa.attack", "6/1", "7/2"],
+      ["attacks.Longsword.pa.damage", 7, 9],
+      ["attacks.Longsword.2h.attack", "8/3", "9/4"],
+      ["attacks.Longsword.2h.damage", 4, 6],
+      ["attacks.Longsword.2h-pa.attack", "6/1", "7/2"],
+      ["attacks.Longsword.2h-pa.damage", 10, 12],
+    ],
+    WEAPON_FOCUS_SPECIALIZATION,
+  ),
+  ...pinned(
+    "human-fighter-12",
+    "base",
+    [
+      ["attacks.Greatsword.attack", "19/14/9", "21/16/11"],
+      ["attacks.Greatsword.damage", 9, 11],
+      ["attacks.Greatsword.pa.attack", "15/10/5", "17/12/7"],
+      ["attacks.Greatsword.pa.damage", 21, 23],
+    ],
+    WEAPON_TRAINING,
+  ),
+  ...pinned(
+    "human-fighter-12",
+    "haste",
+    [
+      ["attacks.Greatsword.attack", "20/15/10", "22/17/12"],
+      ["attacks.Greatsword.damage", 9, 11],
+      ["attacks.Greatsword.pa.attack", "16/11/6", "18/13/8"],
+      ["attacks.Greatsword.pa.damage", 21, 23],
+    ],
+    WEAPON_TRAINING,
+  ),
+  ...pinned(
+    "human-fighter-12",
+    "enlarged",
+    [
+      ["attacks.Greatsword.attack", "19/14/9", "21/16/11"],
+      ["attacks.Greatsword.damage", 11, 13],
+      ["attacks.Greatsword.pa.attack", "15/10/5", "17/12/7"],
+      ["attacks.Greatsword.pa.damage", 23, 25],
+    ],
+    WEAPON_TRAINING,
+  ),
   {
     actor: "*",
     scenario: "*",

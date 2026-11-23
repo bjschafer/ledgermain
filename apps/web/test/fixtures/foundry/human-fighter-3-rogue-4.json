@@ -53,7 +53,7 @@
         "name": "human-fighter-3-rogue-4 [base]",
         "type": "character",
         "folder": "GuYuyoqdabfe4xZV",
-        "_id": "oRBbpSmTFJlNvZDS",
+        "_id": "rm8LfvxIMYcn3ZlL",
         "system": {
           "abilities": {
             "str": { "value": 16 },
@@ -96,7 +96,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "uuFFTys1WgMQlM4H",
+            "_id": "oqYELiSqInXk06sg",
             "folder": null,
             "sort": 0
           },
@@ -117,7 +117,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "E6EdCOb773Owa3kg",
+            "_id": "snFYayr9n7NqNJgg",
             "folder": null,
             "sort": 0
           },
@@ -138,7 +138,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "faXlIBEd2QsaNaq5",
+            "_id": "TmtfkYb5MGJ65rZN",
             "folder": null,
             "sort": 0
           },
@@ -159,7 +159,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "E9RHaty3QQuQhPJx",
+            "_id": "AgckJoknyQUHvUg3",
             "folder": null,
             "sort": 0
           },
@@ -180,7 +180,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "LMcj1gF2RxChaFFz",
+            "_id": "bV7SPFgaqpcaOy5b",
             "folder": null,
             "sort": 0
           },
@@ -201,7 +201,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "LWWlUxsixhoG5RGY",
+            "_id": "rAGR94JmMxLFiwzI",
             "folder": null,
             "sort": 0
           },
@@ -236,7 +236,7 @@
             "type": "race",
             "effects": [],
             "flags": {},
-            "_id": "4qD1TznlPxcj3Wze",
+            "_id": "X4IZKxN5sMhNm0r8",
             "sort": 0
           },
           {
@@ -291,14 +291,14 @@
               "pf1": {
                 "links": {
                   "classAssociations": {
-                    "pBi77zSxOosA7ugE": 1,
-                    "9NTchvzTsnNyf15N": 2,
-                    "M4n0YfbEzHeQb8Nx": 3
+                    "ffThwwi0PTWKm12B": 1,
+                    "mf7MDNPhvQGVJjyC": 2,
+                    "e7RJ3SwdoFQCyu8o": 3
                   }
                 }
               }
             },
-            "_id": "bB3J7IetzKaagqsv",
+            "_id": "oOInlLVh4WLCYETd",
             "sort": 0
           },
           {
@@ -325,7 +325,7 @@
             "effects": [],
             "flags": {},
             "sort": 100000,
-            "_id": "pBi77zSxOosA7ugE",
+            "_id": "ffThwwi0PTWKm12B",
             "folder": null
           },
           {
@@ -351,7 +351,7 @@
             "effects": [],
             "flags": {},
             "sort": 200000,
-            "_id": "9NTchvzTsnNyf15N",
+            "_id": "mf7MDNPhvQGVJjyC",
             "folder": null
           },
           {
@@ -386,7 +386,7 @@
             "effects": [],
             "flags": {},
             "sort": 300000,
-            "_id": "M4n0YfbEzHeQb8Nx",
+            "_id": "e7RJ3SwdoFQCyu8o",
             "folder": null
           },
           {
@@ -455,18 +455,165 @@
               "pf1": {
                 "links": {
                   "classAssociations": {
-                    "pRITCVm4rfddobOb": 1,
-                    "tcbxiwNLv4ee7dQV": 1,
-                    "Ts3RiGJWOwWe7IvT": 2,
-                    "S3n9zaWStCPh4CIL": 2,
-                    "cK4wLIYnegPgDcVV": 3,
-                    "PYnhTtoZI4P1rueM": 4
+                    "DrHvOl3o20AkZiWf": 1,
+                    "4PLOIfGQOfjsvtml": 2,
+                    "XB25a38efblMZoow": 2,
+                    "zRXypL1S0erH2SVR": 3,
+                    "Cj710Z6gEqA45OZk": 4,
+                    "TZ8Ftunb5cM5VAhl": 1
                   }
                 }
               }
             },
-            "_id": "4iCuqRXR9xVjXfnP",
+            "_id": "yDpzeOAenhcR5ssB",
             "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.6pjr8jMFSKqXkBKk"
+            },
+            "name": "Sneak Attack",
+            "system": {
+              "actions": {
+                "3121tfns5ck508lz": {
+                  "_id": "3121tfns5ck508lz",
+                  "activation": { "type": "nonaction", "unchained": { "type": "nonaction" } },
+                  "damage": {
+                    "parts": [{ "formula": "(ceil(@class.unlevel / 2))d6", "types": ["precision"] }]
+                  },
+                  "name": "Use",
+                  "sort": 0
+                }
+              },
+              "associations": { "classes": ["Rogue", "Ninja"] },
+              "sources": [{ "id": "PZO1110", "pages": "68" }],
+              "subType": "classFeat",
+              "class": "rogue",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 500000,
+            "_id": "DrHvOl3o20AkZiWf",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.iBTrvPtn3jczInbn"
+            },
+            "name": "Rogue Talents",
+            "system": {
+              "associations": { "classes": ["Rogue", "Rogue (Unchained)"] },
+              "sources": [{ "id": "PZO1110", "pages": "68-69" }],
+              "subType": "classFeat",
+              "class": "rogue",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 600000,
+            "_id": "4PLOIfGQOfjsvtml",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.KQYCRLEdD4bGA5ak"
+            },
+            "name": "Evasion",
+            "system": {
+              "abilityType": "ex",
+              "associations": {
+                "classes": ["Monk", "Monk (Unchained)", "Rogue", "Rogue (Unchained)"]
+              },
+              "contextNotes": {
+                "uBtS14C1NE0b1zR5": {
+                  "target": "ref",
+                  "text": "Reflex halves becomes Reflex negates"
+                }
+              },
+              "sources": [
+                { "id": "PZO1110", "pages": "59, 68" },
+                { "id": "PZO1131", "pages": "15" }
+              ],
+              "subType": "classFeat",
+              "class": "rogue",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 700000,
+            "_id": "XB25a38efblMZoow",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.BoEkMviJrW0PKmhj"
+            },
+            "name": "Trap Sense",
+            "system": {
+              "abilityType": "ex",
+              "associations": { "classes": ["Rogue", "Barbarian", "Investigator", "Slayer"] },
+              "contextNotes": {
+                "JJ0NsLIk5pxQy7Sa": {
+                  "target": "ac",
+                  "text": "+[[floor(@class.unlevel / 3)]] dodge vs. traps"
+                },
+                "nXRlpKQ385bKsKPa": {
+                  "target": "ref",
+                  "text": "+[[floor(@class.unlevel / 3)]] vs. traps"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "31, 69" }],
+              "subType": "classFeat",
+              "class": "rogue",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 800000,
+            "_id": "zRXypL1S0erH2SVR",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.7WaQxnVaaoL4AGr8"
+            },
+            "name": "Uncanny Dodge",
+            "system": {
+              "abilityType": "ex",
+              "associations": {
+                "classes": ["Barbarian", "Bloodrager", "Rogue", "Rogue (Unchained)", "Skald"]
+              },
+              "contextNotes": {
+                "ImkN87j6iTdKqStP": {
+                  "target": "cmd",
+                  "text": "Does not lose Dex bonus to AC if the attacker is invisible."
+                },
+                "leDfptnNLCyIJ57K": {
+                  "target": "ac",
+                  "text": "Does not lose Dex bonus to AC if the attacker is invisible."
+                },
+                "pzUE7ahoDiS0M0ia": { "target": "ac", "text": "Cannot be caught flat-footed." },
+                "uHEAXucUem1Cx6br": { "target": "cmd", "text": "Cannot be caught flat-footed." }
+              },
+              "sources": [
+                { "id": "PZO1110", "pages": "34, 69" },
+                { "id": "PZO1129", "pages": "15" }
+              ],
+              "subType": "classFeat",
+              "class": "rogue",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 900000,
+            "_id": "Cj710Z6gEqA45OZk",
+            "folder": null
           },
           {
             "_stats": {
@@ -504,154 +651,7 @@
             "effects": [],
             "flags": {},
             "sort": 400000,
-            "_id": "pRITCVm4rfddobOb",
-            "folder": null
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1.class-abilities.Item.6pjr8jMFSKqXkBKk"
-            },
-            "name": "Sneak Attack",
-            "system": {
-              "actions": {
-                "3121tfns5ck508lz": {
-                  "_id": "3121tfns5ck508lz",
-                  "activation": { "type": "nonaction", "unchained": { "type": "nonaction" } },
-                  "damage": {
-                    "parts": [{ "formula": "(ceil(@class.unlevel / 2))d6", "types": ["precision"] }]
-                  },
-                  "name": "Use",
-                  "sort": 0
-                }
-              },
-              "associations": { "classes": ["Rogue", "Ninja"] },
-              "sources": [{ "id": "PZO1110", "pages": "68" }],
-              "subType": "classFeat",
-              "class": "rogue",
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "flags": {},
-            "sort": 500000,
-            "_id": "tcbxiwNLv4ee7dQV",
-            "folder": null
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1.class-abilities.Item.iBTrvPtn3jczInbn"
-            },
-            "name": "Rogue Talents",
-            "system": {
-              "associations": { "classes": ["Rogue", "Rogue (Unchained)"] },
-              "sources": [{ "id": "PZO1110", "pages": "68-69" }],
-              "subType": "classFeat",
-              "class": "rogue",
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "flags": {},
-            "sort": 600000,
-            "_id": "Ts3RiGJWOwWe7IvT",
-            "folder": null
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1.class-abilities.Item.KQYCRLEdD4bGA5ak"
-            },
-            "name": "Evasion",
-            "system": {
-              "abilityType": "ex",
-              "associations": {
-                "classes": ["Monk", "Monk (Unchained)", "Rogue", "Rogue (Unchained)"]
-              },
-              "contextNotes": {
-                "uBtS14C1NE0b1zR5": {
-                  "target": "ref",
-                  "text": "Reflex halves becomes Reflex negates"
-                }
-              },
-              "sources": [
-                { "id": "PZO1110", "pages": "59, 68" },
-                { "id": "PZO1131", "pages": "15" }
-              ],
-              "subType": "classFeat",
-              "class": "rogue",
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "flags": {},
-            "sort": 700000,
-            "_id": "S3n9zaWStCPh4CIL",
-            "folder": null
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1.class-abilities.Item.BoEkMviJrW0PKmhj"
-            },
-            "name": "Trap Sense",
-            "system": {
-              "abilityType": "ex",
-              "associations": { "classes": ["Rogue", "Barbarian", "Investigator", "Slayer"] },
-              "contextNotes": {
-                "JJ0NsLIk5pxQy7Sa": {
-                  "target": "ac",
-                  "text": "+[[floor(@class.unlevel / 3)]] dodge vs. traps"
-                },
-                "nXRlpKQ385bKsKPa": {
-                  "target": "ref",
-                  "text": "+[[floor(@class.unlevel / 3)]] vs. traps"
-                }
-              },
-              "sources": [{ "id": "PZO1110", "pages": "31, 69" }],
-              "subType": "classFeat",
-              "class": "rogue",
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "flags": {},
-            "sort": 800000,
-            "_id": "cK4wLIYnegPgDcVV",
-            "folder": null
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1.class-abilities.Item.7WaQxnVaaoL4AGr8"
-            },
-            "name": "Uncanny Dodge",
-            "system": {
-              "abilityType": "ex",
-              "associations": {
-                "classes": ["Barbarian", "Bloodrager", "Rogue", "Rogue (Unchained)", "Skald"]
-              },
-              "contextNotes": {
-                "ImkN87j6iTdKqStP": {
-                  "target": "cmd",
-                  "text": "Does not lose Dex bonus to AC if the attacker is invisible."
-                },
-                "leDfptnNLCyIJ57K": {
-                  "target": "ac",
-                  "text": "Does not lose Dex bonus to AC if the attacker is invisible."
-                },
-                "pzUE7ahoDiS0M0ia": { "target": "ac", "text": "Cannot be caught flat-footed." },
-                "uHEAXucUem1Cx6br": { "target": "cmd", "text": "Cannot be caught flat-footed." }
-              },
-              "sources": [
-                { "id": "PZO1110", "pages": "34, 69" },
-                { "id": "PZO1129", "pages": "15" }
-              ],
-              "subType": "classFeat",
-              "class": "rogue",
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "flags": {},
-            "sort": 900000,
-            "_id": "PYnhTtoZI4P1rueM",
+            "_id": "TZ8Ftunb5cM5VAhl",
             "folder": null
           },
           {
@@ -662,19 +662,19 @@
             "name": "Heart of the Streets",
             "system": {
               "changes": {
-                "4CZImkke1p5JfTvi": {
-                  "_id": "4CZImkke1p5JfTvi",
+                "HiXYbAgw7mffatrw": {
+                  "_id": "HiXYbAgw7mffatrw",
                   "formula": "1",
                   "target": "ref",
                   "type": "racial"
                 }
               },
               "contextNotes": {
-                "kZ3FYyhL8owAVPIw": {
+                "mKyWsIf775vcoh3p": {
                   "target": "ac",
                   "text": "+[[1]] Dodge bonus when adjacent to at least two other allies."
                 },
-                "gvR4iT2K0LuQgt1f": {
+                "5GK5qJWr0jEHcMWM": {
                   "target": "landSpeed",
                   "text": "Crowds do not count as difficult terrain for you"
                 }
@@ -692,7 +692,7 @@
             "type": "feat",
             "effects": [],
             "flags": {},
-            "_id": "b0P6ZmjPtaUXQROa",
+            "_id": "mkxMTU30dQq1G8X0",
             "sort": 0
           },
           {
@@ -716,7 +716,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "r0tP6QQNwuHMqNJU",
+            "_id": "z372cRJY5ViSWVFK",
             "sort": 0
           },
           {
@@ -740,7 +740,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "5WtnpyJUHH9DWOkE",
+            "_id": "4lg5lEROtU0e27Yq",
             "sort": 0
           },
           {
@@ -764,7 +764,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "lPVKBQPdgzU5dABR",
+            "_id": "NFKGSRmrcBP5h9Yp",
             "sort": 0
           },
           {
@@ -788,7 +788,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "d0OaSbJkkYX6MmGb",
+            "_id": "wcU8guLBo48HnXpp",
             "sort": 0
           },
           {
@@ -807,7 +807,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "9Ha32gNMmn9Iqe9j",
+            "_id": "lVnyMeWQBaiib5XR",
             "sort": 0
           },
           {
@@ -823,7 +823,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "yeY75wxf1awPP7tb",
+            "_id": "5xKEMnpFfv2mAghU",
             "sort": 0
           },
           {
@@ -840,7 +840,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "kDc2NjQA0ZYdD4Mp",
+            "_id": "HLWcuc2swnE6RchO",
             "sort": 0
           },
           {
@@ -874,7 +874,7 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "0lZXN9LH8D0asEou",
+            "_id": "yDiZDxmAEnLC4mMJ",
             "sort": 0
           },
           {
@@ -923,7 +923,7 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "U8dcA9q0O4bNikGQ",
+            "_id": "QdyZDyIr47XhYp1U",
             "sort": 0
           }
         ],
@@ -989,14 +989,15 @@
           "perform": -1,
           "bluff": -1
         }
-      }
+      },
+      "attacks": {}
     },
     "grappled": {
       "actor": {
         "name": "human-fighter-3-rogue-4 [grappled]",
         "type": "character",
         "folder": "GuYuyoqdabfe4xZV",
-        "_id": "AaCOOgemEeWWRyQ9",
+        "_id": "aCjvQx7KEuuqwLn4",
         "system": {
           "abilities": {
             "str": { "value": 16 },
@@ -1039,7 +1040,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "igkKoieG9cWwDGE1",
+            "_id": "XSVMo5TAXeIjNJfm",
             "folder": null,
             "sort": 0
           },
@@ -1060,7 +1061,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "JUIgyf1XvpkOjZjq",
+            "_id": "QbRtwITqzi739HqR",
             "folder": null,
             "sort": 0
           },
@@ -1081,7 +1082,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "f3lJSzVvlZWyNxq3",
+            "_id": "gXY0OHBEjOyNEAwR",
             "folder": null,
             "sort": 0
           },
@@ -1102,7 +1103,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "F8FOmu8l6M1OUWFP",
+            "_id": "KNjVZ3ZDmFxuqrDd",
             "folder": null,
             "sort": 0
           },
@@ -1123,7 +1124,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "9Lfx6KlQc6ZwIWX7",
+            "_id": "BPV7aN72WynNUXsL",
             "folder": null,
             "sort": 0
           },
@@ -1144,7 +1145,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "QWhSAPzZlGpUqqOY",
+            "_id": "6fupXSjFiMQIu3fv",
             "folder": null,
             "sort": 0
           },
@@ -1179,7 +1180,7 @@
             "type": "race",
             "effects": [],
             "flags": {},
-            "_id": "tU4xvQ3lUu5zXqvo",
+            "_id": "OLpVDz2ZEuPoa9n5",
             "sort": 0
           },
           {
@@ -1234,14 +1235,14 @@
               "pf1": {
                 "links": {
                   "classAssociations": {
-                    "dC9dWtGODeQHSUt9": 2,
-                    "VGECTQvDry8iaw6m": 1,
-                    "8LhVNEYZBol7yWld": 3
+                    "yfiv0AGpWi2SPrR8": 2,
+                    "5wFSDtlngyScHhmi": 3,
+                    "urm7PNaEsFsatwTM": 1
                   }
                 }
               }
             },
-            "_id": "jrD7WqJ1eFrU6a6P",
+            "_id": "RAs7BiJ6yOS5goFi",
             "sort": 0
           },
           {
@@ -1267,34 +1268,7 @@
             "effects": [],
             "flags": {},
             "sort": 200000,
-            "_id": "dC9dWtGODeQHSUt9",
-            "folder": null
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1.class-abilities.Item.CV8BsY3ciUb9TA1Y"
-            },
-            "name": "Bonus Feats (FGT)",
-            "system": {
-              "associations": { "classes": ["Fighter"] },
-              "changes": {
-                "yoxm5fp1": {
-                  "_id": "yoxm5fp1",
-                  "formula": "1 + floor(@class.unlevel / 2)",
-                  "target": "bonusFeats",
-                  "type": "untyped"
-                }
-              },
-              "sources": [{ "id": "PZO1110", "pages": "55" }],
-              "subType": "classFeat",
-              "class": "fighter",
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "flags": {},
-            "sort": 100000,
-            "_id": "VGECTQvDry8iaw6m",
+            "_id": "yfiv0AGpWi2SPrR8",
             "folder": null
           },
           {
@@ -1329,7 +1303,34 @@
             "effects": [],
             "flags": {},
             "sort": 300000,
-            "_id": "8LhVNEYZBol7yWld",
+            "_id": "5wFSDtlngyScHhmi",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.CV8BsY3ciUb9TA1Y"
+            },
+            "name": "Bonus Feats (FGT)",
+            "system": {
+              "associations": { "classes": ["Fighter"] },
+              "changes": {
+                "yoxm5fp1": {
+                  "_id": "yoxm5fp1",
+                  "formula": "1 + floor(@class.unlevel / 2)",
+                  "target": "bonusFeats",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "55" }],
+              "subType": "classFeat",
+              "class": "fighter",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 100000,
+            "_id": "urm7PNaEsFsatwTM",
             "folder": null
           },
           {
@@ -1398,17 +1399,17 @@
               "pf1": {
                 "links": {
                   "classAssociations": {
-                    "oCgD8jZNb7y3CN7g": 1,
-                    "BvMzhnH8gUmiWnxp": 1,
-                    "El5NWMeRsYA5pTBC": 2,
-                    "KRIrpb0aOe6X8gV5": 2,
-                    "o8k8IWqhSazxXeuQ": 3,
-                    "Mzu8pCM5CtFDaISn": 4
+                    "DY0HcU28P8hxB7D6": 1,
+                    "WganVhEigDVqR9Or": 1,
+                    "OqKTNzuDQm7TCa8d": 2,
+                    "ljsJuv8k5LsCHnlz": 2,
+                    "N3q9fQbZ8fxvj7fO": 3,
+                    "sLujVC5HcsSzmjUC": 4
                   }
                 }
               }
             },
-            "_id": "63ksjtbfeOk2Si4l",
+            "_id": "zXZ1iyzbZp2tiLM2",
             "sort": 0
           },
           {
@@ -1447,7 +1448,7 @@
             "effects": [],
             "flags": {},
             "sort": 400000,
-            "_id": "oCgD8jZNb7y3CN7g",
+            "_id": "DY0HcU28P8hxB7D6",
             "folder": null
           },
           {
@@ -1477,7 +1478,7 @@
             "effects": [],
             "flags": {},
             "sort": 500000,
-            "_id": "BvMzhnH8gUmiWnxp",
+            "_id": "WganVhEigDVqR9Or",
             "folder": null
           },
           {
@@ -1496,7 +1497,7 @@
             "effects": [],
             "flags": {},
             "sort": 600000,
-            "_id": "El5NWMeRsYA5pTBC",
+            "_id": "OqKTNzuDQm7TCa8d",
             "folder": null
           },
           {
@@ -1527,7 +1528,7 @@
             "effects": [],
             "flags": {},
             "sort": 700000,
-            "_id": "KRIrpb0aOe6X8gV5",
+            "_id": "ljsJuv8k5LsCHnlz",
             "folder": null
           },
           {
@@ -1557,7 +1558,7 @@
             "effects": [],
             "flags": {},
             "sort": 800000,
-            "_id": "o8k8IWqhSazxXeuQ",
+            "_id": "N3q9fQbZ8fxvj7fO",
             "folder": null
           },
           {
@@ -1594,7 +1595,7 @@
             "effects": [],
             "flags": {},
             "sort": 900000,
-            "_id": "Mzu8pCM5CtFDaISn",
+            "_id": "sLujVC5HcsSzmjUC",
             "folder": null
           },
           {
@@ -1605,19 +1606,19 @@
             "name": "Heart of the Streets",
             "system": {
               "changes": {
-                "4CZImkke1p5JfTvi": {
-                  "_id": "4CZImkke1p5JfTvi",
+                "HiXYbAgw7mffatrw": {
+                  "_id": "HiXYbAgw7mffatrw",
                   "formula": "1",
                   "target": "ref",
                   "type": "racial"
                 }
               },
               "contextNotes": {
-                "kZ3FYyhL8owAVPIw": {
+                "mKyWsIf775vcoh3p": {
                   "target": "ac",
                   "text": "+[[1]] Dodge bonus when adjacent to at least two other allies."
                 },
-                "gvR4iT2K0LuQgt1f": {
+                "5GK5qJWr0jEHcMWM": {
                   "target": "landSpeed",
                   "text": "Crowds do not count as difficult terrain for you"
                 }
@@ -1635,7 +1636,7 @@
             "type": "feat",
             "effects": [],
             "flags": {},
-            "_id": "mvkyRyAQKU39HqCt",
+            "_id": "DOv4E5tz1h9v9yz4",
             "sort": 0
           },
           {
@@ -1659,7 +1660,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "sW81CyZfGEkOcwwL",
+            "_id": "SPC4ynVWoKH6MiY6",
             "sort": 0
           },
           {
@@ -1683,7 +1684,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "TaSIZbG8bvUV379G",
+            "_id": "aoLysthwlwr072kd",
             "sort": 0
           },
           {
@@ -1707,7 +1708,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "wwEPn2P7qV3UKvXp",
+            "_id": "4KUMb02fjbooyDYg",
             "sort": 0
           },
           {
@@ -1731,23 +1732,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "KSRItHG8Ucsj4AXN",
-            "sort": 0
-          },
-          {
-            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.R7L4SlGRlnThqFrP" },
-            "name": "Mobility",
-            "system": {
-              "sources": [{ "id": "PZO1110", "pages": "114, 130" }],
-              "subType": "feat",
-              "tags": ["Combat", "Movement", "Defensive"],
-              "alignments": {}
-            },
-            "type": "feat",
-            "effects": [],
-            "folder": null,
-            "flags": {},
-            "_id": "KcqDCLQExfWcoAly",
+            "_id": "Yn3W6tqW0h8BU30g",
             "sort": 0
           },
           {
@@ -1764,7 +1749,23 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "2Gx2zUCuc0mDrO7o",
+            "_id": "nRQJRlmTUBAi49t7",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.R7L4SlGRlnThqFrP" },
+            "name": "Mobility",
+            "system": {
+              "sources": [{ "id": "PZO1110", "pages": "114, 130" }],
+              "subType": "feat",
+              "tags": ["Combat", "Movement", "Defensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "7neOdFgxjIzf9kx9",
             "sort": 0
           },
           {
@@ -1783,7 +1784,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "sTTPKv6RhjlPgrUu",
+            "_id": "GHKnJLEgjTR91HLd",
             "sort": 0
           },
           {
@@ -1817,7 +1818,7 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "Q6y64vLyITeswiwu",
+            "_id": "H1Wt5xC5Xe5NxuKa",
             "sort": 0
           },
           {
@@ -1866,7 +1867,7 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "BckpLYvqJtgiA7kx",
+            "_id": "CYoeY9iFQyBoahGr",
             "sort": 0
           }
         ],
@@ -1876,7 +1877,7 @@
             "img": "systems/pf1/icons/conditions/grappled.svg",
             "statuses": ["grappled"],
             "showIcon": 2,
-            "_id": "fC5oFvlagCQTY1hw",
+            "_id": "lsMHkDSISF4NuI0B",
             "type": "base",
             "system": { "changes": [] },
             "disabled": false,
@@ -1900,9 +1901,9 @@
               "coreVersion": "14.370",
               "systemId": "pf1",
               "systemVersion": "11.11",
-              "createdTime": 1795403656704,
-              "modifiedTime": 1795403656704,
-              "lastModifiedBy": "AKnVcnI4fMKGUzTH",
+              "createdTime": 1795407425823,
+              "modifiedTime": 1795407425823,
+              "lastModifiedBy": "7UYomJpxzjJzDpJa",
               "compendiumSource": null,
               "duplicateSource": null,
               "exportSource": null
@@ -1970,14 +1971,15 @@
           "perform": -1,
           "bluff": -1
         }
-      }
+      },
+      "attacks": {}
     },
     "haste": {
       "actor": {
         "name": "human-fighter-3-rogue-4 [haste]",
         "type": "character",
         "folder": "GuYuyoqdabfe4xZV",
-        "_id": "LK8oEcwQBUrLyKI0",
+        "_id": "LaUga9WDLeA2ozjB",
         "system": {
           "abilities": {
             "str": { "value": 16 },
@@ -2020,7 +2022,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "0NfRKF9qIH4H9M41",
+            "_id": "1Jvy2JXfREyuPlRE",
             "folder": null,
             "sort": 0
           },
@@ -2041,7 +2043,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "vzM9NM9juTy5Lwtu",
+            "_id": "U8UsHfRlMd6j8k4A",
             "folder": null,
             "sort": 0
           },
@@ -2062,7 +2064,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "MqQgGCaSoo9AHYWn",
+            "_id": "C3YpznA6MWUtGRBk",
             "folder": null,
             "sort": 0
           },
@@ -2083,7 +2085,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "hjmTdWDfLpIQS7Os",
+            "_id": "rARDDNTx1eo0erb6",
             "folder": null,
             "sort": 0
           },
@@ -2104,7 +2106,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "UXprBxhVok2jq3ci",
+            "_id": "msHqdC5VRgHZMBTU",
             "folder": null,
             "sort": 0
           },
@@ -2125,7 +2127,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "5RwlZEy60YDpcNfP",
+            "_id": "PBoeHlaFP53VUdfq",
             "folder": null,
             "sort": 0
           },
@@ -2160,7 +2162,7 @@
             "type": "race",
             "effects": [],
             "flags": {},
-            "_id": "tYV6eoCsBnkrlr50",
+            "_id": "j2R1SOxUjjxo9VGw",
             "sort": 0
           },
           {
@@ -2215,14 +2217,14 @@
               "pf1": {
                 "links": {
                   "classAssociations": {
-                    "z00gUD1Jxk5slZpk": 1,
-                    "X83uTYRKx90rvoms": 2,
-                    "edqzavS47hDrqp3n": 3
+                    "cMTH4BNgEGkYXjQZ": 1,
+                    "3vvw8eCgeXH5UmPA": 2,
+                    "DTlJe8ZBWfANTunv": 3
                   }
                 }
               }
             },
-            "_id": "N5A23ZtGAoQGTl7c",
+            "_id": "fPx2tYx4hukg1rex",
             "sort": 0
           },
           {
@@ -2249,7 +2251,7 @@
             "effects": [],
             "flags": {},
             "sort": 100000,
-            "_id": "z00gUD1Jxk5slZpk",
+            "_id": "cMTH4BNgEGkYXjQZ",
             "folder": null
           },
           {
@@ -2275,7 +2277,7 @@
             "effects": [],
             "flags": {},
             "sort": 200000,
-            "_id": "X83uTYRKx90rvoms",
+            "_id": "3vvw8eCgeXH5UmPA",
             "folder": null
           },
           {
@@ -2310,7 +2312,7 @@
             "effects": [],
             "flags": {},
             "sort": 300000,
-            "_id": "edqzavS47hDrqp3n",
+            "_id": "DTlJe8ZBWfANTunv",
             "folder": null
           },
           {
@@ -2379,17 +2381,17 @@
               "pf1": {
                 "links": {
                   "classAssociations": {
-                    "Q7fV7mMnxVotHyrF": 1,
-                    "VZV9rTtMIXJlrwUw": 1,
-                    "9aY5nyfjOb4DX7CY": 2,
-                    "oYKTzq9TTMYzAvNH": 2,
-                    "kxUAH5y9Zm6qC9Sc": 3,
-                    "LsMeftuPtpKoqstW": 4
+                    "wXSZPhucgG7CRAfM": 1,
+                    "XLjTEvNzep2dAcnW": 1,
+                    "n0GrsNEhazQ4XNNO": 2,
+                    "13GUrcqm5kJNbxCO": 2,
+                    "IdZs1fGFBDkmaLCz": 3,
+                    "yv1b8bp3ojESqtSD": 4
                   }
                 }
               }
             },
-            "_id": "ePvfCVVuf74aXwlv",
+            "_id": "YiemXcOnPngzutAo",
             "sort": 0
           },
           {
@@ -2428,7 +2430,7 @@
             "effects": [],
             "flags": {},
             "sort": 400000,
-            "_id": "Q7fV7mMnxVotHyrF",
+            "_id": "wXSZPhucgG7CRAfM",
             "folder": null
           },
           {
@@ -2458,7 +2460,7 @@
             "effects": [],
             "flags": {},
             "sort": 500000,
-            "_id": "VZV9rTtMIXJlrwUw",
+            "_id": "XLjTEvNzep2dAcnW",
             "folder": null
           },
           {
@@ -2477,7 +2479,7 @@
             "effects": [],
             "flags": {},
             "sort": 600000,
-            "_id": "9aY5nyfjOb4DX7CY",
+            "_id": "n0GrsNEhazQ4XNNO",
             "folder": null
           },
           {
@@ -2508,7 +2510,7 @@
             "effects": [],
             "flags": {},
             "sort": 700000,
-            "_id": "oYKTzq9TTMYzAvNH",
+            "_id": "13GUrcqm5kJNbxCO",
             "folder": null
           },
           {
@@ -2538,7 +2540,7 @@
             "effects": [],
             "flags": {},
             "sort": 800000,
-            "_id": "kxUAH5y9Zm6qC9Sc",
+            "_id": "IdZs1fGFBDkmaLCz",
             "folder": null
           },
           {
@@ -2575,7 +2577,7 @@
             "effects": [],
             "flags": {},
             "sort": 900000,
-            "_id": "LsMeftuPtpKoqstW",
+            "_id": "yv1b8bp3ojESqtSD",
             "folder": null
           },
           {
@@ -2586,19 +2588,19 @@
             "name": "Heart of the Streets",
             "system": {
               "changes": {
-                "4CZImkke1p5JfTvi": {
-                  "_id": "4CZImkke1p5JfTvi",
+                "HiXYbAgw7mffatrw": {
+                  "_id": "HiXYbAgw7mffatrw",
                   "formula": "1",
                   "target": "ref",
                   "type": "racial"
                 }
               },
               "contextNotes": {
-                "kZ3FYyhL8owAVPIw": {
+                "mKyWsIf775vcoh3p": {
                   "target": "ac",
                   "text": "+[[1]] Dodge bonus when adjacent to at least two other allies."
                 },
-                "gvR4iT2K0LuQgt1f": {
+                "5GK5qJWr0jEHcMWM": {
                   "target": "landSpeed",
                   "text": "Crowds do not count as difficult terrain for you"
                 }
@@ -2616,7 +2618,7 @@
             "type": "feat",
             "effects": [],
             "flags": {},
-            "_id": "4UB3Bf0GCow41bp0",
+            "_id": "sqGO5b7dL714V80h",
             "sort": 0
           },
           {
@@ -2640,7 +2642,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "bLG7N0G2bXPSvR3q",
+            "_id": "uM4dkoezSln6zRaX",
             "sort": 0
           },
           {
@@ -2664,7 +2666,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "gn326MQH09iM4gIK",
+            "_id": "hrUzWleQaE9oAdyw",
             "sort": 0
           },
           {
@@ -2688,7 +2690,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "xDH1YNMvkH0YOu8g",
+            "_id": "Ah6VT1d4yc4f3LST",
             "sort": 0
           },
           {
@@ -2712,7 +2714,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "9xkD68KIzWJqgcjd",
+            "_id": "xP65bqP8dr4VoQHn",
             "sort": 0
           },
           {
@@ -2731,7 +2733,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "p8kScLZADxNnbFQg",
+            "_id": "iU5ZidN0XuQwT3v4",
             "sort": 0
           },
           {
@@ -2747,7 +2749,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "UmSLx35F5ru2ARi0",
+            "_id": "f1hSTKLZqDC8WYZ7",
             "sort": 0
           },
           {
@@ -2764,7 +2766,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "bPP46OMSzb1cmLfX",
+            "_id": "VD3PbcDtNC3f5MA8",
             "sort": 0
           },
           {
@@ -2798,7 +2800,7 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "j0NkO73QqnNMToVP",
+            "_id": "4wz8s19PBVIjNY9r",
             "sort": 0
           },
           {
@@ -2847,7 +2849,7 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "vPnfkmaPXYkbm7kg",
+            "_id": "5zQLD8vI8P6Imcw7",
             "sort": 0
           },
           {
@@ -2905,7 +2907,7 @@
             "type": "buff",
             "effects": [],
             "flags": {},
-            "_id": "rT2QofYFwbzeq9Cd",
+            "_id": "491OmpMjrhLPb1zr",
             "sort": 0
           }
         ],
@@ -2971,14 +2973,15 @@
           "perform": -1,
           "bluff": -1
         }
-      }
+      },
+      "attacks": {}
     },
     "enlarged": {
       "actor": {
         "name": "human-fighter-3-rogue-4 [enlarged]",
         "type": "character",
         "folder": "GuYuyoqdabfe4xZV",
-        "_id": "uXmPN3s9XkgCl4H9",
+        "_id": "o56uvafP9G2obW8i",
         "system": {
           "abilities": {
             "str": { "value": 16 },
@@ -3021,7 +3024,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "71Non1BvAqoqg5MY",
+            "_id": "93iA40znVjIsmdZs",
             "folder": null,
             "sort": 0
           },
@@ -3042,7 +3045,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "tiN6k6jBVoJEfrJ6",
+            "_id": "NTTYpKE4fWY8XseV",
             "folder": null,
             "sort": 0
           },
@@ -3063,7 +3066,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "dXnb60zui667N2Gn",
+            "_id": "973z5qNEUBJaAbVv",
             "folder": null,
             "sort": 0
           },
@@ -3084,7 +3087,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "ATrMFApewqab0YjF",
+            "_id": "klmcattXLH7Uogwq",
             "folder": null,
             "sort": 0
           },
@@ -3105,7 +3108,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "rrb5pqjaXjSmReN5",
+            "_id": "tjL0g3xYLMidBZAp",
             "folder": null,
             "sort": 0
           },
@@ -3126,7 +3129,7 @@
             "type": "skill",
             "effects": [],
             "flags": {},
-            "_id": "tUJxs6myI1Wm5pUF",
+            "_id": "kmSwY8ZiVBmy454E",
             "folder": null,
             "sort": 0
           },
@@ -3161,7 +3164,7 @@
             "type": "race",
             "effects": [],
             "flags": {},
-            "_id": "K8f49xJOQzquWM8h",
+            "_id": "6ThHVLNzRg9QbApR",
             "sort": 0
           },
           {
@@ -3216,14 +3219,14 @@
               "pf1": {
                 "links": {
                   "classAssociations": {
-                    "sT4i9Xz0Jna55hbL": 1,
-                    "Onl4AcKNhKhdNJnF": 2,
-                    "Rezas1v5zvjf1Q2q": 3
+                    "URQlsUlHpZ2CkxCi": 1,
+                    "lR6O3Ga0fgQ0Hvsg": 2,
+                    "DeCd0kSs9nH6qGuo": 3
                   }
                 }
               }
             },
-            "_id": "8OVM9T3k9jEdpKS2",
+            "_id": "V6CILBwbfarSlJO2",
             "sort": 0
           },
           {
@@ -3250,7 +3253,7 @@
             "effects": [],
             "flags": {},
             "sort": 100000,
-            "_id": "sT4i9Xz0Jna55hbL",
+            "_id": "URQlsUlHpZ2CkxCi",
             "folder": null
           },
           {
@@ -3276,7 +3279,7 @@
             "effects": [],
             "flags": {},
             "sort": 200000,
-            "_id": "Onl4AcKNhKhdNJnF",
+            "_id": "lR6O3Ga0fgQ0Hvsg",
             "folder": null
           },
           {
@@ -3311,7 +3314,7 @@
             "effects": [],
             "flags": {},
             "sort": 300000,
-            "_id": "Rezas1v5zvjf1Q2q",
+            "_id": "DeCd0kSs9nH6qGuo",
             "folder": null
           },
           {
@@ -3380,17 +3383,17 @@
               "pf1": {
                 "links": {
                   "classAssociations": {
-                    "V6jbz5sm1l8sBB0Y": 1,
-                    "gxAwRU7uJFqh7lkh": 1,
-                    "SaKL4VQfaPaHhvF4": 2,
-                    "FlJyrEw9xDD9n4Fu": 2,
-                    "WBfH1UIw1y2rAWYt": 3,
-                    "39CdJXj6JvshPCou": 4
+                    "YTaPwzONKguX3opP": 1,
+                    "ALTI68ILvobeajfI": 1,
+                    "5YlFskJPrTZ0DdU4": 2,
+                    "GV9n5dEOA6QRg7h6": 2,
+                    "otczSYmr82kkEPBp": 3,
+                    "exJvhoUAQSFywgIX": 4
                   }
                 }
               }
             },
-            "_id": "wZMMAmlKsH7uLgqV",
+            "_id": "qh6ff5KIEjZl25X9",
             "sort": 0
           },
           {
@@ -3429,7 +3432,7 @@
             "effects": [],
             "flags": {},
             "sort": 400000,
-            "_id": "V6jbz5sm1l8sBB0Y",
+            "_id": "YTaPwzONKguX3opP",
             "folder": null
           },
           {
@@ -3459,7 +3462,7 @@
             "effects": [],
             "flags": {},
             "sort": 500000,
-            "_id": "gxAwRU7uJFqh7lkh",
+            "_id": "ALTI68ILvobeajfI",
             "folder": null
           },
           {
@@ -3478,7 +3481,7 @@
             "effects": [],
             "flags": {},
             "sort": 600000,
-            "_id": "SaKL4VQfaPaHhvF4",
+            "_id": "5YlFskJPrTZ0DdU4",
             "folder": null
           },
           {
@@ -3509,7 +3512,7 @@
             "effects": [],
             "flags": {},
             "sort": 700000,
-            "_id": "FlJyrEw9xDD9n4Fu",
+            "_id": "GV9n5dEOA6QRg7h6",
             "folder": null
           },
           {
@@ -3539,7 +3542,7 @@
             "effects": [],
             "flags": {},
             "sort": 800000,
-            "_id": "WBfH1UIw1y2rAWYt",
+            "_id": "otczSYmr82kkEPBp",
             "folder": null
           },
           {
@@ -3576,7 +3579,7 @@
             "effects": [],
             "flags": {},
             "sort": 900000,
-            "_id": "39CdJXj6JvshPCou",
+            "_id": "exJvhoUAQSFywgIX",
             "folder": null
           },
           {
@@ -3587,19 +3590,19 @@
             "name": "Heart of the Streets",
             "system": {
               "changes": {
-                "4CZImkke1p5JfTvi": {
-                  "_id": "4CZImkke1p5JfTvi",
+                "HiXYbAgw7mffatrw": {
+                  "_id": "HiXYbAgw7mffatrw",
                   "formula": "1",
                   "target": "ref",
                   "type": "racial"
                 }
               },
               "contextNotes": {
-                "kZ3FYyhL8owAVPIw": {
+                "mKyWsIf775vcoh3p": {
                   "target": "ac",
                   "text": "+[[1]] Dodge bonus when adjacent to at least two other allies."
                 },
-                "gvR4iT2K0LuQgt1f": {
+                "5GK5qJWr0jEHcMWM": {
                   "target": "landSpeed",
                   "text": "Crowds do not count as difficult terrain for you"
                 }
@@ -3617,7 +3620,7 @@
             "type": "feat",
             "effects": [],
             "flags": {},
-            "_id": "ZxlD2wCGNc5aO5lZ",
+            "_id": "wO5RBUfDMZLfTbL2",
             "sort": 0
           },
           {
@@ -3641,7 +3644,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "wOr304tSGTua8Pzk",
+            "_id": "uJy7azCVCC6TtPzO",
             "sort": 0
           },
           {
@@ -3665,7 +3668,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "DTBgtXRBRHPzBtUV",
+            "_id": "jy8cIgtjxpq9Ah1e",
             "sort": 0
           },
           {
@@ -3689,7 +3692,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "3WHim2zUCxUovGx0",
+            "_id": "EiI7HbhTYhdaVYQs",
             "sort": 0
           },
           {
@@ -3713,7 +3716,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "T8csewq9Wyq85X2F",
+            "_id": "pXsvesJGulOD4iS0",
             "sort": 0
           },
           {
@@ -3732,7 +3735,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "G5UgsvK6Vfj2JizQ",
+            "_id": "eqzHDFySwR7fBFC8",
             "sort": 0
           },
           {
@@ -3748,7 +3751,7 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "iLB4TtbqbER6HHTi",
+            "_id": "2rog5LaOb6poPyzn",
             "sort": 0
           },
           {
@@ -3765,7 +3768,41 @@
             "effects": [],
             "folder": null,
             "flags": {},
-            "_id": "RnuhtdtRmpA5NAOe",
+            "_id": "GAIf2G70laBkRNNy",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.armors-and-shields.Item.iGu21zy6QtroUZ4O"
+            },
+            "folder": "LQyo9lDGQU29eyig",
+            "name": "Chain Shirt",
+            "system": {
+              "armor": {
+                "acp": 0,
+                "dex": 6,
+                "material": { "base": { "value": "mithral" }, "addon": [] },
+                "value": 4,
+                "alignments": {}
+              },
+              "baseTypes": ["Chain Shirt"],
+              "equipmentSubtype": "lightArmor",
+              "equipped": true,
+              "hardness": 10,
+              "hp": { "base": 20 },
+              "price": { "base": 100, "unit": "gp" },
+              "quantity": 1,
+              "slot": "armor",
+              "sources": [{ "id": "PZO1110", "pages": "150, 151" }],
+              "spellFailure": 10,
+              "subType": "armor",
+              "weight": { "value": 25 },
+              "mods": {}
+            },
+            "type": "equipment",
+            "effects": [],
+            "flags": {},
+            "_id": "vvSfeiFrBfwvVnTA",
             "sort": 0
           },
           {
@@ -3814,41 +3851,7 @@
             "type": "equipment",
             "effects": [],
             "flags": {},
-            "_id": "jBxv7tdLSO5Ou8A5",
-            "sort": 0
-          },
-          {
-            "_stats": {
-              "compendiumSource": "Compendium.pf1.armors-and-shields.Item.iGu21zy6QtroUZ4O"
-            },
-            "folder": "LQyo9lDGQU29eyig",
-            "name": "Chain Shirt",
-            "system": {
-              "armor": {
-                "acp": 0,
-                "dex": 6,
-                "material": { "base": { "value": "mithral" }, "addon": [] },
-                "value": 4,
-                "alignments": {}
-              },
-              "baseTypes": ["Chain Shirt"],
-              "equipmentSubtype": "lightArmor",
-              "equipped": true,
-              "hardness": 10,
-              "hp": { "base": 20 },
-              "price": { "base": 100, "unit": "gp" },
-              "quantity": 1,
-              "slot": "armor",
-              "sources": [{ "id": "PZO1110", "pages": "150, 151" }],
-              "spellFailure": 10,
-              "subType": "armor",
-              "weight": { "value": 25 },
-              "mods": {}
-            },
-            "type": "equipment",
-            "effects": [],
-            "flags": {},
-            "_id": "mnpwdBr13FTStfx8",
+            "_id": "bzxIONK7WrAAt6Fm",
             "sort": 0
           },
           {
@@ -3887,7 +3890,7 @@
             "type": "buff",
             "effects": [],
             "flags": {},
-            "_id": "tlvErf7Na4RmfyWq",
+            "_id": "v2I7l7vdnx2aGBrW",
             "sort": 0
           }
         ],
@@ -3953,7 +3956,8 @@
           "perform": -1,
           "bluff": -1
         }
-      }
+      },
+      "attacks": {}
     }
   }
 }
