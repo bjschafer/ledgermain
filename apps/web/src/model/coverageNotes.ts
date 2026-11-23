@@ -157,7 +157,7 @@ export const INTERNAL_GAPS: readonly InternalGap[] = [
   {
     category: "Immunity grants",
     detail:
-      "Items, traits, and feats that grant an immunity carry no structured change for it, so those grants stay prose.",
+      "Item, trait, and feat immunities narrower than the effect vocabulary (one named poison, inhaled poisons, confusion, pain) or that depend on an activation, a set bonus, or a choice stay prose.",
   },
   {
     category: "Skill substitutions",

@@ -152,6 +152,9 @@ export const EFFECT_IMMUNITY_LABELS: Readonly<Record<string, string>> = {
   // the constructs' "magical aging" above — kept separate, same posture as
   // magicSleep vs sleep.
   aging: "aging",
+  enchantment: "enchantment effects",
+  gazeAttacks: "gaze attacks",
+  flanking: "being flanked",
 };
 
 const IMM_EFFECT_PREFIX = "immEffect.";

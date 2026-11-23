@@ -49,6 +49,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-11-22-item-immunities",
+    date: "2026-11-22",
+    title: "Immunities from worn items and feats",
+    note: "Wearing a periapt of proof against poison, a periapt of health, a grim helm, a ring of regeneration, or another item that makes you immune to something lists that immunity under Defenses while it's equipped. Firesight shows its dazzled immunity there too.",
+  },
+  {
     id: "2026-11-22-activate-gear",
     date: "2026-11-22",
     title: "Boots of speed, potions, and wands apply their buffs",

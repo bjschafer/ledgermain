@@ -1140,7 +1140,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY: Readonly<Record<string, FeatClassifi
   "fire-music-mythic": "subsystem",
   "fire-tamer": "situational",
   firebrand: "subsystem",
-  firesight: "blocked",
+  firesight: "numeric",
   "first-general-of-the-east": "subsystem",
   flagbearer: "situational",
   flagellant: "numeric",
@@ -3363,7 +3363,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string
   "filth-forager":
     "Wired via saveCategories: unconditional +4 vs nausea/sickened effects. The ingested-poison clause is narrower than the engine's poison category and the Survival bonus is unrelated; both stay prose.",
   firesight:
-    "Immunity to dazzled has no immEffect target, and seeing through fire/smoke isn't a modeled mechanic.",
+    "Unconditional immunity to dazzled; seeing through fire/smoke isn't a modeled mechanic and stays prose.",
   flagellant:
     "Wired via saveCategories: unconditional +4 vs pain effects. The nonlethal-damage staggered/unconsciousness rules are a separate HP mechanic and stay prose.",
   "flame-heart": "Unconditional fire resistance 5.",

@@ -612,6 +612,14 @@ export const FEAT_EFFECTS_EXTRACTED_COMMUNITY: Readonly<Record<string, Extracted
     provenance:
       "You gain a +4 bonus on all saving throws against diseases and any effect that would cause you to become nauseated or sickened.",
   },
+  // Unconditional immunity to dazzled; seeing through fire and smoke isn't a
+  // modeled mechanic and stays prose.
+  firesight: {
+    type: "static",
+    changes: [{ target: "immEffect.dazzled", type: "untyped", formula: "1" }],
+    confidence: "high",
+    provenance: "You are immune to the dazzled condition.",
+  },
   // Unconditional +4 bonus on saves against pain effects; the nonlethal-damage
   // staggered/unconsciousness rules are a different mechanic (HP thresholds,
   // not a save) and stay prose.

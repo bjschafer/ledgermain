@@ -3,7 +3,7 @@ import { describe, expect, it } from "bun:test";
 import type { CharacterDoc, ItemInstance } from "@pf1/schema";
 import { loadRefData } from "@pf1/data-pipeline";
 
-import { compute } from "../src/index.js";
+import { compute, EFFECT_IMMUNITY_LABELS, ITEM_CHANGE_PATCHES } from "../src/index.js";
 
 /**
  * Bracers of Armor (CRB p. 460): "Bracers of armor surround the wearer with an
@@ -98,6 +98,37 @@ describe("Bracers of Armor (ITEM_CHANGE_PATCHES)", () => {
     for (let bonus = 1; bonus <= 8; bonus++) {
       const doc = makeDoc([{ equipped: true, itemId: itemByName(`Bracers of Armor +${bonus}`) }]);
       expect(compute(doc, ref).ac.normal).toBe(10 + bonus);
+    }
+  });
+});
+
+describe("item immunity grants (ITEM_CHANGE_PATCHES)", () => {
+  const effectSlugs = (doc: CharacterDoc) =>
+    compute(doc, ref).defenses?.effectImmunities?.map((e) => e.qualifier) ?? [];
+
+  it("Periapt of Proof against Poison: poison immunity while worn (CRB p. 525)", () => {
+    const itemId = itemByName("Periapt of Proof against Poison");
+    expect(effectSlugs(makeDoc([{ equipped: true, itemId }]))).toEqual(["poison"]);
+    expect(compute(makeDoc([{ equipped: false, itemId }]), ref).defenses).toBeUndefined();
+  });
+
+  it("Storm Kindler's Rod: cold and electricity damage immunity while held", () => {
+    const sheet = compute(
+      makeDoc([{ equipped: true, itemId: itemByName("Storm Kindler's Rod") }]),
+      ref,
+    );
+    expect(sheet.defenses?.immunities?.map((i) => i.qualifier)).toEqual(["cold", "electricity"]);
+  });
+
+  it("every patch names a vendored item and every immEffect slug has a label", () => {
+    const names = new Set(Object.values(ref.items).map((it) => it.name));
+    for (const [name, changes] of Object.entries(ITEM_CHANGE_PATCHES)) {
+      expect(names.has(name)).toBe(true);
+      for (const ch of changes) {
+        if (ch.target.startsWith("immEffect.")) {
+          expect(EFFECT_IMMUNITY_LABELS[ch.target.slice("immEffect.".length)]).toBeDefined();
+        }
+      }
     }
   });
 });
