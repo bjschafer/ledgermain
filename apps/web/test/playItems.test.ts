@@ -9,7 +9,15 @@ import {
   createEmptyDoc,
   setGearCharges,
 } from "../src/model/doc.js";
-import { playItems, rechargeDailyItems, restoreItem, spendItem } from "../src/model/playItems.js";
+import {
+  playItems,
+  rechargeDailyItems,
+  restoreItem,
+  selfUseLine,
+  spendItem,
+} from "../src/model/playItems.js";
+import { suggestRounds } from "../src/model/buffs.js";
+import { buffsForSpell } from "../src/model/spellBuffs.js";
 import { restNewDay } from "../src/model/rest.js";
 
 const ref = loadRefData();
@@ -107,5 +115,33 @@ describe("daily recharge", () => {
     const { doc, summary } = restNewDay(spentEverything, undefined, ref);
     expect(doc.build.gear.map((g) => g.chargesUsed)).toEqual([undefined, 4, 3]);
     expect(summary).toContain("1 item recharged");
+  });
+});
+
+describe("using a consumable on yourself", () => {
+  it("a Potion of Bull's Strength is the spell at CL 3, running 3 minutes", () => {
+    const doc = withGear((d) =>
+      addCustomGearItem(d, "Potion of Bull's Strength", { price: 300, quantity: 3 }),
+    );
+    const [potion] = playItems(doc, ref);
+    expect(potion?.castsSpell?.spell.name).toBe("Bull's Strength");
+    expect(potion?.castsSpell?.casterLevel).toBe(3);
+
+    const [buff] = buffsForSpell(potion!.castsSpell!.spell, ref);
+    const rounds = suggestRounds(buff!, potion!.castsSpell!.casterLevel);
+    expect(rounds).toBe(30);
+    expect(spendItem(doc, potion!).build.gear[0]?.quantity).toBe(2);
+    expect(selfUseLine(potion!, buff!.name, rounds)).toBe(
+      "Used Potion of Bull's Strength (2 left) · Bull's Strength is up for 3 min",
+    );
+  });
+
+  it("reads a crafted caster level off the name, and ignores gear that isn't a consumable", () => {
+    const doc = withGear(
+      (d) => addCustomGearItem(d, "Wand of Shield (arcane, CL 5)", { price: 3750, charges: 50 }),
+      (d) => addCustomGearItem(d, "Scroll of Shield (divine)", { price: 25 }),
+      (d) => addGearItem(d, itemId("Alchemist's Fire")),
+    );
+    expect(playItems(doc, ref).map((i) => i.castsSpell?.casterLevel)).toEqual([5, 1, undefined]);
   });
 });

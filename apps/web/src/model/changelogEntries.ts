@@ -49,6 +49,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-11-22-activate-gear",
+    date: "2026-11-22",
+    title: "Boots of speed, potions, and wands apply their buffs",
+    note: "Wearing boots of speed, winged boots, or another item that casts a spell on you a few times a day adds it to Resources with an Activate button. Boots of speed spend a round of haste each round the clock moves, and switching them off early saves the rest. In the Items panel, + Buff on a potion, scroll, or wand uses one and applies its spell at the item's caster level for the right duration.",
+  },
+  {
     id: "2026-11-22-ranged-weapon-fixes",
     date: "2026-11-22",
     title: "Bows, thrown weapons, and Small weapon damage",

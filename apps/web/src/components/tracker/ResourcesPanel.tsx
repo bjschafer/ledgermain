@@ -5,6 +5,7 @@ import {
   BLOODRAGE_BUFF_ID,
   COGNATOGEN_BUFFS,
   deriveResourcePools,
+  isItemActivationPoolId,
   OCCULTIST_PHYSICAL_ABILITIES,
   OCCULTIST_SCHOOLS,
   RASUGEN_BUFF,
@@ -20,7 +21,7 @@ import { AbilityTypeTag, FeatureDescription } from "../builder/ClassFeaturesList
 import { NumberField } from "../builder/NumberField.js";
 import { Panel } from "../builder/Panel.js";
 import { FlaskIcon } from "../icons.js";
-import { toggleLinkedBuff, toggleTableBuff } from "../../model/buffs.js";
+import { toggleItemBuff, toggleLinkedBuff, toggleTableBuff } from "../../model/buffs.js";
 import { dropUnavailableCombatStyles } from "../../model/combatStances.js";
 import { setMartialFlexibilityFeat } from "../../model/doc.js";
 import {
@@ -77,7 +78,11 @@ export function ResourcesPanel({ doc, sheet, refData, update, undoLast }: Builde
   // derived (they rest and sync like any pool), just not rendered twice.
   const slaClaimed = slaClaimedPoolIds(sheet.spellLikeAbilities);
   const visiblePools = derived.filter((pool) => !slaClaimed.has(pool.id));
-  const manualEntries = Object.entries(doc.live.resources).filter(([id]) => !derivedIds.has(id));
+  // An item pool outlives unequipping the item, so swapping boots can't
+  // refill it; it just isn't shown until the item is back on.
+  const manualEntries = Object.entries(doc.live.resources).filter(
+    ([id]) => !derivedIds.has(id) && !isItemActivationPoolId(id),
+  );
   // Same caster-level floor `BuffsPanel` uses for a newly-added buff's
   // duration suggestion — a linked-buff toggle is just a shortcut into the
   // same `addBuff`/`removeBuff` transitions that panel uses.
@@ -142,7 +147,11 @@ export function ResourcesPanel({ doc, sheet, refData, update, undoLast }: Builde
                   name={pool.name}
                   sub={poolCadenceLabel(pool.per)}
                   detail={pool.detail}
-                  description={refData.classFeatures[pool.id]?.description}
+                  description={
+                    pool.itemActivation
+                      ? refData.items[pool.itemActivation.itemId]?.description
+                      : refData.classFeatures[pool.id]?.description
+                  }
                   abilityType={refData.classFeatures[pool.id]?.abilityType}
                   left={pool.max - used}
                   max={pool.max}
@@ -152,7 +161,8 @@ export function ResourcesPanel({ doc, sheet, refData, update, undoLast }: Builde
                   tableOptions={pool.tableOptions}
                   refData={refData}
                   activeBuffs={doc.live.activeBuffs}
-                  casterLevel={casterLevel}
+                  casterLevel={pool.itemActivation?.casterLevel ?? casterLevel}
+                  itemPool={pool.itemActivation ? pool : undefined}
                   update={update}
                 />
                 {pool.name === "Martial Flexibility" && (
@@ -260,6 +270,7 @@ function ResourceRow({
   refData,
   activeBuffs,
   casterLevel,
+  itemPool,
   update,
 }: {
   name: string;
@@ -287,6 +298,8 @@ function ResourceRow({
   refData?: RefData;
   activeBuffs?: CharacterDoc["live"]["activeBuffs"];
   casterLevel?: number;
+  /** Set for a magic item's pool, whose Activate spends the pool (see `toggleItemBuff`). */
+  itemPool?: DerivedResourcePool;
   update?: (fn: (d: CharacterDoc) => CharacterDoc) => void;
 }) {
   // Manual pools carry no toggles, so none of this context is passed for them.
@@ -349,6 +362,8 @@ function ResourceRow({
                   key={buffId}
                   buffId={buffId}
                   casterLevel={casterLevel ?? 1}
+                  itemPool={itemPool}
+                  exhausted={left <= 0}
                   {...toggleCtx}
                 />
               ))}
@@ -384,25 +399,32 @@ const SYNTHETIC_LINKED_BUFFS: Readonly<Record<string, Buff>> = {
  * `DerivedResourcePool.linkedBuffIds`). This is a pure shortcut into the
  * same `addBuff`/`removeBuff` transitions `BuffsPanel` uses — toggling here
  * makes the buff show up (or disappear) there too, recomputed exactly as if
- * the player had added it by hand. Deliberately does NOT touch the pool's
- * `used` counter (see `deriveResourcePools`'s doc comment on `linkedBuffIds`
- * for why a round-maintained buff and a per-day/per-use pool count aren't
- * the same thing). Renders nothing for a buff id that resolves against
- * neither `refData.buffs` NOR `SYNTHETIC_LINKED_BUFFS` (shouldn't happen —
- * `linkedBuffIds` only ever contains ids resolved against one or the other —
- * but keeps this defensive rather than crashing on a future data change).
+ * the player had added it by hand. Deliberately does NOT touch a class
+ * pool's `used` counter (see `deriveResourcePools`'s doc comment on
+ * `linkedBuffIds` for why a round-maintained buff and a per-day/per-use pool
+ * count aren't the same thing); a magic item's pool is the exception, since
+ * its budget is the buff (`toggleItemBuff`). Renders nothing for a buff id
+ * that resolves against neither `refData.buffs` NOR `SYNTHETIC_LINKED_BUFFS`
+ * (shouldn't happen — `linkedBuffIds` only ever contains ids resolved against
+ * one or the other — but keeps this defensive rather than crashing on a
+ * future data change).
  */
 function LinkedBuffToggle({
   buffId,
   refData,
   activeBuffs,
   casterLevel,
+  itemPool,
+  exhausted,
   update,
 }: {
   buffId: string;
   refData: RefData;
   activeBuffs: CharacterDoc["live"]["activeBuffs"];
   casterLevel: number;
+  itemPool?: DerivedResourcePool;
+  /** The pool is empty: an item pool can't activate (a class pool's toggle never spends it). */
+  exhausted: boolean;
   update: (fn: (d: CharacterDoc) => CharacterDoc) => void;
 }) {
   const buff = refData.buffs[buffId] ?? SYNTHETIC_LINKED_BUFFS[buffId];
@@ -413,7 +435,13 @@ function LinkedBuffToggle({
   // Unchained Rage) — a no-op for every linked buff that doesn't grant temp
   // HP, since its before/after granted totals are both 0.
   const toggle = () =>
-    update((d) => applyGrantedTempHp(d, toggleLinkedBuff(d, buff, casterLevel), refData));
+    update((d) =>
+      applyGrantedTempHp(
+        d,
+        itemPool ? toggleItemBuff(d, buff, itemPool) : toggleLinkedBuff(d, buff, casterLevel),
+        refData,
+      ),
+    );
 
   if (active) {
     return (
@@ -432,6 +460,7 @@ function LinkedBuffToggle({
       type="button"
       className="res-linked-buff"
       onClick={toggle}
+      disabled={Boolean(itemPool) && exhausted}
       title={`Activate ${buff.name}`}
     >
       Activate {buff.name}

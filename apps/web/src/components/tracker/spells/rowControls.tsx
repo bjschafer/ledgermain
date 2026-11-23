@@ -31,6 +31,7 @@ import {
 } from "../../../model/metamagic.js";
 import { buffsForSpell } from "../../../model/spellBuffs.js";
 import { showToast } from "../../../state/toast.js";
+import type { UpdateOptions } from "../../../state/useCharacter.js";
 import type { BuilderProps } from "../../builder/types.js";
 import { TipButton } from "../../InfoTip.js";
 
@@ -317,6 +318,9 @@ export function MetamagicControl({
  * Only rendered when the spell maps to a compendium buff (see
  * `model/spellBuffs.ts`); a spell with several variants (Resist Energy's energy
  * types, Prayer) opens a small chooser. Active state mirrors `live.activeBuffs`.
+ *
+ * The Items panel reuses it for a potion, scroll, or wand, whose cost is the
+ * item rather than a slot: `wording` and `logAs` say so.
  */
 export function ApplyBuffButton({
   spell,
@@ -326,6 +330,8 @@ export function ApplyBuffButton({
   casterLevel,
   onCast,
   castExhausted = false,
+  wording = SPELL_WORDING,
+  logAs,
 }: {
   spell: Spell;
   refData: RefData;
@@ -336,6 +342,9 @@ export function ApplyBuffButton({
   onCast: (d: CharacterDoc) => CharacterDoc;
   /** No slot left to cast: applying (but not dropping) is blocked. */
   castExhausted?: boolean;
+  wording?: ApplyBuffWording;
+  /** The session-log line for applying `buff`, when the default description won't do. */
+  logAs?: (buff: Buff, rounds: number | undefined) => UpdateOptions["logAs"];
 }) {
   const buffs = useMemo(() => buffsForSpell(spell, refData), [spell, refData]);
   if (buffs.length === 0) return null;
@@ -348,13 +357,12 @@ export function ApplyBuffButton({
 
   // Apply = cast on self: spend a slot, then add the buff. Drop = remove only
   // (the spell was still cast, so the slot stays spent).
-  const apply = (buff: Buff) =>
-    update((d) =>
-      addBuff(
-        onCast(d),
-        makeActiveBuff(buff, { casterLevel, remainingRounds: suggestRounds(buff, casterLevel) }),
-      ),
-    );
+  const apply = (buff: Buff) => {
+    const remainingRounds = suggestRounds(buff, casterLevel);
+    update((d) => addBuff(onCast(d), makeActiveBuff(buff, { casterLevel, remainingRounds })), {
+      logAs: logAs?.(buff, remainingRounds),
+    });
+  };
   const drop = (instanceId: string) => update((d) => removeBuff(d, instanceId));
 
   if (buffs.length === 1) {
@@ -365,12 +373,8 @@ export function ApplyBuffButton({
         className={`pick-btn buff-apply${active ? " is-active" : ""}`}
         aria-pressed={active !== undefined}
         disabled={active === undefined && castExhausted}
-        disabledReason="No slot left to cast this."
-        title={
-          active
-            ? `${buff.name} is active: click to drop it (you still cast the spell)`
-            : `Cast ${buff.name} on yourself: spends a slot and applies the buff`
-        }
+        disabledReason={wording.exhausted}
+        title={active ? wording.drop(buff.name) : wording.apply(buff.name)}
         onClick={() => (active ? drop(active.instanceId) : apply(buff))}
       >
         {active ? "✓ Buff" : "+ Buff"}
@@ -383,7 +387,7 @@ export function ApplyBuffButton({
     <details className="buff-apply-menu">
       <summary
         className={`pick-btn buff-apply${activeCount > 0 ? " is-active" : ""}`}
-        title={`Cast ${spell.name} on yourself: choose a variant`}
+        title={wording.choose(spell.name)}
       >
         {activeCount > 0 ? `✓ Buff (${activeCount})` : "+ Buff"}
       </summary>
@@ -407,6 +411,21 @@ export function ApplyBuffButton({
     </details>
   );
 }
+
+/** Tooltip copy for {@link ApplyBuffButton}, which differs by what applying costs. */
+export interface ApplyBuffWording {
+  apply: (buffName: string) => string;
+  drop: (buffName: string) => string;
+  choose: (spellName: string) => string;
+  exhausted: string;
+}
+
+const SPELL_WORDING: ApplyBuffWording = {
+  apply: (b) => `Cast ${b} on yourself: spends a slot and applies the buff`,
+  drop: (b) => `${b} is active: click to drop it (you still cast the spell)`,
+  choose: (s) => `Cast ${s} on yourself: choose a variant`,
+  exhausted: "No slot left to cast this.",
+};
 
 // ---------------------------------------------------------------------------
 // Spontaneous conversion — cleric cure/inflict, druid summon nature's ally.

@@ -2838,6 +2838,14 @@ export interface ActiveBuff {
    * instead of stranding a stale total. Absent/0 = nothing absorbed yet.
    */
   absorbed?: number;
+  /**
+   * `live.resources` pool the round clock spends one from for every round
+   * this buff runs: a magic item whose daily budget is counted in rounds
+   * (Boots of Speed's 10 rounds of haste, "need not be consecutive"). The
+   * buff's `remainingRounds` is seeded from what's left in the pool, so the
+   * two run out together. Absent for every other buff.
+   */
+  drainsPool?: string;
 }
 
 /**

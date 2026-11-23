@@ -1,20 +1,35 @@
 import { FeatureDescription } from "../builder/ClassFeaturesList.js";
 import { Panel } from "../builder/Panel.js";
 import { BagIcon } from "../icons.js";
+import { ApplyBuffButton, type ApplyBuffWording } from "./spells/rowControls.js";
 import {
   playItems,
   restoreItem,
   restoreItemLine,
+  selfUseLine,
   spendItem,
   spendItemLine,
   type PlayItem,
 } from "../../model/playItems.js";
+import { buffsForSpell } from "../../model/spellBuffs.js";
 import type { BuilderProps } from "../builder/types.js";
+
+function selfUseWording(item: PlayItem): ApplyBuffWording {
+  const cost = item.track === "charges" ? "spends a charge" : "uses one up";
+  return {
+    apply: (buff) => `Use ${item.name} on yourself: ${cost} and applies ${buff}`,
+    drop: (buff) => `${buff} is active: click to drop it (the item stays used)`,
+    choose: () => `Use ${item.name} on yourself: choose a variant`,
+    exhausted: "None left.",
+  };
+}
 
 /**
  * Potions, scrolls, wands, and the rest of the carried gear that gets used up,
  * spent straight from the inventory (`model/playItems.ts`). Adding or removing
- * an item stays on the Build tab; this only moves the counts.
+ * an item stays on the Build tab; this only moves the counts. A generated
+ * consumable whose spell has a buff also offers "+ Buff": use it on yourself,
+ * spending it and applying the buff at the item's caster level.
  */
 export function ItemsPanel({ doc, refData, update }: BuilderProps) {
   const items = playItems(doc, refData);
@@ -76,6 +91,27 @@ export function ItemsPanel({ doc, refData, update }: BuilderProps) {
                   +
                 </button>
               </div>
+              {item.castsSpell && buffsForSpell(item.castsSpell.spell, refData).length > 0 ? (
+                <div className="res-body">
+                  <div className="res-linked-buffs">
+                    <ApplyBuffButton
+                      spell={item.castsSpell.spell}
+                      refData={refData}
+                      doc={doc}
+                      update={update}
+                      casterLevel={item.castsSpell.casterLevel}
+                      onCast={(d) => spendItem(d, item)}
+                      castExhausted={item.left <= 0}
+                      wording={selfUseWording(item)}
+                      logAs={(buff, rounds) => ({
+                        text: selfUseLine(item, buff.name, rounds),
+                        tone: "neutral",
+                        kind: "item",
+                      })}
+                    />
+                  </div>
+                </div>
+              ) : null}
               {item.description ? (
                 <div className="res-body">
                   <FeatureDescription html={item.description} />

@@ -11,9 +11,10 @@
  *   it: gear is addressed by index, and an undo has to find the same row.
  */
 
-import type { CharacterDoc, RefData } from "@pf1/schema";
+import type { CharacterDoc, RefData, Spell } from "@pf1/schema";
 
-import { CONSUMABLE_KINDS } from "./consumables.js";
+import { formatDuration } from "./buffs.js";
+import { CONSUMABLE_KINDS, consumableSpell } from "./consumables.js";
 import { setGearCharges, setGearQuantity } from "./doc.js";
 import { itemMaxCharges } from "./gearDisplay.js";
 
@@ -30,6 +31,11 @@ export interface PlayItem {
   max?: number;
   /** How often a charged item refills on its own, when it does. */
   per?: "day" | "week";
+  /**
+   * The spell a generated potion, scroll, or wand holds, at the item's caster
+   * level (see `consumableSpell`). Absent for vendored gear.
+   */
+  castsSpell?: { spell: Spell; casterLevel: number };
 }
 
 /** Vendored subtypes whose every entry is drunk, applied, or thrown once. */
@@ -41,10 +47,13 @@ export function playItems(doc: CharacterDoc, refData: RefData): PlayItem[] {
   doc.build.gear.forEach((inst, index) => {
     if (inst.armor) return;
     const itemDef = inst.itemId ? refData.items[inst.itemId] : undefined;
+    const castsSpell =
+      !itemDef && inst.name ? consumableSpell(inst.name, refData.spells) : undefined;
     const base = {
       index,
       name: inst.name ?? itemDef?.name ?? "Unknown item",
       ...(itemDef?.description ? { description: itemDef.description } : {}),
+      ...(castsSpell ? { castsSpell } : {}),
     };
 
     const max = inst.charges ?? itemMaxCharges(itemDef);
@@ -102,6 +111,15 @@ export function spendItemLine(item: PlayItem): string {
   return item.track === "charges"
     ? `Used a charge of ${item.name} (${left} left)`
     : `Used ${item.name} (${left} left)`;
+}
+
+/**
+ * The session-log line for using a potion, scroll, or wand on yourself: the
+ * spend plus the buff it put up, since one tap did both.
+ */
+export function selfUseLine(item: PlayItem, buffName: string, rounds: number | undefined): string {
+  const up = rounds ? `${buffName} is up for ${formatDuration(rounds)}` : `${buffName} is up`;
+  return `${spendItemLine(item)} · ${up}`;
 }
 
 /** The session-log line for a {@link restoreItem}, given the item as it was before. */

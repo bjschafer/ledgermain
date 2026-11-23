@@ -85,6 +85,7 @@ import {
 import { judgmentPoolDetail, judgmentToggleOptions } from "./judgments.js";
 import { KI_POOL_DETAIL, kiSpendToggleOptions } from "./ki-spends.js";
 import { MENTAL_FOCUS_DETAIL, mentalFocusToggleOptions } from "./mental-focus-spends.js";
+import { ITEM_ACTIVATIONS, itemActivationPoolId } from "./item-activations.js";
 import { perDayActivationToggleOptions } from "./per-day-activations/index.js";
 import { PSYCHIC_DISCIPLINES } from "./psychic-disciplines.js";
 import { RACIAL_TRAITS } from "./racial-traits.js";
@@ -277,7 +278,8 @@ export interface DerivedResourcePool {
    * real vendored buff. Unresolvable UUIDs are silently skipped, never
    * thrown. Empty when none resolve. The tracker uses this to render an
    * activate/deactivate toggle; it deliberately does NOT drain the pool's
-   * uses on activation (see `deriveResourcePools`'s doc comment).
+   * uses on activation (see `deriveResourcePools`'s doc comment), except on
+   * an item pool, whose budget IS the buff (see `itemActivation`).
    */
   linkedBuffIds: string[];
   /**
@@ -301,6 +303,19 @@ export interface DerivedResourcePool {
    * Undefined for every other pool.
    */
   tableOptions?: ToggleBuffOption[];
+  /**
+   * Set on a pool belonging to an equipped magic item (`item-activations.ts`):
+   * the item's caster level for its linked buff, and how the pool is spent.
+   * A `"round"` meter is spent by the round clock while the buff runs; a
+   * `"use"` meter spends one per activation. `rounds` is the item's own stated
+   * duration, when it has one. Undefined for every other pool.
+   */
+  itemActivation?: {
+    itemId: string;
+    casterLevel: number;
+    meter: "round" | "use";
+    rounds?: number;
+  };
 }
 
 /**
@@ -852,6 +867,9 @@ export function deriveResourcePools(
   // the allotment comes from the table.
   pools.push(...deriveFreeMetamagicGrantPools(doc));
 
+  // Equipped magic items that activate a spell buff (Boots of Speed's haste).
+  pools.push(...deriveItemActivationPools(doc, refData));
+
   return pools;
 }
 
@@ -871,6 +889,48 @@ function deriveFreeMetamagicGrantPools(doc: CharacterDoc): DerivedResourcePool[]
     detail: def.note,
     linkedBuffIds: [],
   }));
+}
+
+/**
+ * One pool per equipped item listed in `ITEM_ACTIVATIONS`, keyed by item id so
+ * a second copy in the pack shares it, and so its spent count survives the
+ * gear list being reordered. An entry whose buff isn't vendored is skipped.
+ */
+function deriveItemActivationPools(doc: CharacterDoc, refData: RefData): DerivedResourcePool[] {
+  const pools: DerivedResourcePool[] = [];
+  for (const inst of doc.build.gear) {
+    if (!inst.equipped || !inst.itemId) continue;
+    const item = refData.items[inst.itemId];
+    const def = item ? ITEM_ACTIVATIONS[item.name] : undefined;
+    if (!item || !def) continue;
+    const id = itemActivationPoolId(item.id);
+    if (pools.some((p) => p.id === id)) continue;
+    const buff = Object.values(refData.buffs).find(
+      (b) => b.name === def.buff && b.subType === "spell",
+    );
+    if (!buff) continue;
+    const casterLevel = item.cl ?? 1;
+    pools.push({
+      id,
+      name: item.name,
+      max: def.perDay,
+      restValue: def.perDay,
+      per: "day",
+      classTag: "item",
+      detail:
+        def.meter === "round"
+          ? `${buff.name} at CL ${casterLevel}, spent a round at a time while active`
+          : `${buff.name} at CL ${casterLevel}`,
+      linkedBuffIds: [buff.id],
+      itemActivation: {
+        itemId: item.id,
+        casterLevel,
+        meter: def.meter,
+        ...(def.rounds !== undefined ? { rounds: def.rounds } : {}),
+      },
+    });
+  }
+  return pools;
 }
 
 /**

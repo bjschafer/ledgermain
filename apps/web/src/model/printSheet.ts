@@ -10,6 +10,7 @@ import {
   deriveResourcePools,
   EFFECT_IMMUNITY_LABELS,
   casterLevelForClass,
+  isItemActivationPoolId,
   effectiveCasterClassLevel,
 } from "@pf1/engine";
 import type { AbilityId, CharacterDoc, DerivedAbilityDC, DerivedSheet, RefData } from "@pf1/schema";
@@ -420,7 +421,8 @@ function buildResources(doc: CharacterDoc, sheet: DerivedSheet, refData: RefData
     };
   });
   for (const [id, pool] of Object.entries(doc.live.resources)) {
-    if (derivedIds.has(id)) continue;
+    // An unequipped item's pool is kept for when it's worn again, not printed.
+    if (derivedIds.has(id) || isItemActivationPoolId(id)) continue;
     out.push({ id, name: id, used: pool.used, max: pool.max, remaining: remainingUses(pool) });
   }
   return out;

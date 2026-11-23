@@ -1,9 +1,10 @@
 import { describe, expect, it } from "bun:test";
-import type { ToggleBuffOption } from "@pf1/engine";
+import { deriveResourcePools, type ToggleBuffOption } from "@pf1/engine";
 import type { Buff, CharacterDoc } from "@pf1/schema";
 import { loadRefData } from "@pf1/data-pipeline";
 
 import {
+  advanceRound,
   formatDuration,
   hasNoModeledEffect,
   isBuffOnMaster,
@@ -12,10 +13,12 @@ import {
   suggestRounds,
   toggleBuffMaster,
   toggleBuffPaused,
+  toggleItemBuff,
   toggleLinkedBuff,
   toggleTableBuff,
   toRounds,
 } from "../src/model/buffs.js";
+import { addGearItem, createEmptyDoc } from "../src/model/doc.js";
 
 function buffWithDuration(units: string, value: string): Buff {
   return {
@@ -283,6 +286,56 @@ describe("toggleLinkedBuff", () => {
     };
     const toggled = toggleLinkedBuff(withPool, inspireCourage, 5);
     expect(toggled.live.resources).toEqual(withPool.live.resources);
+  });
+});
+
+// A worn item's pool is the buff's budget, unlike a class pool's toggle above.
+describe("toggleItemBuff", () => {
+  const ref = loadRefData();
+  const byName = (name: string) => Object.values(ref.items).find((i) => i.name === name)!;
+  const buffNamed = (name: string) => Object.values(ref.buffs).find((b) => b.name === name)!;
+  function wearing(name: string) {
+    const doc = addGearItem(createEmptyDoc("t"), byName(name).id);
+    const pool = deriveResourcePools(doc, ref).find((p) => p.itemActivation)!;
+    return { doc, pool };
+  }
+
+  it("Boots of Speed: haste runs on the pool's rounds and the round clock spends them", () => {
+    const { doc, pool } = wearing("Boots of Speed");
+    const haste = buffNamed("Haste");
+
+    const on = toggleItemBuff(doc, haste, pool);
+    const active = on.live.activeBuffs[0]!;
+    expect(active).toMatchObject({ buffId: haste.id, casterLevel: 10, remainingRounds: 10 });
+    // Switching on costs nothing yet, even on a pool never synced into the
+    // doc: the rounds go as the clock runs.
+    expect(on.live.resources[pool.id]).toEqual({ used: 0, max: 10 });
+
+    const after3 = advanceRound(on, 3).doc;
+    expect(after3.live.resources[pool.id]).toEqual({ used: 3, max: 10 });
+    expect(after3.live.activeBuffs[0]?.remainingRounds).toBe(7);
+
+    // Off early keeps the rest; back on picks up where it left off.
+    const off = toggleItemBuff(after3, haste, pool);
+    expect(off.live.activeBuffs).toHaveLength(0);
+    expect(advanceRound(off, 2).doc.live.resources[pool.id]).toEqual({ used: 3, max: 10 });
+    const again = toggleItemBuff(off, haste, pool);
+    expect(again.live.activeBuffs[0]?.remainingRounds).toBe(7);
+
+    const spent = advanceRound(again, 7);
+    expect(spent.doc.live.resources[pool.id]).toEqual({ used: 10, max: 10 });
+    expect(spent.expired.map((b) => b.name)).toEqual(["Haste"]);
+    expect(toggleItemBuff(spent.doc, haste, pool)).toBe(spent.doc);
+  });
+
+  it("Winged Boots: each flight spends a use up front and lasts 5 minutes", () => {
+    const { doc, pool } = wearing("Winged Boots");
+    const fly = buffNamed("Fly");
+    const on = toggleItemBuff(doc, fly, pool);
+    expect(on.live.resources[pool.id]).toEqual({ used: 1, max: 3 });
+    expect(on.live.activeBuffs[0]).toMatchObject({ casterLevel: 8, remainingRounds: 50 });
+    // Landing early refunds nothing.
+    expect(toggleItemBuff(on, fly, pool).live.resources[pool.id]).toEqual({ used: 1, max: 3 });
   });
 });
 

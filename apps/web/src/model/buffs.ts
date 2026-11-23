@@ -11,6 +11,7 @@ import {
   buffInstanceState,
   elementTarget,
   rageFatigueOnEnd,
+  type DerivedResourcePool,
   type ToggleBuffOption,
 } from "@pf1/engine";
 import type { ActiveBuff, Buff, Change, CharacterDoc, ContextNote } from "@pf1/schema";
@@ -165,6 +166,75 @@ export function toggleLinkedBuff(doc: CharacterDoc, buff: Buff, casterLevel: num
 }
 
 /**
+ * The {@link toggleLinkedBuff} counterpart for a magic item's pool
+ * (`DerivedResourcePool.itemActivation`), where the pool IS the buff's budget.
+ * A use-metered item spends one on activation and runs for its stated
+ * duration, or the spell's at the item's caster level. A round-metered one
+ * (Boots of Speed) is seeded with every round left in the pool and tagged
+ * with `drainsPool`, so {@link advanceRound} spends the pool as it runs and
+ * switching it off early keeps the rest. A no-op activation when the pool is
+ * empty; switching off never refunds.
+ */
+export function toggleItemBuff(
+  doc: CharacterDoc,
+  buff: Buff,
+  pool: Pick<DerivedResourcePool, "id" | "max" | "itemActivation">,
+): CharacterDoc {
+  const activation = pool.itemActivation;
+  if (!activation) return doc;
+  const active = doc.live.activeBuffs.find((b) => b.buffId === buff.id);
+  if (active) return removeBuff(doc, active.instanceId);
+
+  const used = Math.min(pool.max, doc.live.resources[pool.id]?.used ?? 0);
+  const left = pool.max - used;
+  if (left <= 0) return doc;
+  const { casterLevel } = activation;
+  const metered = activation.meter === "round";
+  // Written even when nothing is spent yet: the pool may never have been
+  // synced into `live.resources`, and the round clock only drains what's there.
+  const withPool: CharacterDoc = {
+    ...doc,
+    live: {
+      ...doc.live,
+      resources: {
+        ...doc.live.resources,
+        [pool.id]: { used: metered ? used : used + 1, max: pool.max },
+      },
+    },
+  };
+  if (metered) {
+    return addBuff(withPool, {
+      ...makeActiveBuff(buff, { casterLevel, remainingRounds: left }),
+      drainsPool: pool.id,
+    });
+  }
+  return addBuff(
+    withPool,
+    makeActiveBuff(buff, {
+      casterLevel,
+      remainingRounds: activation.rounds ?? suggestRounds(buff, casterLevel),
+    }),
+  );
+}
+
+/**
+ * Spend `rounds` from every pool a running buff draws on (`drainsPool`),
+ * capped at the rounds the buff had left and what the pool holds.
+ */
+function drainRoundMeteredPools(doc: CharacterDoc, rounds: number): CharacterDoc {
+  let resources = doc.live.resources;
+  for (const buff of doc.live.activeBuffs) {
+    if (!buff.drainsPool || buff.paused) continue;
+    const pool = resources[buff.drainsPool];
+    if (!pool) continue;
+    const spend = Math.min(rounds, buff.remainingRounds ?? rounds, pool.max - pool.used);
+    if (spend <= 0) continue;
+    resources = { ...resources, [buff.drainsPool]: { ...pool, used: pool.used + spend } };
+  }
+  return resources === doc.live.resources ? doc : { ...doc, live: { ...doc.live, resources } };
+}
+
+/**
  * Toggle a hand-authored, non-vendored `ToggleBuffOption` on/off — the
  * `toggleLinkedBuff` counterpart for pools whose activated abilities have no
  * `RefData.buffs` entry to link (inquisitor Judgments, skald Inspired Rage —
@@ -277,7 +347,7 @@ export interface AdvanceRoundResult {
 
 /**
  * Advance the round clock: tick buff durations and timed conditions, dropping
- * whatever ran out.
+ * whatever ran out, and spend the item pools round-metered buffs draw on.
  *
  * Conditions tick off the PRE-advance state, before the buff pass. A rage
  * expiring on this very round applies a fresh fatigue countdown, and that
@@ -286,10 +356,11 @@ export interface AdvanceRoundResult {
 export function advanceRound(doc: CharacterDoc, rounds = 1): AdvanceRoundResult {
   const ticked = advanceConditionRounds(doc.live.conditions, doc.live.conditionRounds, rounds);
   const { buffs, expired } = advanceRounds(doc.live.activeBuffs, rounds);
+  const drained = drainRoundMeteredPools(doc, rounds);
   const advanced: CharacterDoc = {
-    ...doc,
+    ...drained,
     live: {
-      ...doc.live,
+      ...drained.live,
       round: currentRound(doc) + rounds,
       activeBuffs: buffs,
       // Kept as the same list when nothing ran out, so an undo of the

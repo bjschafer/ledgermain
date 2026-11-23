@@ -856,6 +856,11 @@ export {
   resourcePoolRollDataResources,
   type DerivedResourcePool,
 } from "./resources.js";
+export {
+  ITEM_ACTIVATIONS,
+  isItemActivationPoolId,
+  type ItemActivationDef,
+} from "./item-activations.js";
 export { resourceTagSlug } from "./resource-tag.js";
 export type { ToggleBuffOption } from "./toggle-buffs.js";
 export {

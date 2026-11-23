@@ -8,13 +8,12 @@
  * client: derive consumable entries from the already-loaded `RefData.spells`
  * using the standard Pathfinder magic-item-creation pricing tables.
  *
- * These entries are **display + inventory only** — no engine mechanics. When
- * the player picks one, it's added as a self-contained custom gear item
+ * When the player picks one, it's added as a self-contained custom gear item
  * (name/price on the `ItemInstance`, plus `charges` for wands), so nothing
  * needs to be vendored into `items.json` (which would bloat by thousands of
- * rows) and `compute` is untouched. A consumable never toggles a buff or
- * changes a derived number; drinking a potion is the player applying the
- * corresponding buff by hand, exactly as before.
+ * rows) and `compute` is untouched. The name is the item's only link back to
+ * its spell: {@link consumableSpell} reads it to find the spell and caster
+ * level, which is how the Items panel applies a potion's buff on use.
  *
  * ### Pricing (PF1 Core Rulebook, Magic Item Creation)
  *
@@ -207,4 +206,41 @@ export function generateConsumables(
   }
   out.sort((a, b) => a.name.localeCompare(b.name));
   return out;
+}
+
+const spellIndexCache = new WeakMap<Record<string, Spell>, Map<string, Spell>>();
+
+function spellByName(spells: Record<string, Spell>, name: string): Spell | undefined {
+  let index = spellIndexCache.get(spells);
+  if (!index) {
+    index = new Map(Object.values(spells).map((s) => [s.name.toLowerCase(), s]));
+    spellIndexCache.set(spells, index);
+  }
+  return index.get(name.toLowerCase());
+}
+
+/**
+ * The spell and caster level a generated consumable's gear name stands for:
+ * "Potion of Bull's Strength" is Bull's Strength at its minimum caster level,
+ * "Wand of Shield (arcane, CL 5)" is Shield at CL 5 (the suffix crafting
+ * appends, see `craftedItemName`). Undefined for any other name.
+ */
+export function consumableSpell(
+  name: string,
+  spells: Record<string, Spell>,
+): { spell: Spell; casterLevel: number } | undefined {
+  const def = CONSUMABLE_KINDS.find((k) => name.startsWith(`${k.namePrefix} `));
+  if (!def) return undefined;
+  const rest = name.slice(def.namePrefix.length + 1).trim();
+  const suffix = /\s*\(([^()]*)\)$/.exec(rest);
+  // A spell whose own name ends in a parenthetical wins over reading it as a suffix.
+  const spell =
+    spellByName(spells, rest) ??
+    (suffix ? spellByName(spells, rest.slice(0, suffix.index)) : undefined);
+  if (!spell) return undefined;
+  const statedCl = spell.name.length < rest.length ? /\bCL (\d+)\b/.exec(suffix?.[1] ?? "") : null;
+  return {
+    spell,
+    casterLevel: statedCl ? Number(statedCl[1]) : minCasterLevel(effectiveSpellLevel(spell)),
+  };
 }
