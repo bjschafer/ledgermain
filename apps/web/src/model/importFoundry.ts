@@ -478,6 +478,43 @@ export function importFoundryActor(
   return { doc, report };
 }
 
+/**
+ * An alternate racial trait for the character's race, preferring the
+ * hand-authored entry of the same name (it retires the trait it replaces;
+ * the builder offers it over the vendored copy for the same reason), then
+ * the vendored catalog by id. Undefined for a standard racial trait, which
+ * the engine already grants from the race.
+ */
+function importRacialTrait(
+  doc: CharacterDoc,
+  item: FoundryItem,
+  refData: RefData,
+  report: ImportReport,
+): CharacterDoc | undefined {
+  const raceName = refData.races[doc.identity.race]?.name;
+  if (!raceName) return undefined;
+  const name = normalizeTraitName(item.name);
+  const handAuthored = alternateRacialTraitsForRace(raceName).find(
+    (t) => normalizeTraitName(t.name) === name,
+  );
+  if (handAuthored) {
+    report.mapped.push(`Alternate racial trait: ${handAuthored.name}`);
+    return hasRacialTrait(doc, handAuthored.id) ? doc : toggleRacialTrait(doc, handAuthored.id);
+  }
+  const vendored = item.sourceId ? refData.racialTraits[item.sourceId] : undefined;
+  if (!vendored || !vendored.race.includes(raceName)) return undefined;
+  if (vendored.openChanges?.length) {
+    report.unmapped.push(
+      `Alternate racial trait: ${vendored.name} needs its choice picked on the Race step.`,
+    );
+  } else {
+    report.mapped.push(`Alternate racial trait: ${vendored.name}`);
+  }
+  return hasVendoredRacialTrait(doc, vendored.id)
+    ? doc
+    : toggleVendoredRacialTrait(doc, vendored.id);
+}
+
 function addGear(
   doc: CharacterDoc,
   item: FoundryItem,

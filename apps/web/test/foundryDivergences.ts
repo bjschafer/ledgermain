@@ -125,4 +125,12 @@ export const DIVERGENCES: Divergence[] = [
     values: { foundry: 12, ledgermain: 8 },
     ...CONDITION_ABILITY_PENALTY,
   },
+  ...["skills.acr", "skills.clm"].map((stat): Divergence => ({
+    actor: "half-orc-two-handed-fighter-5",
+    scenario: "*",
+    stat,
+    verdict: "foundry-departs",
+    citation: "ARG p. 52",
+    why: "Rock Climber is +1 on Acrobatics and Climb. pf-content writes its changes with the short skill ids this pf1 build no longer reads, so Foundry drops them.",
+  })),
 ];
