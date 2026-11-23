@@ -68,7 +68,7 @@
     "wizardSchools": 17
   },
   "dataVersion": "11.11+ec07ea16b5d8",
-  "generatedAt": "2026-11-23T03:02:08+02:00",
+  "generatedAt": "2026-11-16T22:37:26+02:00",
   "hashes": {
     "alchemist-discoveries.json": "9a8883ccd6b65fc33646f34466481f4241a9aee7baf9157d1a53bc200ea0feb0",
     "arcanist-exploits.json": "10424852ff90d5ffa9865e4ec1036b386c5564ef3153f505807551572394bbc2",
@@ -94,7 +94,7 @@
     "inquisitions.json": "2dde076ba55ff002cc8984b4e1f2ca08cab3a63aef50262bcf1b3b67ec35b794",
     "investigator-talents.json": "2ff033b37691563298290f31b3807d0452be36050d2197f95e38f9714eabcf23",
     "item-abilities.json": "ff831b81271df2fde97440e56513209289d1284ebdd666f3f7888673a8d66d76",
-    "items.json": "a72360cbd5cf3eae49a437ae4fc2216fff60fd987d15a74a03482fc73bd29fa2",
+    "items.json": "c9bce4e9fe97c4c86261d2d77f44be49a5a0ef7bfc01a6142f2834fcd203d099",
     "kinetic-wild-talents.json": "429fb529d17230a59a6ed8ee2d2fd49f645aa05592aa6314bf8fd0a832ea5dd2",
     "magus-arcana.json": "aaf140cdd8db9312130212c0253a03147d9c96a05d0acbe1eccf5c5ee51d34ef",
     "medium-spirits.json": "795c7a7a1cba983595818782dcc22dfb0eb79455d4384192e27a83457d519a6c",

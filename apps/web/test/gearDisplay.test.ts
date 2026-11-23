@@ -38,6 +38,23 @@ describe("changeLabel()", () => {
   it("drops the target clause when there is no target", () => {
     expect(changeLabel({ formula: "+2", target: "", type: "enh" })).toBe("+2 enh");
   });
+
+  it("names the situations a scoped bonus is limited to", () => {
+    const mire = Object.values(ref.items).find((it) => it.name === "Boots of the Mire")!;
+    expect(mire.changes.map(changeLabel)).toEqual(["2 resist to Fortitude vs poison, disease"]);
+  });
+
+  it("reads a granted sense or immunity as the thing granted, not a +1", () => {
+    expect(
+      changeLabel({ formula: "60", target: "sensedv", type: "untyped", operator: "set" }),
+    ).toBe("Darkvision 60");
+    expect(changeLabel({ formula: "1", target: "sensell", type: "untyped" })).toBe(
+      "Low-light vision",
+    );
+    expect(changeLabel({ formula: "1", target: "immEffect.poison", type: "untyped" })).toBe(
+      "Poison immunity",
+    );
+  });
 });
 
 describe("itemMaxCharges()", () => {

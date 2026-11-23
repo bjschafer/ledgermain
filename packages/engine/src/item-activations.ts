@@ -6,8 +6,7 @@
  *
  * Hand-authored because the vendored items carry nothing to derive it from:
  * Boots of Speed has no `uses` block and no reference to *haste*, only prose.
- * Keyed by item name for the same reason `item-effects.ts` is: the vendored id
- * can shift on a data-pipeline rebuild.
+ * Keyed by item name: the vendored id can shift on a data-pipeline rebuild.
  *
  * Only items whose activation is the whole spell effect on the wearer are
  * listed. At-will items (Ring of Invisibility) have no budget to make a pool

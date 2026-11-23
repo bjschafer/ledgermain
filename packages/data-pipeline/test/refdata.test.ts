@@ -1,7 +1,11 @@
 import { describe, expect, it } from "bun:test";
 
 import { loadRefData } from "../src/index.js";
-import { SUPPLEMENTAL_BLOODLINE_TAGS, SUPPLEMENTAL_ITEMS } from "../src/supplements.js";
+import {
+  SUPPLEMENTAL_BLOODLINE_TAGS,
+  SUPPLEMENTAL_ITEM_CHANGES,
+  SUPPLEMENTAL_ITEMS,
+} from "../src/supplements.js";
 
 /**
  * These tests assert known PF1 facts against the vendored normalized data. They
@@ -1230,11 +1234,12 @@ describe("magic-item catalog (Pf Data 1e import)", () => {
     expect(imported.length).toBe(3813);
   });
 
-  it("every import is display-only", () => {
-    // The whole catalog is prose. Encoding mechanics for it would mean
-    // inventing them, so `changes[]` stays empty and the picker's "M" badge
-    // marks the vendored entries that do carry real effects.
-    expect(imported.every((it) => it.changes.length === 0)).toBe(true);
+  it("an import carries changes only from the hand-authored item supplement", () => {
+    // The catalog itself is prose; mechanics come from SUPPLEMENTAL_ITEM_CHANGES
+    // alone, never parsed out of a description.
+    for (const it of imported) {
+      expect(it.changes).toEqual(SUPPLEMENTAL_ITEM_CHANGES[it.name] ?? []);
+    }
   });
 
   it("never shadows a vendored or hand-authored entry", () => {

@@ -4250,7 +4250,7 @@ export function applyRacialTraitAliasSupplements(traits: RacialTrait[]): void {
  * Whole hand-authored gear entries for published items the Foundry `items` pack
  * simply doesn't carry — the item counterpart to
  * {@link SUPPLEMENTAL_PRESTIGE_CLASSES} (a new entity, not a patch onto a
- * vendored one; for the latter see `@pf1/engine`'s `ITEM_CHANGE_PATCHES`).
+ * vendored one; for the latter see {@link SUPPLEMENTAL_ITEM_CHANGES}).
  *
  * Synthetic `item:`/`supplement-item:` ids never collide with Foundry's
  * generated ones and, unlike them, survive a data bump — a character's saved
@@ -4322,5 +4322,324 @@ export function applyItemSupplements(items: Item[]): void {
       );
     }
     items.push(item);
+  }
+}
+
+function bonus(target: string, value: number, type = "untyped"): Change {
+  return { formula: String(value), target, type };
+}
+
+function skillBonus(value: number, type: string, ...skills: string[]): Change[] {
+  return skills.map((id) => bonus(`skill.${id}`, value, type));
+}
+
+function saveBonusVs(value: number, type: string, ...saveCategories: string[]): Change {
+  return { ...bonus("allSavingThrows", value, type), saveCategories };
+}
+
+function maneuverBonus(
+  target: "cmb" | "cmd",
+  value: number,
+  type: string,
+  ...maneuverCategories: string[]
+): Change {
+  return { ...bonus(target, value, type), maneuverCategories };
+}
+
+/** A ranged sense or speed the item grants outright; the longest source wins. */
+function grant(target: string, range: number, type = "untyped"): Change {
+  return { ...bonus(target, range, type), operator: "set" };
+}
+
+function flags(...targets: string[]): Change[] {
+  return targets.map((target) => bonus(target, 1));
+}
+
+/**
+ * The pack's Bracers of Armor ride an untyped `aac`, which the engine folds
+ * onto the armor bonus type, so they compete with worn armor rather than stack.
+ * Corset of Dire Witchcraft, Guardian Gorget and Snakeskin Tunic grant the same
+ * kind of armor bonus.
+ */
+function armorBonus(value: number): Change {
+  return bonus("aac", value);
+}
+
+const RESISTANCE_RING_GRADES = { Minor: 10, Major: 20, Greater: 30 } as const;
+
+/** CRB p. 480: one ring per energy type, three grades each. */
+function energyResistanceRings(): Record<string, Change[]> {
+  const out: Record<string, Change[]> = {};
+  for (const energy of ["Acid", "Cold", "Electricity", "Fire", "Sonic"]) {
+    for (const [grade, value] of Object.entries(RESISTANCE_RING_GRADES)) {
+      out[`Ring of ${energy} Resistance, ${grade}`] = [
+        bonus(`eres.${energy.toLowerCase()}`, value),
+      ];
+    }
+  }
+  return out;
+}
+
+/**
+ * Changes for worn items whose description grants a standing effect but whose
+ * vendored or imported entry carries an empty `changes[]`. Keyed by item name,
+ * which must resolve to exactly one item: the pack's ids are content hashes and
+ * the imported catalog's are slugs, and neither is easier to audit than the
+ * name. Only the always-on part of each item is encoded; activated powers and
+ * riders scoped to a circumstance stay prose, and comments name what is left.
+ *
+ * Sources are Core Rulebook and Ultimate Equipment unless noted.
+ */
+export const SUPPLEMENTAL_ITEM_CHANGES: Record<string, Change[]> = {
+  // "granting him an armor bonus of +1 to +8" (CRB p. 460)
+  "Bracers of Armor +1": [armorBonus(1)],
+  "Bracers of Armor +2": [armorBonus(2)],
+  "Bracers of Armor +3": [armorBonus(3)],
+  "Bracers of Armor +4": [armorBonus(4)],
+  "Bracers of Armor +5": [armorBonus(5)],
+  "Bracers of Armor +6": [armorBonus(6)],
+  "Bracers of Armor +7": [armorBonus(7)],
+  "Bracers of Armor +8": [armorBonus(8)],
+  ...energyResistanceRings(),
+
+  // Immunities use `imm.<damage type>` / `immEffect.<slug>`. Left out on
+  // purpose: grants narrower than any slug (one named poison, inhaled poisons
+  // only), activated or consumed grants, set bonuses, alignment- or
+  // ceremony-gated grants, and confusion, which has no slug. The Periapt of
+  // Proof Against Paralysis trades paralysis for fatigue rather than granting
+  // an immunity.
+  "Periapt of Proof against Poison": flags("immEffect.poison"),
+  "Gamboge Nodule": flags("immEffect.poison"),
+  "Savith's Iron": flags("immEffect.poison"),
+  "Periapt of Health": flags("immEffect.disease"),
+  "Grim Helm": flags("immEffect.fear"),
+  // Only while held in hand.
+  "Nightmare Rod": flags("immEffect.fear"),
+  // The pain immunity has no slug.
+  "Pendant of the First Tears": flags("immEffect.fear"),
+  "Ring of Regeneration": flags("immEffect.bleed"),
+  "Rimeheart Amulet": flags("immEffect.bleed"),
+  "Quicksilver Blood": flags("immEffect.bleed"),
+  "Density Hammer": flags("immEffect.petrification"),
+  Tarnhelm: flags("immEffect.polymorph"),
+  "The Gluttonous Tome": flags("immEffect.energyDrain"),
+  "Scintillating Garment": flags("immEffect.mindAffecting"),
+  "Stannum Crown": flags("immEffect.mindAffecting"),
+  "Mind Buttressing": flags("immEffect.charm", "immEffect.compulsion"),
+  "Sword of Lust, Asheia": flags("immEffect.enchantment"),
+  Aegis: flags("immEffect.gazeAttacks"),
+  "Vudran Ashak Helmet": flags("immEffect.flanking"),
+  "Crown of Infernal Majesty": flags("imm.fire", "immEffect.poison", "immEffect.mindAffecting"),
+  "Demon Prince Armor": flags("imm.electricity", "immEffect.poison"),
+  "Glabrezu Claw": flags("imm.electricity", "immEffect.poison"),
+  "Mythic Amulet of the Abyss": flags("imm.electricity", "immEffect.poison"),
+  "Horns of Naraga": flags("imm.acid"),
+  "Torc of Kostchtchie": flags("imm.cold"),
+  "Storm Kindler's Rod": flags("imm.cold", "imm.electricity"),
+
+  // --- Senses ---------------------------------------------------------------
+  "Goggles of Night": [grant("sensedv", 60)],
+  "Darklands Goggles": [grant("sensedv", 120)],
+  // "gains darkvision 60 feet, or increases her darkvision by 60 feet"
+  "Cat's Eye Crown": [{ ...bonus("sensedv", 60), operator: "add" }],
+  // Granted only to a non-dwarf, and a dwarf already sees 60 ft. The
+  // Constitution and save bonuses share that gate and stay prose.
+  "Belt of Dwarvenkind": [grant("sensedv", 60)],
+  // "as long as he is standing on solid ground"
+  "Tremor Boots": [grant("sensets", 5)],
+  "Cloak of the Duskwalker": flags("sensell"),
+  "Eyes of the Owl": flags("sensell"),
+  // Granted only to a non-gnome, who has low-light vision already.
+  "Feychild Necklace": flags("sensell"),
+  "Goggles of Elvenkind": flags("sensell"),
+  "Eyes of Keen Sight": [...flags("sensell"), bonus("skill.per", 2, "competence")],
+
+  // --- Ability scores ---------------------------------------------------------
+  "Anaconda's Coils": [bonus("str", 2, "enh"), maneuverBonus("cmb", 2, "competence", "grapple")],
+  "Belt of Mighty Hurling (Lesser)": [bonus("str", 2, "enh")],
+  // The bull rush and overrun bonus applies only while charging.
+  "Belt of Thunderous Charging": [bonus("str", 2, "enh")],
+  "Minotaur Belt": [bonus("str", 2, "enh")],
+  "Gorgon Belt": [bonus("str", 4, "enh")],
+  "Belt of the Weasel": [bonus("dex", 2, "enh")],
+  "Monkey Belt": [bonus("dex", 2, "enh")],
+  "Cord of Stubborn Resolve": [bonus("con", 2, "enh")],
+  "Plague Rat Belt": [bonus("con", 2, "enh")],
+  "Elemental Earth Belt": [bonus("con", 4, "enh")],
+  // Its Knowledge skill ranks have no per-item rank target.
+  "Headband of Ponderous Recollection": [bonus("int", 2, "enh")],
+  "Headband of Unshakeable Resolve": [bonus("wis", 2, "enh")],
+  "Snakeskin Tunic": [armorBonus(1), bonus("dex", 2, "enh"), saveBonusVs(2, "resist", "poison")],
+
+  // --- AC, speed, carrying ---------------------------------------------------
+  "Corset of Dire Witchcraft": [armorBonus(4)],
+  // Light fortification has no target.
+  "Guardian Gorget": [armorBonus(2)],
+  "Vambraces of Defense": [bonus("ac", 1, "deflection")],
+  "Pauldrons of the Serpent": [
+    { ...bonus("ac", 2, "dodge"), acCategories: ["aoo"] },
+    maneuverBonus("cmd", 2, "untyped", "bullRush", "grapple", "reposition", "trip"),
+  ],
+  // The +5 Acrobatics applies only to jumping.
+  "Boots of Striding and Springing": [bonus("landSpeed", 10, "enh")],
+  // Spider climb's climb speed, matching the vendored Spider Climb buff.
+  "Cloak of Arachnida": [grant("climbSpeed", 20, "racial")],
+  // A swim speed's +8 racial bonus on Swim, which the engine does not derive.
+  "Ring of the Sea Strider": [grant("swimSpeed", 30, "racial"), bonus("skill.swm", 8, "racial")],
+  "Muleback Cords": [bonus("carryStr", 8)],
+  // Ant haul's tripled capacity, matching the vendored Ant Haul buff.
+  "Heavyload Belt": [bonus("carryMult", 2)],
+
+  // --- Saving throws ---------------------------------------------------------
+  "Cloak of Fangs": [bonus("allSavingThrows", 1, "resist")],
+  "Headband of Fortune's Favor": [bonus("allSavingThrows", 1, "luck")],
+  "Belt of Fallen Heroes": [bonus("allSavingThrows", 1, "insight")],
+  "Boots of the Mire": [{ ...bonus("fort", 2, "resist"), saveCategories: ["poison", "disease"] }],
+  "Comfort's Cloak": [saveBonusVs(4, "competence", "disease", "energyDrain", "fatigue", "poison")],
+  "Mantle of Spores": [saveBonusVs(4, "resist", "disease")],
+  "Plague Mask": [saveBonusVs(4, "resist", "disease")],
+  "Serpent Belt": [saveBonusVs(4, "untyped", "poison"), bonus("skill.esc", 2)],
+  "Mind Sentinel Medallion": [saveBonusVs(2, "resist", "mind")],
+  "Lion Cloak": [saveBonusVs(2, "resist", "mind"), bonus("skill.int", 2, "circumstance")],
+  // Spells with the emotion descriptor.
+  "Halo of Inner Calm": [saveBonusVs(4, "resist", "emotion")],
+  // "effects with the emotion descriptor, including fear effects"
+  "Serpent's Band": [saveBonusVs(2, "insight", "emotion", "fear")],
+  "Torc of Lionheart Fury": [saveBonusVs(2, "morale", "fear")],
+  // The bravery level increase has no target.
+  "Band of the Stalwart Warrior": [{ ...bonus("will", 2, "competence"), saveCategories: ["fear"] }],
+  "Trapspringer's Gloves": [saveBonusVs(1, "luck", "traps")],
+  "Seducer's Bane": [
+    bonus("skill.sen", 5, "competence"),
+    { ...bonus("will", 5, "resist"), saveCategories: ["enchantment"] },
+  ],
+
+  // --- Combat maneuvers ------------------------------------------------------
+  // `weaponTraining` raises each picked weapon training group's bonus, and
+  // the CMD it grants against disarm and sunder. The +4 covers grip-loss
+  // effects like grease too, which have no category.
+  "Gloves of Dueling": [
+    maneuverBonus("cmd", 4, "untyped", "disarm", "sunder"),
+    bonus("weaponTraining", 2),
+  ],
+  "Tunic of Deadly Might": [maneuverBonus("cmd", 2, "untyped", "disarm", "sunder")],
+  "Acrobat Slippers": [maneuverBonus("cmd", 2, "competence", "trip")],
+  "Pauldrons of the Bull": [maneuverBonus("cmd", 2, "enh", "bullRush")],
+  "Security Belt": [maneuverBonus("cmd", 5, "untyped", "steal")],
+  "Armbands of the Brawler": [maneuverBonus("cmb", 1, "competence", "grapple")],
+  "Headband of Ninjitsu": [maneuverBonus("cmb", 2, "competence", "reposition")],
+  "Boots of the Mastodon": [bonus("skill.ste", -2), maneuverBonus("cmb", 2, "enh", "overrun")],
+
+  // --- Skills and concentration ----------------------------------------------
+  "Aquatic Cummerbund": skillBonus(4, "competence", "swm"),
+  "Gloves of Swimming and Climbing": skillBonus(5, "competence", "swm", "clm"),
+  "Pirate's Eye Patch": skillBonus(2, "competence", "swm", "clm"),
+  // The Acrobatics half applies only when climbing with both hands.
+  "Claws of the Ice Bear": skillBonus(2, "competence", "clm"),
+  "Ring of Climbing (improved)": skillBonus(10, "competence", "clm"),
+  "Bracelet of Bargaining": skillBonus(5, "competence", "blf", "dip", "sen"),
+  "Cloak of the Diplomat": skillBonus(5, "competence", "dip", "sen"),
+  "Ring of the Sophisticate": skillBonus(4, "competence", "sen", "klo"),
+  "Inquisitor's Monocle": skillBonus(5, "competence", "sen"),
+  "Stole of Justice": skillBonus(5, "competence", "sen"),
+  "Bracers of the Glib Entertainer": skillBonus(5, "competence", "prf"),
+  "Cackling Hag's Blouse": skillBonus(2, "competence", "int"),
+  // The fear-DC increase has no target.
+  "Dead Man's Headband": skillBonus(2, "competence", "int"),
+  "Crown of Conquest": skillBonus(4, "competence", "int"),
+  "Maw of the Wyrm": skillBonus(4, "competence", "int"),
+  "Equestrian Belt": skillBonus(4, "competence", "rid"),
+  "Gloves of Larceny": skillBonus(5, "competence", "slt"),
+  "Prestidigitator's Cloak": skillBonus(8, "competence", "slt"),
+  "Goggles of Minute Seeing": skillBonus(5, "competence", "dev"),
+  "Ring of Maniacal Devices": skillBonus(5, "competence", "dev", "crf.traps"),
+  "Vest of Escape": [bonus("skill.dev", 4, "competence"), bonus("skill.esc", 6, "competence")],
+  "Pliant Gloves": skillBonus(5, "enh", "esc"),
+  "Lenses of Detection": skillBonus(5, "competence", "per"),
+  "Xorn Robe": skillBonus(5, "untyped", "per"),
+  "Stalker's Mask": skillBonus(5, "competence", "ste"),
+  // The favored enemy increase has no target.
+  "Hunter's Band": skillBonus(5, "competence", "sur"),
+  "Ring of Sacred Mistletoe": skillBonus(2, "competence", "han", "kna"),
+  "Scholar's Ring": skillBonus(5, "competence", "khi"),
+  "Tunic of Careful Casting": [bonus("concentration", 2)],
+
+  // --- Energy resistance -----------------------------------------------------
+  // The robes' caster-level increase for one descriptor has no target.
+  "Blazing Robe": [bonus("eres.fire", 5)],
+  "Shocking Robe": [bonus("eres.electricity", 5)],
+  "Voidfrost Robe": [bonus("eres.cold", 5)],
+  "Shoes of the Firewalker": [bonus("eres.fire", 10)],
+};
+
+/**
+ * Commonly bought Core Rulebook and Ultimate Equipment worn items with a
+ * standing effect that still cannot be promoted. Each value names the missing
+ * axis so mechanism work can find its candidates here. Items whose effect is
+ * activated, situational, or has no sheet surface at all (endure elements,
+ * water walking) are not listed: display-only is the default, not a blocker.
+ */
+export const ITEM_PROMOTION_BLOCKERS: Record<string, string> = {
+  "Aegis of Recovery": "saves against continuing effects have no save category",
+  "Headband of Deathless Devotion": "saves against recurring effects have no save category",
+  "Goggles of Brilliant Light": "visual effects have no save category",
+  "Medusa Mask": "visual effects have no save category; gaze attacks alone would under-cover it",
+  "Arrowmaster's Bracers": "DR and deflection scoped to ranged attacks; no ranged AC category",
+  "Gunfighter's Poncho": "touch AC alone has no target",
+  "Cloak of Displacement (Minor)": "miss chance has no target",
+  "Arachnid Goggles": "all-around vision has no sense or flanking target",
+  "Ring of Evasion": "evasion has no sheet surface",
+  "Ring of Inner Fortitude (minor)": "ability damage reduction has no target",
+  "Blind Man's Fold": "items cannot grant feats, and it blinds the wearer",
+  "Mask Of A Thousand Tomes": "items cannot impose a condition, and it blinds the wearer",
+  "Helm of the Mammoth Lord": "items cannot grant a natural attack",
+  "Ring of Rat Fangs": "items cannot grant a natural attack",
+  "Gauntlets of the Skilled Maneuver": "maneuver chosen at creation; no per-item choice",
+  "Headband of Aerial Agility": "ability score chosen at creation; no per-item choice",
+  "Shifter's Headband": "ability score chosen at creation; no per-item choice",
+  "Ring of Energy Resistance": "energy type chosen at creation; the per-energy rings carry it",
+  "Ring of Energy Shroud": "energy type chosen at creation; no per-item choice",
+  "Bracers of Archery (Greater)":
+    "one entry for both grades at the lesser grade's price, so no single bonus to encode",
+  "Mitre of the Hierophant": "gated on casting divine spells; no caster-type predicate",
+  "Monk's Robe": "effective monk level for AC and unarmed damage has no target",
+  "Necklace of Ki Serenity": "effective level for the ki pool has no target",
+  "Robe of Arcane Heritage": "effective sorcerer level for bloodline powers has no target",
+  "Sash of the War Champion":
+    "effective fighter level for armor training and bravery has no target",
+  "Amulet of Spell Cunning": "extra prepared spell levels have no casting-economy shape",
+  "Ring of Wizardry": "doubled slots are not a flat count, and the entry spans four types",
+  "Ring of Tactical Precision":
+    "Profession (soldier) is a per-character subskill; the teamwork bonus has no target",
+};
+
+/** The one item `name` names, failing the build on a miss or an ambiguity. */
+function uniqueItemByName(items: readonly Item[], name: string, table: string): Item {
+  const matches = items.filter((it) => it.name === name);
+  if (matches.length !== 1) {
+    throw new Error(
+      `[supplements] ${table} entry "${name}" matches ${matches.length} items — re-key it`,
+    );
+  }
+  return matches[0]!;
+}
+
+/**
+ * Write {@link SUPPLEMENTAL_ITEM_CHANGES} onto their items, and check that
+ * every {@link ITEM_PROMOTION_BLOCKERS} entry still names a prose-only item.
+ * Runs after the magic-item import, since most targets come from it.
+ */
+export function applyItemChangeSupplements(items: Item[]): void {
+  for (const [name, changes] of Object.entries(SUPPLEMENTAL_ITEM_CHANGES)) {
+    const item = uniqueItemByName(items, name, "item change");
+    if (item.changes.length > 0) redundant(`item "${name}" changes`);
+    item.changes = changes;
+  }
+  for (const name of Object.keys(ITEM_PROMOTION_BLOCKERS)) {
+    if (name in SUPPLEMENTAL_ITEM_CHANGES) {
+      throw new Error(`[supplements] item "${name}" is both promoted and blocked`);
+    }
+    const item = uniqueItemByName(items, name, "item blocker");
+    if (item.changes.length > 0) redundant(`item "${name}"`, "drop its blocker entry");
   }
 }

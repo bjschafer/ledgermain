@@ -6,21 +6,52 @@
  * visibly wrong string.
  */
 
-import { tryEvaluateFormula } from "@pf1/engine";
-import type { ArmorRef, Item } from "@pf1/schema";
+import {
+  acCategoryLabel,
+  maneuverCategoryLabel,
+  saveCategoryLabel,
+  tryEvaluateFormula,
+} from "@pf1/engine";
+import type { ArmorRef, Change, Item } from "@pf1/schema";
 
 import type { ConsumableEntry } from "./consumables.js";
 import type { Kit } from "./kits.js";
-import { changeTargetLabel } from "./names.js";
+import { capitalizeFirst, changeTargetLabel } from "./names.js";
 
 const WEIGHT_LABEL: Record<number, string> = { 0: "None", 1: "Light", 2: "Medium", 3: "Heavy" };
 
-/** Render a concise human-readable summary of a Change (e.g. "+2 deflection to AC"). */
-export function changeLabel(change: { formula: string; target: string; type: string }): string {
-  const val = change.formula;
+/** On/off targets: their formula is a bare 1, so the label alone says it all. */
+const FLAG_TARGETS: Record<string, true> = { sensell: true, sensesid: true, sensesi: true };
+
+/**
+ * Render a concise human-readable summary of a Change (e.g. "+2 deflection to
+ * AC", "+4 resist to all saving throws vs poison", "Darkvision 60").
+ */
+export function changeLabel(
+  change: Pick<
+    Change,
+    | "formula"
+    | "target"
+    | "type"
+    | "operator"
+    | "saveCategories"
+    | "maneuverCategories"
+    | "acCategories"
+  >,
+): string {
+  const target = change.target ? changeTargetLabel(change.target) : "";
+  if (FLAG_TARGETS[change.target] || change.target.startsWith("imm")) {
+    return capitalizeFirst(target);
+  }
+  const scope = [
+    ...(change.saveCategories ?? []).map(saveCategoryLabel),
+    ...(change.maneuverCategories ?? []).map(maneuverCategoryLabel),
+    ...(change.acCategories ?? []).map(acCategoryLabel),
+  ];
+  const vs = scope.length > 0 ? ` vs ${scope.join(", ")}` : "";
+  if (change.operator === "set") return `${capitalizeFirst(target)} ${change.formula}${vs}`;
   const type = change.type && change.type !== "untyped" ? ` ${change.type}` : "";
-  const target = change.target ? ` to ${changeTargetLabel(change.target)}` : "";
-  return `${val}${type}${target}`;
+  return `${change.formula}${type}${target ? ` to ${target}` : ""}${vs}`;
 }
 
 /**

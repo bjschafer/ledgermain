@@ -1250,7 +1250,6 @@ export {
   type SaveNoteCatalog,
   type SaveNoteCoverage,
 } from "./save-note-coverage.js";
-export { ITEM_CHANGE_PATCHES } from "./item-effects.js";
 export {
   RAGE_POWERS,
   RAGE_POWER_IDS,

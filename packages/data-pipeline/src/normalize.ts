@@ -108,6 +108,7 @@ import {
   applyClassFeatureUsesSupplements,
   applyClassSkillSupplements,
   applyDruidDomainFeatureSupplements,
+  applyItemChangeSupplements,
   applyItemSupplements,
   applyPrestigeClassSupplements,
   applyRaceEffectImmunitySupplements,
@@ -909,6 +910,7 @@ export function normalize(opts: NormalizeOptions): {
     itemNames.add(normalizeEntityName(imported.name));
     items.push(imported);
   }
+  applyItemChangeSupplements(items);
   const itemAbilities: ItemAbilityRef[] = magicItems.abilities;
 
   // --- armors & shields (mundane base gear; magic named suits excluded) ------

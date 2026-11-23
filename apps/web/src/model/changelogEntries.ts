@@ -49,6 +49,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-11-23-worn-item-effects",
+    date: "2026-11-23",
+    title: "Goggles of night, gloves of dueling, and dozens more worn items apply",
+    note: "Equipping goggles of night adds darkvision to your senses, and gloves of dueling raise a fighter's weapon training bonus by 2 and CMD against disarm and sunder by 4. Energy resistance rings, Ultimate Equipment stat belts and headbands, skill items, and save boosters against poison, fear, or disease apply too, and the gear picker marks them, and bracers of armor, with an M. Weapon training also adds its bonus to CMD against disarm and sunder.",
+  },
+  {
     id: "2026-11-22-item-immunities",
     date: "2026-11-22",
     title: "Immunities from worn items and feats",

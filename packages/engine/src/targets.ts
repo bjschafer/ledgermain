@@ -111,6 +111,8 @@ const APPLIED_TARGETS = new Set<string>([
   // concentration checks, general and defensive-only (concentration.ts)
   "concentration",
   "concentration.defensive",
+  // an item's raise to every picked Weapon Training group (collect/class-features.ts)
+  "weaponTraining",
 ]);
 
 /**

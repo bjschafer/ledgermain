@@ -8,7 +8,7 @@
 
 import { describe, expect, it } from "bun:test";
 
-import type { CharacterDoc, WeaponInstance } from "@pf1/schema";
+import type { CharacterDoc, ItemInstance, WeaponInstance } from "@pf1/schema";
 import { loadRefData } from "@pf1/data-pipeline";
 
 import { compute } from "../src/index.js";
@@ -34,6 +34,7 @@ function makeDoc(over: {
   weaponTrainingGroups?: string[];
   archetypes?: string[];
   weapons: WeaponInstance[];
+  gear?: ItemInstance[];
 }): CharacterDoc {
   return {
     schemaVersion: 1,
@@ -52,7 +53,7 @@ function makeDoc(over: {
       skillRanks: {},
       classFeatureChoices: [],
       spells: { known: [] },
-      gear: [],
+      gear: over.gear ?? [],
       weapons: over.weapons,
       archetypes: over.archetypes ?? [],
       weaponTrainingGroups: over.weaponTrainingGroups,
@@ -182,5 +183,87 @@ describe("Weapon Training group picks", () => {
     expect(compute(doc, ref).attacks[0]!.attack.total).toBe(
       compute(base, ref).attacks[0]!.attack.total,
     );
+  });
+});
+
+function itemId(name: string): string {
+  const entry = Object.entries(ref.items).find(([, it]) => it.name === name);
+  if (!entry) throw new Error(`item not found: ${name}`);
+  return entry[0];
+}
+
+function disarmCmd(doc: CharacterDoc): number | undefined {
+  return compute(doc, ref).cmdConditionals?.find((c) => c.categories.includes("disarm"))?.total;
+}
+
+// CRB p. 56: the weapon training bonus "also applies to the fighter's Combat
+// Maneuver Defense when defending against disarm and sunder attempts made
+// against weapons from this group".
+describe("Weapon Training CMD vs disarm and sunder", () => {
+  it("carries the best picked tier: +2 at L9 with bows (+2) and hammers (+1)", () => {
+    const doc = makeDoc({
+      fighterLevel: 9,
+      weaponTrainingGroups: ["bows", "hammers"],
+      weapons: [longbow, warhammer],
+    });
+    const sheet = compute(doc, ref);
+    // 10 + BAB 9, no Str/Dex: headline CMD is untouched.
+    expect(sheet.cmd).toBe(19);
+    const line = sheet.cmdConditionals?.find((c) => c.categories.includes("disarm"));
+    expect(line?.total).toBe(21);
+    expect(line?.categories).toEqual(["disarm", "sunder"]);
+  });
+
+  it("no line before weapon training unlocks", () => {
+    expect(
+      disarmCmd(makeDoc({ fighterLevel: 4, weaponTrainingGroups: ["bows"], weapons: [longbow] })),
+    ).toBeUndefined();
+  });
+});
+
+// Gloves of Dueling (Ultimate Equipment p. 236): "a +4 bonus to her CMD
+// against disarm attacks, attempts to sunder her wielded weapons ... her
+// weapon training bonus increases by +2."
+describe("Gloves of Dueling", () => {
+  const gloves: ItemInstance = { equipped: true, itemId: itemId("Gloves of Dueling") };
+
+  it("raises every picked group's attack and damage by 2", () => {
+    const base = makeDoc({ fighterLevel: 9, weapons: [longbow, warhammer] });
+    const doc = makeDoc({
+      fighterLevel: 9,
+      weaponTrainingGroups: ["bows", "hammers"],
+      weapons: [longbow, warhammer],
+      gear: [gloves],
+    });
+    const sheet = compute(doc, ref);
+    const baseSheet = compute(base, ref);
+    // bows: WT +2, gloves +2; hammers: WT +1, gloves +2
+    expect(sheet.attacks[0]!.attack.total - baseSheet.attacks[0]!.attack.total).toBe(4);
+    expect(sheet.attacks[0]!.damageBonus.total - baseSheet.attacks[0]!.damageBonus.total).toBe(4);
+    expect(sheet.attacks[1]!.attack.total - baseSheet.attacks[1]!.attack.total).toBe(3);
+    expect(sheet.attacks[1]!.damageBonus.total - baseSheet.attacks[1]!.damageBonus.total).toBe(3);
+    const source = sheet.attacks[0]!.attack.components.find(
+      (c) => c.source === "Gloves of Dueling",
+    );
+    expect(source?.value).toBe(2);
+  });
+
+  it("CMD vs disarm and sunder: 19 + WT 2 + gloves' WT raise 2 + gloves' own 4", () => {
+    const doc = makeDoc({
+      fighterLevel: 9,
+      weaponTrainingGroups: ["bows", "hammers"],
+      weapons: [longbow, warhammer],
+      gear: [gloves],
+    });
+    expect(compute(doc, ref).cmd).toBe(19);
+    expect(disarmCmd(doc)).toBe(27);
+  });
+
+  it("without weapon training only the +4 CMD applies", () => {
+    const base = makeDoc({ fighterLevel: 4, weapons: [longbow] });
+    const doc = makeDoc({ fighterLevel: 4, weapons: [longbow], gear: [gloves] });
+    const sheet = compute(doc, ref);
+    expect(sheet.attacks[0]!.attack.total).toBe(compute(base, ref).attacks[0]!.attack.total);
+    expect(disarmCmd(doc)).toBe(sheet.cmd + 4);
   });
 });

@@ -3,15 +3,13 @@ import { describe, expect, it } from "bun:test";
 import type { CharacterDoc, ItemInstance } from "@pf1/schema";
 import { loadRefData } from "@pf1/data-pipeline";
 
-import { compute, EFFECT_IMMUNITY_LABELS, ITEM_CHANGE_PATCHES } from "../src/index.js";
+import { compute, EFFECT_IMMUNITY_LABELS } from "../src/index.js";
 
 /**
  * Bracers of Armor (CRB p. 460): "Bracers of armor surround the wearer with an
  * invisible but tangible field of force, granting an armor bonus of +1 to +8,
- * just as though he were wearing armor" — confirmed against aonprd.com,
- * 2026-07-25. All eight vendored entries carry an empty `changes[]` upstream,
- * so equipping one granted nothing before `ITEM_CHANGE_PATCHES`
- * (`item-effects.ts`) patched it in via `collect.ts`'s equipped-items loop.
+ * just as though he were wearing armor." The vendored entries carry an empty
+ * `changes[]`; the data pipeline's item change supplement fills them.
  */
 const ref = loadRefData();
 
@@ -40,7 +38,7 @@ function makeDoc(gear: ItemInstance[]): CharacterDoc {
   };
 }
 
-describe("Bracers of Armor (ITEM_CHANGE_PATCHES)", () => {
+describe("Bracers of Armor", () => {
   it("+3 bracers grant a +3 armor bonus to AC with no worn armor (10 base + 3)", () => {
     const doc = makeDoc([{ equipped: true, itemId: itemByName("Bracers of Armor +3") }]);
     const sheet = compute(doc, ref);
@@ -102,7 +100,7 @@ describe("Bracers of Armor (ITEM_CHANGE_PATCHES)", () => {
   });
 });
 
-describe("item immunity grants (ITEM_CHANGE_PATCHES)", () => {
+describe("item immunity grants", () => {
   const effectSlugs = (doc: CharacterDoc) =>
     compute(doc, ref).defenses?.effectImmunities?.map((e) => e.qualifier) ?? [];
 
@@ -120,15 +118,53 @@ describe("item immunity grants (ITEM_CHANGE_PATCHES)", () => {
     expect(sheet.defenses?.immunities?.map((i) => i.qualifier)).toEqual(["cold", "electricity"]);
   });
 
-  it("every patch names a vendored item and every immEffect slug has a label", () => {
-    const names = new Set(Object.values(ref.items).map((it) => it.name));
-    for (const [name, changes] of Object.entries(ITEM_CHANGE_PATCHES)) {
-      expect(names.has(name)).toBe(true);
-      for (const ch of changes) {
+  it("every immEffect slug an item carries has a label", () => {
+    for (const item of Object.values(ref.items)) {
+      for (const ch of item.changes) {
         if (ch.target.startsWith("immEffect.")) {
           expect(EFFECT_IMMUNITY_LABELS[ch.target.slice("immEffect.".length)]).toBeDefined();
         }
       }
     }
+  });
+});
+
+describe("promoted worn items", () => {
+  it("Goggles of Night: darkvision 60 ft. while worn (CRB p. 515)", () => {
+    const itemId = itemByName("Goggles of Night");
+    const senses = compute(makeDoc([{ equipped: true, itemId }]), ref).senses;
+    expect(senses.map((s) => [s.kind, s.range])).toEqual([["darkvision", 60]]);
+    expect(compute(makeDoc([{ equipped: false, itemId }]), ref).senses).toEqual([]);
+  });
+
+  it("Cat's Eye Crown extends existing darkvision by 60 ft. (UE p. 222)", () => {
+    const sheet = compute(
+      makeDoc([
+        { equipped: true, itemId: itemByName("Goggles of Night") },
+        { equipped: true, itemId: itemByName("Cat's Eye Crown") },
+      ]),
+      ref,
+    );
+    expect(sheet.senses.find((s) => s.kind === "darkvision")?.range).toBe(120);
+  });
+
+  it("Boots of the Mire: +2 resistance on Fortitude only vs poison and disease (UE p. 229)", () => {
+    const base = compute(makeDoc([]), ref);
+    const sheet = compute(
+      makeDoc([{ equipped: true, itemId: itemByName("Boots of the Mire") }]),
+      ref,
+    );
+    expect(sheet.saves.fort.total).toBe(base.saves.fort.total);
+    const line = sheet.saves.fort.conditionals?.find((c) => c.categories.includes("poison"));
+    expect(line?.total).toBe(base.saves.fort.total + 2);
+    expect(line?.categories).toEqual(["poison", "disease"]);
+  });
+
+  it("Ring of Fire Resistance, Minor: fire resistance 10 (CRB p. 480)", () => {
+    const sheet = compute(
+      makeDoc([{ equipped: true, itemId: itemByName("Ring of Fire Resistance, Minor") }]),
+      ref,
+    );
+    expect(sheet.defenses?.resistances.map((e) => [e.qualifier, e.total])).toEqual([["fire", 10]]);
   });
 });

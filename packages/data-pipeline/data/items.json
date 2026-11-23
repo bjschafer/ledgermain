@@ -99,7 +99,13 @@
     "aura": {
       "school": "abj"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "20",
+        "target": "eres.fire",
+        "type": "untyped"
+      }
+    ],
     "cl": 11,
     "contextNotes": [],
     "description": "<p>Rings of this type come in a wide variety of designs and colorations, typically related to the types of energy they defend against. These rings continually protect their wearers from damage from one type of energy-acid, cold, electricity, fire, or sonic (chosen by the creator of the item; determine randomly if found as part of a treasure hoard). Each time the wearer would normally take such damage, subtract the ring's resistance value from the damage dealt. A major ring of energy resistance grants 20 points of resistance.</p>",
@@ -1273,7 +1279,13 @@
     "aura": {
       "school": "abj"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "10",
+        "target": "eres.cold",
+        "type": "untyped"
+      }
+    ],
     "cl": 11,
     "contextNotes": [],
     "description": "<p>Rings of this type come in a wide variety of designs and colorations, typically related to the types of energy they defend against. These rings continually protect their wearers from damage from one type of energy-acid, cold, electricity, fire, or sonic (chosen by the creator of the item; determine randomly if found as part of a treasure hoard). Each time the wearer would normally take such damage, subtract the ring's resistance value from the damage dealt. A minor ring of energy resistance grants 10 points of resistance.</p>",
@@ -1486,7 +1498,13 @@
     "aura": {
       "school": "abj"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "10",
+        "target": "eres.sonic",
+        "type": "untyped"
+      }
+    ],
     "cl": 11,
     "contextNotes": [],
     "description": "<p>Rings of this type come in a wide variety of designs and colorations, typically related to the types of energy they defend against. These rings continually protect their wearers from damage from one type of energy-acid, cold, electricity, fire, or sonic (chosen by the creator of the item; determine randomly if found as part of a treasure hoard). Each time the wearer would normally take such damage, subtract the ring's resistance value from the damage dealt. A minor ring of energy resistance grants 10 points of resistance.</p>",
@@ -1583,7 +1601,13 @@
     "aura": {
       "school": "con"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "4",
+        "target": "aac",
+        "type": "untyped"
+      }
+    ],
     "cl": 7,
     "contextNotes": [],
     "description": "<p>These items appear to be wrist or arm guards, sometimes etched with symbols of protection or depictions of vigilant-looking animals. Bracers of armor surround the wearer with an invisible but tangible field of force, granting him an armor bonus of +1 to +8, just as though he were wearing armor. Both bracers of armor must be worn for the magic to be effective. Alternatively, bracers of armor can be enchanted with armor special abilities. See Table 3-3: Armor Special Abilities for a list of abilities. Special abilities usually count as additional bonuses for determining the market value of an item, but do not improve AC. Bracers of armor cannot have a modified bonus (armor bonus plus armor special ability bonus equivalents) higher than +8. Bracers of armor must have at least a +1 armor bonus to grant an armor special ability. Bracers of armor cannot have any armor special abilities that add a flat gp amount to their cost. Bracers of armor and ordinary armor do not stack. If the wearer receives a larger armor bonus from another source, the bracers of armor cease functioning and do not grant their armor bonus or their armor special abilities. If the bracers of armor grant a larger armor bonus, the other source of armor ceases functioning.</p>",
@@ -2315,7 +2339,13 @@
     "aura": {
       "school": "abj"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "20",
+        "target": "eres.sonic",
+        "type": "untyped"
+      }
+    ],
     "cl": 11,
     "contextNotes": [],
     "description": "<p>Rings of this type come in a wide variety of designs and colorations, typically related to the types of energy they defend against. These rings continually protect their wearers from damage from one type of energy-acid, cold, electricity, fire, or sonic (chosen by the creator of the item; determine randomly if found as part of a treasure hoard). Each time the wearer would normally take such damage, subtract the ring's resistance value from the damage dealt. A major ring of energy resistance grants 20 points of resistance.</p>",
@@ -2791,7 +2821,13 @@
     "aura": {
       "school": "abj"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "30",
+        "target": "eres.cold",
+        "type": "untyped"
+      }
+    ],
     "cl": 11,
     "contextNotes": [],
     "description": "<p>Rings of this type come in a wide variety of designs and colorations, typically related to the types of energy they defend against. These rings continually protect their wearers from damage from one type of energy-acid, cold, electricity, fire, or sonic (chosen by the creator of the item; determine randomly if found as part of a treasure hoard). Each time the wearer would normally take such damage, subtract the ring's resistance value from the damage dealt. A greater ring of energy resistance grants 30 points of resistance.</p>",
@@ -2947,7 +2983,13 @@
     "aura": {
       "school": "con"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "3",
+        "target": "aac",
+        "type": "untyped"
+      }
+    ],
     "cl": 7,
     "contextNotes": [],
     "description": "<p>These items appear to be wrist or arm guards, sometimes etched with symbols of protection or depictions of vigilant-looking animals. Bracers of armor surround the wearer with an invisible but tangible field of force, granting him an armor bonus of +1 to +8, just as though he were wearing armor. Both bracers of armor must be worn for the magic to be effective. Alternatively, bracers of armor can be enchanted with armor special abilities. See Table 3-3: Armor Special Abilities for a list of abilities. Special abilities usually count as additional bonuses for determining the market value of an item, but do not improve AC. Bracers of armor cannot have a modified bonus (armor bonus plus armor special ability bonus equivalents) higher than +8. Bracers of armor must have at least a +1 armor bonus to grant an armor special ability. Bracers of armor cannot have any armor special abilities that add a flat gp amount to their cost. Bracers of armor and ordinary armor do not stack. If the wearer receives a larger armor bonus from another source, the bracers of armor cease functioning and do not grant their armor bonus or their armor special abilities. If the bracers of armor grant a larger armor bonus, the other source of armor ceases functioning.</p>",
@@ -3344,7 +3386,13 @@
     "aura": {
       "school": "div"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "1",
+        "target": "sensell",
+        "type": "untyped"
+      }
+    ],
     "cl": 5,
     "contextNotes": [
       {
@@ -4073,7 +4121,13 @@
     "aura": {
       "school": "con"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "6",
+        "target": "aac",
+        "type": "untyped"
+      }
+    ],
     "cl": 7,
     "contextNotes": [],
     "description": "<p>These items appear to be wrist or arm guards, sometimes etched with symbols of protection or depictions of vigilant-looking animals. Bracers of armor surround the wearer with an invisible but tangible field of force, granting him an armor bonus of +1 to +8, just as though he were wearing armor. Both bracers of armor must be worn for the magic to be effective. Alternatively, bracers of armor can be enchanted with armor special abilities. See Table 3-3: Armor Special Abilities for a list of abilities. Special abilities usually count as additional bonuses for determining the market value of an item, but do not improve AC. Bracers of armor cannot have a modified bonus (armor bonus plus armor special ability bonus equivalents) higher than +8. Bracers of armor must have at least a +1 armor bonus to grant an armor special ability. Bracers of armor cannot have any armor special abilities that add a flat gp amount to their cost. Bracers of armor and ordinary armor do not stack. If the wearer receives a larger armor bonus from another source, the bracers of armor cease functioning and do not grant their armor bonus or their armor special abilities. If the bracers of armor grant a larger armor bonus, the other source of armor ceases functioning.</p>",
@@ -4601,7 +4655,13 @@
     "aura": {
       "school": "con"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "2",
+        "target": "aac",
+        "type": "untyped"
+      }
+    ],
     "cl": 7,
     "contextNotes": [],
     "description": "<p>These items appear to be wrist or arm guards, sometimes etched with symbols of protection or depictions of vigilant-looking animals. Bracers of armor surround the wearer with an invisible but tangible field of force, granting him an armor bonus of +1 to +8, just as though he were wearing armor. Both bracers of armor must be worn for the magic to be effective. Alternatively, bracers of armor can be enchanted with armor special abilities. See Table 3-3: Armor Special Abilities for a list of abilities. Special abilities usually count as additional bonuses for determining the market value of an item, but do not improve AC. Bracers of armor cannot have a modified bonus (armor bonus plus armor special ability bonus equivalents) higher than +8. Bracers of armor must have at least a +1 armor bonus to grant an armor special ability. Bracers of armor cannot have any armor special abilities that add a flat gp amount to their cost. Bracers of armor and ordinary armor do not stack. If the wearer receives a larger armor bonus from another source, the bracers of armor cease functioning and do not grant their armor bonus or their armor special abilities. If the bracers of armor grant a larger armor bonus, the other source of armor ceases functioning.</p>",
@@ -4725,7 +4785,13 @@
     "aura": {
       "school": "abj"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "10",
+        "target": "eres.fire",
+        "type": "untyped"
+      }
+    ],
     "cl": 11,
     "contextNotes": [],
     "description": "<p>Rings of this type come in a wide variety of designs and colorations, typically related to the types of energy they defend against. These rings continually protect their wearers from damage from one type of energy-acid, cold, electricity, fire, or sonic (chosen by the creator of the item; determine randomly if found as part of a treasure hoard). Each time the wearer would normally take such damage, subtract the ring's resistance value from the damage dealt. A minor ring of energy resistance grants 10 points of resistance.</p>",
@@ -6146,7 +6212,13 @@
     "aura": {
       "school": "con"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "5",
+        "target": "aac",
+        "type": "untyped"
+      }
+    ],
     "cl": 7,
     "contextNotes": [],
     "description": "<p>These items appear to be wrist or arm guards, sometimes etched with symbols of protection or depictions of vigilant-looking animals. Bracers of armor surround the wearer with an invisible but tangible field of force, granting him an armor bonus of +1 to +8, just as though he were wearing armor. Both bracers of armor must be worn for the magic to be effective. Alternatively, bracers of armor can be enchanted with armor special abilities. See Table 3-3: Armor Special Abilities for a list of abilities. Special abilities usually count as additional bonuses for determining the market value of an item, but do not improve AC. Bracers of armor cannot have a modified bonus (armor bonus plus armor special ability bonus equivalents) higher than +8. Bracers of armor must have at least a +1 armor bonus to grant an armor special ability. Bracers of armor cannot have any armor special abilities that add a flat gp amount to their cost. Bracers of armor and ordinary armor do not stack. If the wearer receives a larger armor bonus from another source, the bracers of armor cease functioning and do not grant their armor bonus or their armor special abilities. If the bracers of armor grant a larger armor bonus, the other source of armor ceases functioning.</p>",
@@ -6383,7 +6455,13 @@
     "aura": {
       "school": "abj"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "20",
+        "target": "eres.acid",
+        "type": "untyped"
+      }
+    ],
     "cl": 11,
     "contextNotes": [],
     "description": "<p>Rings of this type come in a wide variety of designs and colorations, typically related to the types of energy they defend against. These rings continually protect their wearers from damage from one type of energy-acid, cold, electricity, fire, or sonic (chosen by the creator of the item; determine randomly if found as part of a treasure hoard). Each time the wearer would normally take such damage, subtract the ring's resistance value from the damage dealt. A major ring of energy resistance grants 20 points of resistance.</p>",
@@ -7328,7 +7406,13 @@
     "aura": {
       "school": "trs"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "2",
+        "target": "skill.clm",
+        "type": "competence"
+      }
+    ],
     "cl": 3,
     "contextNotes": [
       {
@@ -7781,7 +7865,13 @@
     "aura": {
       "school": "abj"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "20",
+        "target": "eres.cold",
+        "type": "untyped"
+      }
+    ],
     "cl": 11,
     "contextNotes": [],
     "description": "<p>Rings of this type come in a wide variety of designs and colorations, typically related to the types of energy they defend against. These rings continually protect their wearers from damage from one type of energy-acid, cold, electricity, fire, or sonic (chosen by the creator of the item; determine randomly if found as part of a treasure hoard). Each time the wearer would normally take such damage, subtract the ring's resistance value from the damage dealt. A major ring of energy resistance grants 20 points of resistance.</p>",
@@ -8705,7 +8795,13 @@
     "aura": {
       "school": "con"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "8",
+        "target": "aac",
+        "type": "untyped"
+      }
+    ],
     "cl": 7,
     "contextNotes": [],
     "description": "<p>These items appear to be wrist or arm guards, sometimes etched with symbols of protection or depictions of vigilant-looking animals. Bracers of armor surround the wearer with an invisible but tangible field of force, granting him an armor bonus of +1 to +8, just as though he were wearing armor. Both bracers of armor must be worn for the magic to be effective. Alternatively, bracers of armor can be enchanted with armor special abilities. See Table 3-3: Armor Special Abilities for a list of abilities. Special abilities usually count as additional bonuses for determining the market value of an item, but do not improve AC. Bracers of armor cannot have a modified bonus (armor bonus plus armor special ability bonus equivalents) higher than +8. Bracers of armor must have at least a +1 armor bonus to grant an armor special ability. Bracers of armor cannot have any armor special abilities that add a flat gp amount to their cost. Bracers of armor and ordinary armor do not stack. If the wearer receives a larger armor bonus from another source, the bracers of armor cease functioning and do not grant their armor bonus or their armor special abilities. If the bracers of armor grant a larger armor bonus, the other source of armor ceases functioning.</p>",
@@ -12446,7 +12542,13 @@
     "aura": {
       "school": "abj"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "30",
+        "target": "eres.fire",
+        "type": "untyped"
+      }
+    ],
     "cl": 11,
     "contextNotes": [],
     "description": "<p>Rings of this type come in a wide variety of designs and colorations, typically related to the types of energy they defend against. These rings continually protect their wearers from damage from one type of energy-acid, cold, electricity, fire, or sonic (chosen by the creator of the item; determine randomly if found as part of a treasure hoard). Each time the wearer would normally take such damage, subtract the ring's resistance value from the damage dealt. A greater ring of energy resistance grants 30 points of resistance.</p>",
@@ -13907,7 +14009,13 @@
     "aura": {
       "school": "con"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "7",
+        "target": "aac",
+        "type": "untyped"
+      }
+    ],
     "cl": 7,
     "contextNotes": [],
     "description": "<p>These items appear to be wrist or arm guards, sometimes etched with symbols of protection or depictions of vigilant-looking animals. Bracers of armor surround the wearer with an invisible but tangible field of force, granting him an armor bonus of +1 to +8, just as though he were wearing armor. Both bracers of armor must be worn for the magic to be effective. Alternatively, bracers of armor can be enchanted with armor special abilities. See Table 3-3: Armor Special Abilities for a list of abilities. Special abilities usually count as additional bonuses for determining the market value of an item, but do not improve AC. Bracers of armor cannot have a modified bonus (armor bonus plus armor special ability bonus equivalents) higher than +8. Bracers of armor must have at least a +1 armor bonus to grant an armor special ability. Bracers of armor cannot have any armor special abilities that add a flat gp amount to their cost. Bracers of armor and ordinary armor do not stack. If the wearer receives a larger armor bonus from another source, the bracers of armor cease functioning and do not grant their armor bonus or their armor special abilities. If the bracers of armor grant a larger armor bonus, the other source of armor ceases functioning.</p>",
@@ -14053,7 +14161,13 @@
     "aura": {
       "school": "abj"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "30",
+        "target": "eres.acid",
+        "type": "untyped"
+      }
+    ],
     "cl": 11,
     "contextNotes": [],
     "description": "<p>Rings of this type come in a wide variety of designs and colorations, typically related to the types of energy they defend against. These rings continually protect their wearers from damage from one type of energy-acid, cold, electricity, fire, or sonic (chosen by the creator of the item; determine randomly if found as part of a treasure hoard). Each time the wearer would normally take such damage, subtract the ring's resistance value from the damage dealt. A greater ring of energy resistance grants 30 points of resistance.</p>",
@@ -14502,7 +14616,13 @@
     "aura": {
       "school": "abj"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "30",
+        "target": "eres.sonic",
+        "type": "untyped"
+      }
+    ],
     "cl": 11,
     "contextNotes": [],
     "description": "<p>Rings of this type come in a wide variety of designs and colorations, typically related to the types of energy they defend against. These rings continually protect their wearers from damage from one type of energy-acid, cold, electricity, fire, or sonic (chosen by the creator of the item; determine randomly if found as part of a treasure hoard). Each time the wearer would normally take such damage, subtract the ring's resistance value from the damage dealt. A greater ring of energy resistance grants 30 points of resistance.</p>",
@@ -15985,7 +16105,13 @@
     "aura": {
       "school": "trs"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "1",
+        "target": "immEffect.gazeAttacks",
+        "type": "untyped"
+      }
+    ],
     "cl": 15,
     "contextNotes": [],
     "description": "<p>This +4 determination heavy steel shield has the preserved head of a medusa mounted in its center, its eyes shut tight. It grants its wearer a +4 resistance bonus on saving throws and immunity to gaze attacks. When the wearer fights defensively or uses Combat Expertise, the shield's bonuses to AC and on saving throws increase to +6. When she's taking the total defense action, the bonuses increase to +10.</p>\n<p>As a standard action, the wearer of the aegis can expend one use of mythic power to awaken the medusa's head, causing its serpentine hair to writhe and its glowing, red eyes to open. This unleashes a cone of widened fear in the direction of the wearer's choice. The head remains awakened for 1 round per tier the wearer possesses, during which the wearer gains a petrifying gaze like that of the medusa's (turn to stone permanently, 30 feet), except the effect is caused by meeting the gaze of the shield's mounted head rather than the bearer's gaze.</p>\n<p>The save DC for both the fear and petrification effects is equal to 10 + the wearer's tier + the wearer's Charisma modifier. While the medusa's head is awakened, the wearer can attempt to make an enemy look into its eyes as a standard action, using the normal rules for gaze attacks.</p>\n<p><strong>Destruction</strong></p>\n<p>The aegis is destroyed if the medusa whose head adorns it is brought back to life, and the awakened shield meets the gaze of this medusa.</p>",
@@ -17928,7 +18054,19 @@
     "aura": {
       "school": "trs"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "2",
+        "target": "str",
+        "type": "enh"
+      },
+      {
+        "formula": "2",
+        "maneuverCategories": ["grapple"],
+        "target": "cmb",
+        "type": "competence"
+      }
+    ],
     "cl": 8,
     "contextNotes": [],
     "description": "<p>This snakeskin belt's buckle is shaped like a serpent's head. The wearer gains a +2 enhancement bonus to Strength and a +2 competence bonus on grapple combat maneuver checks. Treat the enhancement bonus to Strength as temporary ability bonus for the first 24 hours the belt is worn. In addition, the belt grants the wearer the constrict ability for 1d6 points of damage plus the wearer's Strength modifier.</p>",
@@ -18627,7 +18765,13 @@
     "aura": {
       "school": "trs"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "4",
+        "target": "skill.swm",
+        "type": "competence"
+      }
+    ],
     "cl": 5,
     "contextNotes": [],
     "description": "<p>Long believed to have been gnome in origin, this stately cummerbund features a number of dancing dolphins embroidered on its deep blue material. The cummerbund grants its wearer a +4 competence bonus on Swim checks, and allows her to take 10 on such checks even if distracted or endangered.</p>",
@@ -18857,7 +19001,14 @@
     "aura": {
       "school": "trs"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "1",
+        "maneuverCategories": ["grapple"],
+        "target": "cmb",
+        "type": "competence"
+      }
+    ],
     "cl": 3,
     "contextNotes": [],
     "description": "<p>These scarred and worn armbands have clearly seen rough use, and are constructed out of coarse leather and fastened with thick leather straps. They grant their wearer a +1 competence bonus on grapple checks and checks to break a grapple.</p>",
@@ -20445,7 +20596,14 @@
     "aura": {
       "school": "abj"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "2",
+        "saveCategories": ["fear"],
+        "target": "will",
+        "type": "competence"
+      }
+    ],
     "cl": 16,
     "contextNotes": [],
     "description": "<p>This plain iron band protects its wearer from fear effects. Whenever the wearer suffers a fear effect, she is merely shaken (even if the effect would normally make the target frightened or panicked). Furthermore, the subject gains a +2 competence bonus on all Will saves against fear. If the wearer has the bravery class feature, she is considered four levels higher when determining that class feature's effect.</p>",
@@ -21503,7 +21661,14 @@
     "aura": {
       "school": "div"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "60",
+        "operator": "set",
+        "target": "sensedv",
+        "type": "untyped"
+      }
+    ],
     "cl": 12,
     "contextNotes": [],
     "description": "<p>This belt gives the wearer a +4 competence bonus on Charisma checks and Charisma-based skill checks as they relate to dealing with dwarves, a +2 competence bonus on similar checks when dealing with gnomes and halflings, and a -2 competence penalty on similar checks when dealing with anyone else. The wearer can understand, speak, and read Dwarven. If the wearer is not a dwarf, he gains 60-foot darkvision, dwarven stonecunning, a +2 enhancement bonus to Constitution, and a +2 resistance bonus on saves against poison, spells, and spell-like effects.</p>",
@@ -21551,7 +21716,13 @@
     "aura": {
       "school": "con"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "1",
+        "target": "allSavingThrows",
+        "type": "insight"
+      }
+    ],
     "cl": 7,
     "contextNotes": [],
     "description": "<p>This large brass belt has three panels depicting scenes of battle. Once per day on command, the wearer can summon the spirit of a hero of one of the depicted battles. This spirit acts as a <em>spiritual ally,</em> though unlike the force created by that spell, the summoned hero is not entirely mindless. Whether or not the summoned hero is active, it attempts to guide its wearer to victory via telepathic warning and advice, granting its user a +1 insight bonus on all saving throws.</p>",
@@ -21621,7 +21792,13 @@
     "aura": {
       "school": "trs"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "2",
+        "target": "str",
+        "type": "enh"
+      }
+    ],
     "cl": 8,
     "contextNotes": [],
     "description": "<p>This thick leather belt is buckled with a bright bronze clasp in the shape of a fist. When worn, it grants its wearer an enhancement bonus to Strength and allows him to apply his Strength modifier as a bonus on attack rolls instead of his Dexterity modifier when making ranged attacks with thrown weapons. Also, the range increment of any weapon thrown by the wearer gains a +10-foot bonus. Treat this Strength bonus as a temporary ability bonus for the first 24 hours the belt is worn.</p>\n<p><strong>Belt of Mighty Hurling (Greater):</strong> This item functions as the lesser belt of mighty hurling, except it grants a +4 enhancement bonus to Strength and any thrown weapons its wearer hurls are treated as though they had the returning quality. This does not apply to improvised ranged weapons, splash weapons, or weapons the wearer lacks proficiency with. Treat the bonus to Strength as a temporary ability bonus for the first 24 hours the belt is worn.</p>",
@@ -21783,7 +21960,13 @@
     "aura": {
       "school": "trs"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "2",
+        "target": "dex",
+        "type": "enh"
+      }
+    ],
     "cl": 4,
     "contextNotes": [],
     "description": "<p>This surprisingly soft belt has an absurdly large buckle, made even more absurd by the fact that it's crafted in the shape of a smiling weasel's face. It grants its wearer a +2 enhancement bonus to Dexterity, and the ability to move at half normal speed while prone. Treat the enhancement bonus to Dexterity as a temporary ability bonus for the first 24 hours the belt is worn. The wearer does not take a penalty on melee attack rolls or to AC against melee attacks while prone. Additionally, the wearer gains the compression ability.</p>",
@@ -21805,7 +21988,13 @@
     "aura": {
       "school": "trs"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "2",
+        "target": "str",
+        "type": "enh"
+      }
+    ],
     "cl": 8,
     "contextNotes": [],
     "description": "<p>An engraving of a charging rhinoceros decorates this thick leather belt. The belt grants its wearer a +2 enhancement bonus to Strength. Treat this as a temporary ability bonus for the first 24 hours the belt is worn.</p>\n<p>The belt magnifies the wearer's momentum whenever she charges, granting her a +2 bonus on bull rush and overrun maneuvers. Furthermore, when the wearer makes a charge attack, her melee weapons and natural weapons deal damage as if they were one size category larger than they actually are.</p>",
@@ -22847,7 +23036,13 @@
     "aura": {
       "school": "evo"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "5",
+        "target": "eres.fire",
+        "type": "untyped"
+      }
+    ],
     "cl": 8,
     "contextNotes": [],
     "description": "<p>This red and orange silk robe gives viewers the impression of a flame roiling just below the fabric's slick surface. The robe grants the wearer fire resistance 5 and increases the wearer's caster level for all spells with the fire descriptor by +1. Once per day on command, the wearer of the robe can emit a 20-foot-radius burst of fire. Creatures other than the wearer within the area take 2d6 points of fire damage (Reflex DC 16 half).</p>",
@@ -24532,7 +24727,13 @@
     "aura": {
       "school": "trs"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "10",
+        "target": "landSpeed",
+        "type": "enh"
+      }
+    ],
     "cl": 3,
     "contextNotes": [],
     "description": "<p>These boots increase the wearer's base land speed by 10 feet. In addition to this striding ability (considered an enhancement bonus), these boots allow the wearer to make great leaps. She can jump with a +5 competence bonus on Acrobatics checks.</p>",
@@ -24698,7 +24899,19 @@
     "aura": {
       "school": "trs"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "-2",
+        "target": "skill.ste",
+        "type": "untyped"
+      },
+      {
+        "formula": "2",
+        "maneuverCategories": ["overrun"],
+        "target": "cmb",
+        "type": "enh"
+      }
+    ],
     "cl": 8,
     "contextNotes": [],
     "description": "<p>These massive boots are made from mastodon hide. The boots are so large and cumbersome that their wearer takes a -2 penalty on Stealth checks, but gains a +2 enhancement bonus on overrun attempts and a +2 dodge bonus to AC while attempting an overrun combat maneuver. In addition, once per day the wearer can make a trample attack. Regardless of his actual size, the creature wearing the boots can trample creatures of size Large or smaller in his path. The trample attack deals 2d8+18 points of damage (Reflex DC 29 halves).</p>",
@@ -24720,7 +24933,14 @@
     "aura": {
       "school": "abjuration and transmutation"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "2",
+        "saveCategories": ["poison", "disease"],
+        "target": "fort",
+        "type": "resist"
+      }
+    ],
     "cl": 5,
     "contextNotes": [],
     "description": "<p>These soft leather boots confer several powers upon the wearer. First, he is granted the power to walk on water in swampy environments, provided the water is no deeper than 5 feet - this effectively lets him move through swampy terrain and mud at no cost to his speed. He leaves no tracks or other signs of his passage as long as he's in swampy terrain, and never becomes uncomfortable or wet from rain, fog, or other forms of non-freezing precipitation. Finally, the boots grant him a +2 resistance bonus on all Fortitude saves made against poison and disease.</p>",
@@ -25334,7 +25554,23 @@
     "aura": {
       "school": "div"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "5",
+        "target": "skill.blf",
+        "type": "competence"
+      },
+      {
+        "formula": "5",
+        "target": "skill.dip",
+        "type": "competence"
+      },
+      {
+        "formula": "5",
+        "target": "skill.sen",
+        "type": "competence"
+      }
+    ],
     "cl": 7,
     "contextNotes": [],
     "description": "<p>This heavy gold band can be worn openly as a display of wealth or concealed beneath a sleeve. It grants its wearer a +5 competence bonus on Bluff, Diplomacy, and Sense Motive checks. Whenever the wearer shakes hands with another creature In order to seal a deal or a promise, she can immediately sense whether deceit is involved (Will save DC 16 negates), though the wearer cannot determine the exact nature of the deception.</p>",
@@ -25724,7 +25960,13 @@
     "aura": {
       "school": "trs"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "5",
+        "target": "skill.prf",
+        "type": "competence"
+      }
+    ],
     "cl": 7,
     "contextNotes": [],
     "description": "<p>These decorative bracers are stippled with vibrant colors and have various tiny bells sewn onto their surface. While wearing them, the wearer gains a +5 competence bonus on Perform checks. Once per day on command, the user can gain the benefit of the <em>glibness</em> spell.</p>",
@@ -26979,7 +27221,13 @@
     "aura": {
       "school": "enc"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "2",
+        "target": "skill.int",
+        "type": "competence"
+      }
+    ],
     "cl": 3,
     "contextNotes": [],
     "description": "<p>This loose-fitting blouse is adorned with grotesque fetishes and trophies, granting the wearer a +2 competence bonus on Intimidate checks. If the wearer is a witch, she gains the cackle hex. If the wearer already has the cackle hex, twice per day she can use her cackle ability as a swift action instead of a move action.</p>",
@@ -28216,7 +28464,14 @@
     "aura": {
       "school": "div"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "60",
+        "operator": "add",
+        "target": "sensedv",
+        "type": "untyped"
+      }
+    ],
     "cl": 10,
     "contextNotes": [],
     "description": "<p>This slender silver crown is decorated with a single cat's eye gemstone as a centerpiece. When the gem is attached to the crown, its wearer gains darkvision 60 feet, or increases her darkvision by 60 feet if she already possesses that sense. The gemstone is detachable, and can be rolled into rooms, dropped into holes, thrown through windows, or planted on a creature. Once per day, on command, the crown's wearer gains the benefit of the <em>clairaudience/clairvoyance</em> spell, but uses the cat's eye gemstone as that spell's sensor and gains darkvision when viewing through that sensor. If the stone is held or carried by a creature, even within a sack or some other container, the creature wearing the crown uses the senses of the creature carrying the gemstone as the sensor instead, whether or not the creature carrying the gemstone is aware of the stone's true purpose or even its existence. Destroying the gem (hardness 8, hp 5) severs the link, but a new cat's eye gemstone worth at least 100 gp can be fashioned and attuned to the crown. The attunement process takes 24 hours.</p>",
@@ -30364,7 +30619,14 @@
     "aura": {
       "school": "conjuration and transmutation"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "20",
+        "operator": "set",
+        "target": "climbSpeed",
+        "type": "racial"
+      }
+    ],
     "cl": 6,
     "contextNotes": [],
     "description": "<p>This red and violet silk garment, delicately embroidered with a barely perceptible web-like pattern, gives the wearer the ability to climb as if a <em>spider climb</em> spell had been placed upon her. In addition, the cloak grants her immunity to entrapment by <em>web</em> spells or webs of any sort; she can move in webs at half her normal speed. Once per day, the wearer of this cloak can cast <em>web.</em> She also gains a +2 luck bonus on all Fortitude saves against poison from spiders.</p>",
@@ -30529,7 +30791,13 @@
     "aura": {
       "school": "trs"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "1",
+        "target": "allSavingThrows",
+        "type": "resist"
+      }
+    ],
     "cl": 9,
     "contextNotes": [],
     "description": "<p>Wearing this animal-hair cloak grants a +1 resistance bonus on saving throws. Furthermore, the wearer can force its teeth to grow rapidly up to five times per day as a swift action. The oversized teeth last for 1 round, during which time the wearer can make a bite attack. Treat this attack as a primary natural attack that deals 1d6 points of damage (or 1d4 if the wearer is Small). If the wearer already has a bite attack, the damage of that bite attack increases by one step.</p>",
@@ -30820,7 +31088,18 @@
     "aura": {
       "school": "enc"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "5",
+        "target": "skill.dip",
+        "type": "competence"
+      },
+      {
+        "formula": "5",
+        "target": "skill.sen",
+        "type": "competence"
+      }
+    ],
     "cl": 7,
     "contextNotes": [],
     "description": "<p>The forest-green cloak grants a +5 competence bonus on Diplomacy and Sense Motive checks. In addition, once per day, before making a Diplomacy or Sense Motive check, the wearer can decide to call upon the powers of the cloak to roll twice and take the better result. Finally, the wearer of this cloak can adjust a creature's attitude up to three steps when using Diplomacy, instead of the normal limit of two steps. However, the cloak's power does have one drawback. Should the wearer ever fail a Diplomacy checks made to adjust a creature's attitude by 5 or more, the creature's attitude is reduced by two steps instead of one.</p>",
@@ -30846,7 +31125,13 @@
     "aura": {
       "school": "ill"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "1",
+        "target": "sensell",
+        "type": "untyped"
+      }
+    ],
     "cl": 3,
     "contextNotes": [],
     "description": "<p>This dark, velvety cloak billows with a dramatic flourish in its wearer's wake. The cloak grants its wearer low-light vision. Once per day, on command, the wearer can surround herself with darkness, as the <em>darkness</em> spell. While this darkness is active, the cloak also grants the wearer darkvision 60 feet as well as low-light vision.</p>",
@@ -31740,7 +32025,14 @@
     "aura": {
       "school": "abjuration and necromancy"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "4",
+        "saveCategories": ["disease", "energyDrain", "fatigue", "poison"],
+        "target": "allSavingThrows",
+        "type": "competence"
+      }
+    ],
     "cl": 5,
     "contextNotes": [],
     "description": "<p>A favored cloak of rangers, this cloak is a patchwork of hides and fur. Comfort's cloak grants a constant <em>endure elements</em> effect to the wearer, and grants a +4 competence bonus to saves against disease, energy drain, effects that cause fatigue or exhaustion, and poisons. Furthermore, while the wearer is resting he regains twice his Hit Dice in hit points for 8 hours of rest instead of the typical 1 hit point per Hit Die. When taking a full 24 hours of rest, the character regains 5 times his Hit Dice in hit points instead of twice his Hit Dice in hit points.</p>",
@@ -32213,7 +32505,13 @@
     "aura": {
       "school": "trs"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "2",
+        "target": "con",
+        "type": "enh"
+      }
+    ],
     "cl": 8,
     "contextNotes": [],
     "description": "<p>When fastened about the waist, this stout length of rope grants a +2 enhancement bonus to Constitution along with prodigious stamina. Treat the enhancement bonus to Constitution as a temporary ability bonus for the first 24 hours the belt is worn.</p>\n<p>Any effect which would cause the wearer to become fatigued deals an additional 1d6 points of nonlethal damage instead. Any effect that would cause exhaustion likewise causes 1d6 points of nonlethal damage, and leaves the wearer fatigued instead of exhausted.</p>",
@@ -32385,7 +32683,13 @@
     "aura": {
       "school": "abj"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "4",
+        "target": "aac",
+        "type": "untyped"
+      }
+    ],
     "cl": 6,
     "contextNotes": [],
     "description": "<p>This slimming garment is fastened with laces, buckles, and buttons and reinforced with ribs of leather or bone. A corset of dire witchcraft grants a +4 armor bonus to AC. If the wearer is a witch, each day when she communes with her familiar to prepare spells, she may enhance one hex she knows, increasing its caster level by +2 for 24 hours. This enhancement ends if the corset is removed or if she uses it to enhance a different hex.</p>",
@@ -33051,7 +33355,13 @@
     "aura": {
       "school": "enc"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "4",
+        "target": "skill.int",
+        "type": "competence"
+      }
+    ],
     "cl": 7,
     "contextNotes": [],
     "description": "<p>This crown of steel and gold projects an aura of menacing power. The wearer gains a +4 competence bonus on Intimidate checks, and whenever he confirms a critical hit, the crown creates a <em>prayer</em> effect centered on the crown's wearer (caster level 5th).</p>\n<p>If the wearer of the crown has the Leadership feat, he gains a +1 bonus to his Leadership score and any follower or cohort of the wearer gains a +1 bonus on attack rolls and saving throws against fear effects while within line of sight of the wearer.</p>",
@@ -33168,7 +33478,23 @@
     "aura": {
       "school": "abjuration and transmutation"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "1",
+        "target": "imm.fire",
+        "type": "untyped"
+      },
+      {
+        "formula": "1",
+        "target": "immEffect.poison",
+        "type": "untyped"
+      },
+      {
+        "formula": "1",
+        "target": "immEffect.mindAffecting",
+        "type": "untyped"
+      }
+    ],
     "cl": 20,
     "contextNotes": [],
     "description": "<p>This engraved and filigreed silver diadem is fashioned with three tines rising from the front of the circlet, the central one of which bears the encircled cross emblem of Cheliax. The Crown of Infernal Majesty grants its wearer a suite of abilities. Defensively, it provides immunity to fire and poison, immunity to mind-affecting effects, immunity to mental ability score damage, acid and cold resistance 10, and spell resistance equal to the wearer's CR + 11. In addition, the wearer is immune to smite effects (including the smite evil ability of celestial creatures and paladins, and the destructive smite ability of the Destruction domain). A creature that attempts to smite the wearer of the crown gets no bonus on attack rolls against the wearer, and the crown reflects any bonus damage from the smite back against the attacker as evil-aligned damage that bypasses the corresponding damage reduction.</p>\n<p>The wearer gains the see in darkness universal monster ability, and the ability to use discern lies, nondetection, and true seeing as constant spell-like abilities. The crown also grants its wearer a +6 enhancement bonus to her Intelligence, Wisdom, and Charisma scores (with ranks in Intimidate, Knowledge [planes], and Sense Motive, as a headband of vast intelligence, as well as the ability to speak and read Abyssal, Celestial, and Infernal). Lastly, the wearer gains a +4 profane bonus on Charisma-based checks to bargain or deal with devils (such as with planar ally or planar binding spells).</p>\n<p><strong>Destruction</strong></p>\n<p>The Crown of Infernal Majesty can be destroyed only by tricking Asmodeus into nullifying each of the Three Damnations written into the infernal contracts between Hell and House Thrune.</p>",
@@ -34252,7 +34578,14 @@
     "aura": {
       "school": "trs"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "120",
+        "operator": "set",
+        "target": "sensedv",
+        "type": "untyped"
+      }
+    ],
     "cl": 6,
     "contextNotes": [],
     "description": "<p>These goggles' dark lenses are made of round obsidian sheets thin enough to see through. They grant the wearer darkvision 120 ft., as well as a +4 competence bonus on Perception checks and Survival checks made to track while underground.</p>",
@@ -34598,7 +34931,13 @@
     "aura": {
       "school": "enchantment and abjuration"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "2",
+        "target": "skill.int",
+        "type": "competence"
+      }
+    ],
     "cl": 1,
     "contextNotes": [],
     "description": "<p>This taut black band, clipped with a black metal skull, can be attached on the outside of a hat or other head slot item or can be worn as a normal headband. The wearer gains a +2 competence bonus on Intimidate checks and increases the DC of any fear effect he creates by +1. In addition, if this headband is attached to the outside of a hat, the wearer's hat or headgear cannot be blown off or removed by wind, water, or environmental effects, and the wearer gains a +5 circumstance bonus to his CMD against steal and sunder attempts targeting his headgear.</p>",
@@ -35580,7 +35919,18 @@
     "aura": {
       "school": "nec"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "1",
+        "target": "imm.electricity",
+        "type": "untyped"
+      },
+      {
+        "formula": "1",
+        "target": "immEffect.poison",
+        "type": "untyped"
+      }
+    ],
     "cl": 22,
     "contextNotes": [],
     "description": "<p>This armor looks like a more massive and dangerous suit of demon armor. It is a suit of +5 heavy fortification full plate that allows its wearer to make claw attacks that deal 2d10 points of damage, and strike as +3 weapons that are treated as chaotic and evil for the purposes of overcoming damage reduction. Additionally, those struck by the claws must succeed at a DC 20 Fortitude save or be affected as per the spell contagion. The armor's claws are built into the armor so these weapons cannot be disarmed. While wearing the armor, the wearer benefits from the following demonic traits.</p>\n<p>- The wearer gains darkvision 60 ft. If it already has darkvision, the range of its darkvision is increased by 60 ft. - The wearer does not need to breathe or eat. - The wearer is immune to electricity and poison. - The wearer gains resistance to acid 10, cold 10 and fire 10. - The wearer gains telepathy and speaks Abyssal, Celestial, and Draconic.</p>\n<p><strong>Destruction</strong></p>\n<p>The Demon Prince Armor dissolves if submerged in the tears of a demon lord. If that foul concoction is then drank by an angel, the armor is destroyed.</p>",
@@ -35752,7 +36102,13 @@
     "aura": {
       "school": "abj"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "1",
+        "target": "immEffect.petrification",
+        "type": "untyped"
+      }
+    ],
     "cl": 9,
     "contextNotes": [],
     "description": "<p>This +3 earth breaker is blocky and heavy. Several chrysoberyls adorn the head around its striking surface. The density hammer's wielder is immune to petrification effects, but each time the wielder would be subject to a petrification effect, the density hammer's weight doubles and its enhancement bonus decreases by 1 for 24 hours. If the density hammer's enhancement bonus decreases to 0, the wielder is no longer immune to petrification effects and the density hammer gains the fragile weapon special feature.</p>",
@@ -38893,7 +39249,13 @@
     "aura": {
       "school": "trs"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "4",
+        "target": "con",
+        "type": "enh"
+      }
+    ],
     "cl": 11,
     "contextNotes": [],
     "description": "<p>This belt is constructed of flat pieces of slate connected with strong leather straps. This belt grants its wearer a +4 enhancement bonus to Constitution, and the wearer is immune to effects that would push, pull, or forcefully move the wearer. This offers no protection from teleportation effects. Furthermore, once per day on command, the wearer can take the form of a Large earth elemental, as though subject to the <em>elemental body III</em> spell.</p>\n<p>Treat the enhancement bonus to Constitution as a temporary ability bonus for the first 24 hours the belt is worn.</p>",
@@ -40268,7 +40630,13 @@
     "aura": {
       "school": "trs"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "4",
+        "target": "skill.rid",
+        "type": "competence"
+      }
+    ],
     "cl": 3,
     "contextNotes": [],
     "description": "<p>This belt is worked with images of horses stampeding across a barren, windswept plain. The belt's wearer automatically succeeds at any check to guide with the knees, stay in the saddle, fight with a combat-trained mount, control a mount in battle, or make a fast mount or dismount, as long as the belt's wearer is wearing medium, light, or no armor. Furthermore, the belt grants a +4 competence bonus on all other Ride checks, including ones made while the wearer is in heavy armor.</p>",
@@ -41366,7 +41734,18 @@
     "aura": {
       "school": "trs"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "1",
+        "target": "sensell",
+        "type": "untyped"
+      },
+      {
+        "formula": "2",
+        "target": "skill.per",
+        "type": "competence"
+      }
+    ],
     "cl": 1,
     "contextNotes": [],
     "description": "<p>These clear crystals fit over the wearer's eyes. They grant the wearer a +2 competence bonus on Perception checks, and the wearer gains low-light vision. If the wearer has low-light vision already, these lenses double the distance the wearer can see with this vision.</p>",
@@ -41472,7 +41851,13 @@
     "aura": {
       "school": "trs"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "1",
+        "target": "sensell",
+        "type": "untyped"
+      }
+    ],
     "cl": 5,
     "contextNotes": [],
     "description": "<p>These magical goggles are decorated with owl motifs, including clusters of feathers over the eyes. The wearer gains low-light vision.</p>",
@@ -42358,7 +42743,13 @@
     "aura": {
       "school": "div"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "1",
+        "target": "sensell",
+        "type": "untyped"
+      }
+    ],
     "cl": 8,
     "contextNotes": [],
     "description": "<p>This necklace is set with a bloodstone sculpted to look like a scintillating green eye. It gives the wearer a +4 competence bonus on Charisma checks and Charisma-based checks made to interact with gnomes, a +2 competence bonus on similar checks when dealing with beings of the fey creature type, and a -2 penalty on similar checks when interacting with anyone else. The wearer can read, speak, and understand the Gnome language. If the wearer is not a gnome, she gains low-light vision, and may cast dancing lights, ghost sound, prestidigitation, and speak with animals each once per day as a spell-like ability.</p>",
@@ -44303,7 +44694,13 @@
     "aura": {
       "school": "trs"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "1",
+        "target": "immEffect.poison",
+        "type": "untyped"
+      }
+    ],
     "cl": 12,
     "contextNotes": [],
     "description": "<p><strong>Description</strong></p>\n<p>This stone grants you immunity to poison, as if wearing a periapt of proof against poison.</p>\n<p><strong>Resonance</strong></p>\n<p>+2 resistance bonus on saving throws against disease.</p>\n<p><strong>Construction</strong></p>\n<p><strong>Requirements</strong> Craft Wondrous Item, neutralize poison, creator must be 12th level; <strong>Cost</strong> 27,000 gp</p>\n<p><strong>Flawed Ioun Stone</strong></p>\n<p>This stone grants immunity to poison and a -4 penalty on saving throws against curses and diseases.</p>\n<p><strong>Cracked Ioun Stone</strong></p>\n<p>This stone grants immunity to one kind of poison, such as arsenic or scorpion venom.</p>",
@@ -45210,7 +45607,18 @@
     "aura": {
       "school": "varied [evil]"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "1",
+        "target": "imm.electricity",
+        "type": "untyped"
+      },
+      {
+        "formula": "1",
+        "target": "immEffect.poison",
+        "type": "untyped"
+      }
+    ],
     "cl": 20,
     "contextNotes": [],
     "description": "<p>This gruesome artifact looks like the mummified, hollowed-out arm of a glabrezu. This graft contains an imprisoned parasitic demon that can be satiated only by mythic power. To use the artifact, the user must place his own naked arm into the hollow graft, which then permanently bonds itself to his flesh and muscle. If placed upon the arm of a non-mythic character, the graft instead devours the limb, dealing 5d6 points of damage and amputating the arm.</p>\n<p>Once attached, the glabrezu claw surrounds its wearer with a field of force. This provides a deflection bonus to AC equal to the wearer's mythic tier. The wearer also gains immunity to electricity and poison. In addition, the wearer can feed the glabrezu claw some of his mythic power in order to activate spell-like abilities. All these spell-like abilities have a caster level equivalent to the graft wearer's total class levels plus his mythic tier.</p>\n<p>The graft wearer can expend one use of mythic power to gain telepathy with a range of 100 feet for 2 hours or cast any of the following spells: chaos hammer, confusion, dispel magic, mirror image, reverse gravity, or true seeing.</p>\n<p>By expending two uses, he can cast greater teleport (self plus 50 pounds of objects only), veil (self only), or unholy blight.</p>\n<p>By expending three uses, he can cast power word stun or summon monster IV (level 4, either 1 glabrezu 30% or 1d2 vrocks 70%).</p>\n<p><strong>Destruction</strong></p>\n<p>A glabrezu claw crumbles to dust and the demon within is destroyed if placed upon arm of a formerly evil high priest who has atoned for his past and converted to worship a good deity.</p>",
@@ -45582,7 +45990,19 @@
     "aura": {
       "school": "trs"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "4",
+        "maneuverCategories": ["disarm", "sunder"],
+        "target": "cmd",
+        "type": "untyped"
+      },
+      {
+        "formula": "2",
+        "target": "weaponTraining",
+        "type": "untyped"
+      }
+    ],
     "cl": 5,
     "contextNotes": [],
     "description": "<p>These supple gloves grant the wearer a +4 bonus to her CMD against disarm attacks, attempts to sunder her wielded weapons, and effects that cause her to lose her grip on her weapons (such as grease). The wearer doesn't drop held weapons when panicked or stunned. If the wearer has the weapon training class feature and is using an appropriate weapon, her weapon training bonus increases by +2.</p>",
@@ -45651,7 +46071,13 @@
     "aura": {
       "school": "trs"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "5",
+        "target": "skill.slt",
+        "type": "competence"
+      }
+    ],
     "cl": 3,
     "contextNotes": [],
     "description": "<p>These supple beige calfskin gloves greatly enhance a thief's talents. The wearer gains a +5 competence bonus on Sleight of Hand checks.</p>",
@@ -45865,7 +46291,18 @@
     "aura": {
       "school": "trs"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "5",
+        "target": "skill.swm",
+        "type": "competence"
+      },
+      {
+        "formula": "5",
+        "target": "skill.clm",
+        "type": "competence"
+      }
+    ],
     "cl": 5,
     "contextNotes": [],
     "description": "<p>These apparently normal lightweight gloves are obviously made for use outdoors. They grant a +5 competence bonus on Swim checks and Climb checks. Both gloves must be worn for the magic to be effective.</p>",
@@ -46280,7 +46717,13 @@
     "aura": {
       "school": "div"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "5",
+        "target": "skill.dev",
+        "type": "competence"
+      }
+    ],
     "cl": 3,
     "contextNotes": [],
     "description": "<p>The lenses of this item are made of special crystal, its band woven with tiny patterns of metallic thread almost invisible to the naked eye. When placed over the eyes of the wearer, the lenses enable her to see much better than normal at distances of 1 foot or less, granting her a +5 competence bonus on Disable Device checks. Both lenses must be worn for the magic to be effective.</p>",
@@ -46305,7 +46748,14 @@
     "aura": {
       "school": "trs"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "60",
+        "operator": "set",
+        "target": "sensedv",
+        "type": "untyped"
+      }
+    ],
     "cl": 3,
     "contextNotes": [],
     "description": "<p>The lenses of this item are made of violet crystal. Even though the lenses are opaque, when placed over the eyes of the wearer, they enable him to see normally and also grant him 60-foot darkvision.</p>\n<p>Both lenses must be worn for the magic to be effective.</p>",
@@ -46625,7 +47075,13 @@
     "aura": {
       "school": "trs"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "4",
+        "target": "str",
+        "type": "enh"
+      }
+    ],
     "cl": 9,
     "contextNotes": [],
     "description": "<p>This belt grants its wearer a +4 enhancement bonus to Strength, and the ability to ignore difficult terrain while charging or making an overrun, bull rush, or trample attempt. Furthermore, once per day on command, its wearer can spew a 60-foot cone of poisonous green gas as a breath weapon. Any creature caught in the area of the gas can attempt a DC 18 saving throw to resist its effect, but if the creature fails the saving throw, it is paralyzed for 1d4 rounds. At the end of its turn, a creature petrified by this breath weapon can attempt a new save to end the paralysis effect. Treat the enhancement bonus to Strength as a temporary ability bonus for the first 24 hours the belt is worn.</p>",
@@ -47483,7 +47939,13 @@
     "aura": {
       "school": "enc"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "1",
+        "target": "immEffect.fear",
+        "type": "untyped"
+      }
+    ],
     "cl": 3,
     "contextNotes": [],
     "description": "<p>The matte surface of this pitted gray helm seems to absorb light, rather than reflect it. The skull mask that serves as its visor is a constant reminder of the fate that awaits all mortals. The wearer of the helm is immune to fear effects but cannot gain the benefit of any morale bonuses.</p>\n<p>A creature that comes within 20 feet of the wearer must succeed at a Will save (DC 14) or lose the benefit of morale bonuses while it remains in that area. A creature that succeeds at this saving throw is immune to this ability for 24 hours.</p>",
@@ -47656,7 +48118,13 @@
     "aura": {
       "school": "abjuration and conjuration"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "2",
+        "target": "aac",
+        "type": "untyped"
+      }
+    ],
     "cl": 13,
     "contextNotes": [],
     "description": "<p>This flanged collar of mithral and steel protects the wearer's neck and shoulders. It provides a +2 armor bonus to AC (this does not stack with other armor bonuses) and grants the light fortification property to the wearer. In addition, the wearer may engrave a <em>glyph of warding</em> directly onto the guardian gorget. When the wearer is struck in melee, she can trigger the <em>glyph</em> as an immediate action, causing the <em>glyph</em> to discharge against the creature making the attack (and other creatures within 5 feet, if a <em>blast glyph</em> was placed, though the wearer is not harmed by the <em>glyph's</em> effects). The <em>glyph</em> can be triggered even if the attack would normally leave the wearer incapable of taking actions (such as killed, stunned, dazed, or knocked unconscious).</p>",
@@ -48099,7 +48567,14 @@
     "aura": {
       "school": "abj"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "4",
+        "saveCategories": ["emotion"],
+        "target": "allSavingThrows",
+        "type": "resist"
+      }
+    ],
     "cl": 15,
     "contextNotes": [],
     "description": "<p>This silvery ring looks like a halo. When worn by a tiefling it hovers just above his head, though it still uses the head magic item slot. It helps to calm the baser emotions and the dark whispers that plague tieflings, granting the wearer a +4 resistance bonus on saving throws against all spells with the emotion descriptor. When worn by a tiefling of a good alignment, it provides spell resistance 13 against spells with the evil descriptor and a +2 sacred bonus on saving throws.</p>",
@@ -49185,7 +49660,13 @@
     "aura": {
       "school": "enchantment and evocation"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "1",
+        "target": "allSavingThrows",
+        "type": "luck"
+      }
+    ],
     "cl": 5,
     "contextNotes": [],
     "description": "<p>This multicolored headband with beaded tassels tips luck in the wearer's favor. The wearer gains a +1 luck bonus on saving throws.</p>\n<p>Any effect that gives the wearer a luck bonus (such as a divine favor or <em>prayer</em> spell) or explicitly increases the wearer's good luck (such as a witch's fortune hex, the Luck domain's bit of luck domain power, and so on) lasts for 1 round longer than normal on the wearer. Abilities without a time-based duration (such as carrying a stone of good luck) are unaffected by the headband.</p>",
@@ -49317,7 +49798,14 @@
     "aura": {
       "school": "abj"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "2",
+        "maneuverCategories": ["reposition"],
+        "target": "cmb",
+        "type": "competence"
+      }
+    ],
     "cl": 1,
     "contextNotes": [],
     "description": "<p>This simple black cloth band focuses the wearer's ki, helping her use subtle misdirection against opponents in combat. The wearer gains a +2 competence bonus on Bluff checks made to feint and combat maneuver checks made to reposition, and once per day she can attempt a feint or reposition maneuver as a swift action. The wearer also gains a +2 insight bonus on attack rolls on sneak attacks and can sneak attack creatures with concealment or total concealment, though miss chances apply normally.</p>",
@@ -49339,7 +49827,13 @@
     "aura": {
       "school": "divination and transmutation"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "2",
+        "target": "int",
+        "type": "enh"
+      }
+    ],
     "cl": 8,
     "contextNotes": [],
     "description": "<p>This black leather headband has two small amber gemstones set so they rest on the wearer's forehead. The headband grants the wearer a +2 enhancement bonus to Intelligence. Treat this as a temporary ability bonus for the first 24 hours the headband is worn. It also grants skill ranks as a headband of vast intelligence, but always grants ranks in a Knowledge skill.</p>\n<p>As a swift action three times per day, the wearer can call upon the headband to reveal the abilities and weaknesses of a creature within line of sight. The headband fills the wearer's mind with information as though the wearer had made a Knowledge check with a natural roll of a 5, adding her bonuses to the check as normal. At the start of her next turn, the wearer receives additional information as though she had made the check with a natural roll of 10. At the start of her turn after that, the wearer receives a final piece of information, treating her natural roll as 15.</p>",
@@ -49534,7 +50028,13 @@
     "aura": {
       "school": "abjuration and transmutation"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "2",
+        "target": "wis",
+        "type": "enh"
+      }
+    ],
     "cl": 8,
     "contextNotes": [],
     "description": "<p>This simple white cotton headband is decorated with a stylized imperial dragon coiled above the wearer's forehead. The headband grants the wearer a +2 enhancement bonus to her Wisdom score. Treat this as a temporary ability bonus for the first 24 hours the headband is worn.</p>\n<p>Whenever the wearer suffers a fear effect, she may spend an immediate action to reduce the severity of the fear effect by one step. If the wearer would become panicked, she is instead frightened. If she would become frightened, she is instead shaken. If the wearer would become shaken, the effect is negated entirely. The wearer can use this ability up to three times per day.</p>",
@@ -49911,7 +50411,13 @@
     "aura": {
       "school": "trs"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "2",
+        "target": "carryMult",
+        "type": "untyped"
+      }
+    ],
     "cl": 1,
     "contextNotes": [],
     "description": "<p>This wide leather is held together with two strands of oxen skin threaded through holes on each end. The belt's wearer is affected as though subject to a permanent <em>ant haul</em> spell.</p>",
@@ -51643,7 +52149,13 @@
     "aura": {
       "school": "nec"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "1",
+        "target": "imm.acid",
+        "type": "untyped"
+      }
+    ],
     "cl": 22,
     "contextNotes": [],
     "description": "<p>The crown of an infamous undead tyrant, the Horns of Naraga are a symbol of dominance over death. When worn by an undead creature, the Horns of Naraga reduce all damage taken from positive energy by half. In addition, whenever the wearer touches a living creature while wearing this helm (even if the touch is part of casting a spell or another touch attack), the touch deals an additional 5d6 points of negative energy damage and the wearer gains these hit points, just as if he had cast vampiric touch. The wearer of the helm is immune to acid and can see perfectly in darkness of any kind, even that created by magic. Once per day on command, the helm can be ordered to transform into an ancient black dragon that unquestioningly obeys the creature that summoned it for 1 hour before reverting to a helm. Slaying the dragon does not destroy the helm, but it does prevent this ability from being used for 1 week. While the helm is in dragon form, the helm's owner does not receive any of the helm's other benefits.</p>\n<p><strong>Destruction</strong></p>\n<p>The helm can be destroyed by crushing it between the jaws of an ancient black dragon's skull in the middle of a desert with the sun at its zenith.</p>",
@@ -52162,7 +52674,13 @@
     "aura": {
       "school": "trs"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "5",
+        "target": "skill.sur",
+        "type": "competence"
+      }
+    ],
     "cl": 4,
     "contextNotes": [],
     "description": "<p>This simple headband of braided hide grants a +5 competence bonus on Survival checks and inures the wearer to the strain of long travel, as the <em>tireless pursuit</em> spell. If the wearer is a ranger, the hunter's band increases his favored enemy bonus on attack rolls by +1 for all his favored enemies. If the ranger has the hunter's bond (companions) class feature, this increase also applies to the attack roll bonus his allies gain from that ability.</p>",
@@ -53505,7 +54023,13 @@
     "aura": {
       "school": "enc"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "5",
+        "target": "skill.sen",
+        "type": "competence"
+      }
+    ],
     "cl": 3,
     "contextNotes": [],
     "description": "<p>The thick glass lens of this golden-framed monocle is attached to the wearer by a weighty chain. This monocle helps draw out the truth of things, and was originally created to aid in the investigation of crimes and the questioning of witnesses. Twice per day on command, it can create a <em>zone of truth,</em> as per the spell. In addition, this monocle grants its wearer a +5 competence bonus on Sense Motive checks. Though it fits over only one of the wearer's eyes, the item takes up the entire eyes slot.</p>",
@@ -56475,7 +56999,13 @@
     "aura": {
       "school": "div"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "5",
+        "target": "skill.per",
+        "type": "competence"
+      }
+    ],
     "cl": 9,
     "contextNotes": [],
     "description": "<p>These circular prisms let their wearer detect minute details, gaining a +5 competence bonus on Perception checks. It also aids in tracking, adding a +5 competence bonus on Survival checks when tracking.</p>",
@@ -57072,7 +57602,19 @@
     "aura": {
       "school": "trs"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "2",
+        "saveCategories": ["mind"],
+        "target": "allSavingThrows",
+        "type": "resist"
+      },
+      {
+        "formula": "2",
+        "target": "skill.int",
+        "type": "circumstance"
+      }
+    ],
     "cl": 10,
     "contextNotes": [],
     "description": "<p>Made from a single male lion's coat with the mane surrounding its hood, the lion cloak is an impressive sight. A creature wearing the cloak gains a +2 resistance bonus on saving throws made against mind-affecting and fear effects and a +2 circumstance bonus on Intimidate checks. Once per day, the wearer can pull the hood over her head, assuming the form of a lion (as the <em>beast shape II</em> spell, except that it allows only lion form) for up to 10 minutes. If the wearer has the smite class feature, she can use this power more than once per day by expending uses of her smite; at most she can take the lion form as many times as she has smites plus one additional time. While in this lion form the wearer cannot use its normal smite ability.</p>",
@@ -58788,7 +59330,14 @@
     "aura": {
       "school": "nec"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "4",
+        "saveCategories": ["disease"],
+        "target": "allSavingThrows",
+        "type": "resist"
+      }
+    ],
     "cl": 5,
     "contextNotes": [],
     "description": "<p>This mantle grants the wearer a +4 resistance bonus on saving throws against disease. Once per day, the wearer can flourish the cape as a swift action to surround himself with a cloud of deadly spores. Creatures adjacent to the wearer take 1d6 points of damage from the spores, plus 1d3 points of damage per round for 3 rounds as the spores grow into fuzzy green mold. After these rounds the mold becomes harmless, and can be washed away with a minute of scrubbing. The spores can be destroyed by making a DC 15 Heal check on an affected creature, or by effects that remove diseases. The spores are a disease effect.</p>",
@@ -59780,7 +60329,13 @@
     "aura": {
       "school": "evo"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "4",
+        "target": "skill.int",
+        "type": "competence"
+      }
+    ],
     "cl": 7,
     "contextNotes": [],
     "description": "<p>This fearsome helm, wrought into the shape of a roaring dragon's maw, has dozens of glittering dragon scales across its surface. The helm's wearer gains a +4 competence bonus on Intimidate checks and a +4 insight bonus on saves to resist a dragon's frightful presence aura.</p>\n<p>Each helm is modeled after a particular type of chromatic or metallic dragon. Once per day on command, the wearer can breathe out a blast of energy, as the <em>dragon's breath</em> spell to mimic the breath weapon of the dragon the helm is modeled after (7d6 points of damage, Reflex DC 16 half).</p>",
@@ -60558,7 +61113,18 @@
     "aura": {
       "school": "abj"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "1",
+        "target": "immEffect.charm",
+        "type": "untyped"
+      },
+      {
+        "formula": "1",
+        "target": "immEffect.compulsion",
+        "type": "untyped"
+      }
+    ],
     "cl": 12,
     "contextNotes": [],
     "description": "<p>Mind buttressing armor grants the wearer a +2 resistance bonus on Will saves and renders her immune to possession and mental control (including charm and compulsion effects like command and charm person). If it's donned by a creature already under the influence of such an effect, the creature immediately receives another saving throw (if one was allowed to begin with) against the spell or effect. If the check is successful, the effects are suppressed until the creature removes the armor, after which they resume. This ability can be applied only to medium or heavy armor.</p>",
@@ -60578,7 +61144,14 @@
     "aura": {
       "school": "abj"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "2",
+        "saveCategories": ["mind"],
+        "target": "allSavingThrows",
+        "type": "resist"
+      }
+    ],
     "cl": 1,
     "contextNotes": [],
     "description": "<p>The surface of this silver medallion is covered in angular geometric shapes that refract light randomly. The medallion grants a continuous +2 resistance bonus on saves versus mind-affecting spells, spell-like abilities, and supernatural abilities. If the wearer fails a save to avoid becoming dominated or confused, the amulet immediately grants the wearer a second saving throw to resist the effect. If this second save is successful, the medallion's power fades away entirely and it becomes a simple piece of silver jewelry.</p>",
@@ -60700,7 +61273,13 @@
     "aura": {
       "school": "trs"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "2",
+        "target": "str",
+        "type": "enh"
+      }
+    ],
     "cl": 4,
     "contextNotes": [],
     "description": "<p>This belt grants its wearer a +2 enhancement bonus to Strength, and the ability to ignore difficult terrain while charging or making an overrun, bull rush, or trample attempt. Treat the enhancement bonus to Strength as a temporary ability bonus for the first 24 hours the belt is worn.</p>",
@@ -61214,7 +61793,13 @@
     "aura": {
       "school": "trs"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "2",
+        "target": "dex",
+        "type": "enh"
+      }
+    ],
     "cl": 8,
     "contextNotes": [],
     "description": "<p>This furry brown belt resembles the tail of a monkey. The belt grants the wearer a +2 enhancement bonus to Dexterity. Treat this as a temporary ability bonus for the first 24 hours the belt is worn. The wearer does not lose his Dexterity bonus to AC while climbing, and does not take a -5 penalty on Climb checks when climbing at half his speed. As a swift action the wearer can command the belt to animate, transforming it into a prehensile tail under the wearer's control. The tail does not grant the wearer any additional attacks or actions per round, nor can it wield weapons, but it can make unarmed attacks and hold or manipulate objects about as well as the wearer's normal limbs (though any activity requiring fingers is beyond the tail's capabilities). The belt can function as a tail for 5 minutes per day. These minutes do not need to be consecutive.</p>\n<p><strong>Monkey Belt (Greater):</strong> This belt functions as a monkey belt, except it grants the wearer a +2 enhancement bonus to Strength and Dexterity. Treat this as a temporary ability bonus for the first 24 hours the belt is worn.</p>\n<p>When the wearer speaks the command word to transform the belt into a prehensile tail, a greater monkey belt also gives the wearer a +5 circumstance bonus on Climb checks.</p>",
@@ -61870,7 +62455,13 @@
     "aura": {
       "school": "trs"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "8",
+        "target": "carryStr",
+        "type": "untyped"
+      }
+    ],
     "cl": 3,
     "contextNotes": [],
     "description": "<p>These thick leather cords wrap around the wearer's biceps and shoulders. When worn, they make the wearer's muscles appear larger than normal. The wearer treats his Strength score as 8 higher than normal when determining his carrying capacity. This bonus does not apply to combat, breaking items, or any other Strength-related rolls, it only contributes to the amount of equipment or material the wearer can carry.</p>",
@@ -62227,7 +62818,18 @@
     "aura": {
       "school": "conjuration [chaotic, evil]"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "1",
+        "target": "imm.electricity",
+        "type": "untyped"
+      },
+      {
+        "formula": "1",
+        "target": "immEffect.poison",
+        "type": "untyped"
+      }
+    ],
     "cl": 15,
     "contextNotes": [],
     "description": "<p>A mythic amulet of the Abyss bears the rune of a single demon lord on its face, indicating the lord to which the amulet is attuned. At its basest, a mythic amulet of the Abyss functions as an unholy symbol to this demon lord as well as a phylactery of faithfulness.</p>\n<p>A mythic amulet of the Abyss grants its wearer all three of the demon lord's boons, regardless of the wearer's actual level. It grants all of the first boon's spell-like abilities at will. The amulet found in this adventure is associated with Baphomet, and as such it grants the following boons:</p>\n<p>- Beast shape I, misdirection, and summon monster I at will. - Once per day, the wearer can change shape into a minotaur for 1 hour, gaining a +4 size bonus to Strength and taking a -2 penalty to Charisma. If the wearer is actually a minotaur, she can instead assume a humanoid form at will; this change of form does not alter the wearer's ability scores. - Extended maze 1/day.</p>\n<p>Additionally, the wearer of the amulet gains a +4 enhancement bonus to natural armor, immunity to electricity and poison, and resistance 10 to acid, cold, and fire.</p>\n<p>Any lawful or good character who wears this amulet gains 2 negative levels. These negative levels remain as long as the amulet is worn. These negative levels never result in actual level loss, but they can't be overcome in any way as long as the amulet is worn.</p>\n<p><strong>Destruction</strong></p>\n<p>A mythic amulet of the Abyss can be destroyed as a swift action by the demon lord to which it is attuned, up to a range of 120 feet.</p>",
@@ -63350,7 +63952,13 @@
     "aura": {
       "school": "ill"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "1",
+        "target": "immEffect.fear",
+        "type": "untyped"
+      }
+    ],
     "cl": 13,
     "contextNotes": [],
     "description": "<p>A nightmare rod is a wooden rod with a smooth, purple, crystalline octopus clutching one end, its tentacles wrapped around the length of the rod and its bulbous body serving as a sort of mace head. Indeed, a nightmare rod can be wielded as a +2 heavy mace. On a critical hit, a nightmare rod floods the target's mind with horrific visions of nightmarish dooms that stagger the victim for 1 round if it fails a DC 15 Will save. This is a mind-affecting fear effect. In addition, a nightmare rod has the following powers.</p>\n<p>- Once per day as a free action when the rod hits a living creature, the user can affect the creature struck with a <em>phantasmal killer</em> spell (Will/Fort DC 16). - Once per day, the user can cast <em>nightmare.</em> If the recipient is awake when the spell begins, the wielder need not enter a trance (as he would if he had cast the spell) - the nightmare rod maintains its own sort of trance on the spell and automatically finishes casting the spell as soon as the recipient falls asleep. If the recipient does not fall asleep within 24 hours, the nightmare rod ceases attempting to cast the spell automatically. - As long as the wielder carries the nightmare rod in his hand, he is immune to fear effects.</p>",
@@ -65575,7 +66183,14 @@
     "aura": {
       "school": "abj"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "2",
+        "maneuverCategories": ["bullRush"],
+        "target": "cmd",
+        "type": "enh"
+      }
+    ],
     "cl": 5,
     "contextNotes": [],
     "description": "<p>These steel pauldrons are engraved with images of charging bulls. When their wearer makes a bull rush combat maneuver, she can make the check twice and take the better result. Furthermore, they grant a +2 enhancement bonus to CMD against bull rushes.</p>",
@@ -65618,7 +66233,20 @@
     "aura": {
       "school": "abj"
     },
-    "changes": [],
+    "changes": [
+      {
+        "acCategories": ["aoo"],
+        "formula": "2",
+        "target": "ac",
+        "type": "dodge"
+      },
+      {
+        "formula": "2",
+        "maneuverCategories": ["bullRush", "grapple", "reposition", "trip"],
+        "target": "cmd",
+        "type": "untyped"
+      }
+    ],
     "cl": 3,
     "contextNotes": [],
     "description": "<p>Constructed of mithral, each of these pauldrons bears an embossed device of a viper coiled defensively. These pauldrons grant their wearer a +2 dodge bonus to AC against attacks of opportunity, and increase the wearer's CMD by 2 against bull rush, grapple, reposition, and trip combat maneuvers.</p>",
@@ -65976,7 +66604,13 @@
     "aura": {
       "school": "conjuration and enchantmnet"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "1",
+        "target": "immEffect.fear",
+        "type": "untyped"
+      }
+    ],
     "cl": 18,
     "contextNotes": [],
     "description": "<p>This tear-shaped crystal hangs from a delicate setting and chain, both encrusted with black diamond dust. The pendant is forged from chips of the diadem of Doloras, Queen of the Night of detachment, dispassion, and pain, who visited the kyton demagogue Inkariax just before he built his realm on the Shadow Plane. The Queen of the Night gifted these magical crystals to the demagogue as a sign of her favor.</p>\n<p>As a standard action, a creature who wears a pendant of the first tears can touch the physical exterior of Inkariax's palace at area B16 and be instantly transported into its antechamber. This functions as plane shift, with White Death's Diadem treated as a demiplane and no chance that the wearer arrives anywhere except for a random open space on the floor of the palace's antechamber (area B18). The wearer can join hands with additional creatures for all to be transported into the antechamber in this way, though a pendant can transport only up to eight creatures at a time. Similarly, a wearer inside the antechamber can touch its inner walls as a standard action to be transported to the closest location on the far side of the antechamber's walls in area B16.</p>\n<p>In addition to its teleportation powers, a pendant of the first tears grants the wearer immunity to fear effects and pain effects. The wearer casts spells and effects with these descriptors as if her caster level were 2 higher. Additionally, the wearer can cast hold monster and power word kill, each once per day.</p>\n<p><strong>Destruction</strong></p>\n<p>If a pendant of the first tears is placed around the neck of one of Doloras's three living and unharmed solar angel brothers, the pendant crumbles to ash as soon as the solar removes it.</p>",
@@ -66277,7 +66911,13 @@
     "aura": {
       "school": "con"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "1",
+        "target": "immEffect.disease",
+        "type": "untyped"
+      }
+    ],
     "cl": 5,
     "contextNotes": [],
     "description": "<p>This simple periapt usually appears as a blue gemstone fastened to a silver chain designed to be worn about the neck. The wearer is immune to all disease, including supernatural diseases.</p>",
@@ -66345,7 +66985,13 @@
     "aura": {
       "school": "con"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "1",
+        "target": "immEffect.poison",
+        "type": "untyped"
+      }
+    ],
     "cl": 5,
     "contextNotes": [],
     "description": "<p>This item is a brilliant-cut black gem on a delicate silver chain meant to be worn about the neck. The wearer is immune to poison, although poisons active when the periapt is first donned still run their course.</p>",
@@ -67311,7 +67957,18 @@
     "aura": {
       "school": "trs"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "2",
+        "target": "skill.swm",
+        "type": "competence"
+      },
+      {
+        "formula": "2",
+        "target": "skill.clm",
+        "type": "competence"
+      }
+    ],
     "cl": 2,
     "contextNotes": [],
     "description": "<p>This black silk eye patch is adorned by a skull and crossbones worked in silver thread. The wearer of this patch gains a +2 competence bonus on Swim and Climb checks. In addition, once per day, the wearer of this eye patch can gain the effects of either <em>touch of the sea</em> or <em>expeditious retreat</em> on command (wearer's choice).</p>",
@@ -67353,7 +68010,14 @@
     "aura": {
       "school": "nec"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "4",
+        "saveCategories": ["disease"],
+        "target": "allSavingThrows",
+        "type": "resist"
+      }
+    ],
     "cl": 5,
     "contextNotes": [],
     "description": "<p>This stylized bird mask consists of a pair of goggles attached to a ceramic beak that covers the nose and mouth. The goggles are not magic and can be replaced with other goggles or eye slot items. It grants the wearer a +4 resistance bonus on saving throws against disease. Once per day on command, the user can <em>remove disease</em> (as the spell) on a single creature touched.</p>",
@@ -67375,7 +68039,13 @@
     "aura": {
       "school": "trs"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "2",
+        "target": "con",
+        "type": "enh"
+      }
+    ],
     "cl": 8,
     "contextNotes": [],
     "description": "<p>This belt grants its wearer a +2 enhancement bonus to Constitution. Treat this as a temporary ability bonus for the first 24 hours the belt is worn. Also, as an immediate action three times per day, the wearer can call upon the belt to reroll a saving throw made to resist a disease or poison. The wearer must use the second roll, even if it is worse.</p>\n<p><strong>Plague Rat Belt (Greater):</strong> This belt functions as a plague rat belt, except it grants the wearer a +2 enhancement bonus to Dexterity and Constitution. Treat this as a temporary ability bonus for the first 24 hours the belt is worn.</p>",
@@ -67730,7 +68400,13 @@
     "aura": {
       "school": "trs"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "5",
+        "target": "skill.esc",
+        "type": "enh"
+      }
+    ],
     "cl": 9,
     "contextNotes": [],
     "description": "<p>Wearing these form-fitting fingerless black gloves makes the wearer's arms and body more flexible. As a swift action, the wearer can lengthen his arms for up to 10 rounds per day, gaining an additional 5 feet of reach. These rounds need not be consecutive. Attacking with these extended arms is unwieldy, and the wearer takes a -2 penalty on attack rolls, increasing to -4 if he is using two-handed weapons. Even when his limbs aren't extended, the wearer gains a +5 enhancement bonus on Escape Artist checks and Acrobatics checks to avoid falling damage. The wearer is still able to use hand-based natural attacks such as claws while wearing the gloves.</p>",
@@ -68449,7 +69125,13 @@
     "aura": {
       "school": "illusion and transmutation"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "8",
+        "target": "skill.slt",
+        "type": "competence"
+      }
+    ],
     "cl": 5,
     "contextNotes": [],
     "description": "<p>This short black cloak grants its wearer a +8 competence bonus on Sleight of Hand checks. Furthermore, as a full-round action, the cloak can be removed and placed on an single object that takes up a 5-foot square or less and weighs 100 lbs. or less, at which point the object disappears and is stored within an extradimensional space within the cloak. The object can remain in the cloak for no more than 1 hour, at which point it falls out of the cloak in a square adjacent to the cloak or its wearer. The wearer can also command the cloak to dispel the object into an adjacent square.</p>",
@@ -69346,7 +70028,13 @@
     "aura": {
       "school": "trs"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "1",
+        "target": "immEffect.bleed",
+        "type": "untyped"
+      }
+    ],
     "cl": 9,
     "contextNotes": [],
     "description": "<p>The recipient's blood is infused with liquid metal that is magically bound to the recipient's system. When the recipient bleeds, the metal clings to itself and turns a bright silver color. The recipient automatically stabilizes when at negative hit points and is immune to continuous damage from bleed attacks (including weapons with the wounding special ability) and ability damage from blood drain. The recipient is considered a ferrous creature for the purposes of spells and effects such as rusting grasp and a rust monster's attack.</p>\n<p>This elemental augmentation cannot be applied to a creature without blood.</p>",
@@ -71104,7 +71792,13 @@
     "aura": {
       "school": "abj"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "1",
+        "target": "immEffect.bleed",
+        "type": "untyped"
+      }
+    ],
     "cl": 9,
     "contextNotes": [],
     "description": "<p>These talismans are crafted by evil spellcasters on the first steps of the path of the wendigo. The amulet, a tiny human figure formed from unmelting ice, rests on the wearer's chest. When worn, it freezes the wearer's heart solid, chilling body and soul. The wearer immediately develops hypothermia, becoming permanently fatigued for as long as he wears the amulet, but is otherwise protected against cold weather by a constant <em>endure elements</em> effect. The amulet also grants 10 points of cold resistance, immunity to bleed effects, and a +4 resistance bonus on saving throws against spells with the emotion descriptor. Once per day as a standard action, the wearer can use <em>frigid touch</em> as a spell-like ability. Removing the amulet thaws the wearer's heart but leaves him fatigued until he spends 8 hours warming up.</p>",
@@ -71421,7 +72115,13 @@
     "aura": {
       "school": "trs"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "10",
+        "target": "skill.clm",
+        "type": "competence"
+      }
+    ],
     "cl": 5,
     "contextNotes": [],
     "description": "<p>This ring functions as a ring of climbing, except it grants a +10 competence bonus on its wearer's Climb checks.</p>",
@@ -72282,7 +72982,18 @@
     "aura": {
       "school": "trs"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "5",
+        "target": "skill.dev",
+        "type": "competence"
+      },
+      {
+        "formula": "5",
+        "target": "skill.crf.traps",
+        "type": "competence"
+      }
+    ],
     "cl": 3,
     "contextNotes": [],
     "description": "<p>This elaborately decorated ring is crafted with the design of a fierce dragon wrapped greedily around a shining gemstone. It grants the wearer a +5 competence bonus on all Craft (traps) and Disable Device checks. Even if he has no ranks in these skills, the wearer may make Craft (traps) and Disable Device checks as if he were trained in them.</p>",
@@ -72609,7 +73320,13 @@
     "aura": {
       "school": "con"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "1",
+        "target": "immEffect.bleed",
+        "type": "untyped"
+      }
+    ],
     "cl": 15,
     "contextNotes": [],
     "description": "<p>This white gold ring is generally set with a large green sapphire. When worn, the ring continually allows a living wearer to heal 1 point of damage per round and an equal amount of nonlethal damage. In addition, the wearer is immune to bleed damage while wearing a ring of regeneration. If the wearer loses a limb, an organ, or any other body part while wearing this ring, the ring regenerates it as the spell <em>regenerate.</em> In either case, only damage taken while wearing the ring is regenerated.</p>",
@@ -72814,7 +73531,18 @@
     "aura": {
       "school": "trs"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "2",
+        "target": "skill.han",
+        "type": "competence"
+      },
+      {
+        "formula": "2",
+        "target": "skill.kna",
+        "type": "competence"
+      }
+    ],
     "cl": 1,
     "contextNotes": [],
     "description": "<p>This tiny ring of living mistletoe coils about the wearer's finger of its own accord. The wearer gains a +2 competence bonus on Handle Animal, Knowledge (nature), and wild empathy checks, and a wearer with the woodland stride ability can move effortlessly, without harm or impediment, even through magically created or manipulated plants. This does not allow the wearer to move through solid objects or creatures.</p>\n<p>Furthermore, the wearer can use <em>shillelagh</em> once per day.</p>",
@@ -73751,7 +74479,19 @@
     "aura": {
       "school": "con"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "30",
+        "operator": "set",
+        "target": "swimSpeed",
+        "type": "racial"
+      },
+      {
+        "formula": "8",
+        "target": "skill.swm",
+        "type": "racial"
+      }
+    ],
     "cl": 7,
     "contextNotes": [],
     "description": "<p>This ring is made of a single piece of deep blue crystal. The ring grants its wearer a swim speed of 30 feet, as well as +8 racial bonus on Swim checks for having a swim speed. Furthermore, once per day as a swift action, as long as the wearer is in contact with liquid, he can use <em>dimension door</em> as the spell, but its starting and ending points must be connected by a contagious mass of liquid.</p>",
@@ -73793,7 +74533,18 @@
     "aura": {
       "school": "transmutation and divination"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "4",
+        "target": "skill.sen",
+        "type": "competence"
+      },
+      {
+        "formula": "4",
+        "target": "skill.klo",
+        "type": "competence"
+      }
+    ],
     "cl": 8,
     "contextNotes": [],
     "description": "<p>Often worn on the little finger, this ring grants its wearer a +4 competence bonus on Sense Motive and Knowledge (local) checks. Also, once per day on command, the wearer can use the ring to cast either <em>locate creature</em> or <em>locate object</em> (the wearer's choice). Furthermore, on command and at will, the wearer can instantly know the direction from herself to the nearest tavern, pub, or similar watering hole as long as that establishment is in a settlement whose population is equivalent to that of a village or greater and that is within 20 miles of the wearer.</p>",
@@ -78677,7 +79428,13 @@
     "aura": {
       "school": "abjuration and transmutation"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "1",
+        "target": "immEffect.poison",
+        "type": "untyped"
+      }
+    ],
     "cl": 13,
     "contextNotes": [],
     "description": "<p>This large iron shield acts as a +1 animated light fortification heavy steel shield. The shield's bearer is immune to poison, although poisons in effect before the shield is wielded still run their course. While Savith's Iron is wielded, poisoned attacks instead bolster the bearer: if the bearer is subjected by a foe to a poison that deals ability score damage, the bearer gains a +4 enhancement bonus to the ability score the poison would normally damage. This bonus lasts for 1 minute; each additional dose of the same poison extends the effect for 1 additional minute. The bearer can benefit from only one bonus at a time, but can choose to benefit from a new poison in place of an old one. For example, when the bearer of Savith's Iron is stung by a wyvern, she gains a +4 enhancement bonus to her Constitution score for 1 minute; if she then comes in contact with terinav root, she must to decide whether to maintain her Constitution bonus or swap it out for a +4 enhancement bonus to her Dexterity. Savith's Iron does not grant the wielder bonuses from poisons she takes willingly or those applied by an ally, and poisons that don't inflict ability score damage have no effect.</p>",
@@ -79452,7 +80209,13 @@
     "aura": {
       "school": "con"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "5",
+        "target": "skill.khi",
+        "type": "competence"
+      }
+    ],
     "cl": 5,
     "contextNotes": [],
     "description": "<p>A scholar's ring grants complete understanding of any written text or spoken language, even one that the wearer has never encountered before (as the <em>comprehend languages</em> spell), as well as a +5 competence bonus on Knowledge (history) checks.</p>\n<p>In addition, once every 5 days the wearer can invoke a <em>legend lore</em> spell related to a subject that she has been studying in the previous week, if she has attempted a Knowledge (history) check aided by the ring.</p>",
@@ -79557,7 +80320,13 @@
     "aura": {
       "school": "abjuration and conjuration"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "1",
+        "target": "immEffect.mindAffecting",
+        "type": "untyped"
+      }
+    ],
     "cl": 20,
     "contextNotes": [],
     "description": "<p>Sorshen's Scintillating Garment is the traditional robe of the Runelord of Lust. Woven of the finest of silks and accented with precious stones, the garment is surprisingly light and easy to move in. The Scintillating Garment functions as a robe of scintillating colors, but it has additional powers as well. The wearer casts spells at +1 caster level and gains a +5 deflection bonus to AC, a +5 resistance bonus on saving throws, and spell resistance 30. Four of the garment's pockets function as handy haversacks. The wearer of this garment is immune to mind-affecting effects unless she chooses otherwise, and the garment grants all of her ability scores a +6 enhancement bonus (the bonus to Intelligence also imparts ranks in Escape Artist, Fly, and Use Magic Device).</p>\n<p><strong>Destruction</strong></p>\n<p>The Scintillating Garment is destroyed if it is immersed in the waters of a destroyed runewell of lust.</p>",
@@ -80144,7 +80913,14 @@
     "aura": {
       "school": "trs"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "5",
+        "maneuverCategories": ["steal"],
+        "target": "cmd",
+        "type": "untyped"
+      }
+    ],
     "cl": 5,
     "contextNotes": [],
     "description": "<p>A security belt increases the DC of Sleight of Hand checks made against the wearer and checks to locate items or weapons hidden on the wearer's person by 5. The wearer also gets a +5 bonus to CMD against the steal maneuver. Once per day on command, the wearer can touch a single item of up to 10 cubic feet and shrink it into a tiny cloth duplicate as the <em>shrink item</em> spell. With a move action, the wearer can draw one of these items from one of the belt's pockets and return it to normal size. It is difficult to detect a security belt and any items in the pockets as magic. They are affected as though a constant <em>magic aura</em> spell were making them appear nonmagical.</p>",
@@ -80166,7 +80942,19 @@
     "aura": {
       "school": "abj"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "5",
+        "target": "skill.sen",
+        "type": "competence"
+      },
+      {
+        "formula": "5",
+        "saveCategories": ["enchantment"],
+        "target": "will",
+        "type": "resist"
+      }
+    ],
     "cl": 6,
     "contextNotes": [],
     "description": "<p>This slender silver bracelet is worked in an intertwined design of three flowers. A DC 20 Knowledge (nature) check identifies the flowers as acacia, apocynum, and bilberry, symbolizing concealment, treachery, and falsehood.</p>\n<p>The bracelet grants the wearer a +5 competence bonus on Sense Motive checks, and a +5 resistance bonus on Will saves against enchantment effects. If the wearer makes a successful Will save against an enchantment, the caster of that spell incorrectly senses the effect has succeeded. Additionally, the bracelet's wearer knows an enchantment targeted him and the enchantment's source. Seducer's bane creates an aura on its wearer, visible to <em>detect magic,</em> matching the failed enchantment spell or effect, and lasting as long as the intended enchantment's duration. However, if the bracelet's wearer attacks the caster or its allies, or otherwise acts in a way that's contradictory to the failed spell's effect, the caster of that spell immediately realizes the enchantment was ineffective.</p>",
@@ -80385,7 +81173,19 @@
     "aura": {
       "school": "trs"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "4",
+        "saveCategories": ["poison"],
+        "target": "allSavingThrows",
+        "type": "untyped"
+      },
+      {
+        "formula": "2",
+        "target": "skill.esc",
+        "type": "untyped"
+      }
+    ],
     "cl": 5,
     "contextNotes": [],
     "description": "<p>This belt's wearer gains a +4 bonus on saves against poisons and a +2 bonus on Escape Artist checks. In addition, once per day on command, the belt can be animated as a venomous snake or constrictor snake that obeys the animator's spoken commands for up to an hour. If the animated snake is slain or moves 100 feet away from the animator, the snake reverts into belt form.</p>\n<p><strong>Serpent Belt (Greater):</strong> This belt functions as a serpent belt, except it grants the wearer a +2 enhancement bonus to Strength and Dexterity. Treat this as a temporary ability bonus for the first 24 hours the belt is worn. When the wearer animates the belt as a venomous or constrictor snake, she may speak a second command word to give the snake the advanced, celestial, entropic, fiendish, or resolute simple template. Adding a planar template changes the snake's alignment to that of the corresponding planes.</p>",
@@ -80492,7 +81292,14 @@
     "aura": {
       "school": "conjuration and enchantment"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "2",
+        "saveCategories": ["emotion", "fear"],
+        "target": "allSavingThrows",
+        "type": "insight"
+      }
+    ],
     "cl": 10,
     "contextNotes": [],
     "description": "<p>The wearer of this circlet gains a +2 insight bonus on saving throws against effects with the emotion descriptor, including fear effects. The wearer gains fluency in Draconic and may converse with non-sentient (Intelligence 1 or 2) reptilian animals and magical beasts as if using the <em>speak with animals</em> spell, and gains a +4 competence bonus on Handle Animal and wild empathy checks made when interacting with such creatures.</p>",
@@ -82165,7 +82972,13 @@
     "aura": {
       "school": "abjuration and evocation"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "5",
+        "target": "eres.electricity",
+        "type": "untyped"
+      }
+    ],
     "cl": 10,
     "contextNotes": [],
     "description": "<p>This violet and yellow silk robe gives the impression of electricity crackling over its surface. The robe grants the wearer electricity resistance 5 and increases the wearer's caster level for all spells with the electricity descriptor by +1. Once per day on command, the wearer of the robe can emit a 20-foot-radius burst of electricity. Creatures other than the wearer within the area take 2d6 points of electricity damage (Reflex DC 16 half).</p>",
@@ -82230,7 +83043,13 @@
     "aura": {
       "school": "evo"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "10",
+        "target": "eres.fire",
+        "type": "untyped"
+      }
+    ],
     "cl": 6,
     "contextNotes": [],
     "description": "<p>These low-cut shoes of polished red leather feature golden eyelets and stitching in a fiery pattern. They grant the wearer fire resistance 10 and allow the wearer to walk atop lava and magma as if subject to the <em>water walk</em> spell.</p>",
@@ -84031,7 +84850,24 @@
     "aura": {
       "school": "abjuration and transmutation"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "1",
+        "target": "aac",
+        "type": "untyped"
+      },
+      {
+        "formula": "2",
+        "target": "dex",
+        "type": "enh"
+      },
+      {
+        "formula": "2",
+        "saveCategories": ["poison"],
+        "target": "allSavingThrows",
+        "type": "resist"
+      }
+    ],
     "cl": 8,
     "contextNotes": [],
     "description": "<p>A snakeskin tunic is a tight, form-fitting shirt crafted from the scales of a giant snake. When worn, it grants a +1 armor bonus to AC, a +2 enhancement bonus to Dexterity, and a +2 resistance bonus on saving throws against poison.</p>",
@@ -88130,7 +88966,13 @@
     "aura": {
       "school": "ill"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "5",
+        "target": "skill.ste",
+        "type": "competence"
+      }
+    ],
     "cl": 5,
     "contextNotes": [],
     "description": "<p>Preserved sections harvested from several different human faces cover this mask. When worn, the mask desaturates the wearer's color, making him appear shadowy and granting a +5 competence bonus on Stealth checks. Once per day as a full-round action, the wearer can cause the mask's features to take on the appearance of any creature of the wearer's basic size and shape within 60 feet that he observes, allowing the wearer to adopt that creature's appearance for 1 hour. This grants him a +10 bonus on Disguise checks made to appear as the creature. The mask also grants the wearer a +1 bonus on attack rolls and weapon damage rolls made against the creature he is disguised as, as the mask builds upon the wearer's rage and jealousy of the target's appearance.</p>",
@@ -88268,7 +89110,13 @@
     "aura": {
       "school": "abj"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "1",
+        "target": "immEffect.mindAffecting",
+        "type": "untyped"
+      }
+    ],
     "cl": 15,
     "contextNotes": [],
     "description": "<p>Though polished to a silvery gleam, the metal of this velvet-capped crown is simple tin. Occult scholars believe the first stannum crowns were created by a mad psychic king who had become convinced that entities from other planes were watching and plotting against him.</p>\n<p>The crown is powered by its wearer's paranoia and mistrust, using them to grant the wearer immunity to mind-affecting effects and divinations that gather information about him. The wearer can't lower this immunity without removing the crown. Donning a stannum crown saps the wearer's mind, imposing a -2 penalty to Intelligence, Wisdom, and Charisma. Removing the crown negates the penalty, but the wearer's enhanced paranoia makes him unwilling to doff the headdress.</p>\n<p>He can try to remove the crown once per day by attempting a Will save (DC = 25 + the number of consecutive days the crown has been worn). Once the DC becomes 35 or higher, the wearer's paranoia has progressed to the point where he no longer treats any other creature as an ally and attempts saving throws against even harmless spells and abilities. At this point, a natural 20 is not an automatic success on the saving throw to remove the crown, and the wearer never counts as a willing target for the purposes of another's spell or ability, even when he is unconscious. Other creatures can't remove the crown by force; only the wearer can take it off.</p>\n<p><strong>Destruction</strong></p>\n<p>A stannum crown can be destroyed only by placing it on the head of a sentient being who is truly incapable of mistrust. This destroys the crown, but leaves the creature with the powers and drawbacks of the crown, forever unable to remove or ameliorate them.</p>",
@@ -88760,7 +89608,13 @@
     "aura": {
       "school": "div"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "5",
+        "target": "skill.sen",
+        "type": "competence"
+      }
+    ],
     "cl": 5,
     "contextNotes": [],
     "description": "<p>This long stole of unrelenting black is marked on one end with golden scales and the other with the embroidered image of hooded justice. The wearer gains a +5 competence bonus on Sense Motive checks and can create a <em>zone of truth</em> for up to 5 minutes per day; these rounds need not be consecutive. When the wearer uses detect chaos, detect evil, detect good, or detect law, at the beginning of her next turn after casting she gains information as if she had concentrated for 3 full rounds. Finally, if the wearer is an inquisitor, when using her judgment she receives a bonus on Perception checks and her combat maneuver defense as if she were wielding a jurist weapon.</p>",
@@ -89147,7 +90001,18 @@
     "aura": {
       "school": "evo"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "1",
+        "target": "imm.cold",
+        "type": "untyped"
+      },
+      {
+        "formula": "1",
+        "target": "imm.electricity",
+        "type": "untyped"
+      }
+    ],
     "cl": 20,
     "contextNotes": [],
     "description": "<p>Among the varied items crafted by the earliest Storm Kindlers were these potent rods. Very few Storm Kindler's rods have been recovered, and today's Storm Kindlers suspect that many of these potent magical rods have been lost forever, for when they are wielded by those not of the Storm Kindler sect, they grow fragile. The current generation of Storm Kindlers have been unsuccessful in determining how their predecessors created these powerful minor artifacts, making the discovery of existing Storm Kindler's rods all the more important to the society.</p>\n<p>A Storm Kindler's rod acts as a +4 shocking burst spell storing club, but its spell storing capabilities can store only druid spells. While carried in one hand, the rod grants its wielder immunity to cold and electricity. The rod's other powers are as follows.</p>\n<p>- <strong>Invoke Lightning:</strong> Up to three times per day as a swift action, the wielder can call down a stroke of lightning from the skies. This functions as flame strike, save that the damage dealt is half electricity and half from divine power. - <strong>Summon Lightning Elemental:</strong> Once per day as a standard action, the wielder can summon an elder lightning elemental, 1d3 greater lightning elementals, or 1d4+1 huge lightning elementals. This functions as per summon monster VIII, except that it requires a standard action instead of a full round. - <strong>Unleash Storm:</strong> Once per day, the wielder can call upon a devastating storm. This functions as storm of vengeance, save that on the second round, the storm creates freezing rain that deals cold damage rather than acid damage.</p>\n<p><strong>Destruction</strong></p>\n<p>A Storm Kindler's rod can be destroyed as easily as a typical +4 shocking burst spell storing club after it has been carried for at least 24 hours by someone not part of or affiliated with the Storm Kindlers.</p>",
@@ -90272,7 +91137,13 @@
     "aura": {
       "school": "enc"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "1",
+        "target": "immEffect.enchantment",
+        "type": "untyped"
+      }
+    ],
     "cl": 16,
     "contextNotes": [],
     "description": "<p>This beautiful blade is a +5 flaming longsword. While bearing the weapon, the wielder is immune to all enchantment effects. Any creature that casts an enchantment spell upon Asheia's wielder is led to believe its spell or effect worked as normal and that the sword's bearer is under its control, allowing the wielder to deceive his opponent if he so chooses (and doesn't give his enemy a reason to believe its magic failed). Whenever Asheia strikes an opponent, the target must succeed at a DC 20 Will save or fall under the effects of a charm monster spell. Only one creature can be charmed in this way at a time. If another creature becomes charmed by the sword, the first is freed from this effect. If the sword instead scores a critical hit, the target must succeed at a DC 25 Will save or be affected by a dominate monster spell.</p>\n<p><strong>Dormancy</strong> The Alara-hai were crafted to serve the runelords of Thassilon. In modern times, however, these runelords lie dead or dormant. With no lords to serve, the weapons of their champions lie dormant as well, reducing each to a +2 weapon with the noted weapon special abilities but no other properties. The only way to awaken one of the blades is to restore its runelord master to active life or have some other legitimate ruler take up its master's mantle (the weapon determines what is considered legitimate). The swords can detect such restorations and flare to full power immediately, demanding their wielder seek out the restored runelord and swear eternal fealty.</p>\n<p><strong>Destruction</strong></p>\n<p>Each of the Seven Swords of Sin can be destroyed merely if commanded to break. That command, however, must come from the rightful runelord of the nation and school of magic associated with the blade.</p>\n<p><strong>Statistics</strong></p>\n<p><strong>Alignment</strong> LE; <strong>Ego</strong> 25   <strong>Senses</strong> 30 ft. (vision and hearing)   <strong>Int</strong> 18, <strong>Wis</strong> 10, <strong>Cha</strong> 10   <strong>Communication</strong> speech/telepathy (Common, Thassilonian)   <strong>Powers</strong> If the sword is active (see Dormancy above), it can cast create food and water, endure elements, and cure serious wounds 3 times per day.</p>",
@@ -91230,7 +92101,13 @@
     "aura": {
       "school": "conjuration, illusion, and transmutation"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "1",
+        "target": "immEffect.polymorph",
+        "type": "untyped"
+      }
+    ],
     "cl": 20,
     "contextNotes": [],
     "description": "<p>This mithral cap includes prominent guards for the eyes and nose. The helmet was forged under duress by a dwarven smith to further the ambitions of his mad brother. The Tarnhelm has the following powers.</p>\n<p>- The wearer gains the shapechanger subtype. - The wearer gains immunity to polymorph effects, except ones he chooses to allow to affect him. - At will, the wearer can use greater invisibility as a spell-like ability for as long a duration as desired. - At will, the wearer can change his appearance in the same fashion as a hat of disguise, with a DC 25 Will save required to disbelieve the illusion. If the Tarnhelm is used to create a disguise, the wearer receives a +25 bonus on the Disguise check. - Three times per day, the wearer can use greater teleport, exactly as if he had cast the spell of the same name. The wearer can teleport additional times by expending one use of mythic power per teleport. - Three times per day, the wearer can assume the form of an animal as though he had cast beast shape IV, except the duration lasts until the effect is dismissed or dispelled. The wearer can change shape additional times by expending one use of mythic power per transformation. - By expending two uses of mythic power, the wearer can assume the form of Gargantuan chromatic or metallic dragon dragon. The effect lasts until dispelled or dismissed. He gains a +14 size bonus to Strength, a +12 size bonus to Constitution, a +10 natural armor bonus, a fly speed of 150 feet (poor), blindsense 90 feet, darkvision 180 feet, a breath weapon, DR 15/magic, frightful presence (DC 23), one bite (4d6), two claws (2d8), two wing attacks (2d6), and one tail slap (2d8). All his breath weapons deal 16d8 points of damage and allow a Reflex save (DC 10 plus his tier plus his Constitution modifier) for half damage. This ability otherwise functions as form of the dragon III.</p>\n<p><strong>Destruction</strong></p>\n<p>The Tarnhelm can be destroyed by being struck by a succession by hammer blows from a dwarven smith wielding an adamantine hammer, a human smith with a steel hammer, and an elven smith using a hammer of spun glass. Each must succeed at a DC 30 Craft (armor) check when landing the blow. Failure destroys the hammer, disrupts the attempt to destroy the Tarnhelm, and deals 12d6 points of damage to the smith.</p>",
@@ -91787,7 +92664,13 @@
     "aura": {
       "school": "nec"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "1",
+        "target": "immEffect.energyDrain",
+        "type": "untyped"
+      }
+    ],
     "cl": 20,
     "contextNotes": [],
     "description": "<p>Karzoug is not alone in his restless sleep of the ages. Zutha, The undead lord of Gastash and Runelord of Gluttony saw the end in the stars just as his compatriots did and prepared accordingly. To ensure his vile soul's return, the runelord crafted a tome of leathered flesh, bound in bone, and inked in the blood of a thousand slaves. The Gluttonous Tome was Zutha's opus - the result of a decade's toil and his plan to rise from the ashes of Thassilon.</p>\n<p>Dividing his masterwork into three parts - each a potent artifact in its own right - the Runelord of Greed secreted the means of his resurrection away in three of his farthest-flung holdings, protected by the stewardship of his most devout servants. Thassilon's cataclysmic end disrupted Zutha's hopes of a swift return, though, as his minions deserted, died, or betrayed their master, resulting in the sections being scatted across Avistan. For millennia, the potent abjurations protecting its pages saved the parts of the Gluttonous Tome from destruction, with each having been lost and rediscovered countless times. Throughout the centuries the evil tripartite book has schemed to rejoin its pages.</p>\n<p>The three portions of the text and the abilities they confer are as follows:</p>\n<p><strong>The Kardosian Codex:</strong> Named for a sinister devourer wizard who became its custodian a thousand years ago, this is the middle portion of Zutha's masterpiece, a 4-inch-thick sheaf of bone-white blank parchment, indestructible and completely impossible to mark. The Codex's power is a secret only told in blood. Soaking its pages in fresh gore reveals it to be a spellbook containing spells from the necromancy school. The only marring the book's pristine pages suffer is the addition of more necromancy spells penned in blood. The book contains every arcane necromancy spell of 1st to 7th level. Any necromancy spell prepared from the Codex is cast at +1 caster level. The book also absorbs necromantic energy, granting the bearer a +4 bonus on saves versus necromancy effects and immunity to energy draining effects of any kind (such as from enervation or a vampire's slam attack). Finally this section of the Gluttonous Tome includes a flesh golem manual that re-scribes itself one year after it's used.</p>\n<p>The Codex's hunger passes to the bearer as well. Although he does not notice this, the bearer begins eating far more than before and rapidly puts on weight, his physical form beginning to emulate Zutha's in life.</p>\n<p><strong>The Bone Grimoire:</strong> This portion of the tome bears the leathery flesh front-cover, twisted rib binding, and a hundred pages of blood-scripted verse and grisly diagrams. Anyone who reads the entire text of strange runic code (requiring 1 week of uninterrupted study and a DC 25 Linguistics check) must make a DC 20 Will save, or gain a +2 inherent bonus to Intelligence and begin to take on traits of the undead (see below). Regardless of this save's result, the bearer acquires a deep understanding of necromancy, gaining a permanent +4 insight bonus on all Knowledge (arcana) and Spellcraft checks involving this school of magic. In addition, this section includes a <em>flesh golem manual</em> identical to the one in the Kardosian Codex.</p>\n<p>After reading the Grimoire, the bearer's flesh takes on a pale cast and, if he failed his Will save, his life force is slowly replaced by necromantic unlife. After reading the entire text of the Bone Grimoire, the bearer is no longer healed by positive energy, but rather harmed by it. Negative energy now heals him. If the bearer channels energy (if he is a cleric for example) he now channels negative energy. Only a wish or miracle reverses this condition.</p>\n<p><strong>The Black Book:</strong> This portion of the Gluttonous Tome consists of a charred flesh back-cover and 100 pages of smoked skin scrawled with blood runes in Zutha's erudite hand. Anyone reading the Black Book and keeping it on their person gains the ability to rebuke or command undead as a cleric of his total character level. If the bearer already possess this ability, he doubles the amount of undead he can control at any one time. This section also includes a <em>flesh golem manual,</em> just like the others.</p>\n<p>The Black Book corrupts its reader's mind and heart. Every day the GM should make a secret Will save for the bearer; the DC starts at 10 but increases by +1 for every consecutive successful save the bearer makes. Every failed save shifts the bearer's alignment one step toward chaotic evil.</p>\n<p><strong>Rebinding the Gluttonous Tome:</strong> If two or more portions of the Gluttonous Tome are brought within 10 feet of each other, they surge together, tearing free from anyone holding them and bathing a 30-foot radius spread with ghoulish green light. This light causes all living creatures within it to become nauseated for 1d6 rounds (no save). The sections mesh and meld, flesh knitting with flesh and bones grinding together. If two or more individuals control a portion of the tome when they fuse together, the one with the highest total character level gains control (determined randomly if there is a tie). Two fused sections grant the bearer the effects of both parts and the following spell-like abilities at a caster level equal to the bearer's HD:</p>\n<p><em>At will</em> - detect undead, gentle repose   <em>3/day</em> - empowered ray of enfeeblement, false life   <em>1/day</em> - bestow curse</p>\n<p>If all three parts of the Gluttonous Tome are brought together, their bearer is granted the benefits noted above as well as the following: 3/day-maximized vampiric touch, create undead 1/day-create greater undead, waves of exhaustion</p>\n<p>The Gluttonous Tome is Zutha's phylactery, a slow-burning vessel of hate that infests any who read it. It corrupts everyone it touches, offering them great power over life and death, but at a secret price. Once the tome is fully rejoined, its bearer is slowly seduced and devoured by Zutha, the Runelord of Gluttony. The tome manifests an insidious, seductive intellect (see below), which it uses to tempt its bearer to feats of greater and greater depravity. Zutha's soul feeds on the necromantic power embraced by the bearer. Every month, the bearer must make a DC 30 Fortitude save or gain a +1 inherent bonus to Intelligence (this stacks with that bonus granted by the Bone Grimoire to a maximum gain up to Intelligence 26) and permanently lose 1 point of Constitution. This reduction in Constitution cannot be restored by mortal magic as long as the Tome is retained. Despite this wasting away, the bearer becomes addicted to the necromantic power the tome grants, and must make a DC 40 Will save to part with the book. Once the tome slays the bearer, Zutha gains complete control of the body, which soon transforms into the runelord's original, bloated, undead body, freeing him to wreak his evil upon Golarion once more.</p>\n<p><strong>Lesser powers:</strong> detect magic at will, major image 1/day, 10 ranks in Bluff (total modifier +16), 10 ranks in Knowledge (arcana) (total modifier +18).</p>\n<p><strong>Greater powers:</strong> clairvoyance 3/day, detect undead at will, fear 3/day.</p>\n<p><strong>Destruction</strong></p>\n<p>The assembled tome must be used as the fuel to cook a meal for a pious king who has not eaten in over 14 days.</p>\n<p><strong>Statistics</strong></p>\n<p><strong>Alignment</strong> LE; <strong>Ego</strong> 35   <strong>Senses</strong> darkvision 120 ft., hearing   <strong>Int</strong> 26, <strong>Wis</strong> 20, <strong>Cha</strong> 23   <strong>Communication</strong> speech, telepathy</p>",
@@ -93050,7 +93933,13 @@
     "aura": {
       "school": "conjuration and enchantment [evil]"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "1",
+        "target": "imm.cold",
+        "type": "untyped"
+      }
+    ],
     "cl": 25,
     "contextNotes": [],
     "description": "<p>This golden collar contains a piece of the demon lord Kostchtchie's mortal soul, entrapped within by the witch Baba Yaga. The torc grants its wearer immunity to cold and the ability to command frost giants at will. This ability functions as dominate monster, but affects only frost giants, who take a -10 penalty on their saves. In addition, the wearer can cast giant form II three times per day. Anyone who wears the torc for 1 week also gains the ability to summon an aspect of Kostchtchie's dark hunger once per day. This aspect takes the form of a wendigo who faithfully serves the wearer of the torc for 1 hour. Using the torc in this way alerts Kostchtchie to the torc's whereabouts.</p>\n<p>In addition, anytime one of the Torc of Kostchtchie's powers is used, there is a cumulative 5% chance the wearer goes berserk (gaining all the benefits and drawbacks of the barbarian's rage ability), attacking the nearest non-giant creature until unconscious or dead, or until no living non-giant remains within 30 feet.</p>\n<p><strong>Destruction</strong></p>\n<p>The Torc of Kostchtchie dissolves if boiled for 24 hours in the cauldron within the Dancing Hut of Baba Yaga.</p>",
@@ -93075,7 +93964,14 @@
     "aura": {
       "school": "abj"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "2",
+        "saveCategories": ["fear"],
+        "target": "allSavingThrows",
+        "type": "morale"
+      }
+    ],
     "cl": 3,
     "contextNotes": [],
     "description": "<p>Each end of this heavy copper neckwear bears the image of a snarling lion. The wearer gains a +2 morale bonus on saving throws against fear. If the wearer is a barbarian of at least 12th level, she gains fearless rage as a bonus rage power. If she already has this power, she also becomes immune to the panicked condition while raging, and any panic-causing attack against her while she rages instead causes her to regain 1 round of rage up to once per round.</p>",
@@ -93665,7 +94561,14 @@
     "aura": {
       "school": "div"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "1",
+        "saveCategories": ["traps"],
+        "target": "allSavingThrows",
+        "type": "luck"
+      }
+    ],
     "cl": 5,
     "contextNotes": [],
     "description": "<p>These studded leather gloves look similar to workman's gloves, though they are reinforced with numerous metal strips that the user can extend or retract as she wills, turning the tip of each finger into a customizable tool useful in examining and disarming traps. While worn, these gloves grant a +5 competence bonus on all Disable Device checks made to disarm traps. In addition, the gloves grant the user a +1 luck bonus on all saving throws made against traps.</p>",
@@ -93950,7 +94853,14 @@
     "aura": {
       "school": "div"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "5",
+        "operator": "set",
+        "target": "sensets",
+        "type": "untyped"
+      }
+    ],
     "cl": 5,
     "contextNotes": [],
     "description": "<p>These brown leather boots have a reinforced toe of steel with grooves along the soles, crafted to help the wearer pick up vibrations from the surrounding environment. These boots grant the wearer tremorsense 5 feet as long as he is standing on solid ground.</p>",
@@ -94500,7 +95410,13 @@
     "aura": {
       "school": "abj"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "2",
+        "target": "concentration",
+        "type": "untyped"
+      }
+    ],
     "cl": 3,
     "contextNotes": [],
     "description": "<p>This woolen garment is decorated with a pattern of linked chains embroidered in silver and black thread. It assists the wearer with maintaining focus during spellcasting, granting a +2 bonus on concentration checks.</p>",
@@ -94522,7 +95438,14 @@
     "aura": {
       "school": "evo"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "2",
+        "maneuverCategories": ["disarm", "sunder"],
+        "target": "cmd",
+        "type": "untyped"
+      }
+    ],
     "cl": 3,
     "contextNotes": [],
     "description": "<p>This tunic is crafted from golden thread, and has silver-hemmed sleeves. The wearer gains a +2 bonus to Combat Maneuver Defense against disarm and sunder combat maneuvers. If the wearer is a samurai, twice per day as a swift action he can apply the effects of the thundering weapon special ability to a successful critical hit against the target of his challenge.</p>",
@@ -95440,7 +96363,13 @@
     "aura": {
       "school": "abj"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "1",
+        "target": "ac",
+        "type": "deflection"
+      }
+    ],
     "cl": 5,
     "contextNotes": [],
     "description": "<p>These polished steel vambraces grant a +1 deflection bonus to AC. Once per day, as an immediate action, if the wearer has at least one hand free, when he would normally be hit with an attack from a ranged weapon, he may deflect it with the bracers, taking no damage from it, as if he had the Deflect Arrows feat.</p>",
@@ -96003,7 +96932,18 @@
     "aura": {
       "school": "conjuration and transmutation"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "4",
+        "target": "skill.dev",
+        "type": "competence"
+      },
+      {
+        "formula": "6",
+        "target": "skill.esc",
+        "type": "competence"
+      }
+    ],
     "cl": 4,
     "contextNotes": [],
     "description": "<p>This simple silk vest looks nondescript, but is actually studded with numerous secret pockets sewn into its lining. Hidden inside these are magic lockpicks that provide a +4 competence bonus on Disable Device checks. The vest also grants its wearer a +6 competence bonus on Escape Artist checks.</p>",
@@ -96702,7 +97642,13 @@
     "aura": {
       "school": "abjuration and evocation"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "5",
+        "target": "eres.cold",
+        "type": "untyped"
+      }
+    ],
     "cl": 10,
     "contextNotes": [],
     "description": "<p>This blue and white silk robe gives the impression of ice and frozen fog forming over its surface. The robe grants the wearer cold resistance 5 and increases the wearer's caster level for all spells with the cold descriptor by +1. Once per day on command, the wearer of the robe can emit a 20-foot-radius burst of cold. Creatures other than the wearer within the area take 2d6 points of cold damage (Reflex DC 16 half).</p>",
@@ -96872,7 +97818,13 @@
     "aura": {
       "school": "div"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "1",
+        "target": "immEffect.flanking",
+        "type": "untyped"
+      }
+    ],
     "cl": 5,
     "contextNotes": [],
     "description": "<p>Crafted of overlaid bronze, steel, and chain, each Vudran Ashak helmet is a work of art. These exotic helmets possess three stylized faces, each serene visage staring in a different direction (with the wearer's face concealed behind the central sculpted plate). The helm allows the wearer to see in every direction, granting him immunity to being flanked, as well as granting a +4 enhancement bonus on all vision-based Perception checks.</p>\n<p>One in every 10 Vudran Ashak helmets is an intelligent magical item, having spontaneously manifested such properties after the deaths of heroically devoted former wearers. Such helms are lawful good, speak Vudran, and have an ego score of 10. These lingering personalities prove noble, knowledgable of Vudra's diverse deities, and actively encourage wearers to defend the holy places of such gods and their devout worshipers. Some might even possess goals from their lives that they wish their new wearer to fulfill. Despite any of the helmet's desires, though, it possesses no way to compel a wearer other than deactivating or reactivating its magical properties at will.</p>",
@@ -99482,7 +100434,13 @@
     "aura": {
       "school": "trs"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "5",
+        "target": "skill.per",
+        "type": "untyped"
+      }
+    ],
     "cl": 9,
     "contextNotes": [],
     "description": "<p>This brown and gray robe is always dirty, and the chest and the back of each shoulder is decorated with a gem-like eye pattern. The wearer gains a +5 bonus on Perception checks, and can use earth glide to pass through up to 20 feet of natural or worked stone per day. The distance traveled with earth glide does not need to be consecutive, but it must be used in 5-foot increments. The wearer is able to safely chew, swallow, digest, and derive nutrition from gems, precious metals, and metallic ore, with 100 gp worth of these materials sustaining him for 1 full day. If the wearer removes the robe after such a meal, he is sickened until 24 hours have passed since the last meal of this kind. Wearing the robe again immediately negates this penalty.</p>",
@@ -100068,7 +101026,13 @@
     "aura": {
       "school": "abj"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "10",
+        "target": "eres.electricity",
+        "type": "untyped"
+      }
+    ],
     "cl": 11,
     "contextNotes": [],
     "description": "<p>Rings of this type come in a wide variety of designs and colorations, typically related to the types of energy they defend against. These rings continually protect their wearers from damage from one type of energy-acid, cold, electricity, fire, or sonic (chosen by the creator of the item; determine randomly if found as part of a treasure hoard). Each time the wearer would normally take such damage, subtract the ring's resistance value from the damage dealt. A minor ring of energy resistance grants 10 points of resistance.</p>",
@@ -101147,7 +102111,13 @@
     "aura": {
       "school": "abj"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "10",
+        "target": "eres.acid",
+        "type": "untyped"
+      }
+    ],
     "cl": 11,
     "contextNotes": [],
     "description": "<p>Rings of this type come in a wide variety of designs and colorations, typically related to the types of energy they defend against. These rings continually protect their wearers from damage from one type of energy-acid, cold, electricity, fire, or sonic (chosen by the creator of the item; determine randomly if found as part of a treasure hoard). Each time the wearer would normally take such damage, subtract the ring's resistance value from the damage dealt. A minor ring of energy resistance grants 10 points of resistance.</p>",
@@ -104086,7 +105056,13 @@
     "aura": {
       "school": "abj"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "30",
+        "target": "eres.electricity",
+        "type": "untyped"
+      }
+    ],
     "cl": 11,
     "contextNotes": [],
     "description": "<p>Rings of this type come in a wide variety of designs and colorations, typically related to the types of energy they defend against. These rings continually protect their wearers from damage from one type of energy-acid, cold, electricity, fire, or sonic (chosen by the creator of the item; determine randomly if found as part of a treasure hoard). Each time the wearer would normally take such damage, subtract the ring's resistance value from the damage dealt. A greater ring of energy resistance grants 30 points of resistance.</p>",
@@ -104727,7 +105703,14 @@
     "aura": {
       "school": "trs"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "2",
+        "maneuverCategories": ["trip"],
+        "target": "cmd",
+        "type": "competence"
+      }
+    ],
     "cl": 3,
     "contextNotes": [
       {
@@ -105316,7 +106299,13 @@
     "aura": {
       "school": "con"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "1",
+        "target": "aac",
+        "type": "untyped"
+      }
+    ],
     "cl": 7,
     "contextNotes": [],
     "description": "<p>These items appear to be wrist or arm guards, sometimes etched with symbols of protection or depictions of vigilant-looking animals. Bracers of armor surround the wearer with an invisible but tangible field of force, granting him an armor bonus of +1 to +8, just as though he were wearing armor. Both bracers of armor must be worn for the magic to be effective. Alternatively, bracers of armor can be enchanted with armor special abilities. See Table 3-3: Armor Special Abilities for a list of abilities. Special abilities usually count as additional bonuses for determining the market value of an item, but do not improve AC. Bracers of armor cannot have a modified bonus (armor bonus plus armor special ability bonus equivalents) higher than +8. Bracers of armor must have at least a +1 armor bonus to grant an armor special ability. Bracers of armor cannot have any armor special abilities that add a flat gp amount to their cost. Bracers of armor and ordinary armor do not stack. If the wearer receives a larger armor bonus from another source, the bracers of armor cease functioning and do not grant their armor bonus or their armor special abilities. If the bracers of armor grant a larger armor bonus, the other source of armor ceases functioning.</p>",
@@ -106891,7 +107880,13 @@
     "aura": {
       "school": "abj"
     },
-    "changes": [],
+    "changes": [
+      {
+        "formula": "20",
+        "target": "eres.electricity",
+        "type": "untyped"
+      }
+    ],
     "cl": 11,
     "contextNotes": [],
     "description": "<p>Rings of this type come in a wide variety of designs and colorations, typically related to the types of energy they defend against. These rings continually protect their wearers from damage from one type of energy-acid, cold, electricity, fire, or sonic (chosen by the creator of the item; determine randomly if found as part of a treasure hoard). Each time the wearer would normally take such damage, subtract the ring's resistance value from the damage dealt. A major ring of energy resistance grants 20 points of resistance.</p>",

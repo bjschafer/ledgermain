@@ -102,7 +102,13 @@ export const COVERAGE_NOTES: readonly CoverageNote[] = [
     category: "Magic items",
     note: 'The full published catalog is in the gear picker: wondrous items, rings, rods, staves, artifacts, and named magic weapons and armor. Entries whose effect the sheet applies while equipped are marked with an "M". Most are not: they carry their rules text for you to apply at the table, and equipping one moves no numbers.',
     issueDetail:
-      "1,090 entries carry structured changes[]; the imported catalog adds 3,832 whose effects exist only as prose. The gap is promotion rather than coverage, and the weapon and armor special ability catalog sits on the same axis: keen, distance and reliable are the only entries that move numbers.",
+      "249 of 4,904 catalog entries carry structured changes[]; 3,701 imported entries are prose only. Worn items blocked on a missing mechanism (effective class levels, creation-time choices, miss chance, item-granted feats or natural attacks) are inventoried in the data pipeline's item blocker table. Weapon and armor special abilities sit on the same axis: only keen, distance and reliable move numbers.",
+  },
+  {
+    category: "Weapon training maneuvers",
+    note: "A fighter's weapon training bonus on combat maneuvers made with a trained weapon is not added to CMB: apply it at the table. Its CMD bonus against disarm and sunder shows the best trained group's bonus, whatever weapon is in hand.",
+    issueDetail:
+      "The sheet has no per-weapon CMB, and doc state does not record which weapon is wielded, so the CMB rider has no target and the CMD line cannot pick a group.",
   },
   {
     category: "Metamagic",

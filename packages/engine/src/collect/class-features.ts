@@ -22,6 +22,7 @@ import { type RollData } from "../formula.js";
 import { weaponTrainingBonus } from "../tables.js";
 import { normalizeWeaponGroup } from "../weapon-groups.js";
 import { classByTag, domainByTag, subdomainByTag } from "../refdata-index.js";
+import { equippedItemChanges } from "./gear.js";
 import { type CollectContext, evalChange } from "./shared.js";
 
 /** Class features granted by level, with archetype swaps applied. */
@@ -142,32 +143,68 @@ export function collectGrantedClassFeatures(ctx: CollectContext): void {
     // (`weaponTrainingReplaced`) — that archetype's own weapon-group-scoped
     // bonus (if any) comes from `archetype-extracted/fighter.ts` instead, and
     // applying both would double-count.
+    //
+    // The bonus also applies to CMD against disarm and sunder attempts on a
+    // trained group's weapon (CRB p. 56). Which weapon is wielded isn't
+    // tracked, so that line carries the best picked tier. Its CMB rider
+    // (maneuvers made with the weapon) has no per-weapon CMB to land on.
+    //
+    // An equipped item's `weaponTraining` change (Gloves of Dueling) raises
+    // every picked group's bonus, sourced to the item for provenance.
     if (cls.tag === "fighter" && !weaponTrainingReplaced(doc)) {
+      const itemBumps = equippedItemChanges(ctx, "weaponTraining");
+      let bestBonus = 0;
       (doc.build.weaponTrainingGroups ?? []).forEach((rawGroup, tierIndex) => {
         if (!rawGroup) return;
         const bonus = weaponTrainingBonus(cls.level, tierIndex);
         if (bonus <= 0) return;
+        bestBonus = Math.max(bestBonus, bonus);
         const group = normalizeWeaponGroup(rawGroup);
         const sourceId = `weapon-training-${tierIndex}`;
-        evalChange(
-          String(bonus),
-          featureRollData,
-          `attack.weapon.${group}`,
-          "untyped",
-          "Weapon Training",
-          sourceId,
-          out,
-        );
-        evalChange(
-          String(bonus),
-          featureRollData,
-          `damage.weapon.${group}`,
-          "untyped",
-          "Weapon Training",
-          sourceId,
-          out,
-        );
+        for (const target of [`attack.weapon.${group}`, `damage.weapon.${group}`]) {
+          evalChange(
+            String(bonus),
+            featureRollData,
+            target,
+            "untyped",
+            "Weapon Training",
+            sourceId,
+            out,
+          );
+          for (const { item, change } of itemBumps) {
+            evalChange(change.formula, rollData, target, change.type, item.name, item.id, out);
+          }
+        }
       });
+      if (bestBonus > 0) {
+        const scope = ["disarm", "sunder"];
+        evalChange(
+          String(bestBonus),
+          featureRollData,
+          "cmd",
+          "untyped",
+          "Weapon Training",
+          "weapon-training-cmd",
+          out,
+          undefined,
+          undefined,
+          scope,
+        );
+        for (const { item, change } of itemBumps) {
+          evalChange(
+            change.formula,
+            rollData,
+            "cmd",
+            change.type,
+            item.name,
+            item.id,
+            out,
+            undefined,
+            undefined,
+            scope,
+          );
+        }
+      }
     }
   }
 }

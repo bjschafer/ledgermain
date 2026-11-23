@@ -2,7 +2,7 @@
  * Display labels for the Foundry abbreviations the engine/data use. Pure data;
  * no framework deps so it can be unit-tested and reused anywhere.
  */
-import { normalizeQualifier, qualifierLabel } from "@pf1/engine";
+import { EFFECT_IMMUNITY_LABELS, normalizeQualifier, qualifierLabel } from "@pf1/engine";
 import type { AbilityId, SkillId } from "@pf1/schema";
 
 export const ABILITY_NAMES: Record<AbilityId, string> = {
@@ -195,6 +195,7 @@ const CHANGE_TARGET_LABELS: Record<string, string> = {
   critConfirm: "crit confirmation rolls",
   // misc
   concentration: "concentration checks",
+  weaponTraining: "weapon training bonus",
   "concentration.defensive": "concentration checks to cast defensively or grappled",
   cl: "caster level",
   reach: "reach",
@@ -297,6 +298,10 @@ export function changeTargetLabel(target: string): string {
   }
   if (target.startsWith("imm.")) {
     return `${qualifierLabel(normalizeQualifier(target.slice(4)))} immunity`;
+  }
+  if (target.startsWith("immEffect.")) {
+    const effect = target.slice("immEffect.".length);
+    return `${EFFECT_IMMUNITY_LABELS[effect] ?? effect} immunity`;
   }
 
   return target;
