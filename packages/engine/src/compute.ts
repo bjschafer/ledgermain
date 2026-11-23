@@ -54,7 +54,7 @@ import {
   type ActiveAbilitySubstitution,
   type ResolvedAbility,
 } from "./ability-substitution.js";
-import { acBonusType } from "./ac-bonus-types.js";
+import { acBonusType, isDodgeBonusType } from "./ac-bonus-types.js";
 import { critThreatRange, isPiercingLightOrOneHandedWeapon } from "./crit-range.js";
 import { dexWeaponFeatSources } from "./dex-weapon-feats.js";
 import { chosenBonusClassSkills } from "./bonus-class-skills.js";
@@ -109,6 +109,7 @@ import {
 import { gunTrainingMatches } from "./gun-training.js";
 import {
   babForLevels,
+  FLY_SIZE_MOD,
   fractionalBab,
   fractionalSave,
   isTrainedOnly,
@@ -122,6 +123,7 @@ import {
   skillBaseId,
   skillUsesAcp,
   specialSizeMod,
+  STEALTH_SIZE_MOD,
 } from "./tables.js";
 import { classByTag, classFeatureByTag } from "./refdata-index.js";
 
@@ -464,7 +466,7 @@ function categoryFor(target: string, type: string): AcCategory {
   if (target === "aac") return "armor";
   if (target === "sac") return "shield";
   if (target === "nac") return "natural";
-  if (type === "dodge") return "dodge";
+  if (isDodgeBonusType(type)) return "dodge";
   if (type === "deflection") return "deflection";
   return "generic";
 }
@@ -503,6 +505,8 @@ const FLAT_FOOTED_CATEGORIES: ReadonlySet<AcCategory> = new Set<AcCategory>([
 const CMD_AC_TYPES: ReadonlySet<string> = new Set([
   "deflection",
   "dodge",
+  // Haste's dodge bonus, typed apart only so two hastes don't stack.
+  "haste",
   "circumstance",
   "insight",
   "luck",
@@ -1023,6 +1027,7 @@ function computeSkills(
   doc: CharacterDoc,
   refData: RefData,
   abilities: Record<AbilityId, AbilityView>,
+  size: SizeId,
   collected: CollectedModifier[],
   encumbrance?: DerivedEncumbrance,
 ): Record<string, DerivedSkill> {
@@ -1155,7 +1160,10 @@ function computeSkills(
     const usesAcp = skillUsesAcp(id);
     const acp = usesAcp ? effectiveAcp : 0;
     const stack = resolveStack([...(miscBySkill.get(id) ?? []), ...globalSkillMods]);
-    const total = ranks + abilityModifier + classSkillBonus + acp + stack.total;
+    // Size modifies Stealth and Fly (CRB pp. 97, 106): a halfling's +4 Stealth
+    // comes from being Small, not a racial trait, as does Enlarge's -4.
+    const sizeMod = id === "ste" ? STEALTH_SIZE_MOD[size] : id === "fly" ? FLY_SIZE_MOD[size] : 0;
+    const total = ranks + abilityModifier + classSkillBonus + acp + sizeMod + stack.total;
     const trainedOnly = isTrainedOnly(id);
     const usable = ranks > 0 || !trainedOnly;
     // Load-tier ACP is already folded into `acp` above; this is a display-only
@@ -1172,10 +1180,14 @@ function computeSkills(
       abilityMod: abilityModifier,
       classSkillBonus,
       acp,
-      miscMod: stack.total,
+      miscMod: stack.total + sizeMod,
       total,
       classSkill,
-      components: [...loadAcpComponent, ...toComponents(stack.modifiers)],
+      components: [
+        ...loadAcpComponent,
+        ...(sizeMod !== 0 ? [synthetic("Size", "size", sizeMod)] : []),
+        ...toComponents(stack.modifiers),
+      ],
       trainedOnly,
       usable,
     };
@@ -1793,7 +1805,11 @@ function computeManeuvers(
   // to trip") is held out of the headline stack, same as a save-category
   // scope is held out of a save's headline total — applying it unconditionally
   // would inflate every other maneuver too.
-  const cmbAllMods = forTarget(collected, "cmb");
+  // A combat maneuver is an attack roll that adds "any bonuses you currently
+  // have on attack rolls due to spells, feats, and other effects" (CRB p. 199),
+  // so general `attack` modifiers (Bless, shaken) count; melee- and
+  // ranged-only ones depend on how the maneuver is made and stay out.
+  const cmbAllMods = [...forTarget(collected, "cmb"), ...forTarget(collected, "attack")];
   const cmbUnconditional = cmbAllMods.filter((m) => (m.maneuverCategories?.length ?? 0) === 0);
   const cmbScoped = cmbAllMods.filter((m) => (m.maneuverCategories?.length ?? 0) > 0);
   const cmbStack = resolveStack(cmbUnconditional);
@@ -1888,7 +1904,7 @@ function computeManeuvers(
   // modifier"; CMD follows the same logic since it shares the same Dex term).
   const flatFootedDexMod = Math.min(cmdDexAbility.mod, 0);
   const flatFootedCmdMods = cmdUnconditionalMods.filter(
-    (m) => m.type.toLowerCase() !== "dodge" || m.value < 0,
+    (m) => !isDodgeBonusType(m.type) || m.value < 0,
   );
   const flatFootedCmdStack = resolveStack(flatFootedCmdMods);
   const cmdFlatFooted =
@@ -2189,7 +2205,7 @@ export function compute(inputDoc: CharacterDoc, refData: RefData): DerivedSheet 
   const arcaneSpellFailure = computeArcaneSpellFailure(doc);
 
   // Skills
-  const skills = computeSkills(doc, refData, abilities, collected, encumbrance);
+  const skills = computeSkills(doc, refData, abilities, size, collected, encumbrance);
 
   // Per-weapon attack lines. `baseSize`/`size` (base race size vs. the
   // wielder's current EFFECTIVE size, covers both a relative "size" Change

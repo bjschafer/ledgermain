@@ -1629,14 +1629,16 @@ export interface CharacterDoc {
      * gaining it; this app displays the distinction only, no timer) and
      * `permanent` (only removed by Restoration-type magic). Each negative
      * level (temporary + permanent combined) imposes, per PF1 RAW: −1 on
-     * attack rolls, saving throws, and skill checks (applied via synthetic
-     * `attack`/`allSavingThrows`/`skills` changes — see `collectModifiers`),
+     * attack rolls (which CMB folds in), CMD, initiative, saving throws, and
+     * skill checks (applied via synthetic `attack`/`cmd`/`init`/
+     * `allSavingThrows`/`skills` changes — see `collectModifiers`),
      * and −5 max HP (synthetic `hp` change). It also imposes −1 effective
      * caster level per negative level, which has no home in the current engine
      * (no derived "caster level" stat outside build-time prereqs — see
      * `engine caster-level.ts`'s doc comment for why folding it in there would
-     * be wrong), and −1 on ability checks, which the engine also doesn't model
-     * as a distinct roll — both are documented gaps, not silently dropped. If
+     * be wrong), and −1 on ability checks beyond initiative, which the sheet
+     * doesn't show as distinct rolls — both are documented gaps, not silently
+     * dropped. If
      * total negative levels reach or exceed the character's Hit Dice, PF1 RAW
      * kills the character; the UI surfaces a warning only. Omitted/both-0 = no
      * negative levels. Back-compat: absent entirely for documents predating

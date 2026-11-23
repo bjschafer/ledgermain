@@ -1,11 +1,9 @@
 import { describe, expect, it } from "bun:test";
 
+import { normalizeSkillId } from "@pf1/schema";
+
 import { loadRefData } from "../src/index.js";
-import {
-  normalizeClassSkills,
-  normalizeSkillId,
-  normalizeSkillTarget,
-} from "../src/transform/common.js";
+import { normalizeClassSkills, normalizeSkillTarget } from "../src/transform/common.js";
 
 describe("normalizeSkillId", () => {
   it("maps Foundry's full-name keys to the short ids", () => {

@@ -40,3 +40,14 @@ export function acBonusType(target: string, type: string): string {
   const named = AC_BONUS_TYPE[target];
   return named !== undefined && UNTYPED_AC_BONUS.has(type.toLowerCase()) ? named : type;
 }
+
+/**
+ * Whether an AC bonus of `type` is a dodge bonus: lost when flat-footed and
+ * carried into CMD. The vendored Haste buff types its AC bonus `haste` so two
+ * hastes don't stack with each other, but the spell grants a dodge bonus
+ * (CRB p. 294), so it behaves as one everywhere except stacking.
+ */
+export function isDodgeBonusType(type: string): boolean {
+  const t = type.toLowerCase();
+  return t === "dodge" || t === "haste";
+}

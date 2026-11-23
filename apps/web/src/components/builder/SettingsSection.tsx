@@ -1050,6 +1050,7 @@ export function SettingsSection({
 const SOURCE_LABEL: Record<ImportReport["source"], string> = {
   pathbuilder: "Pathbuilder 1e",
   herolab: "Hero Lab classic",
+  foundry: "Foundry VTT",
 };
 
 /**

@@ -52,7 +52,7 @@ import { localId } from "./ids.js";
 import { normalizeAlignmentCode, SKILL_NAMES, slugifySkillLabel } from "./names.js";
 
 /** Which external tool an import came from — carried through to the UI report. */
-export type ExternalImportSource = "pathbuilder" | "herolab";
+export type ExternalImportSource = "pathbuilder" | "herolab" | "foundry";
 
 /**
  * Human-readable results of an external import: what got matched to a real

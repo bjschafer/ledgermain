@@ -1,11 +1,12 @@
 /**
  * Content-based dispatcher for the Settings "Import character…" file picker:
- * auto-detects a native Ledgermain export, a Pathbuilder 1e HTML stat-block
- * export, a Pathbuilder 1e JSON export, a Hero Lab classic `.por` portfolio,
- * or a bare Hero Lab statblock XML from the raw file contents and routes to
- * the matching parser, so the UI needs only one file input. See
- * `importCharacter.ts`, `importPathbuilderHtml.ts`, `importPathbuilder.ts`,
- * and `importHeroLab.ts` for what each format assumes.
+ * auto-detects a native Ledgermain export, a Foundry VTT actor export, a
+ * Pathbuilder 1e HTML stat-block export, a Pathbuilder 1e JSON export, a Hero
+ * Lab classic `.por` portfolio, or a bare Hero Lab statblock XML from the raw
+ * file contents and routes to the matching parser, so the UI needs only one
+ * file input. See `importCharacter.ts`, `importFoundry.ts`,
+ * `importPathbuilderHtml.ts`, `importPathbuilder.ts`, and `importHeroLab.ts`
+ * for what each format assumes.
  *
  * Detection reads BYTES rather than text because a `.por` is a ZIP archive —
  * decoding one as UTF-8 first would mangle it. Everything else is text, and
@@ -15,6 +16,7 @@ import type { CharacterDoc, RefData } from "@pf1/schema";
 
 import type { ImportReport } from "./externalImport.js";
 import { parseImportedDoc } from "./importCharacter.js";
+import { importFoundryActor, isFoundryActorExport } from "./importFoundry.js";
 import { importHeroLabPortfolio, importHeroLabXml } from "./importHeroLab.js";
 import { importPathbuilderJson } from "./importPathbuilder.js";
 import { importPathbuilderHtml, isPathbuilderStatBlockHtml } from "./importPathbuilderHtml.js";
@@ -37,7 +39,8 @@ export interface ImportedCharacter {
  *    misread as Hero Lab XML.
  *  - Leading `<` (after trimming whitespace) → Hero Lab classic XML.
  *  - Otherwise, JSON: tried first as a native Ledgermain export (the
- *    strictest shape check), then as a Pathbuilder 1e export.
+ *    strictest shape check), then as a Foundry actor export, then as a
+ *    Pathbuilder 1e export.
  *
  * Throws a descriptive `Error` when the content isn't valid JSON/XML/HTML/ZIP
  * at all, or is valid JSON but an object shape neither importer can use (e.g.
@@ -71,6 +74,7 @@ export async function importCharacterFile(
   try {
     return { doc: parseImportedDoc(parsed) };
   } catch {
+    if (isFoundryActorExport(parsed)) return importFoundryActor(parsed, refData);
     return importPathbuilderJson(parsed, refData);
   }
 }

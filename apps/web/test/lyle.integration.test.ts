@@ -203,11 +203,12 @@ describe("Lyle — with Mage Armor + Bless active (the PDF's exported state)", (
     expect(sheet.attack.ranged.total).toBe(6);
   });
 
-  it("saves/CMB/CMD/speed/HP unaffected by these two buffs", () => {
+  it("saves/CMD/speed/HP unaffected by these two buffs; Bless adds +1 to CMB", () => {
     expect(sheet.saves.fort.total).toBe(4);
     expect(sheet.saves.ref.total).toBe(5);
     expect(sheet.saves.will.total).toBe(6);
-    expect(sheet.cmb).toBe(2);
+    // A combat maneuver adds bonuses on attack rolls from spells (CRB p. 199).
+    expect(sheet.cmb).toBe(3);
     expect(sheet.cmd).toBe(15);
     expect(sheet.speeds.land).toBe(35);
     expect(sheet.hp.max).toBe(25);

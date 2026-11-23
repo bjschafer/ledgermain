@@ -116,10 +116,13 @@ export function buildRollData(
     else if (item.armor.slot === "shield") shieldType = Math.max(shieldType, item.armor.type);
   }
 
-  const baseSpeeds = speeds ?? refData.races[doc.identity.race]?.speeds ?? { land: 30 };
-  const speedAttr: Record<string, { total: number }> = {};
+  const raceSpeeds = refData.races[doc.identity.race]?.speeds ?? { land: 30 };
+  const baseSpeeds = speeds ?? raceSpeeds;
+  // `base` is the race's speed before any modifier: Haste's "+30 ft., to no
+  // more than twice normal speed" is authored as `min(@attributes.speed.land.base, 30)`.
+  const speedAttr: Record<string, { total: number; base: number }> = {};
   for (const mode of SPEED_MODES) {
-    speedAttr[mode] = { total: baseSpeeds[mode] ?? 0 };
+    speedAttr[mode] = { total: baseSpeeds[mode] ?? 0, base: raceSpeeds[mode] ?? 0 };
   }
 
   // Burn currently held (kineticist) — `@attributes.burn.value`. A handful of

@@ -51,6 +51,62 @@ export type SaveTier = "high" | "low" | "highPrestige" | "lowPrestige";
  */
 export type SkillId = string;
 
+/**
+ * Foundry renamed its skill keys from three-letter ids to full names
+ * (`kna` -> `knowledge.nature`) in class-skill lists, change targets and
+ * actor skills, while formulas kept `@skills.<short>`. Every saved
+ * CharacterDoc keys ranks by the short id, so both the data pipeline and the
+ * Foundry importer map back rather than letting the rename through.
+ */
+export const FOUNDRY_LONG_SKILL_IDS: Readonly<Record<string, SkillId>> = {
+  acrobatics: "acr",
+  appraise: "apr",
+  artistry: "art",
+  bluff: "blf",
+  climb: "clm",
+  craft: "crf",
+  diplomacy: "dip",
+  disableDevice: "dev",
+  disguise: "dis",
+  escapeArtist: "esc",
+  handleAnimal: "han",
+  heal: "hea",
+  intimidate: "int",
+  "knowledge.arcana": "kar",
+  "knowledge.dungeoneering": "kdu",
+  "knowledge.engineering": "ken",
+  "knowledge.geography": "kge",
+  "knowledge.history": "khi",
+  "knowledge.local": "klo",
+  "knowledge.nature": "kna",
+  "knowledge.nobility": "kno",
+  "knowledge.planes": "kpl",
+  "knowledge.religion": "kre",
+  linguistics: "lin",
+  lore: "lor",
+  perception: "per",
+  perform: "prf",
+  profession: "pro",
+  ride: "rid",
+  senseMotive: "sen",
+  sleightOfHand: "slt",
+  spellcraft: "spl",
+  stealth: "ste",
+  survival: "sur",
+  swim: "swm",
+  useMagicDevice: "umd",
+};
+
+/** Maps a Foundry skill key to its short id, keeping any subskill suffix (`craft.alchemy` -> `crf.alchemy`). */
+export function normalizeSkillId(id: string): SkillId {
+  const whole = FOUNDRY_LONG_SKILL_IDS[id];
+  if (whole) return whole;
+  const dot = id.indexOf(".");
+  if (dot < 0) return id;
+  const base = FOUNDRY_LONG_SKILL_IDS[id.slice(0, dot)];
+  return base ? `${base}${id.slice(dot)}` : id;
+}
+
 /** Creature size category abbreviations as used by the PF1 data. */
 export type SizeId = "fine" | "dim" | "tiny" | "sm" | "med" | "lg" | "huge" | "grg" | "col";
 

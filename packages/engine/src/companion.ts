@@ -118,10 +118,12 @@ import { isBuffLive } from "./duration.js";
 import { resolveStack } from "./stacking.js";
 import {
   babForLevels,
+  FLY_SIZE_MOD,
   saveForLevels,
   SIZE_AC_MOD,
   SKILL_ABILITY,
   specialSizeMod,
+  STEALTH_SIZE_MOD,
 } from "./tables.js";
 import type { RollData } from "./formula.js";
 
@@ -135,32 +137,6 @@ const FLY_MANEUVER_BONUS: Record<FlyManeuverability, number> = {
   average: 0,
   good: 8,
   perfect: 16,
-};
-
-/** Stealth's size modifier (PF1 CRB "Stealth") — smaller creatures hide better. */
-const STEALTH_SIZE_MOD: Record<SizeId, number> = {
-  fine: 16,
-  dim: 12,
-  tiny: 8,
-  sm: 4,
-  med: 0,
-  lg: -4,
-  huge: -8,
-  grg: -12,
-  col: -16,
-};
-
-/** Fly's size modifier (PF1 CRB "Fly") — independent of the Stealth table above. */
-const FLY_SIZE_MOD: Record<SizeId, number> = {
-  fine: 8,
-  dim: 6,
-  tiny: 4,
-  sm: 2,
-  med: 0,
-  lg: -2,
-  huge: -4,
-  grg: -6,
-  col: -8,
 };
 
 /** The six physical/perceptual skills surfaced for a companion (see module doc comment — no rank investment modeled). */

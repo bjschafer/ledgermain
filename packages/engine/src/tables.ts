@@ -136,6 +136,32 @@ export function specialSizeMod(size: SizeId): number {
   return -SIZE_AC_MOD[size];
 }
 
+/** Stealth's size modifier (CRB p. 106): smaller creatures hide better. */
+export const STEALTH_SIZE_MOD: Record<SizeId, number> = {
+  fine: 16,
+  dim: 12,
+  tiny: 8,
+  sm: 4,
+  med: 0,
+  lg: -4,
+  huge: -8,
+  grg: -12,
+  col: -16,
+};
+
+/** Fly's size modifier (CRB p. 97), independent of the Stealth table above. */
+export const FLY_SIZE_MOD: Record<SizeId, number> = {
+  fine: 8,
+  dim: 6,
+  tiny: 4,
+  sm: 2,
+  med: 0,
+  lg: -2,
+  huge: -4,
+  grg: -6,
+  col: -8,
+};
+
 /** The save each defense keys off of. */
 export const SAVE_ABILITY: Record<"fort" | "ref" | "will", AbilityId> = {
   fort: "con",

@@ -49,6 +49,18 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-11-22-foundry-import",
+    date: "2026-11-22",
+    title: "Import characters from Foundry VTT",
+    note: "Settings can now import a Pathfinder 1e character exported from Foundry VTT (Export Data on the actor). Race, classes, feats, skills, gear, armor, active buffs, conditions, and hit points come across; anything that doesn't match is listed so you can add it by hand.",
+  },
+  {
+    id: "2026-11-22-check-fixes",
+    date: "2026-11-22",
+    title: "CMB, initiative, Haste, and size fixes",
+    note: "CMB now counts bonuses and penalties on attack rolls, such as Bless or shaken. Shaken, sickened, and negative levels lower initiative. Haste's AC bonus is lost when flat-footed, counts toward CMD, and its speed boost applies. Small characters get their Stealth and Fly bonus, and enlarged ones the matching penalty.",
+  },
+  {
     id: "2026-11-21-items-on-play",
     date: "2026-11-21",
     title: "Drink potions and spend wand charges from the Play tab",

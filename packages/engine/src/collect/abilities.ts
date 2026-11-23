@@ -75,16 +75,17 @@ export function collectAbilityDamage(ctx: CollectContext): void {
 /** Negative levels (live state). */
 export function collectNegativeLevels(ctx: CollectContext): void {
   const { doc, out } = ctx;
-  // Each negative level (temporary + permanent combined): -1 attack, -1 all
-  // saves, -1 skill checks, -5 max HP. Injected as synthetic untyped penalties
-  // through the same `attack`/`allSavingThrows`/`skills`/`hp` targets that
+  // Each negative level (temporary + permanent combined): -1 attack (which
+  // CMB folds in), CMD, initiative, all saves and skill checks, -5 max HP
+  // (CRB p. 562). Injected as synthetic untyped penalties through the targets
   // conditions and buffs already use, so no new consumer wiring is needed.
-  // Ability-check and caster-level penalties are documented gaps — see the
-  // `negativeLevels` doc comment on CharacterDoc.live.
+  // Initiative is the only ability check the sheet shows; the caster-level
+  // penalty is a documented gap — see the `negativeLevels` doc comment on
+  // CharacterDoc.live.
   const negLevels = doc.live.negativeLevels;
   const totalNegLevels = (negLevels?.temporary ?? 0) + (negLevels?.permanent ?? 0);
   if (totalNegLevels > 0) {
-    for (const target of ["attack", "allSavingThrows", "skills"]) {
+    for (const target of ["attack", "cmd", "init", "allSavingThrows", "skills"]) {
       out.push({
         target,
         type: "untyped",

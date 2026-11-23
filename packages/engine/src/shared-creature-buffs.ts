@@ -18,7 +18,7 @@
 import type { AbilityId, ActiveBuff, Change } from "@pf1/schema";
 import { ABILITY_IDS } from "@pf1/schema";
 
-import { acBonusType } from "./ac-bonus-types.js";
+import { acBonusType, isDodgeBonusType } from "./ac-bonus-types.js";
 import { BUFF_CHANGE_PATCHES } from "./buff-effects.js";
 import { tryEvaluateFormula, type RollData } from "./formula.js";
 import type { ScopedSaveModifier } from "./save-categories.js";
@@ -204,7 +204,7 @@ export function routeSharedBuffs(
               ? "shield"
               : ch.target === "nac"
                 ? "natural"
-                : ch.type === "dodge"
+                : isDodgeBonusType(ch.type)
                   ? "dodge"
                   : ch.type === "deflection"
                     ? "deflection"

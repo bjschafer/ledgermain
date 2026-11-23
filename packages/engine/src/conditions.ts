@@ -51,21 +51,27 @@ const CONDITION_LIST: ConditionDef[] = [
   {
     id: "shaken",
     name: "Shaken",
-    summary: "-2 penalty on attack rolls, saving throws, and skill checks.",
-    changes: [u("-2", "attack"), u("-2", "allSavingThrows"), u("-2", "skills")],
+    summary: "-2 penalty on attack rolls, saving throws, skill checks, and ability checks.",
+    changes: [u("-2", "attack"), u("-2", "allSavingThrows"), u("-2", "skills"), u("-2", "init")],
   },
   {
     id: "frightened",
     name: "Frightened",
-    summary: "-2 on attacks, saves, and skill checks; must flee from the source if able.",
-    changes: [u("-2", "attack"), u("-2", "allSavingThrows"), u("-2", "skills")],
+    summary: "-2 on attacks, saves, skill and ability checks; must flee from the source if able.",
+    changes: [u("-2", "attack"), u("-2", "allSavingThrows"), u("-2", "skills"), u("-2", "init")],
     contextNotes: [{ target: "allChecks", text: "Must flee from the source of fear if able." }],
   },
   {
     id: "sickened",
     name: "Sickened",
     summary: "-2 on attack rolls, weapon damage, saving throws, and skill/ability checks.",
-    changes: [u("-2", "attack"), u("-2", "allSavingThrows"), u("-2", "skills"), u("-2", "wdamage")],
+    changes: [
+      u("-2", "attack"),
+      u("-2", "allSavingThrows"),
+      u("-2", "skills"),
+      u("-2", "wdamage"),
+      u("-2", "init"),
+    ],
   },
   {
     id: "fatigued",
@@ -92,7 +98,13 @@ const CONDITION_LIST: ConditionDef[] = [
     id: "grappled",
     name: "Grappled",
     summary: "-4 to Dexterity, -2 on attacks and most checks; cannot move freely.",
-    changes: [u("-4", "dex"), u("-2", "attack")],
+    // The attack penalty also reaches CMB, but RAW exempts checks to grapple
+    // or escape (CRB p. 567); the scoped +2 cancels it on the grapple line.
+    changes: [
+      u("-4", "dex"),
+      u("-2", "attack"),
+      { formula: "2", target: "cmb", type: "untyped", maneuverCategories: ["grapple"] },
+    ],
     contextNotes: [
       {
         target: "allChecks",
@@ -221,8 +233,8 @@ const CONDITION_LIST: ConditionDef[] = [
   {
     id: "panicked",
     name: "Panicked",
-    summary: "-2 on saves/skills; drops items and flees; cannot attack.",
-    changes: [u("-2", "allSavingThrows"), u("-2", "skills")],
+    summary: "-2 on saves, skill and ability checks; drops items and flees; cannot attack.",
+    changes: [u("-2", "allSavingThrows"), u("-2", "skills"), u("-2", "init")],
     contextNotes: [{ target: "allChecks", text: "Drops held items and flees; cannot attack." }],
   },
   {
