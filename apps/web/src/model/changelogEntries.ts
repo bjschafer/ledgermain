@@ -52,7 +52,7 @@ export const CHANGELOG: readonly ChangelogEntry[] = [
     id: "2026-11-22-foundry-import",
     date: "2026-11-22",
     title: "Import characters from Foundry VTT",
-    note: "Settings can now import a Pathfinder 1e character exported from Foundry VTT (Export Data on the actor). Race, classes, feats, skills, gear, armor, active buffs, conditions, and hit points come across; anything that doesn't match is listed so you can add it by hand.",
+    note: "Settings can now import a Pathfinder 1e character exported from Foundry VTT (Export Data on the actor). Race and alternate racial traits, classes and archetypes, feats, traits, skills, gear, armor, active buffs, conditions, and hit points come across; anything that doesn't match is listed so you can add it by hand.",
   },
   {
     id: "2026-11-22-check-fixes",

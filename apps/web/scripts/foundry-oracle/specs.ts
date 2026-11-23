@@ -46,6 +46,19 @@ export interface OracleSpec {
   feats: string[];
   skills: Record<string, number>;
   items: OracleItem[];
+  /**
+   * An archetype from `pf1e-archetypes`. Foundry doesn't apply one: the item
+   * pulls in none of its features and removes nothing, so the spec names the
+   * archetype features gained by this level and the base class features they
+   * replace, both read off the archetype's rules text.
+   */
+  archetype?: { name: string; features: string[]; replaces: string[] };
+  /**
+   * Alternate racial traits, by `pf-content.pf-racial-traits` name, and the
+   * race item changes (by Foundry target) of the standard traits they
+   * replace. As with archetypes, Foundry leaves the replaced trait in place.
+   */
+  racialTraits?: { names: string[]; replacesRaceChanges: string[] };
   scenarios: Record<string, OracleScenario>;
 }
 
@@ -144,6 +157,50 @@ export const ORACLE_SPECS: OracleSpec[] = [
         ],
       },
       conditions: { conditions: ["sickened", "entangled"] },
+    },
+  },
+  {
+    id: "half-orc-two-handed-fighter-5",
+    race: "Half-Orc",
+    flexibleAbility: "str",
+    alignment: "cn",
+    abilities: { str: 16, dex: 13, con: 14, int: 10, wis: 12, cha: 8 },
+    classes: [{ name: "Fighter", level: 5, hp: 34 }],
+    feats: [
+      "Power Attack",
+      "Cleave",
+      "Toughness",
+      "Iron Will",
+      "Great Fortitude",
+      "Improved Initiative",
+    ],
+    skills: { climb: 5, acrobatics: 5, intimidate: 5 },
+    items: [{ pack: "pf1.armors-and-shields", name: "Breastplate", equipped: true }],
+    // APG p. 108: Shattering Strike replaces bravery, Overhand Chop replaces
+    // armor training 1, and the archetype's weapon training replaces the base one.
+    archetype: {
+      name: "Fighter (Two-Handed Fighter)",
+      features: [
+        "Shattering Strike (Two-Handed Fighter)",
+        "Overhand Chop (Two-Handed Fighter)",
+        "Weapon Training (Two-Handed Fighter)",
+      ],
+      replaces: ["Bravery", "Armor Training", "Weapon Training"],
+    },
+    // ARG p. 52: Rock Climber replaces Intimidating, the race's +2 Intimidate.
+    racialTraits: {
+      names: ["Sacred Tattoo", "Rock Climber"],
+      replacesRaceChanges: ["skill.intimidate"],
+    },
+    scenarios: {
+      base: {},
+      buffs: {
+        buffs: [
+          { name: "Heroism", level: 5 },
+          { name: "Shield of Faith", level: 5 },
+        ],
+      },
+      conditions: { conditions: ["frightened"] },
     },
   },
 ];

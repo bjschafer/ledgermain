@@ -234,7 +234,7 @@ export function racialTraitConflictReason(hits: StandardTraitClaimConflict[]): s
  */
 
 /** Loose match for de-duping a vendored entry against a hand-authored one by name. */
-function normalizeTraitName(name: string): string {
+export function normalizeTraitName(name: string): string {
   return name
     .replace(/\s*\([^)]*\)\s*$/, "") // strip a trailing "(Sylph)"/"(Human)" disambiguator
     .toLowerCase()

@@ -56,6 +56,12 @@
         },
       };
     }
+    // Alternate racial traits retire the standard trait they replace; Foundry
+    // keeps it on the race item unless the player deletes that change.
+    const retired = spec.racialTraits?.replacesRaceChanges ?? [];
+    race.system.changes = Object.fromEntries(
+      Object.entries(race.system.changes ?? {}).filter(([, c]) => !retired.includes(c.target)),
+    );
     await actor.createEmbeddedDocuments("Item", [race]);
 
     for (const cls of spec.classes) {
@@ -65,6 +71,28 @@
       item.system.hp = cls.hp;
       // oxlint-disable-next-line no-await-in-loop -- see above
       await actor.createEmbeddedDocuments("Item", [item]);
+    }
+
+    if (spec.archetype) {
+      const { name, features, replaces } = spec.archetype;
+      const added = await Promise.all([
+        fromPack("pf1e-archetypes.pf-archetypes", name),
+        ...features.map((f) => fromPack("pf1e-archetypes.pf-arch-features", f)),
+      ]);
+      const replaced = replaces.map((r) => {
+        const item = actor.items.find((i) => i.type === "feat" && i.name === r);
+        if (!item) throw new Error(`${spec.id}: no class feature "${r}" to replace`);
+        return item.id;
+      });
+      await actor.deleteEmbeddedDocuments("Item", replaced);
+      await actor.createEmbeddedDocuments("Item", added);
+    }
+
+    if (spec.racialTraits) {
+      const traits = await Promise.all(
+        spec.racialTraits.names.map((t) => fromPack("pf-content.pf-racial-traits", t)),
+      );
+      await actor.createEmbeddedDocuments("Item", traits);
     }
 
     const feats = await Promise.all(spec.feats.map((name) => fromPack("pf1.feats", name)));
@@ -198,7 +226,10 @@
 
   async function run(specs) {
     const f = await folder();
-    const stale = game.actors.filter((x) => x.folder?.id === f.id).map((x) => x.id);
+    const prefixes = specs.map((s) => `${s.id} [`);
+    const stale = game.actors
+      .filter((x) => x.folder?.id === f.id && prefixes.some((p) => x.name.startsWith(p)))
+      .map((x) => x.id);
     if (stale.length) await Actor.deleteDocuments(stale);
 
     const out = {};

@@ -18,7 +18,8 @@ export interface Divergence {
   stat: string;
   /**
    * Both numbers, pinned so a change on either side re-fails the test. Left
-   * out only for a systematic departure that covers every case of the stat.
+   * out only for a systematic departure that holds for every scenario (and,
+   * with actor `*`, every fixture) the entry covers.
    */
   values?: { foundry: number; ledgermain: number };
   verdict: "foundry-departs" | "representational";

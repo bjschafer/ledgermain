@@ -38,6 +38,17 @@ describe("importFoundryActor", () => {
     expect(report?.source).toBe("foundry");
   });
 
+  it("maps an archetype by class, and prefers a hand-authored racial trait over its vendored twin", () => {
+    // Sacred Tattoo is in both catalogs; only the hand-authored one retires the
+    // trait it replaces. Rock Climber exists only in the vendored catalog.
+    const { doc } = importFoundryActor(exportOf("half-orc-two-handed-fighter-5"), refData);
+    expect(doc.build.archetypes).toEqual(["fighter:two-handed-fighter"]);
+    expect(doc.build.racialTraits).toEqual(["half-orc-sacred-tattoo"]);
+    expect(doc.build.vendoredRacialTraits?.map((id) => refData.racialTraits[id]!.name)).toEqual([
+      "Rock Climber",
+    ]);
+  });
+
   it("keeps a non-average class HP total as rolls with the same maximum", () => {
     // Average dice are 40 (10 + 6 × 5); the sheet's 58 adds Con 2 × 6 and Toughness 6.
     const actor = exportOf("human-fighter-6");

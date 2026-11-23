@@ -7,9 +7,11 @@
  * committed, and `test/foundryOracle.test.ts` diffs against them.
  *
  * The world must run the pf1 build matching the pinned RefData
- * (`packages/data-pipeline/src/config.ts`), with no modules enabled. Running
- * it deletes and rebuilds the actors in the world's "Ledgermain Oracle"
- * folder.
+ * (`packages/data-pipeline/src/config.ts`), with exactly the pf-content and
+ * pf1e-archetypes modules enabled, built from their pinned commits. Running
+ * it deletes and rebuilds the actors for the specs it runs, in the world's
+ * "Ledgermain Oracle" folder; other specs' actors are left alone, so runs with
+ * different `--only` sets and different GM users can overlap.
  *
  *   bun scripts/foundry-oracle/dump.ts --url http://host:30000 [--user Gamemaster] [--only id,id]
  *
@@ -58,6 +60,17 @@ try {
   const version: unknown = await page.evaluate("[game.system.id, game.system.version]");
   if (!Array.isArray(version) || version[0] !== "pf1" || version[1] !== SYSTEM_VERSION) {
     throw new Error(`World runs ${String(version)}; the pinned RefData is pf1 ${SYSTEM_VERSION}`);
+  }
+  // Archetypes and alternate racial traits come from these two, built from
+  // ARCHETYPE_SHA and PF_CONTENT_SHA; any other active module could change
+  // the numbers Foundry derives.
+  const modules: unknown = await page.evaluate(
+    "game.modules.filter((m) => m.active).map((m) => m.id).sort()",
+  );
+  if (JSON.stringify(modules) !== JSON.stringify(["pf-content", "pf1e-archetypes"])) {
+    throw new Error(
+      `Active modules are ${JSON.stringify(modules)}; the oracle needs exactly pf-content and pf1e-archetypes`,
+    );
   }
 
   await page.evaluate(readFileSync(join(here, "oracle.browser.js"), "utf8"));

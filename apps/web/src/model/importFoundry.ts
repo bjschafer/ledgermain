@@ -6,12 +6,20 @@
  * Unlike the name-matching importers, most of this maps by id: an item copied
  * from a compendium records `_stats.compendiumSource`
  * (`Compendium.pf1.<pack>.Item.<id>`), and RefData is keyed by those same
- * ids. Names are the fallback for items created by hand. Class features and
- * racial traits are skipped rather than imported, since the engine grants
- * them from class level and race; anything else that can't be matched is
- * reported, never guessed.
+ * ids. Names are the fallback for items created by hand. Archetypes are the
+ * exception: RefData keys them `<class tag>:<slug>`, so the archetype item's
+ * name is matched against each of the character's classes. Class features
+ * and standard racial traits are skipped rather than imported, since the
+ * engine grants them from class level, archetype and race; anything else
+ * that can't be matched is reported, never guessed.
  */
-import { CONDITIONS, compute, raceGrantsFlexibleAbility } from "@pf1/engine";
+import {
+  alternateRacialTraitsForRace,
+  CONDITIONS,
+  compute,
+  mergedTraits,
+  raceGrantsFlexibleAbility,
+} from "@pf1/engine";
 import {
   ABILITY_IDS,
   normalizeSkillId,
@@ -34,6 +42,7 @@ import {
   setAlignment,
   setClassLevel,
   setFlexibleAbility,
+  setArchetypes,
   setHpMode,
   setHpRoll,
   setMoney,
@@ -51,6 +60,14 @@ import {
 import { featChoiceDescriptor } from "./feats.js";
 import { localId } from "./ids.js";
 import { SKILL_NAMES } from "./names.js";
+import {
+  hasRacialTrait,
+  hasVendoredRacialTrait,
+  normalizeTraitName,
+  toggleRacialTrait,
+  toggleVendoredRacialTrait,
+} from "./racialTraits.js";
+import { hasTrait, toggleTrait, traitChoiceDescriptor } from "./traits.js";
 
 type Dict = Record<string, unknown>;
 
@@ -79,9 +96,11 @@ interface FoundryItem {
   system: Dict;
   /** RefData id from the item's compendium source, when it has one. */
   sourceId?: string;
+  /** The source compendium's pack name (`feats`, `pf-archetypes`). */
+  sourcePack?: string;
 }
 
-const COMPENDIUM_SOURCE = /^Compendium\.[^.]+\.[^.]+\.Item\.([^.]+)$/;
+const COMPENDIUM_SOURCE = /^Compendium\.[^.]+\.([^.]+)\.Item\.([^.]+)$/;
 
 function readItem(raw: unknown): FoundryItem | undefined {
   if (!isDict(raw)) return undefined;
@@ -94,8 +113,26 @@ function readItem(raw: unknown): FoundryItem | undefined {
     type,
     name,
     system: isDict(raw.system) ? raw.system : {},
-    ...(source ? { sourceId: source[1] } : {}),
+    ...(source ? { sourcePack: source[1], sourceId: source[2] } : {}),
   };
+}
+
+/**
+ * The RefData archetype id for an archetype item named `"Fighter (Two-Handed
+ * Fighter)"`, tried against each of the character's classes. The data
+ * pipeline keys archetypes by class tag plus a slug of that parenthesized name.
+ */
+function archetypeIdFor(itemName: string, doc: CharacterDoc, refData: RefData): string | undefined {
+  const open = itemName.indexOf("(");
+  const bare = open < 0 ? itemName : itemName.slice(open + 1).replace(/\)$/, "");
+  const slug = bare
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+  return doc.identity.classes
+    .map((c) => `${c.tag}:${slug}`)
+    .find((id) => refData.archetypes[id] !== undefined);
 }
 
 /**
@@ -155,6 +192,8 @@ export function importFoundryActor(
   const weaponIdx = lazy(() => buildNameIndex(refData.weapons));
   const buffIdx = lazy(() => buildNameIndex(refData.buffs));
   const classTagIdx = lazy(() => buildClassTagIndex(refData));
+  const traitCatalog = lazy(() => mergedTraits(refData));
+  const traitIdx = lazy(() => buildNameIndex(traitCatalog()));
 
   let doc = createEmptyDoc(localId("import-"));
   const name = str(actor.name);
@@ -227,6 +266,7 @@ export function importFoundryActor(
   let classFeatures = 0;
   let racialTraits = 0;
   let spells = 0;
+  const archetypes: string[] = [];
   for (const item of items) {
     switch (item.type) {
       case "race":
@@ -253,7 +293,36 @@ export function importFoundryActor(
           break;
         }
         if (subType === "racial") {
-          racialTraits++;
+          const mapped = importRacialTrait(doc, item, refData, report);
+          if (mapped) doc = mapped;
+          else racialTraits++;
+          break;
+        }
+        if (subType === "trait") {
+          const traitId = resolve(item, traitCatalog(), traitIdx);
+          if (!traitId) {
+            report.unmapped.push(`Trait "${item.name}" not found in reference data; not added.`);
+            break;
+          }
+          if (!hasTrait(doc, traitId)) doc = toggleTrait(doc, traitId);
+          const traitName = traitCatalog()[traitId]!.name;
+          if (traitChoiceDescriptor(traitId)) {
+            report.unmapped.push(`Trait: ${traitName} needs its choice picked on the Traits step.`);
+          } else {
+            report.mapped.push(`Trait: ${traitName}`);
+          }
+          break;
+        }
+        if (item.sourcePack === "pf-archetypes") {
+          const archetypeId = archetypeIdFor(item.name, doc, refData);
+          if (archetypeId) {
+            archetypes.push(archetypeId);
+            report.mapped.push(`Archetype: ${item.name}`);
+          } else {
+            report.unmapped.push(
+              `Archetype "${item.name}" not found for this character's classes; pick it on the Classes step.`,
+            );
+          }
           break;
         }
         if (subType !== "feat") {
@@ -365,9 +434,10 @@ export function importFoundryActor(
         }
     }
   }
+  if (archetypes.length > 0) doc = setArchetypes(doc, archetypes, refData);
   if (classFeatures > 0) {
     report.mapped.push(
-      `${classFeatures} class features come from class levels here, not the import.`,
+      `${classFeatures} class and archetype features come from class levels here, not the import.`,
     );
   }
   if (racialTraits > 0) {
