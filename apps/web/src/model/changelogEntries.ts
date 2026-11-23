@@ -49,6 +49,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-11-22-armor-speed-fixes",
+    date: "2026-11-22",
+    title: "Armor, speed, and Divine Power fixes",
+    note: "Fighters with armor training now move at full speed in medium armor, and in heavy armor from 7th level. Armor training lowers your armor's check penalty but not your shield's. Mithral counts as masterwork, so its check penalty drops by 1 more, but mithral full plate still needs heavy armor proficiency. Speed bonuses of the same type no longer stack, so haste on a monk adds only what beats fast movement. Divine Power's bonus now reaches Strength skills.",
+  },
+  {
     id: "2026-11-22-foundry-import",
     date: "2026-11-22",
     title: "Import characters from Foundry VTT",

@@ -1,0 +1,2863 @@
+{
+  "foundry": { "core": "14.370", "system": "11.11" },
+  "spec": {
+    "id": "human-oracle-6",
+    "race": "Human",
+    "flexibleAbility": "cha",
+    "alignment": "cg",
+    "abilities": { "str": 10, "dex": 14, "con": 14, "int": 10, "wis": 10, "cha": 16 },
+    "classes": [{ "name": "Oracle", "level": 6, "hp": 33 }],
+    "feats": ["Toughness", "Iron Will", "Great Fortitude", "Lightning Reflexes"],
+    "skills": { "diplomacy": 6, "heal": 6, "knowledge.religion": 6, "spellcraft": 6 },
+    "items": [
+      { "pack": "pf1.armors-and-shields", "name": "Chain Shirt", "equipped": true, "enh": 1 },
+      { "pack": "pf1.items", "name": "Cloak of Resistance +1", "equipped": true },
+      { "pack": "pf1.items", "name": "Headband of Alluring Charisma +2", "equipped": true }
+    ],
+    "scenarios": {
+      "base": {},
+      "buffs": {
+        "buffs": [
+          { "name": "Divine Favor", "level": 6 },
+          { "name": "Shield of Faith", "level": 6 },
+          { "name": "Eagle's Splendor", "level": 6 }
+        ]
+      },
+      "conditions": { "conditions": ["shaken"] },
+      "negativeLevels": { "negativeLevels": 1 }
+    }
+  },
+  "scenarios": {
+    "base": {
+      "actor": {
+        "name": "human-oracle-6 [base]",
+        "type": "character",
+        "folder": "GuYuyoqdabfe4xZV",
+        "_id": "mIFtCJcfVvUBDs9g",
+        "system": {
+          "abilities": {
+            "str": { "value": 10 },
+            "dex": { "value": 14 },
+            "con": { "value": 14 },
+            "int": { "value": 10 },
+            "wis": { "value": 10 },
+            "cha": { "value": 16 }
+          },
+          "attributes": {
+            "savingThrows": {
+              "fort": { "ability": "con" },
+              "ref": { "ability": "dex" },
+              "will": { "ability": "wis" }
+            },
+            "hp": { "temp": 0, "nonlethal": 0, "offset": 0 },
+            "wounds": { "offset": 0 },
+            "vigor": { "temp": 0, "offset": 0 }
+          },
+          "details": { "notes": {}, "xp": { "value": 0 }, "alignment": "cg" },
+          "traits": { "size": "med", "ageCategory": "adult", "stature": "tall" },
+          "currency": {},
+          "altCurrency": {}
+        },
+        "items": [
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.Vu12od1CXmFQLeBe" },
+            "name": "Religion",
+            "system": {
+              "ability": "int",
+              "grouping": "knowledge",
+              "identifier": "religion",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.BWeqgXSZvUQl68vt",
+              "rt": true,
+              "sets": ["adventure"],
+              "rank": 6,
+              "acp": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "RRxrXQq9MLBTwK7t",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.gnzkwhUTIwHk8SPK" },
+            "name": "Heal",
+            "system": {
+              "ability": "wis",
+              "identifier": "heal",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.nHbYSOoe1SzqEO9w",
+              "sets": ["adventure"],
+              "rank": 6,
+              "acp": false,
+              "rt": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "8eGTyqHTP685jzmw",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.iLD7iQ9Y6FNLpXZc" },
+            "name": "Spellcraft",
+            "system": {
+              "ability": "int",
+              "identifier": "spellcraft",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.VRD7jxiIAxKPt6EF",
+              "rt": true,
+              "sets": ["adventure"],
+              "rank": 6,
+              "acp": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "68bobUm1CTHsOwhB",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.tm41rxa5wPTNjqTb" },
+            "name": "Diplomacy",
+            "system": {
+              "ability": "cha",
+              "identifier": "diplomacy",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.uB9Fy36RUjibxqvt",
+              "sets": ["adventure"],
+              "rank": 6,
+              "acp": false,
+              "rt": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "kzYOjjraDHTa7rkr",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.races.Item.e6IaBxKgMxy1yKlr" },
+            "folder": "RWSoA7Fj9yqo0y9U",
+            "name": "Human",
+            "system": {
+              "changes": {
+                "ahb0k14u": {
+                  "_id": "ahb0k14u",
+                  "formula": "@attributes.hd.total",
+                  "target": "bonusSkillRanks",
+                  "type": "untyped"
+                },
+                "ywxkp0hu": {
+                  "_id": "ywxkp0hu",
+                  "formula": "1",
+                  "target": "bonusFeats",
+                  "type": "untyped"
+                },
+                "lmflex01": { "_id": "lmflex01", "formula": "2", "target": "cha", "type": "racial" }
+              },
+              "creatureSubtypes": ["human"],
+              "creatureTypes": ["humanoid"],
+              "languages": ["common"],
+              "size": "med",
+              "sources": [{ "id": "PZO1110", "pages": "27" }],
+              "speeds": { "land": 30 },
+              "tags": [
+                "Core",
+                "Western (Arcadia)",
+                "Eastern (Casmaron)",
+                "Northern (Crown of the World)",
+                "Southern (Garund)"
+              ]
+            },
+            "type": "race",
+            "effects": [],
+            "flags": {},
+            "_id": "tgHAoh0e4NAruN1r",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.classes.Item.5S0u8yFcP861wgd1" },
+            "name": "Oracle",
+            "system": {
+              "armorProf": ["lgt", "med", "shl"],
+              "bab": "med",
+              "casting": {
+                "ability": "cha",
+                "cantrips": true,
+                "domain": 0,
+                "progression": "high",
+                "spells": "divine",
+                "type": "spontaneous"
+              },
+              "classSkills": [
+                "artistry",
+                "craft",
+                "diplomacy",
+                "heal",
+                "knowledge.history",
+                "knowledge.planes",
+                "knowledge.religion",
+                "lore",
+                "profession",
+                "senseMotive",
+                "spellcraft"
+              ],
+              "hd": 8,
+              "level": 6,
+              "links": {
+                "supplements": [
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.ZhQM4K4dqStS6qRn" },
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.kkVnlOkjhww8MoHc" },
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.adu4NROFqgwv70sw" },
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.RaFl9SpbAlXqhsDk" },
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.72r8mMxzMNWpdt0D" },
+                  { "level": 4, "uuid": "Compendium.pf1.class-abilities.Item.dopWa3n4mgTGpTYi" },
+                  { "level": 20, "uuid": "Compendium.pf1.class-abilities.Item.8vF0UoXribL1DOG2" }
+                ]
+              },
+              "savingThrows": {
+                "fort": { "value": "low" },
+                "ref": { "value": "low" },
+                "will": { "value": "high" }
+              },
+              "skillsPerLevel": 4,
+              "sources": [{ "id": "PZO1115", "pages": "42-54" }],
+              "subType": "base",
+              "tag": "oracle",
+              "wealth": "3d6 * 10",
+              "weaponProf": ["simple"],
+              "hp": 33
+            },
+            "type": "class",
+            "effects": [],
+            "folder": null,
+            "flags": {
+              "pf1": {
+                "links": {
+                  "classAssociations": {
+                    "3yRDhALxSPsSmDEy": 1,
+                    "8tQjNuIDTkbYVVHE": 1,
+                    "sxMNgCBGRBnRhdhm": 1,
+                    "twEmTqrsszGmP6pl": 1,
+                    "8pg5CE5WAMSuKwkc": 1,
+                    "5824QMTsz3nf9Sdo": 4
+                  }
+                }
+              }
+            },
+            "_id": "wi80KBM3Sg2cAdLl",
+            "sort": 0
+          },
+          {
+            "name": "Oracle",
+            "type": "spellcasting",
+            "system": {
+              "identifier": "oracle",
+              "kind": "divine",
+              "class": "oracle",
+              "type": "spontaneous",
+              "scale": "high",
+              "ability": "cha",
+              "asf": { "enabled": false },
+              "cantrips": { "enabled": true },
+              "slots": { "domain": { "formula": 0 }, "auto": true, "ability": { "auto": true } },
+              "cl": { "formula": "" },
+              "casts": {},
+              "preparation": {},
+              "concentration": {},
+              "dc": {},
+              "spellPoints": { "enabled": false, "offset": 0 },
+              "levels": {
+                "0": {},
+                "1": {},
+                "2": {},
+                "3": {},
+                "4": {},
+                "5": {},
+                "6": {},
+                "7": {},
+                "8": {},
+                "9": {}
+              },
+              "restrictions": []
+            },
+            "_id": "tEAjP8inXk7Tglji",
+            "effects": [],
+            "folder": null,
+            "sort": 0,
+            "flags": {},
+            "_stats": { "compendiumSource": null }
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.ZhQM4K4dqStS6qRn"
+            },
+            "name": "Mystery",
+            "system": {
+              "associations": { "classes": ["Oracle"] },
+              "sources": [{ "id": "PZO1115", "pages": "43" }],
+              "subType": "classFeat",
+              "class": "oracle",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 100000,
+            "_id": "3yRDhALxSPsSmDEy",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.kkVnlOkjhww8MoHc"
+            },
+            "name": "Oracle's Curse",
+            "system": {
+              "abilityType": "ex",
+              "associations": { "classes": ["Oracle"] },
+              "sources": [{ "id": "PZO1115", "pages": "43-44" }],
+              "subType": "classFeat",
+              "class": "oracle",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 200000,
+            "_id": "8tQjNuIDTkbYVVHE",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.adu4NROFqgwv70sw"
+            },
+            "name": "Revelation",
+            "system": {
+              "associations": { "classes": ["Oracle"] },
+              "sources": [{ "id": "PZO1115", "pages": "45" }],
+              "subType": "classFeat",
+              "class": "oracle",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 300000,
+            "_id": "sxMNgCBGRBnRhdhm",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.RaFl9SpbAlXqhsDk"
+            },
+            "name": "Orisons",
+            "system": {
+              "associations": {
+                "classes": ["Cleric", "Druid", "Inquisitor", "Oracle", "Shaman", "Warpriest"]
+              },
+              "sources": [
+                { "id": "PZO1110", "pages": "38, 48" },
+                { "id": "PZO1115", "pages": "38, 42" },
+                { "id": "PZO1129", "pages": "35, 60" }
+              ],
+              "subType": "classFeat",
+              "class": "oracle",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 400000,
+            "_id": "twEmTqrsszGmP6pl",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.72r8mMxzMNWpdt0D"
+            },
+            "name": "Oracle Spells",
+            "system": {
+              "associations": { "classes": ["Oracle"] },
+              "sources": [{ "id": "PZO1115", "pages": "42" }],
+              "subType": "classFeat",
+              "class": "oracle",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 500000,
+            "_id": "8pg5CE5WAMSuKwkc",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.dopWa3n4mgTGpTYi"
+            },
+            "name": "Exchange Spell (High)",
+            "system": {
+              "associations": { "classes": ["Oracle", "Psychic", "Sorcerer"] },
+              "sources": [{ "id": "PZO1110", "pages": "71" }],
+              "subType": "classFeat",
+              "class": "oracle",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 600000,
+            "_id": "5824QMTsz3nf9Sdo",
+            "folder": null
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.8snLqsJN4LLL00Nq" },
+            "name": "Toughness",
+            "system": {
+              "changes": {
+                "bl5pemy2": {
+                  "_id": "bl5pemy2",
+                  "formula": "max(3, @attributes.hd.total)",
+                  "target": "mhp",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "116, 135" }],
+              "subType": "feat",
+              "tags": ["General", "Defensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "EgXqUZtCHJSYxhRw",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.iAbIGhm7T2OK9Brt" },
+            "name": "Iron Will",
+            "system": {
+              "changes": {
+                "vafl2kz4": {
+                  "_id": "vafl2kz4",
+                  "formula": "2",
+                  "target": "will",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "115, 129" }],
+              "subType": "feat",
+              "tags": ["General", "Saving Throw"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "SiOLZn5v5Ii7gEiq",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.fVRnBIHR4Jq6btvm" },
+            "name": "Great Fortitude",
+            "system": {
+              "changes": {
+                "0rubibb4": {
+                  "_id": "0rubibb4",
+                  "formula": "2",
+                  "target": "fort",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "115, 124" }],
+              "subType": "feat",
+              "tags": ["General", "Saving Throw", "Defensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "Lzve3SFSqhKJbkOr",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.0bZf3SDkvVOe2ujH" },
+            "name": "Lightning Reflexes",
+            "system": {
+              "changes": {
+                "ni86uxwa": {
+                  "_id": "ni86uxwa",
+                  "formula": "2",
+                  "target": "ref",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "115, 130" }],
+              "subType": "feat",
+              "tags": ["General", "Saving Throw"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "EIV8Pifbjyz6Sw5l",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.armors-and-shields.Item.iGu21zy6QtroUZ4O"
+            },
+            "folder": "LQyo9lDGQU29eyig",
+            "name": "Chain Shirt",
+            "system": {
+              "armor": {
+                "acp": 2,
+                "dex": 4,
+                "material": { "base": { "value": "steel" }, "addon": [] },
+                "value": 4,
+                "enh": 1,
+                "alignments": {}
+              },
+              "baseTypes": ["Chain Shirt"],
+              "equipmentSubtype": "lightArmor",
+              "equipped": true,
+              "hardness": 10,
+              "hp": { "base": 20 },
+              "price": { "base": 100, "unit": "gp" },
+              "quantity": 1,
+              "slot": "armor",
+              "sources": [{ "id": "PZO1110", "pages": "150, 151" }],
+              "spellFailure": 20,
+              "subType": "armor",
+              "weight": { "value": 25 },
+              "mods": {}
+            },
+            "type": "equipment",
+            "effects": [],
+            "flags": {},
+            "_id": "Irtu4Ki2xwHNuhH3",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.items.Item.MrxwYWWezbJTZLog" },
+            "folder": "TQir6rREbQbhFUtK",
+            "name": "Cloak of Resistance +1",
+            "system": {
+              "armor": {
+                "material": {
+                  "base": { "value": "leather" },
+                  "normal": { "value": "leather" },
+                  "addon": []
+                },
+                "alignments": {}
+              },
+              "aura": { "school": "abj" },
+              "changes": {
+                "7okw4xq4": {
+                  "_id": "7okw4xq4",
+                  "formula": "1",
+                  "target": "allSavingThrows",
+                  "type": "resist"
+                }
+              },
+              "cl": 5,
+              "creation": {
+                "cost": { "unit": "gp", "value": 500 },
+                "description": "<p>@UUID[Compendium.pf1.feats.Item.tD76K8QGco9scT0r]{Craft Wondrous Item}, @UUID[Compendium.pf1.spells.Item.g8j278xcu2s1zlwy]{resistance}, creator's caster level must be at least three times the cloak's bonus</p>"
+              },
+              "equipmentSubtype": "lightArmor",
+              "equipped": true,
+              "hp": { "base": 10 },
+              "price": { "base": 1000, "unit": "gp" },
+              "quantity": 1,
+              "resizing": true,
+              "slot": "shoulders",
+              "sources": [
+                { "id": "PZO1123", "pages": "264" },
+                { "id": "PZO1110", "pages": "507" }
+              ],
+              "subType": "wondrous",
+              "unidentified": { "name": "Cloak", "price": { "base": 0, "unit": "gp" } },
+              "weight": { "value": 1 },
+              "mods": {}
+            },
+            "type": "equipment",
+            "effects": [],
+            "flags": {},
+            "_id": "ZdS9315Urn2sxzX3",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.items.Item.sv1iKPTOpaiZMOWk" },
+            "folder": "LhglMTF2yolyMayX",
+            "name": "Headband of Alluring Charisma +2",
+            "system": {
+              "armor": {
+                "material": {
+                  "base": { "value": "leather" },
+                  "normal": { "value": "leather" },
+                  "addon": []
+                },
+                "alignments": {}
+              },
+              "aura": { "school": "trs" },
+              "changes": {
+                "3829rluc": { "_id": "3829rluc", "formula": "2", "target": "cha", "type": "enh" }
+              },
+              "cl": 8,
+              "creation": {
+                "cost": { "unit": "gp", "value": 2000 },
+                "description": "<p>@UUID[Compendium.pf1.feats.Item.tD76K8QGco9scT0r]{Craft Wondrous Item}, @UUID[Compendium.pf1.spells.Item.d4oubr5bdoo8w1ev]{Eagle's Splendor}</p>"
+              },
+              "equipmentSubtype": "lightArmor",
+              "equipped": true,
+              "hp": { "base": 10 },
+              "price": { "base": 4000, "unit": "gp" },
+              "quantity": 1,
+              "resizing": true,
+              "slot": "headband",
+              "sources": [
+                { "id": "PZO1123", "pages": "248" },
+                { "id": "PZO1110", "pages": "516" }
+              ],
+              "subType": "wondrous",
+              "unidentified": { "name": "Headband", "price": { "base": 0, "unit": "gp" } },
+              "weight": { "value": 1 },
+              "mods": {}
+            },
+            "type": "equipment",
+            "effects": [],
+            "flags": {},
+            "_id": "Vfxf2ICqZJzaMxQk",
+            "sort": 0
+          }
+        ],
+        "effects": [],
+        "sort": 0,
+        "flags": {}
+      },
+      "derived": {
+        "abilities": {
+          "str": { "total": 10, "mod": 0 },
+          "dex": { "total": 14, "mod": 2 },
+          "con": { "total": 14, "mod": 2 },
+          "int": { "total": 10, "mod": 0 },
+          "wis": { "total": 10, "mod": 0 },
+          "cha": { "total": 20, "mod": 5 }
+        },
+        "ac": { "normal": 17, "touch": 12, "flatFooted": 15 },
+        "cmb": 4,
+        "cmd": { "total": 16, "flatFooted": 14 },
+        "saves": { "fort": 7, "ref": 7, "will": 8 },
+        "init": 2,
+        "bab": 4,
+        "attack": { "melee": 4, "ranged": 6 },
+        "hp": { "max": 51 },
+        "speed": { "land": 30 },
+        "sr": 0,
+        "acp": 1,
+        "skills": {
+          "perception": 0,
+          "knowledge": 0,
+          "knowledge.geography": 0,
+          "knowledge.nobility": 0,
+          "knowledge.local": 0,
+          "knowledge.dungeoneering": 0,
+          "knowledge.religion": 9,
+          "knowledge.nature": 0,
+          "knowledge.arcana": 0,
+          "knowledge.history": 0,
+          "knowledge.planes": 0,
+          "knowledge.engineering": 0,
+          "intimidate": 5,
+          "appraise": 0,
+          "profession": 0,
+          "fly": 1,
+          "disableDevice": 1,
+          "swim": -1,
+          "escapeArtist": 1,
+          "linguistics": 0,
+          "acrobatics": 1,
+          "useMagicDevice": 5,
+          "climb": -1,
+          "sleightOfHand": 1,
+          "handleAnimal": 5,
+          "heal": 9,
+          "spellcraft": 9,
+          "ride": 1,
+          "stealth": 1,
+          "survival": 0,
+          "craft": 0,
+          "disguise": 5,
+          "diplomacy": 14,
+          "senseMotive": 5,
+          "perform": 5,
+          "bluff": 5
+        }
+      }
+    },
+    "buffs": {
+      "actor": {
+        "name": "human-oracle-6 [buffs]",
+        "type": "character",
+        "folder": "GuYuyoqdabfe4xZV",
+        "_id": "93kA19VgDwhM5pY7",
+        "system": {
+          "abilities": {
+            "str": { "value": 10 },
+            "dex": { "value": 14 },
+            "con": { "value": 14 },
+            "int": { "value": 10 },
+            "wis": { "value": 10 },
+            "cha": { "value": 16 }
+          },
+          "attributes": {
+            "savingThrows": {
+              "fort": { "ability": "con" },
+              "ref": { "ability": "dex" },
+              "will": { "ability": "wis" }
+            },
+            "hp": { "temp": 0, "nonlethal": 0, "offset": 0 },
+            "wounds": { "offset": 0 },
+            "vigor": { "temp": 0, "offset": 0 }
+          },
+          "details": { "notes": {}, "xp": { "value": 0 }, "alignment": "cg" },
+          "traits": { "size": "med", "ageCategory": "adult", "stature": "tall" },
+          "currency": {},
+          "altCurrency": {}
+        },
+        "items": [
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.Vu12od1CXmFQLeBe" },
+            "name": "Religion",
+            "system": {
+              "ability": "int",
+              "grouping": "knowledge",
+              "identifier": "religion",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.BWeqgXSZvUQl68vt",
+              "rt": true,
+              "sets": ["adventure"],
+              "rank": 6,
+              "acp": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "4TZ7TgwUqDMFnPVi",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.gnzkwhUTIwHk8SPK" },
+            "name": "Heal",
+            "system": {
+              "ability": "wis",
+              "identifier": "heal",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.nHbYSOoe1SzqEO9w",
+              "sets": ["adventure"],
+              "rank": 6,
+              "acp": false,
+              "rt": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "juKACpDfANk8JzZL",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.iLD7iQ9Y6FNLpXZc" },
+            "name": "Spellcraft",
+            "system": {
+              "ability": "int",
+              "identifier": "spellcraft",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.VRD7jxiIAxKPt6EF",
+              "rt": true,
+              "sets": ["adventure"],
+              "rank": 6,
+              "acp": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "xKSwbIlobMAOJXJQ",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.tm41rxa5wPTNjqTb" },
+            "name": "Diplomacy",
+            "system": {
+              "ability": "cha",
+              "identifier": "diplomacy",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.uB9Fy36RUjibxqvt",
+              "sets": ["adventure"],
+              "rank": 6,
+              "acp": false,
+              "rt": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "1jGZnqGra5WzyAMl",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.races.Item.e6IaBxKgMxy1yKlr" },
+            "folder": "RWSoA7Fj9yqo0y9U",
+            "name": "Human",
+            "system": {
+              "changes": {
+                "ahb0k14u": {
+                  "_id": "ahb0k14u",
+                  "formula": "@attributes.hd.total",
+                  "target": "bonusSkillRanks",
+                  "type": "untyped"
+                },
+                "ywxkp0hu": {
+                  "_id": "ywxkp0hu",
+                  "formula": "1",
+                  "target": "bonusFeats",
+                  "type": "untyped"
+                },
+                "lmflex01": { "_id": "lmflex01", "formula": "2", "target": "cha", "type": "racial" }
+              },
+              "creatureSubtypes": ["human"],
+              "creatureTypes": ["humanoid"],
+              "languages": ["common"],
+              "size": "med",
+              "sources": [{ "id": "PZO1110", "pages": "27" }],
+              "speeds": { "land": 30 },
+              "tags": [
+                "Core",
+                "Western (Arcadia)",
+                "Eastern (Casmaron)",
+                "Northern (Crown of the World)",
+                "Southern (Garund)"
+              ]
+            },
+            "type": "race",
+            "effects": [],
+            "flags": {},
+            "_id": "bFTpjbZU9aZFWp8X",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.classes.Item.5S0u8yFcP861wgd1" },
+            "name": "Oracle",
+            "system": {
+              "armorProf": ["lgt", "med", "shl"],
+              "bab": "med",
+              "casting": {
+                "ability": "cha",
+                "cantrips": true,
+                "domain": 0,
+                "progression": "high",
+                "spells": "divine",
+                "type": "spontaneous"
+              },
+              "classSkills": [
+                "artistry",
+                "craft",
+                "diplomacy",
+                "heal",
+                "knowledge.history",
+                "knowledge.planes",
+                "knowledge.religion",
+                "lore",
+                "profession",
+                "senseMotive",
+                "spellcraft"
+              ],
+              "hd": 8,
+              "level": 6,
+              "links": {
+                "supplements": [
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.ZhQM4K4dqStS6qRn" },
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.kkVnlOkjhww8MoHc" },
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.adu4NROFqgwv70sw" },
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.RaFl9SpbAlXqhsDk" },
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.72r8mMxzMNWpdt0D" },
+                  { "level": 4, "uuid": "Compendium.pf1.class-abilities.Item.dopWa3n4mgTGpTYi" },
+                  { "level": 20, "uuid": "Compendium.pf1.class-abilities.Item.8vF0UoXribL1DOG2" }
+                ]
+              },
+              "savingThrows": {
+                "fort": { "value": "low" },
+                "ref": { "value": "low" },
+                "will": { "value": "high" }
+              },
+              "skillsPerLevel": 4,
+              "sources": [{ "id": "PZO1115", "pages": "42-54" }],
+              "subType": "base",
+              "tag": "oracle",
+              "wealth": "3d6 * 10",
+              "weaponProf": ["simple"],
+              "hp": 33
+            },
+            "type": "class",
+            "effects": [],
+            "folder": null,
+            "flags": {
+              "pf1": {
+                "links": {
+                  "classAssociations": {
+                    "PIJkZNHJWnahcibs": 1,
+                    "3o2PB5dmKrYbjzac": 1,
+                    "A347FbcZ1NpN992t": 1,
+                    "ioWOnpJskasIbmHQ": 1,
+                    "T003V6gGvtUK62yJ": 4,
+                    "YAMa86hULB4IbciF": 1
+                  }
+                }
+              }
+            },
+            "_id": "0nayXJcxVzhiybQf",
+            "sort": 0
+          },
+          {
+            "name": "Oracle",
+            "type": "spellcasting",
+            "system": {
+              "identifier": "oracle",
+              "kind": "divine",
+              "class": "oracle",
+              "type": "spontaneous",
+              "scale": "high",
+              "ability": "cha",
+              "asf": { "enabled": false },
+              "cantrips": { "enabled": true },
+              "slots": { "domain": { "formula": 0 }, "auto": true, "ability": { "auto": true } },
+              "cl": { "formula": "" },
+              "casts": {},
+              "preparation": {},
+              "concentration": {},
+              "dc": {},
+              "spellPoints": { "enabled": false, "offset": 0 },
+              "levels": {
+                "0": {},
+                "1": {},
+                "2": {},
+                "3": {},
+                "4": {},
+                "5": {},
+                "6": {},
+                "7": {},
+                "8": {},
+                "9": {}
+              },
+              "restrictions": []
+            },
+            "_id": "tV7IKCkajXvRXbEt",
+            "effects": [],
+            "folder": null,
+            "sort": 0,
+            "flags": {},
+            "_stats": { "compendiumSource": null }
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.ZhQM4K4dqStS6qRn"
+            },
+            "name": "Mystery",
+            "system": {
+              "associations": { "classes": ["Oracle"] },
+              "sources": [{ "id": "PZO1115", "pages": "43" }],
+              "subType": "classFeat",
+              "class": "oracle",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 100000,
+            "_id": "PIJkZNHJWnahcibs",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.kkVnlOkjhww8MoHc"
+            },
+            "name": "Oracle's Curse",
+            "system": {
+              "abilityType": "ex",
+              "associations": { "classes": ["Oracle"] },
+              "sources": [{ "id": "PZO1115", "pages": "43-44" }],
+              "subType": "classFeat",
+              "class": "oracle",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 200000,
+            "_id": "3o2PB5dmKrYbjzac",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.RaFl9SpbAlXqhsDk"
+            },
+            "name": "Orisons",
+            "system": {
+              "associations": {
+                "classes": ["Cleric", "Druid", "Inquisitor", "Oracle", "Shaman", "Warpriest"]
+              },
+              "sources": [
+                { "id": "PZO1110", "pages": "38, 48" },
+                { "id": "PZO1115", "pages": "38, 42" },
+                { "id": "PZO1129", "pages": "35, 60" }
+              ],
+              "subType": "classFeat",
+              "class": "oracle",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 400000,
+            "_id": "A347FbcZ1NpN992t",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.72r8mMxzMNWpdt0D"
+            },
+            "name": "Oracle Spells",
+            "system": {
+              "associations": { "classes": ["Oracle"] },
+              "sources": [{ "id": "PZO1115", "pages": "42" }],
+              "subType": "classFeat",
+              "class": "oracle",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 500000,
+            "_id": "ioWOnpJskasIbmHQ",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.dopWa3n4mgTGpTYi"
+            },
+            "name": "Exchange Spell (High)",
+            "system": {
+              "associations": { "classes": ["Oracle", "Psychic", "Sorcerer"] },
+              "sources": [{ "id": "PZO1110", "pages": "71" }],
+              "subType": "classFeat",
+              "class": "oracle",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 600000,
+            "_id": "T003V6gGvtUK62yJ",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.adu4NROFqgwv70sw"
+            },
+            "name": "Revelation",
+            "system": {
+              "associations": { "classes": ["Oracle"] },
+              "sources": [{ "id": "PZO1115", "pages": "45" }],
+              "subType": "classFeat",
+              "class": "oracle",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 300000,
+            "_id": "YAMa86hULB4IbciF",
+            "folder": null
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.8snLqsJN4LLL00Nq" },
+            "name": "Toughness",
+            "system": {
+              "changes": {
+                "bl5pemy2": {
+                  "_id": "bl5pemy2",
+                  "formula": "max(3, @attributes.hd.total)",
+                  "target": "mhp",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "116, 135" }],
+              "subType": "feat",
+              "tags": ["General", "Defensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "0LEjxy5EMIjdTbEi",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.iAbIGhm7T2OK9Brt" },
+            "name": "Iron Will",
+            "system": {
+              "changes": {
+                "vafl2kz4": {
+                  "_id": "vafl2kz4",
+                  "formula": "2",
+                  "target": "will",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "115, 129" }],
+              "subType": "feat",
+              "tags": ["General", "Saving Throw"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "K90TBPiXWy6YgFA3",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.fVRnBIHR4Jq6btvm" },
+            "name": "Great Fortitude",
+            "system": {
+              "changes": {
+                "0rubibb4": {
+                  "_id": "0rubibb4",
+                  "formula": "2",
+                  "target": "fort",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "115, 124" }],
+              "subType": "feat",
+              "tags": ["General", "Saving Throw", "Defensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "KHRaPfZZaxccesn3",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.0bZf3SDkvVOe2ujH" },
+            "name": "Lightning Reflexes",
+            "system": {
+              "changes": {
+                "ni86uxwa": {
+                  "_id": "ni86uxwa",
+                  "formula": "2",
+                  "target": "ref",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "115, 130" }],
+              "subType": "feat",
+              "tags": ["General", "Saving Throw"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "Uaq6mXXvcO34uOqK",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.items.Item.MrxwYWWezbJTZLog" },
+            "folder": "TQir6rREbQbhFUtK",
+            "name": "Cloak of Resistance +1",
+            "system": {
+              "armor": {
+                "material": {
+                  "base": { "value": "leather" },
+                  "normal": { "value": "leather" },
+                  "addon": []
+                },
+                "alignments": {}
+              },
+              "aura": { "school": "abj" },
+              "changes": {
+                "7okw4xq4": {
+                  "_id": "7okw4xq4",
+                  "formula": "1",
+                  "target": "allSavingThrows",
+                  "type": "resist"
+                }
+              },
+              "cl": 5,
+              "creation": {
+                "cost": { "unit": "gp", "value": 500 },
+                "description": "<p>@UUID[Compendium.pf1.feats.Item.tD76K8QGco9scT0r]{Craft Wondrous Item}, @UUID[Compendium.pf1.spells.Item.g8j278xcu2s1zlwy]{resistance}, creator's caster level must be at least three times the cloak's bonus</p>"
+              },
+              "equipmentSubtype": "lightArmor",
+              "equipped": true,
+              "hp": { "base": 10 },
+              "price": { "base": 1000, "unit": "gp" },
+              "quantity": 1,
+              "resizing": true,
+              "slot": "shoulders",
+              "sources": [
+                { "id": "PZO1123", "pages": "264" },
+                { "id": "PZO1110", "pages": "507" }
+              ],
+              "subType": "wondrous",
+              "unidentified": { "name": "Cloak", "price": { "base": 0, "unit": "gp" } },
+              "weight": { "value": 1 },
+              "mods": {}
+            },
+            "type": "equipment",
+            "effects": [],
+            "flags": {},
+            "_id": "xAxRjcbbiBglIIly",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.items.Item.sv1iKPTOpaiZMOWk" },
+            "folder": "LhglMTF2yolyMayX",
+            "name": "Headband of Alluring Charisma +2",
+            "system": {
+              "armor": {
+                "material": {
+                  "base": { "value": "leather" },
+                  "normal": { "value": "leather" },
+                  "addon": []
+                },
+                "alignments": {}
+              },
+              "aura": { "school": "trs" },
+              "changes": {
+                "3829rluc": { "_id": "3829rluc", "formula": "2", "target": "cha", "type": "enh" }
+              },
+              "cl": 8,
+              "creation": {
+                "cost": { "unit": "gp", "value": 2000 },
+                "description": "<p>@UUID[Compendium.pf1.feats.Item.tD76K8QGco9scT0r]{Craft Wondrous Item}, @UUID[Compendium.pf1.spells.Item.d4oubr5bdoo8w1ev]{Eagle's Splendor}</p>"
+              },
+              "equipmentSubtype": "lightArmor",
+              "equipped": true,
+              "hp": { "base": 10 },
+              "price": { "base": 4000, "unit": "gp" },
+              "quantity": 1,
+              "resizing": true,
+              "slot": "headband",
+              "sources": [
+                { "id": "PZO1123", "pages": "248" },
+                { "id": "PZO1110", "pages": "516" }
+              ],
+              "subType": "wondrous",
+              "unidentified": { "name": "Headband", "price": { "base": 0, "unit": "gp" } },
+              "weight": { "value": 1 },
+              "mods": {}
+            },
+            "type": "equipment",
+            "effects": [],
+            "flags": {},
+            "_id": "gsC0f4e8hv95fdvv",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.armors-and-shields.Item.iGu21zy6QtroUZ4O"
+            },
+            "folder": "LQyo9lDGQU29eyig",
+            "name": "Chain Shirt",
+            "system": {
+              "armor": {
+                "acp": 2,
+                "dex": 4,
+                "material": { "base": { "value": "steel" }, "addon": [] },
+                "value": 4,
+                "enh": 1,
+                "alignments": {}
+              },
+              "baseTypes": ["Chain Shirt"],
+              "equipmentSubtype": "lightArmor",
+              "equipped": true,
+              "hardness": 10,
+              "hp": { "base": 20 },
+              "price": { "base": 100, "unit": "gp" },
+              "quantity": 1,
+              "slot": "armor",
+              "sources": [{ "id": "PZO1110", "pages": "150, 151" }],
+              "spellFailure": 20,
+              "subType": "armor",
+              "weight": { "value": 25 },
+              "mods": {}
+            },
+            "type": "equipment",
+            "effects": [],
+            "flags": {},
+            "_id": "33pcB4EdeyI00FhQ",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.buffs.Item.WgCWQxR53UdVSGPB" },
+            "folder": "abSp08elNrsecBYc",
+            "name": "Shield of Faith",
+            "system": {
+              "changes": {
+                "qrnq0w11": {
+                  "_id": "qrnq0w11",
+                  "formula": "2 + min(3, floor(@item.level / 6))",
+                  "target": "ac",
+                  "type": "deflection"
+                }
+              },
+              "duration": { "end": "initiative", "units": "minute", "value": "@item.level" },
+              "level": 6,
+              "sources": [{ "id": "PZO1110", "pages": "342" }],
+              "subType": "spell",
+              "active": true
+            },
+            "type": "buff",
+            "effects": [],
+            "flags": {},
+            "_id": "zrOqMiCZHxgyJjTf",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.buffs.Item.KsgdOd5vzGu7UDBe" },
+            "folder": "abSp08elNrsecBYc",
+            "name": "Eagle's Splendor",
+            "system": {
+              "changes": {
+                "rzpoixra": { "_id": "rzpoixra", "formula": "4", "target": "cha", "type": "enh" }
+              },
+              "duration": { "end": "initiative", "units": "minute", "value": "@item.level" },
+              "level": 6,
+              "sources": [{ "id": "PZO1110", "pages": "275" }],
+              "subType": "spell",
+              "active": true
+            },
+            "type": "buff",
+            "effects": [],
+            "flags": {},
+            "_id": "Btk3N9UEk7p0pRLo",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.buffs.Item.3czZB6whbQo9WhxR" },
+            "folder": "abSp08elNrsecBYc",
+            "name": "Divine Favor",
+            "system": {
+              "changes": {
+                "4n037d0l": {
+                  "_id": "4n037d0l",
+                  "formula": "clamp(floor(@item.level / 3), 1, 3)",
+                  "target": "wdamage",
+                  "type": "luck"
+                },
+                "ha13jllu": {
+                  "_id": "ha13jllu",
+                  "formula": "clamp(floor(@item.level / 3), 1, 3)",
+                  "target": "attack",
+                  "type": "luck"
+                }
+              },
+              "duration": { "end": "initiative", "units": "minute", "value": "1" },
+              "level": 6,
+              "sources": [{ "id": "PZO1110", "pages": "273" }],
+              "subType": "spell",
+              "active": true
+            },
+            "type": "buff",
+            "effects": [],
+            "flags": {},
+            "_id": "yuR97fNpPpIAtv7g",
+            "sort": 0
+          }
+        ],
+        "effects": [],
+        "sort": 0,
+        "flags": {}
+      },
+      "derived": {
+        "abilities": {
+          "str": { "total": 10, "mod": 0 },
+          "dex": { "total": 14, "mod": 2 },
+          "con": { "total": 14, "mod": 2 },
+          "int": { "total": 10, "mod": 0 },
+          "wis": { "total": 10, "mod": 0 },
+          "cha": { "total": 22, "mod": 6 }
+        },
+        "ac": { "normal": 20, "touch": 15, "flatFooted": 18 },
+        "cmb": 6,
+        "cmd": { "total": 19, "flatFooted": 17 },
+        "saves": { "fort": 7, "ref": 7, "will": 8 },
+        "init": 2,
+        "bab": 4,
+        "attack": { "melee": 6, "ranged": 8 },
+        "hp": { "max": 51 },
+        "speed": { "land": 30 },
+        "sr": 0,
+        "acp": 1,
+        "skills": {
+          "perception": 0,
+          "knowledge": 0,
+          "knowledge.geography": 0,
+          "knowledge.nobility": 0,
+          "knowledge.local": 0,
+          "knowledge.dungeoneering": 0,
+          "knowledge.religion": 9,
+          "knowledge.nature": 0,
+          "knowledge.arcana": 0,
+          "knowledge.history": 0,
+          "knowledge.planes": 0,
+          "knowledge.engineering": 0,
+          "intimidate": 6,
+          "appraise": 0,
+          "profession": 0,
+          "fly": 1,
+          "disableDevice": 1,
+          "swim": -1,
+          "escapeArtist": 1,
+          "linguistics": 0,
+          "acrobatics": 1,
+          "useMagicDevice": 6,
+          "climb": -1,
+          "sleightOfHand": 1,
+          "handleAnimal": 6,
+          "heal": 9,
+          "spellcraft": 9,
+          "ride": 1,
+          "stealth": 1,
+          "survival": 0,
+          "craft": 0,
+          "disguise": 6,
+          "diplomacy": 15,
+          "senseMotive": 6,
+          "perform": 6,
+          "bluff": 6
+        }
+      }
+    },
+    "conditions": {
+      "actor": {
+        "name": "human-oracle-6 [conditions]",
+        "type": "character",
+        "folder": "GuYuyoqdabfe4xZV",
+        "_id": "ouU3L2dIGCxeFxXf",
+        "system": {
+          "abilities": {
+            "str": { "value": 10 },
+            "dex": { "value": 14 },
+            "con": { "value": 14 },
+            "int": { "value": 10 },
+            "wis": { "value": 10 },
+            "cha": { "value": 16 }
+          },
+          "attributes": {
+            "savingThrows": {
+              "fort": { "ability": "con" },
+              "ref": { "ability": "dex" },
+              "will": { "ability": "wis" }
+            },
+            "hp": { "temp": 0, "nonlethal": 0, "offset": 0 },
+            "wounds": { "offset": 0 },
+            "vigor": { "temp": 0, "offset": 0 }
+          },
+          "details": { "notes": {}, "xp": { "value": 0 }, "alignment": "cg" },
+          "traits": { "size": "med", "ageCategory": "adult", "stature": "tall" },
+          "currency": {},
+          "altCurrency": {}
+        },
+        "items": [
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.Vu12od1CXmFQLeBe" },
+            "name": "Religion",
+            "system": {
+              "ability": "int",
+              "grouping": "knowledge",
+              "identifier": "religion",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.BWeqgXSZvUQl68vt",
+              "rt": true,
+              "sets": ["adventure"],
+              "rank": 6,
+              "acp": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "ippchKYhJ7Hkzcqr",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.gnzkwhUTIwHk8SPK" },
+            "name": "Heal",
+            "system": {
+              "ability": "wis",
+              "identifier": "heal",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.nHbYSOoe1SzqEO9w",
+              "sets": ["adventure"],
+              "rank": 6,
+              "acp": false,
+              "rt": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "UQ58oetfggPc3gFE",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.iLD7iQ9Y6FNLpXZc" },
+            "name": "Spellcraft",
+            "system": {
+              "ability": "int",
+              "identifier": "spellcraft",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.VRD7jxiIAxKPt6EF",
+              "rt": true,
+              "sets": ["adventure"],
+              "rank": 6,
+              "acp": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "IMBIh8aHVeoNJWM6",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.tm41rxa5wPTNjqTb" },
+            "name": "Diplomacy",
+            "system": {
+              "ability": "cha",
+              "identifier": "diplomacy",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.uB9Fy36RUjibxqvt",
+              "sets": ["adventure"],
+              "rank": 6,
+              "acp": false,
+              "rt": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "RrTDBndXNgF1CBtG",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.races.Item.e6IaBxKgMxy1yKlr" },
+            "folder": "RWSoA7Fj9yqo0y9U",
+            "name": "Human",
+            "system": {
+              "changes": {
+                "ahb0k14u": {
+                  "_id": "ahb0k14u",
+                  "formula": "@attributes.hd.total",
+                  "target": "bonusSkillRanks",
+                  "type": "untyped"
+                },
+                "ywxkp0hu": {
+                  "_id": "ywxkp0hu",
+                  "formula": "1",
+                  "target": "bonusFeats",
+                  "type": "untyped"
+                },
+                "lmflex01": { "_id": "lmflex01", "formula": "2", "target": "cha", "type": "racial" }
+              },
+              "creatureSubtypes": ["human"],
+              "creatureTypes": ["humanoid"],
+              "languages": ["common"],
+              "size": "med",
+              "sources": [{ "id": "PZO1110", "pages": "27" }],
+              "speeds": { "land": 30 },
+              "tags": [
+                "Core",
+                "Western (Arcadia)",
+                "Eastern (Casmaron)",
+                "Northern (Crown of the World)",
+                "Southern (Garund)"
+              ]
+            },
+            "type": "race",
+            "effects": [],
+            "flags": {},
+            "_id": "4DPM2JowQHBiNkUO",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.classes.Item.5S0u8yFcP861wgd1" },
+            "name": "Oracle",
+            "system": {
+              "armorProf": ["lgt", "med", "shl"],
+              "bab": "med",
+              "casting": {
+                "ability": "cha",
+                "cantrips": true,
+                "domain": 0,
+                "progression": "high",
+                "spells": "divine",
+                "type": "spontaneous"
+              },
+              "classSkills": [
+                "artistry",
+                "craft",
+                "diplomacy",
+                "heal",
+                "knowledge.history",
+                "knowledge.planes",
+                "knowledge.religion",
+                "lore",
+                "profession",
+                "senseMotive",
+                "spellcraft"
+              ],
+              "hd": 8,
+              "level": 6,
+              "links": {
+                "supplements": [
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.ZhQM4K4dqStS6qRn" },
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.kkVnlOkjhww8MoHc" },
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.adu4NROFqgwv70sw" },
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.RaFl9SpbAlXqhsDk" },
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.72r8mMxzMNWpdt0D" },
+                  { "level": 4, "uuid": "Compendium.pf1.class-abilities.Item.dopWa3n4mgTGpTYi" },
+                  { "level": 20, "uuid": "Compendium.pf1.class-abilities.Item.8vF0UoXribL1DOG2" }
+                ]
+              },
+              "savingThrows": {
+                "fort": { "value": "low" },
+                "ref": { "value": "low" },
+                "will": { "value": "high" }
+              },
+              "skillsPerLevel": 4,
+              "sources": [{ "id": "PZO1115", "pages": "42-54" }],
+              "subType": "base",
+              "tag": "oracle",
+              "wealth": "3d6 * 10",
+              "weaponProf": ["simple"],
+              "hp": 33
+            },
+            "type": "class",
+            "effects": [],
+            "folder": null,
+            "flags": {
+              "pf1": {
+                "links": {
+                  "classAssociations": {
+                    "pCQB8odQjgWc9NLd": 1,
+                    "WQn8AzlQEtGS97cU": 1,
+                    "Z2oUQ0g1JdZzv5Q2": 1,
+                    "Am5zE0st5m1GM0RU": 1,
+                    "sbPYkzzTjzGvOMC9": 4,
+                    "HmZ50i4lj0VY1ksA": 1
+                  }
+                }
+              }
+            },
+            "_id": "Kat4S5xYJIuZmo9d",
+            "sort": 0
+          },
+          {
+            "name": "Oracle",
+            "type": "spellcasting",
+            "system": {
+              "identifier": "oracle",
+              "kind": "divine",
+              "class": "oracle",
+              "type": "spontaneous",
+              "scale": "high",
+              "ability": "cha",
+              "asf": { "enabled": false },
+              "cantrips": { "enabled": true },
+              "slots": { "domain": { "formula": 0 }, "auto": true, "ability": { "auto": true } },
+              "cl": { "formula": "" },
+              "casts": {},
+              "preparation": {},
+              "concentration": {},
+              "dc": {},
+              "spellPoints": { "enabled": false, "offset": 0 },
+              "levels": {
+                "0": {},
+                "1": {},
+                "2": {},
+                "3": {},
+                "4": {},
+                "5": {},
+                "6": {},
+                "7": {},
+                "8": {},
+                "9": {}
+              },
+              "restrictions": []
+            },
+            "_id": "Asq7NJntlFinNbUR",
+            "effects": [],
+            "folder": null,
+            "sort": 0,
+            "flags": {},
+            "_stats": { "compendiumSource": null }
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.ZhQM4K4dqStS6qRn"
+            },
+            "name": "Mystery",
+            "system": {
+              "associations": { "classes": ["Oracle"] },
+              "sources": [{ "id": "PZO1115", "pages": "43" }],
+              "subType": "classFeat",
+              "class": "oracle",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 100000,
+            "_id": "pCQB8odQjgWc9NLd",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.kkVnlOkjhww8MoHc"
+            },
+            "name": "Oracle's Curse",
+            "system": {
+              "abilityType": "ex",
+              "associations": { "classes": ["Oracle"] },
+              "sources": [{ "id": "PZO1115", "pages": "43-44" }],
+              "subType": "classFeat",
+              "class": "oracle",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 200000,
+            "_id": "WQn8AzlQEtGS97cU",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.adu4NROFqgwv70sw"
+            },
+            "name": "Revelation",
+            "system": {
+              "associations": { "classes": ["Oracle"] },
+              "sources": [{ "id": "PZO1115", "pages": "45" }],
+              "subType": "classFeat",
+              "class": "oracle",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 300000,
+            "_id": "Z2oUQ0g1JdZzv5Q2",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.72r8mMxzMNWpdt0D"
+            },
+            "name": "Oracle Spells",
+            "system": {
+              "associations": { "classes": ["Oracle"] },
+              "sources": [{ "id": "PZO1115", "pages": "42" }],
+              "subType": "classFeat",
+              "class": "oracle",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 500000,
+            "_id": "Am5zE0st5m1GM0RU",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.dopWa3n4mgTGpTYi"
+            },
+            "name": "Exchange Spell (High)",
+            "system": {
+              "associations": { "classes": ["Oracle", "Psychic", "Sorcerer"] },
+              "sources": [{ "id": "PZO1110", "pages": "71" }],
+              "subType": "classFeat",
+              "class": "oracle",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 600000,
+            "_id": "sbPYkzzTjzGvOMC9",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.RaFl9SpbAlXqhsDk"
+            },
+            "name": "Orisons",
+            "system": {
+              "associations": {
+                "classes": ["Cleric", "Druid", "Inquisitor", "Oracle", "Shaman", "Warpriest"]
+              },
+              "sources": [
+                { "id": "PZO1110", "pages": "38, 48" },
+                { "id": "PZO1115", "pages": "38, 42" },
+                { "id": "PZO1129", "pages": "35, 60" }
+              ],
+              "subType": "classFeat",
+              "class": "oracle",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 400000,
+            "_id": "HmZ50i4lj0VY1ksA",
+            "folder": null
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.8snLqsJN4LLL00Nq" },
+            "name": "Toughness",
+            "system": {
+              "changes": {
+                "bl5pemy2": {
+                  "_id": "bl5pemy2",
+                  "formula": "max(3, @attributes.hd.total)",
+                  "target": "mhp",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "116, 135" }],
+              "subType": "feat",
+              "tags": ["General", "Defensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "43w8eOft351lE95Y",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.iAbIGhm7T2OK9Brt" },
+            "name": "Iron Will",
+            "system": {
+              "changes": {
+                "vafl2kz4": {
+                  "_id": "vafl2kz4",
+                  "formula": "2",
+                  "target": "will",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "115, 129" }],
+              "subType": "feat",
+              "tags": ["General", "Saving Throw"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "ttoD9M1BwGyPbobL",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.fVRnBIHR4Jq6btvm" },
+            "name": "Great Fortitude",
+            "system": {
+              "changes": {
+                "0rubibb4": {
+                  "_id": "0rubibb4",
+                  "formula": "2",
+                  "target": "fort",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "115, 124" }],
+              "subType": "feat",
+              "tags": ["General", "Saving Throw", "Defensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "g5BX9O0E1DhIDI3D",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.0bZf3SDkvVOe2ujH" },
+            "name": "Lightning Reflexes",
+            "system": {
+              "changes": {
+                "ni86uxwa": {
+                  "_id": "ni86uxwa",
+                  "formula": "2",
+                  "target": "ref",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "115, 130" }],
+              "subType": "feat",
+              "tags": ["General", "Saving Throw"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "eyjowYoAcW94NYlm",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.armors-and-shields.Item.iGu21zy6QtroUZ4O"
+            },
+            "folder": "LQyo9lDGQU29eyig",
+            "name": "Chain Shirt",
+            "system": {
+              "armor": {
+                "acp": 2,
+                "dex": 4,
+                "material": { "base": { "value": "steel" }, "addon": [] },
+                "value": 4,
+                "enh": 1,
+                "alignments": {}
+              },
+              "baseTypes": ["Chain Shirt"],
+              "equipmentSubtype": "lightArmor",
+              "equipped": true,
+              "hardness": 10,
+              "hp": { "base": 20 },
+              "price": { "base": 100, "unit": "gp" },
+              "quantity": 1,
+              "slot": "armor",
+              "sources": [{ "id": "PZO1110", "pages": "150, 151" }],
+              "spellFailure": 20,
+              "subType": "armor",
+              "weight": { "value": 25 },
+              "mods": {}
+            },
+            "type": "equipment",
+            "effects": [],
+            "flags": {},
+            "_id": "pa8TEiFwDf0uSauL",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.items.Item.sv1iKPTOpaiZMOWk" },
+            "folder": "LhglMTF2yolyMayX",
+            "name": "Headband of Alluring Charisma +2",
+            "system": {
+              "armor": {
+                "material": {
+                  "base": { "value": "leather" },
+                  "normal": { "value": "leather" },
+                  "addon": []
+                },
+                "alignments": {}
+              },
+              "aura": { "school": "trs" },
+              "changes": {
+                "3829rluc": { "_id": "3829rluc", "formula": "2", "target": "cha", "type": "enh" }
+              },
+              "cl": 8,
+              "creation": {
+                "cost": { "unit": "gp", "value": 2000 },
+                "description": "<p>@UUID[Compendium.pf1.feats.Item.tD76K8QGco9scT0r]{Craft Wondrous Item}, @UUID[Compendium.pf1.spells.Item.d4oubr5bdoo8w1ev]{Eagle's Splendor}</p>"
+              },
+              "equipmentSubtype": "lightArmor",
+              "equipped": true,
+              "hp": { "base": 10 },
+              "price": { "base": 4000, "unit": "gp" },
+              "quantity": 1,
+              "resizing": true,
+              "slot": "headband",
+              "sources": [
+                { "id": "PZO1123", "pages": "248" },
+                { "id": "PZO1110", "pages": "516" }
+              ],
+              "subType": "wondrous",
+              "unidentified": { "name": "Headband", "price": { "base": 0, "unit": "gp" } },
+              "weight": { "value": 1 },
+              "mods": {}
+            },
+            "type": "equipment",
+            "effects": [],
+            "flags": {},
+            "_id": "ZDwew8XXW2lWgcxK",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.items.Item.MrxwYWWezbJTZLog" },
+            "folder": "TQir6rREbQbhFUtK",
+            "name": "Cloak of Resistance +1",
+            "system": {
+              "armor": {
+                "material": {
+                  "base": { "value": "leather" },
+                  "normal": { "value": "leather" },
+                  "addon": []
+                },
+                "alignments": {}
+              },
+              "aura": { "school": "abj" },
+              "changes": {
+                "7okw4xq4": {
+                  "_id": "7okw4xq4",
+                  "formula": "1",
+                  "target": "allSavingThrows",
+                  "type": "resist"
+                }
+              },
+              "cl": 5,
+              "creation": {
+                "cost": { "unit": "gp", "value": 500 },
+                "description": "<p>@UUID[Compendium.pf1.feats.Item.tD76K8QGco9scT0r]{Craft Wondrous Item}, @UUID[Compendium.pf1.spells.Item.g8j278xcu2s1zlwy]{resistance}, creator's caster level must be at least three times the cloak's bonus</p>"
+              },
+              "equipmentSubtype": "lightArmor",
+              "equipped": true,
+              "hp": { "base": 10 },
+              "price": { "base": 1000, "unit": "gp" },
+              "quantity": 1,
+              "resizing": true,
+              "slot": "shoulders",
+              "sources": [
+                { "id": "PZO1123", "pages": "264" },
+                { "id": "PZO1110", "pages": "507" }
+              ],
+              "subType": "wondrous",
+              "unidentified": { "name": "Cloak", "price": { "base": 0, "unit": "gp" } },
+              "weight": { "value": 1 },
+              "mods": {}
+            },
+            "type": "equipment",
+            "effects": [],
+            "flags": {},
+            "_id": "PP91eX708EJbXOcD",
+            "sort": 0
+          }
+        ],
+        "effects": [
+          {
+            "name": "Shaken",
+            "img": "systems/pf1/icons/conditions/shaken.svg",
+            "statuses": ["shaken"],
+            "showIcon": 2,
+            "_id": "2mMq8sN2XE1iXkWh",
+            "type": "base",
+            "system": { "changes": [] },
+            "disabled": false,
+            "start": {
+              "time": 0,
+              "combat": null,
+              "combatant": null,
+              "initiative": null,
+              "round": null,
+              "turn": null
+            },
+            "duration": { "value": null, "units": "seconds", "expiry": null, "expired": false },
+            "description": "",
+            "origin": null,
+            "tint": "#ffffff",
+            "transfer": false,
+            "folder": null,
+            "sort": 0,
+            "flags": { "pf1": { "autoDelete": true } },
+            "_stats": {
+              "coreVersion": "14.370",
+              "systemId": "pf1",
+              "systemVersion": "11.11",
+              "createdTime": 1795403174707,
+              "modifiedTime": 1795403174707,
+              "lastModifiedBy": "jnrEqpgUjbAxjuLp",
+              "compendiumSource": null,
+              "duplicateSource": null,
+              "exportSource": null
+            }
+          }
+        ],
+        "sort": 0,
+        "flags": {}
+      },
+      "derived": {
+        "abilities": {
+          "str": { "total": 10, "mod": 0 },
+          "dex": { "total": 14, "mod": 2 },
+          "con": { "total": 14, "mod": 2 },
+          "int": { "total": 10, "mod": 0 },
+          "wis": { "total": 10, "mod": 0 },
+          "cha": { "total": 20, "mod": 5 }
+        },
+        "ac": { "normal": 17, "touch": 12, "flatFooted": 15 },
+        "cmb": 2,
+        "cmd": { "total": 16, "flatFooted": 14 },
+        "saves": { "fort": 5, "ref": 5, "will": 6 },
+        "init": 0,
+        "bab": 4,
+        "attack": { "melee": 2, "ranged": 4 },
+        "hp": { "max": 51 },
+        "speed": { "land": 30 },
+        "sr": 0,
+        "acp": 1,
+        "skills": {
+          "perception": -2,
+          "knowledge": -2,
+          "knowledge.geography": -2,
+          "knowledge.nobility": -2,
+          "knowledge.local": -2,
+          "knowledge.dungeoneering": -2,
+          "knowledge.religion": 7,
+          "knowledge.nature": -2,
+          "knowledge.arcana": -2,
+          "knowledge.history": -2,
+          "knowledge.planes": -2,
+          "knowledge.engineering": -2,
+          "intimidate": 3,
+          "appraise": -2,
+          "profession": -2,
+          "fly": -1,
+          "disableDevice": -1,
+          "swim": -3,
+          "escapeArtist": -1,
+          "linguistics": -2,
+          "acrobatics": -1,
+          "useMagicDevice": 3,
+          "climb": -3,
+          "sleightOfHand": -1,
+          "handleAnimal": 3,
+          "heal": 7,
+          "spellcraft": 7,
+          "ride": -1,
+          "stealth": -1,
+          "survival": -2,
+          "craft": -2,
+          "disguise": 3,
+          "diplomacy": 12,
+          "senseMotive": 3,
+          "perform": 3,
+          "bluff": 3
+        }
+      }
+    },
+    "negativeLevels": {
+      "actor": {
+        "name": "human-oracle-6 [negativeLevels]",
+        "type": "character",
+        "folder": "GuYuyoqdabfe4xZV",
+        "_id": "roqbY9mKgsmYILIQ",
+        "system": {
+          "abilities": {
+            "str": { "value": 10 },
+            "dex": { "value": 14 },
+            "con": { "value": 14 },
+            "int": { "value": 10 },
+            "wis": { "value": 10 },
+            "cha": { "value": 16 }
+          },
+          "attributes": {
+            "savingThrows": {
+              "fort": { "ability": "con" },
+              "ref": { "ability": "dex" },
+              "will": { "ability": "wis" }
+            },
+            "hp": { "temp": 0, "nonlethal": 0, "offset": 0 },
+            "wounds": { "offset": 0 },
+            "vigor": { "temp": 0, "offset": 0 },
+            "energyDrain": 1
+          },
+          "details": { "notes": {}, "xp": { "value": 0 }, "alignment": "cg" },
+          "traits": { "size": "med", "ageCategory": "adult", "stature": "tall" },
+          "currency": {},
+          "altCurrency": {}
+        },
+        "items": [
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.Vu12od1CXmFQLeBe" },
+            "name": "Religion",
+            "system": {
+              "ability": "int",
+              "grouping": "knowledge",
+              "identifier": "religion",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.BWeqgXSZvUQl68vt",
+              "rt": true,
+              "sets": ["adventure"],
+              "rank": 6,
+              "acp": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "Ml56oJkKT6YiWQ2i",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.gnzkwhUTIwHk8SPK" },
+            "name": "Heal",
+            "system": {
+              "ability": "wis",
+              "identifier": "heal",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.nHbYSOoe1SzqEO9w",
+              "sets": ["adventure"],
+              "rank": 6,
+              "acp": false,
+              "rt": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "mA8s4wQBKzQ0iiOc",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.iLD7iQ9Y6FNLpXZc" },
+            "name": "Spellcraft",
+            "system": {
+              "ability": "int",
+              "identifier": "spellcraft",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.VRD7jxiIAxKPt6EF",
+              "rt": true,
+              "sets": ["adventure"],
+              "rank": 6,
+              "acp": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "Pxhq08mG5JyR8BTw",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.tm41rxa5wPTNjqTb" },
+            "name": "Diplomacy",
+            "system": {
+              "ability": "cha",
+              "identifier": "diplomacy",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.uB9Fy36RUjibxqvt",
+              "sets": ["adventure"],
+              "rank": 6,
+              "acp": false,
+              "rt": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "m2vw5l92ohpKQaiP",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.races.Item.e6IaBxKgMxy1yKlr" },
+            "folder": "RWSoA7Fj9yqo0y9U",
+            "name": "Human",
+            "system": {
+              "changes": {
+                "ahb0k14u": {
+                  "_id": "ahb0k14u",
+                  "formula": "@attributes.hd.total",
+                  "target": "bonusSkillRanks",
+                  "type": "untyped"
+                },
+                "ywxkp0hu": {
+                  "_id": "ywxkp0hu",
+                  "formula": "1",
+                  "target": "bonusFeats",
+                  "type": "untyped"
+                },
+                "lmflex01": { "_id": "lmflex01", "formula": "2", "target": "cha", "type": "racial" }
+              },
+              "creatureSubtypes": ["human"],
+              "creatureTypes": ["humanoid"],
+              "languages": ["common"],
+              "size": "med",
+              "sources": [{ "id": "PZO1110", "pages": "27" }],
+              "speeds": { "land": 30 },
+              "tags": [
+                "Core",
+                "Western (Arcadia)",
+                "Eastern (Casmaron)",
+                "Northern (Crown of the World)",
+                "Southern (Garund)"
+              ]
+            },
+            "type": "race",
+            "effects": [],
+            "flags": {},
+            "_id": "eLKm0Q6bva3SrB6K",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.classes.Item.5S0u8yFcP861wgd1" },
+            "name": "Oracle",
+            "system": {
+              "armorProf": ["lgt", "med", "shl"],
+              "bab": "med",
+              "casting": {
+                "ability": "cha",
+                "cantrips": true,
+                "domain": 0,
+                "progression": "high",
+                "spells": "divine",
+                "type": "spontaneous"
+              },
+              "classSkills": [
+                "artistry",
+                "craft",
+                "diplomacy",
+                "heal",
+                "knowledge.history",
+                "knowledge.planes",
+                "knowledge.religion",
+                "lore",
+                "profession",
+                "senseMotive",
+                "spellcraft"
+              ],
+              "hd": 8,
+              "level": 6,
+              "links": {
+                "supplements": [
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.ZhQM4K4dqStS6qRn" },
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.kkVnlOkjhww8MoHc" },
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.adu4NROFqgwv70sw" },
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.RaFl9SpbAlXqhsDk" },
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.72r8mMxzMNWpdt0D" },
+                  { "level": 4, "uuid": "Compendium.pf1.class-abilities.Item.dopWa3n4mgTGpTYi" },
+                  { "level": 20, "uuid": "Compendium.pf1.class-abilities.Item.8vF0UoXribL1DOG2" }
+                ]
+              },
+              "savingThrows": {
+                "fort": { "value": "low" },
+                "ref": { "value": "low" },
+                "will": { "value": "high" }
+              },
+              "skillsPerLevel": 4,
+              "sources": [{ "id": "PZO1115", "pages": "42-54" }],
+              "subType": "base",
+              "tag": "oracle",
+              "wealth": "3d6 * 10",
+              "weaponProf": ["simple"],
+              "hp": 33
+            },
+            "type": "class",
+            "effects": [],
+            "folder": null,
+            "flags": {
+              "pf1": {
+                "links": {
+                  "classAssociations": {
+                    "oHECAomYdtRPgwaq": 1,
+                    "Cm8GTXsBFc5RgTDt": 1,
+                    "88R4bjvPDk2qCdtW": 1,
+                    "OFGnZ9IQ73e3Aph8": 4,
+                    "VVGyin8kPHDAlgaL": 1,
+                    "7ggHxB2RqTn9FQUC": 1
+                  }
+                }
+              }
+            },
+            "_id": "FIymCKgN9Tni6fUD",
+            "sort": 0
+          },
+          {
+            "name": "Oracle",
+            "type": "spellcasting",
+            "system": {
+              "identifier": "oracle",
+              "kind": "divine",
+              "class": "oracle",
+              "type": "spontaneous",
+              "scale": "high",
+              "ability": "cha",
+              "asf": { "enabled": false },
+              "cantrips": { "enabled": true },
+              "slots": { "domain": { "formula": 0 }, "auto": true, "ability": { "auto": true } },
+              "cl": { "formula": "" },
+              "casts": {},
+              "preparation": {},
+              "concentration": {},
+              "dc": {},
+              "spellPoints": { "enabled": false, "offset": 0 },
+              "levels": {
+                "0": {},
+                "1": {},
+                "2": {},
+                "3": {},
+                "4": {},
+                "5": {},
+                "6": {},
+                "7": {},
+                "8": {},
+                "9": {}
+              },
+              "restrictions": []
+            },
+            "_id": "Gh4uecrFkKWKyfV9",
+            "effects": [],
+            "folder": null,
+            "sort": 0,
+            "flags": {},
+            "_stats": { "compendiumSource": null }
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.kkVnlOkjhww8MoHc"
+            },
+            "name": "Oracle's Curse",
+            "system": {
+              "abilityType": "ex",
+              "associations": { "classes": ["Oracle"] },
+              "sources": [{ "id": "PZO1115", "pages": "43-44" }],
+              "subType": "classFeat",
+              "class": "oracle",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 200000,
+            "_id": "oHECAomYdtRPgwaq",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.adu4NROFqgwv70sw"
+            },
+            "name": "Revelation",
+            "system": {
+              "associations": { "classes": ["Oracle"] },
+              "sources": [{ "id": "PZO1115", "pages": "45" }],
+              "subType": "classFeat",
+              "class": "oracle",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 300000,
+            "_id": "Cm8GTXsBFc5RgTDt",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.RaFl9SpbAlXqhsDk"
+            },
+            "name": "Orisons",
+            "system": {
+              "associations": {
+                "classes": ["Cleric", "Druid", "Inquisitor", "Oracle", "Shaman", "Warpriest"]
+              },
+              "sources": [
+                { "id": "PZO1110", "pages": "38, 48" },
+                { "id": "PZO1115", "pages": "38, 42" },
+                { "id": "PZO1129", "pages": "35, 60" }
+              ],
+              "subType": "classFeat",
+              "class": "oracle",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 400000,
+            "_id": "88R4bjvPDk2qCdtW",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.dopWa3n4mgTGpTYi"
+            },
+            "name": "Exchange Spell (High)",
+            "system": {
+              "associations": { "classes": ["Oracle", "Psychic", "Sorcerer"] },
+              "sources": [{ "id": "PZO1110", "pages": "71" }],
+              "subType": "classFeat",
+              "class": "oracle",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 600000,
+            "_id": "OFGnZ9IQ73e3Aph8",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.ZhQM4K4dqStS6qRn"
+            },
+            "name": "Mystery",
+            "system": {
+              "associations": { "classes": ["Oracle"] },
+              "sources": [{ "id": "PZO1115", "pages": "43" }],
+              "subType": "classFeat",
+              "class": "oracle",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 100000,
+            "_id": "VVGyin8kPHDAlgaL",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.72r8mMxzMNWpdt0D"
+            },
+            "name": "Oracle Spells",
+            "system": {
+              "associations": { "classes": ["Oracle"] },
+              "sources": [{ "id": "PZO1115", "pages": "42" }],
+              "subType": "classFeat",
+              "class": "oracle",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 500000,
+            "_id": "7ggHxB2RqTn9FQUC",
+            "folder": null
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.8snLqsJN4LLL00Nq" },
+            "name": "Toughness",
+            "system": {
+              "changes": {
+                "bl5pemy2": {
+                  "_id": "bl5pemy2",
+                  "formula": "max(3, @attributes.hd.total)",
+                  "target": "mhp",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "116, 135" }],
+              "subType": "feat",
+              "tags": ["General", "Defensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "d0zRrdhnlZqzCQ8z",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.iAbIGhm7T2OK9Brt" },
+            "name": "Iron Will",
+            "system": {
+              "changes": {
+                "vafl2kz4": {
+                  "_id": "vafl2kz4",
+                  "formula": "2",
+                  "target": "will",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "115, 129" }],
+              "subType": "feat",
+              "tags": ["General", "Saving Throw"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "WTjw1BIHMA7GGfHm",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.fVRnBIHR4Jq6btvm" },
+            "name": "Great Fortitude",
+            "system": {
+              "changes": {
+                "0rubibb4": {
+                  "_id": "0rubibb4",
+                  "formula": "2",
+                  "target": "fort",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "115, 124" }],
+              "subType": "feat",
+              "tags": ["General", "Saving Throw", "Defensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "UbkyjvWQgtWw5Uis",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.0bZf3SDkvVOe2ujH" },
+            "name": "Lightning Reflexes",
+            "system": {
+              "changes": {
+                "ni86uxwa": {
+                  "_id": "ni86uxwa",
+                  "formula": "2",
+                  "target": "ref",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "115, 130" }],
+              "subType": "feat",
+              "tags": ["General", "Saving Throw"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "8ygNuBrtqw9N8qdU",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.armors-and-shields.Item.iGu21zy6QtroUZ4O"
+            },
+            "folder": "LQyo9lDGQU29eyig",
+            "name": "Chain Shirt",
+            "system": {
+              "armor": {
+                "acp": 2,
+                "dex": 4,
+                "material": { "base": { "value": "steel" }, "addon": [] },
+                "value": 4,
+                "enh": 1,
+                "alignments": {}
+              },
+              "baseTypes": ["Chain Shirt"],
+              "equipmentSubtype": "lightArmor",
+              "equipped": true,
+              "hardness": 10,
+              "hp": { "base": 20 },
+              "price": { "base": 100, "unit": "gp" },
+              "quantity": 1,
+              "slot": "armor",
+              "sources": [{ "id": "PZO1110", "pages": "150, 151" }],
+              "spellFailure": 20,
+              "subType": "armor",
+              "weight": { "value": 25 },
+              "mods": {}
+            },
+            "type": "equipment",
+            "effects": [],
+            "flags": {},
+            "_id": "XVRvnUx4f89vjPTL",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.items.Item.MrxwYWWezbJTZLog" },
+            "folder": "TQir6rREbQbhFUtK",
+            "name": "Cloak of Resistance +1",
+            "system": {
+              "armor": {
+                "material": {
+                  "base": { "value": "leather" },
+                  "normal": { "value": "leather" },
+                  "addon": []
+                },
+                "alignments": {}
+              },
+              "aura": { "school": "abj" },
+              "changes": {
+                "7okw4xq4": {
+                  "_id": "7okw4xq4",
+                  "formula": "1",
+                  "target": "allSavingThrows",
+                  "type": "resist"
+                }
+              },
+              "cl": 5,
+              "creation": {
+                "cost": { "unit": "gp", "value": 500 },
+                "description": "<p>@UUID[Compendium.pf1.feats.Item.tD76K8QGco9scT0r]{Craft Wondrous Item}, @UUID[Compendium.pf1.spells.Item.g8j278xcu2s1zlwy]{resistance}, creator's caster level must be at least three times the cloak's bonus</p>"
+              },
+              "equipmentSubtype": "lightArmor",
+              "equipped": true,
+              "hp": { "base": 10 },
+              "price": { "base": 1000, "unit": "gp" },
+              "quantity": 1,
+              "resizing": true,
+              "slot": "shoulders",
+              "sources": [
+                { "id": "PZO1123", "pages": "264" },
+                { "id": "PZO1110", "pages": "507" }
+              ],
+              "subType": "wondrous",
+              "unidentified": { "name": "Cloak", "price": { "base": 0, "unit": "gp" } },
+              "weight": { "value": 1 },
+              "mods": {}
+            },
+            "type": "equipment",
+            "effects": [],
+            "flags": {},
+            "_id": "wYmMea16rG0n8zr3",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.items.Item.sv1iKPTOpaiZMOWk" },
+            "folder": "LhglMTF2yolyMayX",
+            "name": "Headband of Alluring Charisma +2",
+            "system": {
+              "armor": {
+                "material": {
+                  "base": { "value": "leather" },
+                  "normal": { "value": "leather" },
+                  "addon": []
+                },
+                "alignments": {}
+              },
+              "aura": { "school": "trs" },
+              "changes": {
+                "3829rluc": { "_id": "3829rluc", "formula": "2", "target": "cha", "type": "enh" }
+              },
+              "cl": 8,
+              "creation": {
+                "cost": { "unit": "gp", "value": 2000 },
+                "description": "<p>@UUID[Compendium.pf1.feats.Item.tD76K8QGco9scT0r]{Craft Wondrous Item}, @UUID[Compendium.pf1.spells.Item.d4oubr5bdoo8w1ev]{Eagle's Splendor}</p>"
+              },
+              "equipmentSubtype": "lightArmor",
+              "equipped": true,
+              "hp": { "base": 10 },
+              "price": { "base": 4000, "unit": "gp" },
+              "quantity": 1,
+              "resizing": true,
+              "slot": "headband",
+              "sources": [
+                { "id": "PZO1123", "pages": "248" },
+                { "id": "PZO1110", "pages": "516" }
+              ],
+              "subType": "wondrous",
+              "unidentified": { "name": "Headband", "price": { "base": 0, "unit": "gp" } },
+              "weight": { "value": 1 },
+              "mods": {}
+            },
+            "type": "equipment",
+            "effects": [],
+            "flags": {},
+            "_id": "JHVsJNSfsCmjgQtV",
+            "sort": 0
+          }
+        ],
+        "effects": [],
+        "sort": 0,
+        "flags": {}
+      },
+      "derived": {
+        "abilities": {
+          "str": { "total": 10, "mod": 0 },
+          "dex": { "total": 14, "mod": 2 },
+          "con": { "total": 14, "mod": 2 },
+          "int": { "total": 10, "mod": 0 },
+          "wis": { "total": 10, "mod": 0 },
+          "cha": { "total": 20, "mod": 5 }
+        },
+        "ac": { "normal": 17, "touch": 12, "flatFooted": 15 },
+        "cmb": 3,
+        "cmd": { "total": 15, "flatFooted": 13 },
+        "saves": { "fort": 6, "ref": 6, "will": 7 },
+        "init": 2,
+        "bab": 4,
+        "attack": { "melee": 3, "ranged": 5 },
+        "hp": { "max": 46 },
+        "speed": { "land": 30 },
+        "sr": 0,
+        "acp": 1,
+        "skills": {
+          "perception": -1,
+          "knowledge": -1,
+          "knowledge.geography": -1,
+          "knowledge.nobility": -1,
+          "knowledge.local": -1,
+          "knowledge.dungeoneering": -1,
+          "knowledge.religion": 8,
+          "knowledge.nature": -1,
+          "knowledge.arcana": -1,
+          "knowledge.history": -1,
+          "knowledge.planes": -1,
+          "knowledge.engineering": -1,
+          "intimidate": 4,
+          "appraise": -1,
+          "profession": -1,
+          "fly": 0,
+          "disableDevice": 0,
+          "swim": -2,
+          "escapeArtist": 0,
+          "linguistics": -1,
+          "acrobatics": 0,
+          "useMagicDevice": 4,
+          "climb": -2,
+          "sleightOfHand": 0,
+          "handleAnimal": 4,
+          "heal": 8,
+          "spellcraft": 8,
+          "ride": 0,
+          "stealth": 0,
+          "survival": -1,
+          "craft": -1,
+          "disguise": 4,
+          "diplomacy": 13,
+          "senseMotive": 4,
+          "perform": 4,
+          "bluff": 4
+        }
+      }
+    }
+  }
+}

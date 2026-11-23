@@ -8,8 +8,8 @@
  *
  * Mithral and darkwood change the wearer's numbers: both weigh half as much,
  * mithral shifts the weight class and eases maxDex, ACP and ASF, and darkwood
- * eases a shield's ACP by 2. Both already count as masterwork, so the engine's
- * `armorPieceAcp` skips its own masterwork reduction for them. What a material
+ * eases a shield's ACP by 2. Both are always masterwork, so the engine's
+ * `armorPieceAcp` lessens their penalty by 1 more. What a material
  * lets a weapon get through is derived separately, from the `material` tag
  * itself: see `@pf1/engine`'s `weaponDrBypasses`.
  */

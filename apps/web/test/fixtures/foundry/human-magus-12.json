@@ -1,0 +1,2283 @@
+{
+  "foundry": { "core": "14.370", "system": "11.11" },
+  "spec": {
+    "id": "human-magus-12",
+    "race": "Human",
+    "flexibleAbility": "str",
+    "alignment": "ng",
+    "abilities": { "str": 16, "dex": 14, "con": 12, "int": 14, "wis": 10, "cha": 8 },
+    "classes": [{ "name": "Magus", "level": 12, "hp": 63 }],
+    "feats": [
+      "Toughness",
+      "Improved Initiative",
+      "Combat Casting",
+      "Power Attack",
+      "Arcane Strike",
+      "Dodge",
+      "Iron Will"
+    ],
+    "skills": {
+      "spellcraft": 12,
+      "knowledge.arcana": 12,
+      "acrobatics": 6,
+      "perception": 6,
+      "climb": 6
+    },
+    "items": [
+      { "pack": "pf1.armors-and-shields", "name": "Leather Armor", "equipped": true, "enh": 1 },
+      { "pack": "pf1.items", "name": "Ring of Protection +1", "equipped": true },
+      { "pack": "pf1.items", "name": "Cloak of Resistance +2", "equipped": true },
+      { "pack": "pf1.items", "name": "Amulet of Natural Armor +1", "equipped": true }
+    ],
+    "scenarios": {
+      "base": {},
+      "buffs": {
+        "buffs": [
+          { "name": "Mage Armor", "level": 12 },
+          { "name": "Shield", "level": 12 },
+          { "name": "Haste", "level": 12 },
+          { "name": "Enlarge Person", "level": 12 }
+        ]
+      }
+    }
+  },
+  "scenarios": {
+    "base": {
+      "actor": {
+        "name": "human-magus-12 [base]",
+        "type": "character",
+        "folder": "GuYuyoqdabfe4xZV",
+        "_id": "7Xft0hGjmNVtCmTq",
+        "system": {
+          "abilities": {
+            "str": { "value": 16 },
+            "dex": { "value": 14 },
+            "con": { "value": 12 },
+            "int": { "value": 14 },
+            "wis": { "value": 10 },
+            "cha": { "value": 8 }
+          },
+          "attributes": {
+            "savingThrows": {
+              "fort": { "ability": "con" },
+              "ref": { "ability": "dex" },
+              "will": { "ability": "wis" }
+            },
+            "hp": { "temp": 0, "nonlethal": 0, "offset": 0 },
+            "wounds": { "offset": 0 },
+            "vigor": { "temp": 0, "offset": 0 }
+          },
+          "details": { "notes": {}, "xp": { "value": 0 }, "alignment": "ng" },
+          "traits": { "size": "med", "ageCategory": "adult", "stature": "tall" },
+          "currency": {},
+          "altCurrency": {}
+        },
+        "items": [
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.5WivCl3kkGv5iNiz" },
+            "name": "Perception",
+            "system": {
+              "ability": "wis",
+              "identifier": "perception",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.2h6hz5AkTDxKPFxr",
+              "sets": ["adventure"],
+              "rank": 6,
+              "acp": false,
+              "rt": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "220FEs0fCQEWAlVi",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.GgIafHeIJmKJMDhi" },
+            "name": "Acrobatics",
+            "system": {
+              "ability": "dex",
+              "acp": true,
+              "identifier": "acrobatics",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.gGfJO90ZuRT4sZ9X",
+              "sets": ["adventure"],
+              "rank": 6,
+              "rt": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "MkLYm1rELJQfiJgG",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.NbW51ORcxEJnEY8H" },
+            "name": "Climb",
+            "system": {
+              "ability": "str",
+              "acp": true,
+              "identifier": "climb",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.ZAwjVOTwsBpZRgw4",
+              "sets": ["adventure"],
+              "rank": 6,
+              "rt": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "jPm4gy3vZ7ohDHhI",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.az8CVJgEw3BFJpgG" },
+            "name": "Arcana",
+            "system": {
+              "ability": "int",
+              "grouping": "knowledge",
+              "identifier": "arcana",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.BWeqgXSZvUQl68vt",
+              "rt": true,
+              "sets": ["adventure"],
+              "rank": 12,
+              "acp": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "Ds0kD7nkS0AT2KOo",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.iLD7iQ9Y6FNLpXZc" },
+            "name": "Spellcraft",
+            "system": {
+              "ability": "int",
+              "identifier": "spellcraft",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.VRD7jxiIAxKPt6EF",
+              "rt": true,
+              "sets": ["adventure"],
+              "rank": 12,
+              "acp": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "8ozPuXBtFCZlF1xL",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.races.Item.e6IaBxKgMxy1yKlr" },
+            "folder": "RWSoA7Fj9yqo0y9U",
+            "name": "Human",
+            "system": {
+              "changes": {
+                "ahb0k14u": {
+                  "_id": "ahb0k14u",
+                  "formula": "@attributes.hd.total",
+                  "target": "bonusSkillRanks",
+                  "type": "untyped"
+                },
+                "ywxkp0hu": {
+                  "_id": "ywxkp0hu",
+                  "formula": "1",
+                  "target": "bonusFeats",
+                  "type": "untyped"
+                },
+                "lmflex01": { "_id": "lmflex01", "formula": "2", "target": "str", "type": "racial" }
+              },
+              "creatureSubtypes": ["human"],
+              "creatureTypes": ["humanoid"],
+              "languages": ["common"],
+              "size": "med",
+              "sources": [{ "id": "PZO1110", "pages": "27" }],
+              "speeds": { "land": 30 },
+              "tags": [
+                "Core",
+                "Western (Arcadia)",
+                "Eastern (Casmaron)",
+                "Northern (Crown of the World)",
+                "Southern (Garund)"
+              ]
+            },
+            "type": "race",
+            "effects": [],
+            "flags": {},
+            "_id": "PHuSI6iBhLEdETbi",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.classes.Item.xZLcyrEKYZoJPS2k" },
+            "name": "Magus",
+            "system": {
+              "armorProf": ["lgt"],
+              "bab": "med",
+              "casting": {
+                "ability": "int",
+                "cantrips": true,
+                "domain": 0,
+                "progression": "med",
+                "spells": "arcane",
+                "type": "prepared"
+              },
+              "classSkills": [
+                "artistry",
+                "climb",
+                "craft",
+                "fly",
+                "intimidate",
+                "knowledge.arcana",
+                "knowledge.dungeoneering",
+                "knowledge.planes",
+                "lore",
+                "profession",
+                "ride",
+                "spellcraft",
+                "swim",
+                "useMagicDevice"
+              ],
+              "hd": 8,
+              "level": 12,
+              "links": {
+                "supplements": [
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.mpe3JHJMINddqLWr" },
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.lj4yLDvoxGFHiwSk" },
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.IPy4aqFYbOppaqKC" },
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.P0EhxFOJJXWMBiZi" },
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.Bd6X95yJfPz6zPkP" },
+                  { "level": 2, "uuid": "Compendium.pf1.class-abilities.Item.OsEuRDHP7jcJ2fIJ" },
+                  { "level": 3, "uuid": "Compendium.pf1.class-abilities.Item.HJ2vLLDYkihPxFkD" },
+                  { "level": 4, "uuid": "Compendium.pf1.class-abilities.Item.IyfoUjtyaS8lakWc" },
+                  { "level": 5, "uuid": "Compendium.pf1.class-abilities.Item.gzBR0qkMdu0KkLV0" },
+                  { "level": 7, "uuid": "Compendium.pf1.class-abilities.Item.QhHS0Qr5FxH4LtaI" },
+                  { "level": 7, "uuid": "Compendium.pf1.class-abilities.Item.Js83QWyHQQ4PjP0m" },
+                  { "level": 8, "uuid": "Compendium.pf1.class-abilities.Item.G1z392b58wRybqjL" },
+                  { "level": 10, "uuid": "Compendium.pf1.class-abilities.Item.ePNt8fgtaAxmLnHs" },
+                  { "level": 11, "uuid": "Compendium.pf1.class-abilities.Item.dakApiblq3ad7AZI" },
+                  { "level": 13, "uuid": "Compendium.pf1.class-abilities.Item.0AXAMXGLJIw7CGBd" },
+                  { "level": 14, "uuid": "Compendium.pf1.class-abilities.Item.nWDMATASYzzAShr6" },
+                  { "level": 16, "uuid": "Compendium.pf1.class-abilities.Item.zLXBKnWXbZ2YKOBo" },
+                  { "level": 19, "uuid": "Compendium.pf1.class-abilities.Item.i64BU7HTfaRJEYFj" },
+                  { "level": 20, "uuid": "Compendium.pf1.class-abilities.Item.XAMIufM24q2qAB7o" }
+                ]
+              },
+              "savingThrows": {
+                "fort": { "value": "high" },
+                "ref": { "value": "low" },
+                "will": { "value": "high" }
+              },
+              "skillsPerLevel": 2,
+              "sources": [{ "id": "PZO1117", "pages": "9-13" }],
+              "subType": "base",
+              "tag": "magus",
+              "wealth": "4d6 * 10",
+              "weaponProf": ["simple", "martial"],
+              "hp": 63
+            },
+            "type": "class",
+            "effects": [],
+            "folder": null,
+            "flags": {
+              "pf1": {
+                "links": {
+                  "classAssociations": {
+                    "E5GXIgMoSqV6U1Ur": 1,
+                    "5K7nNEKsESBH3vsB": 1,
+                    "z0MXOPaspy5xJAct": 1,
+                    "At3wazIMOfGvtT0y": 1,
+                    "qCGN3O3MqT3Z1ARx": 1,
+                    "XtwWtRn8dNAyENae": 2,
+                    "XDAPp8K8euvmC40o": 3,
+                    "zAitxa2NETi6ibGl": 4,
+                    "GrlIYvydWyDG4ShO": 5,
+                    "4cRpn7lR2FBKb0M8": 7,
+                    "C6XsLHCyoFPEIdH7": 7,
+                    "DojNC7WDYgdYQKxC": 8,
+                    "kmjTwdwuCyI3a5P6": 10,
+                    "nNYZuyiUWVA5NbKs": 11
+                  }
+                }
+              }
+            },
+            "_id": "NgNWQQ8X8oZvVuAV",
+            "sort": 0
+          },
+          {
+            "name": "Magus",
+            "type": "spellcasting",
+            "system": {
+              "identifier": "magus",
+              "kind": "arcane",
+              "class": "magus",
+              "type": "prepared",
+              "scale": "med",
+              "ability": "int",
+              "asf": { "enabled": true },
+              "cantrips": { "enabled": true },
+              "slots": { "domain": { "formula": 0 }, "auto": true, "ability": { "auto": true } },
+              "cl": { "formula": "" },
+              "casts": {},
+              "preparation": {},
+              "concentration": {},
+              "dc": {},
+              "spellPoints": { "enabled": false, "offset": 0 },
+              "levels": {
+                "0": {},
+                "1": {},
+                "2": {},
+                "3": {},
+                "4": {},
+                "5": {},
+                "6": {},
+                "7": {},
+                "8": {},
+                "9": {}
+              },
+              "restrictions": []
+            },
+            "_id": "fzXHHCkjnN77LCF6",
+            "effects": [],
+            "folder": null,
+            "sort": 0,
+            "flags": {},
+            "_stats": { "compendiumSource": null }
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.mpe3JHJMINddqLWr"
+            },
+            "name": "Arcane Pool",
+            "system": {
+              "abilityType": "su",
+              "actions": {
+                "t72hyk24l7zc4o1m": {
+                  "_id": "t72hyk24l7zc4o1m",
+                  "activation": { "type": "swift", "unchained": { "type": "action" } },
+                  "duration": { "units": "minute", "value": "1" },
+                  "name": "Use",
+                  "range": { "units": "personal" },
+                  "sort": 0,
+                  "target": { "value": "self" }
+                }
+              },
+              "associations": { "classes": ["Magus"] },
+              "sources": [{ "id": "PZO1117", "pages": "9" }],
+              "subType": "classFeat",
+              "tag": "arcanePool",
+              "uses": {
+                "maxFormula": "max(1, floor(@class.unlevel / 2)) + @abilities.int.mod",
+                "per": "day"
+              },
+              "class": "magus",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 100000,
+            "_id": "E5GXIgMoSqV6U1Ur",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.lj4yLDvoxGFHiwSk"
+            },
+            "name": "Spell Combat",
+            "system": {
+              "abilityType": "ex",
+              "associations": { "classes": ["Magus"] },
+              "sources": [{ "id": "PZO1117", "pages": "10" }],
+              "subType": "classFeat",
+              "class": "magus",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 200000,
+            "_id": "5K7nNEKsESBH3vsB",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.IPy4aqFYbOppaqKC"
+            },
+            "name": "Cantrips",
+            "system": {
+              "associations": {
+                "classes": [
+                  "Arcanist",
+                  "Bard",
+                  "Magus",
+                  "Skald",
+                  "Sorcerer",
+                  "Summoner",
+                  "Summoner (Unchained)",
+                  "Witch",
+                  "Wizard"
+                ]
+              },
+              "sources": [
+                { "id": "PZO1110", "pages": "34, 70, 77" },
+                { "id": "PZO1115", "pages": "54, 65" },
+                { "id": "PZO1117", "pages": "9" },
+                { "id": "PZO1131", "pages": "25" },
+                { "id": "PZO1129", "pages": "8, 49" }
+              ],
+              "subType": "classFeat",
+              "class": "magus",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 300000,
+            "_id": "z0MXOPaspy5xJAct",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.P0EhxFOJJXWMBiZi"
+            },
+            "name": "Spellbooks (MAG)",
+            "system": {
+              "associations": { "classes": ["Magus"] },
+              "links": {
+                "supplements": [{ "uuid": "Compendium.pf1.items.Item.onurpjwtdogsedsg" }],
+                "children": [{ "uuid": ".Item.7p7Mct9icXJUpQ5k" }]
+              },
+              "sources": [{ "id": "PZO1110", "pages": "9" }],
+              "subType": "classFeat",
+              "class": "magus",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 400000,
+            "_id": "At3wazIMOfGvtT0y",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.Bd6X95yJfPz6zPkP"
+            },
+            "name": "Magus Spells",
+            "system": {
+              "associations": { "classes": ["Inquisitor"] },
+              "sources": [{ "id": "PZO1115", "pages": "38" }],
+              "subType": "classFeat",
+              "class": "magus",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 500000,
+            "_id": "qCGN3O3MqT3Z1ARx",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.OsEuRDHP7jcJ2fIJ"
+            },
+            "name": "Spellstrike",
+            "system": {
+              "abilityType": "su",
+              "associations": { "classes": ["Magus"] },
+              "sources": [{ "id": "PZO1117", "pages": "10" }],
+              "subType": "classFeat",
+              "class": "magus",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 600000,
+            "_id": "XtwWtRn8dNAyENae",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.HJ2vLLDYkihPxFkD"
+            },
+            "name": "Magus Arcana",
+            "system": {
+              "associations": { "classes": ["Magus"] },
+              "sources": [{ "id": "PZO1117", "pages": "10" }],
+              "subType": "classFeat",
+              "class": "magus",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 700000,
+            "_id": "XDAPp8K8euvmC40o",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.IyfoUjtyaS8lakWc"
+            },
+            "name": "Spell Recall",
+            "system": {
+              "abilityType": "su",
+              "actions": {
+                "w3hcv689uverlzsn": {
+                  "_id": "w3hcv689uverlzsn",
+                  "activation": { "type": "swift", "unchained": { "type": "action" } },
+                  "name": "Use",
+                  "sort": 0
+                }
+              },
+              "associations": { "classes": ["Magus"] },
+              "sources": [{ "id": "PZO1117", "pages": "12" }],
+              "subType": "classFeat",
+              "class": "magus",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 800000,
+            "_id": "zAitxa2NETi6ibGl",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.gzBR0qkMdu0KkLV0"
+            },
+            "name": "Bonus Feats (MAG)",
+            "system": {
+              "associations": { "classes": ["Magus"] },
+              "changes": {
+                "mb8lkj30": {
+                  "_id": "mb8lkj30",
+                  "formula": "floor((@class.unlevel + 1) / 6)",
+                  "target": "bonusFeats",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1117", "pages": "12" }],
+              "subType": "classFeat",
+              "class": "magus",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 900000,
+            "_id": "GrlIYvydWyDG4ShO",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.QhHS0Qr5FxH4LtaI"
+            },
+            "name": "Knowledge Pool",
+            "system": {
+              "abilityType": "su",
+              "associations": { "classes": ["Magus"] },
+              "sources": [{ "id": "PZO1117", "pages": "12" }],
+              "subType": "classFeat",
+              "class": "magus",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 1000000,
+            "_id": "4cRpn7lR2FBKb0M8",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.Js83QWyHQQ4PjP0m"
+            },
+            "name": "Medium Armor",
+            "system": {
+              "abilityType": "ex",
+              "armorProf": ["med"],
+              "associations": { "classes": ["Magus"] },
+              "sources": [{ "id": "PZO1117", "pages": "12" }],
+              "subType": "classFeat",
+              "class": "magus",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 1100000,
+            "_id": "C6XsLHCyoFPEIdH7",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.G1z392b58wRybqjL"
+            },
+            "name": "Improved Spell Combat",
+            "system": {
+              "abilityType": "ex",
+              "associations": { "classes": ["Magus"] },
+              "sources": [{ "id": "PZO1117", "pages": "12" }],
+              "subType": "classFeat",
+              "class": "magus",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 1200000,
+            "_id": "DojNC7WDYgdYQKxC",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.ePNt8fgtaAxmLnHs"
+            },
+            "name": "Fighter Training",
+            "system": {
+              "abilityType": "ex",
+              "associations": { "classes": ["Magus"] },
+              "sources": [{ "id": "PZO1117", "pages": "13" }],
+              "subType": "classFeat",
+              "class": "magus",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 1300000,
+            "_id": "kmjTwdwuCyI3a5P6",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.dakApiblq3ad7AZI"
+            },
+            "name": "Improved Spell Recall",
+            "system": {
+              "abilityType": "su",
+              "associations": { "classes": ["Magus"] },
+              "sources": [{ "id": "PZO1117", "pages": "13" }],
+              "subType": "classFeat",
+              "class": "magus",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 1400000,
+            "_id": "nNYZuyiUWVA5NbKs",
+            "folder": null
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.items.Item.onurpjwtdogsedsg" },
+            "name": "Spellbook",
+            "system": {
+              "equipped": false,
+              "hp": { "base": 10 },
+              "price": { "base": 15, "unit": "gp" },
+              "quantity": 1,
+              "sources": [
+                { "id": "PZO1123", "pages": "77" },
+                { "id": "PZO1110", "pages": "158, 161" }
+              ],
+              "subType": "tool",
+              "weight": { "value": 3 }
+            },
+            "type": "loot",
+            "effects": [],
+            "flags": { "pf1": { "source": "Compendium.pf1.items.Item.onurpjwtdogsedsg" } },
+            "sort": 0,
+            "_id": "7p7Mct9icXJUpQ5k",
+            "folder": null
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.8snLqsJN4LLL00Nq" },
+            "name": "Toughness",
+            "system": {
+              "changes": {
+                "bl5pemy2": {
+                  "_id": "bl5pemy2",
+                  "formula": "max(3, @attributes.hd.total)",
+                  "target": "mhp",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "116, 135" }],
+              "subType": "feat",
+              "tags": ["General", "Defensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "XL87xNBbRIQpJXII",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.Uuiu3p982omhMEPj" },
+            "name": "Improved Initiative",
+            "system": {
+              "changes": {
+                "ign7okhi": {
+                  "_id": "ign7okhi",
+                  "formula": "4",
+                  "target": "init",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "115, 127" }],
+              "subType": "feat",
+              "tags": ["Combat"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "8sS1sVbtsjhqauGO",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.u7rGDZUL296QIuA0" },
+            "name": "Combat Casting",
+            "system": {
+              "sources": [{ "id": "PZO1110", "pages": "114, 119" }],
+              "subType": "feat",
+              "tags": ["General", "Magic", "Defensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "ernf7WgZMCpMPyHM",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.FUW5mIXHNBBIQ1Sq" },
+            "name": "Power Attack",
+            "system": {
+              "changeFlags": ["powerAttack"],
+              "sources": [{ "id": "PZO1110", "pages": "116, 131" }],
+              "subType": "feat",
+              "tags": ["Combat", "Offensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "31YVwqt9LIk0jlxu",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.QvlxYVVsBDlykPKe" },
+            "name": "Arcane Strike",
+            "system": {
+              "sources": [{ "id": "PZO1110", "pages": "114, 118" }],
+              "subType": "feat",
+              "tags": ["Combat", "Weapon", "Magic", "Offensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "yJ1saAv7zbZoNqGy",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.JreaiTHdyWFNj3Tb" },
+            "name": "Dodge",
+            "system": {
+              "changes": {
+                "9onhsept": { "_id": "9onhsept", "formula": "1", "target": "ac", "type": "dodge" }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "114, 122" }],
+              "subType": "feat",
+              "tags": ["Combat", "Defensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "jpYzeCPfzkcBMmO1",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.iAbIGhm7T2OK9Brt" },
+            "name": "Iron Will",
+            "system": {
+              "changes": {
+                "vafl2kz4": {
+                  "_id": "vafl2kz4",
+                  "formula": "2",
+                  "target": "will",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "115, 129" }],
+              "subType": "feat",
+              "tags": ["General", "Saving Throw"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "BpsaZYsqlbinzRb0",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.armors-and-shields.Item.6YCQkebsf4vR508H"
+            },
+            "folder": "LQyo9lDGQU29eyig",
+            "name": "Leather Armor",
+            "system": {
+              "armor": {
+                "dex": 6,
+                "material": { "base": { "value": "leather" }, "addon": [] },
+                "value": 2,
+                "enh": 1,
+                "alignments": {}
+              },
+              "baseTypes": ["Leather Armor"],
+              "equipmentSubtype": "lightArmor",
+              "equipped": true,
+              "hardness": 2,
+              "hp": { "base": 10 },
+              "price": { "base": 10, "unit": "gp" },
+              "quantity": 1,
+              "slot": "armor",
+              "sources": [{ "id": "PZO1110", "pages": "151" }],
+              "spellFailure": 10,
+              "subType": "armor",
+              "weight": { "value": 15 },
+              "mods": {}
+            },
+            "type": "equipment",
+            "effects": [],
+            "flags": {},
+            "_id": "3Jbxo2LT0P3kme6Y",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.items.Item.iCuo14damYkdjuD5" },
+            "folder": "U5q4LhZ06bCIZWVh",
+            "name": "Ring of Protection +1",
+            "system": {
+              "armor": {
+                "material": {
+                  "base": { "value": "leather" },
+                  "normal": { "value": "leather" },
+                  "addon": []
+                },
+                "alignments": {}
+              },
+              "aura": { "school": "abj" },
+              "changes": {
+                "d7piooyd": {
+                  "_id": "d7piooyd",
+                  "formula": "1",
+                  "target": "ac",
+                  "type": "deflection"
+                }
+              },
+              "cl": 5,
+              "creation": {
+                "cost": { "unit": "gp", "value": 1000 },
+                "description": "<p>@UUID[Compendium.pf1.feats.Item.HVu9JzllWoLzKKqH]{Forge Ring}, @UUID[Compendium.pf1.spells.Item.y2uhoqr4itdbw5g4]{shield of faith}, caster must be of a level at least three times higher than the bonus of the ring</p>"
+              },
+              "equipmentSubtype": "lightArmor",
+              "equipped": true,
+              "hp": { "base": 10 },
+              "price": { "base": 2000, "unit": "gp" },
+              "quantity": 1,
+              "resizing": true,
+              "slot": "ring",
+              "sources": [
+                { "id": "PZO1123", "pages": "172" },
+                { "id": "PZO1110", "pages": "479" }
+              ],
+              "subType": "wondrous",
+              "unidentified": { "name": "Ring", "price": { "base": 0, "unit": "gp" } },
+              "mods": {}
+            },
+            "type": "equipment",
+            "effects": [],
+            "flags": {},
+            "_id": "nftjBbdGfp9A7uKy",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.items.Item.PIbBQB3Ijy20VkcZ" },
+            "folder": "TQir6rREbQbhFUtK",
+            "name": "Cloak of Resistance +2",
+            "system": {
+              "armor": {
+                "material": {
+                  "base": { "value": "leather" },
+                  "normal": { "value": "leather" },
+                  "addon": []
+                },
+                "alignments": {}
+              },
+              "aura": { "school": "abj" },
+              "changes": {
+                "i6qgu955": {
+                  "_id": "i6qgu955",
+                  "formula": "2",
+                  "target": "allSavingThrows",
+                  "type": "resist"
+                }
+              },
+              "cl": 5,
+              "creation": {
+                "cost": { "unit": "gp", "value": 2000 },
+                "description": "<p>@UUID[Compendium.pf1.feats.Item.tD76K8QGco9scT0r]{Craft Wondrous Item}, @UUID[Compendium.pf1.spells.Item.g8j278xcu2s1zlwy]{resistance}, creator's caster level must be at least three times the cloak's bonus</p>"
+              },
+              "equipmentSubtype": "lightArmor",
+              "equipped": true,
+              "hp": { "base": 10 },
+              "price": { "base": 4000, "unit": "gp" },
+              "quantity": 1,
+              "resizing": true,
+              "slot": "shoulders",
+              "sources": [
+                { "id": "PZO1123", "pages": "264" },
+                { "id": "PZO1110", "pages": "507" }
+              ],
+              "subType": "wondrous",
+              "unidentified": { "name": "Cloak", "price": { "base": 0, "unit": "gp" } },
+              "weight": { "value": 1 },
+              "mods": {}
+            },
+            "type": "equipment",
+            "effects": [],
+            "flags": {},
+            "_id": "ZTWiNDfGwsnSVYO5",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.items.Item.9Uxwqax0pLPyT2j7" },
+            "folder": "VOvPhMVX9rdVJGdy",
+            "name": "Amulet of Natural Armor +1",
+            "system": {
+              "armor": {
+                "material": {
+                  "base": { "value": "leather" },
+                  "normal": { "value": "leather" },
+                  "addon": []
+                },
+                "alignments": {}
+              },
+              "aura": { "school": "trs" },
+              "changes": {
+                "2cr1je17": { "_id": "2cr1je17", "formula": "1", "target": "nac", "type": "enh" }
+              },
+              "cl": 5,
+              "creation": {
+                "cost": { "unit": "gp", "value": 1000 },
+                "description": "<p>@UUID[Compendium.pf1.feats.Item.tD76K8QGco9scT0r]{Craft Wondrous Item}, @UUID[Compendium.pf1.spells.Item.la7kuehewu85ybnt]{barkskin}, creator's caster level must be at least three times the amulet's bonus</p>"
+              },
+              "equipmentSubtype": "lightArmor",
+              "equipped": true,
+              "hp": { "base": 10 },
+              "price": { "base": 2000, "unit": "gp" },
+              "quantity": 1,
+              "resizing": true,
+              "slot": "neck",
+              "sources": [
+                { "id": "PZO1123", "pages": "256" },
+                { "id": "PZO1110", "pages": "500" }
+              ],
+              "subType": "wondrous",
+              "unidentified": { "name": "Amulet", "price": { "base": 0, "unit": "gp" } },
+              "mods": {}
+            },
+            "type": "equipment",
+            "effects": [],
+            "flags": {},
+            "_id": "55TxN9VyvutzOHPa",
+            "sort": 0
+          }
+        ],
+        "effects": [],
+        "sort": 0,
+        "flags": {}
+      },
+      "derived": {
+        "abilities": {
+          "str": { "total": 18, "mod": 4 },
+          "dex": { "total": 14, "mod": 2 },
+          "con": { "total": 12, "mod": 1 },
+          "int": { "total": 14, "mod": 2 },
+          "wis": { "total": 10, "mod": 0 },
+          "cha": { "total": 8, "mod": -1 }
+        },
+        "ac": { "normal": 18, "touch": 14, "flatFooted": 15 },
+        "cmb": 13,
+        "cmd": { "total": 27, "flatFooted": 24 },
+        "saves": { "fort": 11, "ref": 8, "will": 12 },
+        "init": 6,
+        "bab": 9,
+        "attack": { "melee": 13, "ranged": 11 },
+        "hp": { "max": 87 },
+        "speed": { "land": 30 },
+        "sr": 0,
+        "acp": 0,
+        "skills": {
+          "perception": 6,
+          "knowledge": 2,
+          "knowledge.geography": 2,
+          "knowledge.nobility": 2,
+          "knowledge.local": 2,
+          "knowledge.dungeoneering": 2,
+          "knowledge.religion": 2,
+          "knowledge.nature": 2,
+          "knowledge.arcana": 17,
+          "knowledge.history": 2,
+          "knowledge.planes": 2,
+          "knowledge.engineering": 2,
+          "intimidate": -1,
+          "appraise": 2,
+          "profession": 0,
+          "fly": 2,
+          "disableDevice": 2,
+          "swim": 4,
+          "escapeArtist": 2,
+          "linguistics": 2,
+          "acrobatics": 8,
+          "useMagicDevice": -1,
+          "climb": 13,
+          "sleightOfHand": 2,
+          "handleAnimal": -1,
+          "heal": 0,
+          "spellcraft": 17,
+          "ride": 2,
+          "stealth": 2,
+          "survival": 0,
+          "craft": 2,
+          "disguise": -1,
+          "diplomacy": -1,
+          "senseMotive": -1,
+          "perform": -1,
+          "bluff": -1
+        }
+      }
+    },
+    "buffs": {
+      "actor": {
+        "name": "human-magus-12 [buffs]",
+        "type": "character",
+        "folder": "GuYuyoqdabfe4xZV",
+        "_id": "0rDQlr3CuDzdEljQ",
+        "system": {
+          "abilities": {
+            "str": { "value": 16 },
+            "dex": { "value": 14 },
+            "con": { "value": 12 },
+            "int": { "value": 14 },
+            "wis": { "value": 10 },
+            "cha": { "value": 8 }
+          },
+          "attributes": {
+            "savingThrows": {
+              "fort": { "ability": "con" },
+              "ref": { "ability": "dex" },
+              "will": { "ability": "wis" }
+            },
+            "hp": { "temp": 0, "nonlethal": 0, "offset": 0 },
+            "wounds": { "offset": 0 },
+            "vigor": { "temp": 0, "offset": 0 }
+          },
+          "details": { "notes": {}, "xp": { "value": 0 }, "alignment": "ng" },
+          "traits": { "size": "med", "ageCategory": "adult", "stature": "tall" },
+          "currency": {},
+          "altCurrency": {}
+        },
+        "items": [
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.5WivCl3kkGv5iNiz" },
+            "name": "Perception",
+            "system": {
+              "ability": "wis",
+              "identifier": "perception",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.2h6hz5AkTDxKPFxr",
+              "sets": ["adventure"],
+              "rank": 6,
+              "acp": false,
+              "rt": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "WbBCkTxw6lS2UivM",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.GgIafHeIJmKJMDhi" },
+            "name": "Acrobatics",
+            "system": {
+              "ability": "dex",
+              "acp": true,
+              "identifier": "acrobatics",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.gGfJO90ZuRT4sZ9X",
+              "sets": ["adventure"],
+              "rank": 6,
+              "rt": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "tDMBK2arIsrZj6vh",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.NbW51ORcxEJnEY8H" },
+            "name": "Climb",
+            "system": {
+              "ability": "str",
+              "acp": true,
+              "identifier": "climb",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.ZAwjVOTwsBpZRgw4",
+              "sets": ["adventure"],
+              "rank": 6,
+              "rt": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "I41jQvi5zkO3hUf0",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.az8CVJgEw3BFJpgG" },
+            "name": "Arcana",
+            "system": {
+              "ability": "int",
+              "grouping": "knowledge",
+              "identifier": "arcana",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.BWeqgXSZvUQl68vt",
+              "rt": true,
+              "sets": ["adventure"],
+              "rank": 12,
+              "acp": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "kifKRv7T0ByEfviU",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.iLD7iQ9Y6FNLpXZc" },
+            "name": "Spellcraft",
+            "system": {
+              "ability": "int",
+              "identifier": "spellcraft",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.VRD7jxiIAxKPt6EF",
+              "rt": true,
+              "sets": ["adventure"],
+              "rank": 12,
+              "acp": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "o9rgksDykbZNMrpu",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.races.Item.e6IaBxKgMxy1yKlr" },
+            "folder": "RWSoA7Fj9yqo0y9U",
+            "name": "Human",
+            "system": {
+              "changes": {
+                "ahb0k14u": {
+                  "_id": "ahb0k14u",
+                  "formula": "@attributes.hd.total",
+                  "target": "bonusSkillRanks",
+                  "type": "untyped"
+                },
+                "ywxkp0hu": {
+                  "_id": "ywxkp0hu",
+                  "formula": "1",
+                  "target": "bonusFeats",
+                  "type": "untyped"
+                },
+                "lmflex01": { "_id": "lmflex01", "formula": "2", "target": "str", "type": "racial" }
+              },
+              "creatureSubtypes": ["human"],
+              "creatureTypes": ["humanoid"],
+              "languages": ["common"],
+              "size": "med",
+              "sources": [{ "id": "PZO1110", "pages": "27" }],
+              "speeds": { "land": 30 },
+              "tags": [
+                "Core",
+                "Western (Arcadia)",
+                "Eastern (Casmaron)",
+                "Northern (Crown of the World)",
+                "Southern (Garund)"
+              ]
+            },
+            "type": "race",
+            "effects": [],
+            "flags": {},
+            "_id": "jxdNCN6PrWuIUV5U",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.classes.Item.xZLcyrEKYZoJPS2k" },
+            "name": "Magus",
+            "system": {
+              "armorProf": ["lgt"],
+              "bab": "med",
+              "casting": {
+                "ability": "int",
+                "cantrips": true,
+                "domain": 0,
+                "progression": "med",
+                "spells": "arcane",
+                "type": "prepared"
+              },
+              "classSkills": [
+                "artistry",
+                "climb",
+                "craft",
+                "fly",
+                "intimidate",
+                "knowledge.arcana",
+                "knowledge.dungeoneering",
+                "knowledge.planes",
+                "lore",
+                "profession",
+                "ride",
+                "spellcraft",
+                "swim",
+                "useMagicDevice"
+              ],
+              "hd": 8,
+              "level": 12,
+              "links": {
+                "supplements": [
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.mpe3JHJMINddqLWr" },
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.lj4yLDvoxGFHiwSk" },
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.IPy4aqFYbOppaqKC" },
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.P0EhxFOJJXWMBiZi" },
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.Bd6X95yJfPz6zPkP" },
+                  { "level": 2, "uuid": "Compendium.pf1.class-abilities.Item.OsEuRDHP7jcJ2fIJ" },
+                  { "level": 3, "uuid": "Compendium.pf1.class-abilities.Item.HJ2vLLDYkihPxFkD" },
+                  { "level": 4, "uuid": "Compendium.pf1.class-abilities.Item.IyfoUjtyaS8lakWc" },
+                  { "level": 5, "uuid": "Compendium.pf1.class-abilities.Item.gzBR0qkMdu0KkLV0" },
+                  { "level": 7, "uuid": "Compendium.pf1.class-abilities.Item.QhHS0Qr5FxH4LtaI" },
+                  { "level": 7, "uuid": "Compendium.pf1.class-abilities.Item.Js83QWyHQQ4PjP0m" },
+                  { "level": 8, "uuid": "Compendium.pf1.class-abilities.Item.G1z392b58wRybqjL" },
+                  { "level": 10, "uuid": "Compendium.pf1.class-abilities.Item.ePNt8fgtaAxmLnHs" },
+                  { "level": 11, "uuid": "Compendium.pf1.class-abilities.Item.dakApiblq3ad7AZI" },
+                  { "level": 13, "uuid": "Compendium.pf1.class-abilities.Item.0AXAMXGLJIw7CGBd" },
+                  { "level": 14, "uuid": "Compendium.pf1.class-abilities.Item.nWDMATASYzzAShr6" },
+                  { "level": 16, "uuid": "Compendium.pf1.class-abilities.Item.zLXBKnWXbZ2YKOBo" },
+                  { "level": 19, "uuid": "Compendium.pf1.class-abilities.Item.i64BU7HTfaRJEYFj" },
+                  { "level": 20, "uuid": "Compendium.pf1.class-abilities.Item.XAMIufM24q2qAB7o" }
+                ]
+              },
+              "savingThrows": {
+                "fort": { "value": "high" },
+                "ref": { "value": "low" },
+                "will": { "value": "high" }
+              },
+              "skillsPerLevel": 2,
+              "sources": [{ "id": "PZO1117", "pages": "9-13" }],
+              "subType": "base",
+              "tag": "magus",
+              "wealth": "4d6 * 10",
+              "weaponProf": ["simple", "martial"],
+              "hp": 63
+            },
+            "type": "class",
+            "effects": [],
+            "folder": null,
+            "flags": {
+              "pf1": {
+                "links": {
+                  "classAssociations": {
+                    "ilMAlsnuRElXB9VW": 1,
+                    "mIrR3muSCzByxoWT": 1,
+                    "MVoXqvKGAZAjd3hd": 1,
+                    "93jB9dN64VkDXVnV": 1,
+                    "QAOiMlnQEaknmMX1": 2,
+                    "8KmbVwfLPWU4hPv5": 3,
+                    "SufJISM8mpDA1SXK": 4,
+                    "UEa7PfA3d3Z1tyEY": 5,
+                    "bl859mAfvWauTUqi": 7,
+                    "OfCDcBiXsMeWirbA": 7,
+                    "SrgD7dsCGKAX9TrK": 8,
+                    "z1vGAQ4WI6m4b3R7": 10,
+                    "8Mbit8Dn3i3jMInT": 11,
+                    "Lj6UAqdrwVgkYf8f": 1
+                  }
+                }
+              }
+            },
+            "_id": "UkUTEQNAst25Anh3",
+            "sort": 0
+          },
+          {
+            "name": "Magus",
+            "type": "spellcasting",
+            "system": {
+              "identifier": "magus",
+              "kind": "arcane",
+              "class": "magus",
+              "type": "prepared",
+              "scale": "med",
+              "ability": "int",
+              "asf": { "enabled": true },
+              "cantrips": { "enabled": true },
+              "slots": { "domain": { "formula": 0 }, "auto": true, "ability": { "auto": true } },
+              "cl": { "formula": "" },
+              "casts": {},
+              "preparation": {},
+              "concentration": {},
+              "dc": {},
+              "spellPoints": { "enabled": false, "offset": 0 },
+              "levels": {
+                "0": {},
+                "1": {},
+                "2": {},
+                "3": {},
+                "4": {},
+                "5": {},
+                "6": {},
+                "7": {},
+                "8": {},
+                "9": {}
+              },
+              "restrictions": []
+            },
+            "_id": "9WFjKZDrplXQrNSG",
+            "effects": [],
+            "folder": null,
+            "sort": 0,
+            "flags": {},
+            "_stats": { "compendiumSource": null }
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.lj4yLDvoxGFHiwSk"
+            },
+            "name": "Spell Combat",
+            "system": {
+              "abilityType": "ex",
+              "associations": { "classes": ["Magus"] },
+              "sources": [{ "id": "PZO1117", "pages": "10" }],
+              "subType": "classFeat",
+              "class": "magus",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 200000,
+            "_id": "ilMAlsnuRElXB9VW",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.IPy4aqFYbOppaqKC"
+            },
+            "name": "Cantrips",
+            "system": {
+              "associations": {
+                "classes": [
+                  "Arcanist",
+                  "Bard",
+                  "Magus",
+                  "Skald",
+                  "Sorcerer",
+                  "Summoner",
+                  "Summoner (Unchained)",
+                  "Witch",
+                  "Wizard"
+                ]
+              },
+              "sources": [
+                { "id": "PZO1110", "pages": "34, 70, 77" },
+                { "id": "PZO1115", "pages": "54, 65" },
+                { "id": "PZO1117", "pages": "9" },
+                { "id": "PZO1131", "pages": "25" },
+                { "id": "PZO1129", "pages": "8, 49" }
+              ],
+              "subType": "classFeat",
+              "class": "magus",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 300000,
+            "_id": "mIrR3muSCzByxoWT",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.P0EhxFOJJXWMBiZi"
+            },
+            "name": "Spellbooks (MAG)",
+            "system": {
+              "associations": { "classes": ["Magus"] },
+              "links": {
+                "supplements": [{ "uuid": "Compendium.pf1.items.Item.onurpjwtdogsedsg" }],
+                "children": [{ "uuid": ".Item.4FdL2j4dBfg7Uuz6" }]
+              },
+              "sources": [{ "id": "PZO1110", "pages": "9" }],
+              "subType": "classFeat",
+              "class": "magus",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 400000,
+            "_id": "MVoXqvKGAZAjd3hd",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.mpe3JHJMINddqLWr"
+            },
+            "name": "Arcane Pool",
+            "system": {
+              "abilityType": "su",
+              "actions": {
+                "t72hyk24l7zc4o1m": {
+                  "_id": "t72hyk24l7zc4o1m",
+                  "activation": { "type": "swift", "unchained": { "type": "action" } },
+                  "duration": { "units": "minute", "value": "1" },
+                  "name": "Use",
+                  "range": { "units": "personal" },
+                  "sort": 0,
+                  "target": { "value": "self" }
+                }
+              },
+              "associations": { "classes": ["Magus"] },
+              "sources": [{ "id": "PZO1117", "pages": "9" }],
+              "subType": "classFeat",
+              "tag": "arcanePool",
+              "uses": {
+                "maxFormula": "max(1, floor(@class.unlevel / 2)) + @abilities.int.mod",
+                "per": "day"
+              },
+              "class": "magus",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 100000,
+            "_id": "93jB9dN64VkDXVnV",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.OsEuRDHP7jcJ2fIJ"
+            },
+            "name": "Spellstrike",
+            "system": {
+              "abilityType": "su",
+              "associations": { "classes": ["Magus"] },
+              "sources": [{ "id": "PZO1117", "pages": "10" }],
+              "subType": "classFeat",
+              "class": "magus",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 600000,
+            "_id": "QAOiMlnQEaknmMX1",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.HJ2vLLDYkihPxFkD"
+            },
+            "name": "Magus Arcana",
+            "system": {
+              "associations": { "classes": ["Magus"] },
+              "sources": [{ "id": "PZO1117", "pages": "10" }],
+              "subType": "classFeat",
+              "class": "magus",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 700000,
+            "_id": "8KmbVwfLPWU4hPv5",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.IyfoUjtyaS8lakWc"
+            },
+            "name": "Spell Recall",
+            "system": {
+              "abilityType": "su",
+              "actions": {
+                "w3hcv689uverlzsn": {
+                  "_id": "w3hcv689uverlzsn",
+                  "activation": { "type": "swift", "unchained": { "type": "action" } },
+                  "name": "Use",
+                  "sort": 0
+                }
+              },
+              "associations": { "classes": ["Magus"] },
+              "sources": [{ "id": "PZO1117", "pages": "12" }],
+              "subType": "classFeat",
+              "class": "magus",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 800000,
+            "_id": "SufJISM8mpDA1SXK",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.gzBR0qkMdu0KkLV0"
+            },
+            "name": "Bonus Feats (MAG)",
+            "system": {
+              "associations": { "classes": ["Magus"] },
+              "changes": {
+                "mb8lkj30": {
+                  "_id": "mb8lkj30",
+                  "formula": "floor((@class.unlevel + 1) / 6)",
+                  "target": "bonusFeats",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1117", "pages": "12" }],
+              "subType": "classFeat",
+              "class": "magus",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 900000,
+            "_id": "UEa7PfA3d3Z1tyEY",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.QhHS0Qr5FxH4LtaI"
+            },
+            "name": "Knowledge Pool",
+            "system": {
+              "abilityType": "su",
+              "associations": { "classes": ["Magus"] },
+              "sources": [{ "id": "PZO1117", "pages": "12" }],
+              "subType": "classFeat",
+              "class": "magus",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 1000000,
+            "_id": "bl859mAfvWauTUqi",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.Js83QWyHQQ4PjP0m"
+            },
+            "name": "Medium Armor",
+            "system": {
+              "abilityType": "ex",
+              "armorProf": ["med"],
+              "associations": { "classes": ["Magus"] },
+              "sources": [{ "id": "PZO1117", "pages": "12" }],
+              "subType": "classFeat",
+              "class": "magus",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 1100000,
+            "_id": "OfCDcBiXsMeWirbA",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.G1z392b58wRybqjL"
+            },
+            "name": "Improved Spell Combat",
+            "system": {
+              "abilityType": "ex",
+              "associations": { "classes": ["Magus"] },
+              "sources": [{ "id": "PZO1117", "pages": "12" }],
+              "subType": "classFeat",
+              "class": "magus",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 1200000,
+            "_id": "SrgD7dsCGKAX9TrK",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.ePNt8fgtaAxmLnHs"
+            },
+            "name": "Fighter Training",
+            "system": {
+              "abilityType": "ex",
+              "associations": { "classes": ["Magus"] },
+              "sources": [{ "id": "PZO1117", "pages": "13" }],
+              "subType": "classFeat",
+              "class": "magus",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 1300000,
+            "_id": "z1vGAQ4WI6m4b3R7",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.dakApiblq3ad7AZI"
+            },
+            "name": "Improved Spell Recall",
+            "system": {
+              "abilityType": "su",
+              "associations": { "classes": ["Magus"] },
+              "sources": [{ "id": "PZO1117", "pages": "13" }],
+              "subType": "classFeat",
+              "class": "magus",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 1400000,
+            "_id": "8Mbit8Dn3i3jMInT",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.Bd6X95yJfPz6zPkP"
+            },
+            "name": "Magus Spells",
+            "system": {
+              "associations": { "classes": ["Inquisitor"] },
+              "sources": [{ "id": "PZO1115", "pages": "38" }],
+              "subType": "classFeat",
+              "class": "magus",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 500000,
+            "_id": "Lj6UAqdrwVgkYf8f",
+            "folder": null
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.items.Item.onurpjwtdogsedsg" },
+            "name": "Spellbook",
+            "system": {
+              "equipped": false,
+              "hp": { "base": 10 },
+              "price": { "base": 15, "unit": "gp" },
+              "quantity": 1,
+              "sources": [
+                { "id": "PZO1123", "pages": "77" },
+                { "id": "PZO1110", "pages": "158, 161" }
+              ],
+              "subType": "tool",
+              "weight": { "value": 3 }
+            },
+            "type": "loot",
+            "effects": [],
+            "flags": { "pf1": { "source": "Compendium.pf1.items.Item.onurpjwtdogsedsg" } },
+            "sort": 0,
+            "_id": "4FdL2j4dBfg7Uuz6",
+            "folder": null
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.8snLqsJN4LLL00Nq" },
+            "name": "Toughness",
+            "system": {
+              "changes": {
+                "bl5pemy2": {
+                  "_id": "bl5pemy2",
+                  "formula": "max(3, @attributes.hd.total)",
+                  "target": "mhp",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "116, 135" }],
+              "subType": "feat",
+              "tags": ["General", "Defensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "C7yylokZrmOZtUBx",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.Uuiu3p982omhMEPj" },
+            "name": "Improved Initiative",
+            "system": {
+              "changes": {
+                "ign7okhi": {
+                  "_id": "ign7okhi",
+                  "formula": "4",
+                  "target": "init",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "115, 127" }],
+              "subType": "feat",
+              "tags": ["Combat"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "N0JkZhSKiLYGD0tT",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.u7rGDZUL296QIuA0" },
+            "name": "Combat Casting",
+            "system": {
+              "sources": [{ "id": "PZO1110", "pages": "114, 119" }],
+              "subType": "feat",
+              "tags": ["General", "Magic", "Defensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "plvDF7BRVQUF3gGU",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.FUW5mIXHNBBIQ1Sq" },
+            "name": "Power Attack",
+            "system": {
+              "changeFlags": ["powerAttack"],
+              "sources": [{ "id": "PZO1110", "pages": "116, 131" }],
+              "subType": "feat",
+              "tags": ["Combat", "Offensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "E4csZgnS4NB60aDS",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.QvlxYVVsBDlykPKe" },
+            "name": "Arcane Strike",
+            "system": {
+              "sources": [{ "id": "PZO1110", "pages": "114, 118" }],
+              "subType": "feat",
+              "tags": ["Combat", "Weapon", "Magic", "Offensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "vYyseDxrM3dV4q4x",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.JreaiTHdyWFNj3Tb" },
+            "name": "Dodge",
+            "system": {
+              "changes": {
+                "9onhsept": { "_id": "9onhsept", "formula": "1", "target": "ac", "type": "dodge" }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "114, 122" }],
+              "subType": "feat",
+              "tags": ["Combat", "Defensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "iVdYqrnfgB7Hwd9N",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.iAbIGhm7T2OK9Brt" },
+            "name": "Iron Will",
+            "system": {
+              "changes": {
+                "vafl2kz4": {
+                  "_id": "vafl2kz4",
+                  "formula": "2",
+                  "target": "will",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "115, 129" }],
+              "subType": "feat",
+              "tags": ["General", "Saving Throw"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "mNcikw8CdPhCjh8X",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.armors-and-shields.Item.6YCQkebsf4vR508H"
+            },
+            "folder": "LQyo9lDGQU29eyig",
+            "name": "Leather Armor",
+            "system": {
+              "armor": {
+                "dex": 6,
+                "material": { "base": { "value": "leather" }, "addon": [] },
+                "value": 2,
+                "enh": 1,
+                "alignments": {}
+              },
+              "baseTypes": ["Leather Armor"],
+              "equipmentSubtype": "lightArmor",
+              "equipped": true,
+              "hardness": 2,
+              "hp": { "base": 10 },
+              "price": { "base": 10, "unit": "gp" },
+              "quantity": 1,
+              "slot": "armor",
+              "sources": [{ "id": "PZO1110", "pages": "151" }],
+              "spellFailure": 10,
+              "subType": "armor",
+              "weight": { "value": 15 },
+              "mods": {}
+            },
+            "type": "equipment",
+            "effects": [],
+            "flags": {},
+            "_id": "IqWBObkviEV7fvyR",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.items.Item.iCuo14damYkdjuD5" },
+            "folder": "U5q4LhZ06bCIZWVh",
+            "name": "Ring of Protection +1",
+            "system": {
+              "armor": {
+                "material": {
+                  "base": { "value": "leather" },
+                  "normal": { "value": "leather" },
+                  "addon": []
+                },
+                "alignments": {}
+              },
+              "aura": { "school": "abj" },
+              "changes": {
+                "d7piooyd": {
+                  "_id": "d7piooyd",
+                  "formula": "1",
+                  "target": "ac",
+                  "type": "deflection"
+                }
+              },
+              "cl": 5,
+              "creation": {
+                "cost": { "unit": "gp", "value": 1000 },
+                "description": "<p>@UUID[Compendium.pf1.feats.Item.HVu9JzllWoLzKKqH]{Forge Ring}, @UUID[Compendium.pf1.spells.Item.y2uhoqr4itdbw5g4]{shield of faith}, caster must be of a level at least three times higher than the bonus of the ring</p>"
+              },
+              "equipmentSubtype": "lightArmor",
+              "equipped": true,
+              "hp": { "base": 10 },
+              "price": { "base": 2000, "unit": "gp" },
+              "quantity": 1,
+              "resizing": true,
+              "slot": "ring",
+              "sources": [
+                { "id": "PZO1123", "pages": "172" },
+                { "id": "PZO1110", "pages": "479" }
+              ],
+              "subType": "wondrous",
+              "unidentified": { "name": "Ring", "price": { "base": 0, "unit": "gp" } },
+              "mods": {}
+            },
+            "type": "equipment",
+            "effects": [],
+            "flags": {},
+            "_id": "c6QoJzlj2WbsxZId",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.items.Item.PIbBQB3Ijy20VkcZ" },
+            "folder": "TQir6rREbQbhFUtK",
+            "name": "Cloak of Resistance +2",
+            "system": {
+              "armor": {
+                "material": {
+                  "base": { "value": "leather" },
+                  "normal": { "value": "leather" },
+                  "addon": []
+                },
+                "alignments": {}
+              },
+              "aura": { "school": "abj" },
+              "changes": {
+                "i6qgu955": {
+                  "_id": "i6qgu955",
+                  "formula": "2",
+                  "target": "allSavingThrows",
+                  "type": "resist"
+                }
+              },
+              "cl": 5,
+              "creation": {
+                "cost": { "unit": "gp", "value": 2000 },
+                "description": "<p>@UUID[Compendium.pf1.feats.Item.tD76K8QGco9scT0r]{Craft Wondrous Item}, @UUID[Compendium.pf1.spells.Item.g8j278xcu2s1zlwy]{resistance}, creator's caster level must be at least three times the cloak's bonus</p>"
+              },
+              "equipmentSubtype": "lightArmor",
+              "equipped": true,
+              "hp": { "base": 10 },
+              "price": { "base": 4000, "unit": "gp" },
+              "quantity": 1,
+              "resizing": true,
+              "slot": "shoulders",
+              "sources": [
+                { "id": "PZO1123", "pages": "264" },
+                { "id": "PZO1110", "pages": "507" }
+              ],
+              "subType": "wondrous",
+              "unidentified": { "name": "Cloak", "price": { "base": 0, "unit": "gp" } },
+              "weight": { "value": 1 },
+              "mods": {}
+            },
+            "type": "equipment",
+            "effects": [],
+            "flags": {},
+            "_id": "liGqexPjzkzzGkgh",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.items.Item.9Uxwqax0pLPyT2j7" },
+            "folder": "VOvPhMVX9rdVJGdy",
+            "name": "Amulet of Natural Armor +1",
+            "system": {
+              "armor": {
+                "material": {
+                  "base": { "value": "leather" },
+                  "normal": { "value": "leather" },
+                  "addon": []
+                },
+                "alignments": {}
+              },
+              "aura": { "school": "trs" },
+              "changes": {
+                "2cr1je17": { "_id": "2cr1je17", "formula": "1", "target": "nac", "type": "enh" }
+              },
+              "cl": 5,
+              "creation": {
+                "cost": { "unit": "gp", "value": 1000 },
+                "description": "<p>@UUID[Compendium.pf1.feats.Item.tD76K8QGco9scT0r]{Craft Wondrous Item}, @UUID[Compendium.pf1.spells.Item.la7kuehewu85ybnt]{barkskin}, creator's caster level must be at least three times the amulet's bonus</p>"
+              },
+              "equipmentSubtype": "lightArmor",
+              "equipped": true,
+              "hp": { "base": 10 },
+              "price": { "base": 2000, "unit": "gp" },
+              "quantity": 1,
+              "resizing": true,
+              "slot": "neck",
+              "sources": [
+                { "id": "PZO1123", "pages": "256" },
+                { "id": "PZO1110", "pages": "500" }
+              ],
+              "subType": "wondrous",
+              "unidentified": { "name": "Amulet", "price": { "base": 0, "unit": "gp" } },
+              "mods": {}
+            },
+            "type": "equipment",
+            "effects": [],
+            "flags": {},
+            "_id": "U8mg9qCEsb57RuDC",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.buffs.Item.IlO0CNpAIKZtNYu8" },
+            "folder": "abSp08elNrsecBYc",
+            "name": "Mage Armor",
+            "system": {
+              "changes": {
+                "o4qpth3y": { "_id": "o4qpth3y", "formula": "4", "target": "aac", "type": "base" }
+              },
+              "contextNotes": {
+                "LARPbl0LyE8LPqCq": {
+                  "target": "ac",
+                  "text": "+[[4]] against incorporeal touch attacks."
+                }
+              },
+              "duration": { "end": "initiative", "units": "hour", "value": "@item.level" },
+              "level": 12,
+              "sources": [{ "id": "PZO1110", "pages": "306" }],
+              "subType": "spell",
+              "active": true
+            },
+            "type": "buff",
+            "effects": [],
+            "flags": {},
+            "_id": "kgw9WgV6D1J7J1DV",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.buffs.Item.olTpyao476hOEzzm" },
+            "folder": "abSp08elNrsecBYc",
+            "name": "Shield",
+            "system": {
+              "changes": {
+                "gq5kc0g2": { "_id": "gq5kc0g2", "formula": "4", "target": "sac", "type": "base" }
+              },
+              "contextNotes": {
+                "tsue0TsIYKz7zKbD": {
+                  "target": "ac",
+                  "text": "+[[4]] against incorporeal touch attacks."
+                }
+              },
+              "duration": { "end": "initiative", "units": "minute", "value": "@item.level" },
+              "level": 12,
+              "sources": [{ "id": "PZO1110", "pages": "342" }],
+              "subType": "spell",
+              "active": true
+            },
+            "type": "buff",
+            "effects": [],
+            "flags": {},
+            "_id": "rqnsL2e4jMxG5nqk",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.buffs.Item.NWImcWGTjCtw1Zf0" },
+            "folder": "abSp08elNrsecBYc",
+            "name": "Haste",
+            "system": {
+              "changeFlags": ["haste"],
+              "changes": {
+                "4iimhrzg": {
+                  "_id": "4iimhrzg",
+                  "formula": "min(@attributes.speed.burrow.base, 30)",
+                  "target": "burrowSpeed",
+                  "type": "enh"
+                },
+                "8chno7s8": {
+                  "_id": "8chno7s8",
+                  "formula": "min(@attributes.speed.climb.base, 30)",
+                  "target": "climbSpeed",
+                  "type": "enh"
+                },
+                "i5jeb69f": { "_id": "i5jeb69f", "formula": "1", "target": "ac", "type": "haste" },
+                "kvfxvcqw": {
+                  "_id": "kvfxvcqw",
+                  "formula": "1",
+                  "target": "attack",
+                  "type": "haste"
+                },
+                "o3i44my7": {
+                  "_id": "o3i44my7",
+                  "formula": "min(@attributes.speed.swim.base, 30)",
+                  "target": "swimSpeed",
+                  "type": "enh"
+                },
+                "t7kdmcvh": {
+                  "_id": "t7kdmcvh",
+                  "formula": "min(@attributes.speed.land.base, 30)",
+                  "target": "landSpeed",
+                  "type": "enh"
+                },
+                "uog1v33r": {
+                  "_id": "uog1v33r",
+                  "formula": "min(@attributes.speed.fly.base, 30)",
+                  "target": "flySpeed",
+                  "type": "enh"
+                },
+                "uv25ffcw": { "_id": "uv25ffcw", "formula": "1", "target": "ref", "type": "haste" }
+              },
+              "duration": { "end": "initiative", "units": "round", "value": "@item.level" },
+              "level": 12,
+              "sources": [{ "id": "PZO1110", "pages": "293" }],
+              "subType": "spell",
+              "active": true
+            },
+            "type": "buff",
+            "effects": [],
+            "flags": {},
+            "_id": "2qNlpDZVKaiAQ8au",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.buffs.Item.1ovEWVzSp5yZXeVm" },
+            "folder": "abSp08elNrsecBYc",
+            "name": "Enlarge Person",
+            "system": {
+              "changes": {
+                "0mV4oumV": { "_id": "0mV4oumV", "formula": "-2", "target": "dex", "type": "size" },
+                "Arn47LiL": {
+                  "_id": "Arn47LiL",
+                  "formula": "-2",
+                  "target": "carryStr",
+                  "type": "untyped"
+                },
+                "LgrZLyFq": {
+                  "_id": "LgrZLyFq",
+                  "formula": "-0.5",
+                  "target": "carryMult",
+                  "type": "untyped"
+                },
+                "MnTVtnTS": {
+                  "_id": "MnTVtnTS",
+                  "formula": "1",
+                  "target": "size",
+                  "type": "untyped"
+                },
+                "xRCU1fzc": { "_id": "xRCU1fzc", "formula": "2", "target": "str", "type": "size" }
+              },
+              "duration": { "end": "initiative", "units": "minute", "value": "@item.level" },
+              "level": 12,
+              "sources": [{ "id": "PZO1110", "pages": "277, 278" }],
+              "subType": "spell",
+              "active": true
+            },
+            "type": "buff",
+            "effects": [],
+            "flags": {},
+            "_id": "cGxfZcjwkTSCuaBz",
+            "sort": 0
+          }
+        ],
+        "effects": [],
+        "sort": 0,
+        "flags": {}
+      },
+      "derived": {
+        "abilities": {
+          "str": { "total": 20, "mod": 5 },
+          "dex": { "total": 12, "mod": 1 },
+          "con": { "total": 12, "mod": 1 },
+          "int": { "total": 14, "mod": 2 },
+          "wis": { "total": 10, "mod": 0 },
+          "cha": { "total": 8, "mod": -1 }
+        },
+        "ac": { "normal": 23, "touch": 13, "flatFooted": 20 },
+        "cmb": 16,
+        "cmd": { "total": 29, "flatFooted": 26 },
+        "saves": { "fort": 11, "ref": 8, "will": 12 },
+        "init": 5,
+        "bab": 9,
+        "attack": { "melee": 14, "ranged": 10 },
+        "hp": { "max": 87 },
+        "speed": { "land": 60 },
+        "sr": 0,
+        "acp": 0,
+        "skills": {
+          "perception": 6,
+          "knowledge": 2,
+          "knowledge.geography": 2,
+          "knowledge.nobility": 2,
+          "knowledge.local": 2,
+          "knowledge.dungeoneering": 2,
+          "knowledge.religion": 2,
+          "knowledge.nature": 2,
+          "knowledge.arcana": 17,
+          "knowledge.history": 2,
+          "knowledge.planes": 2,
+          "knowledge.engineering": 2,
+          "intimidate": -1,
+          "appraise": 2,
+          "profession": 0,
+          "fly": -1,
+          "disableDevice": 1,
+          "swim": 5,
+          "escapeArtist": 1,
+          "linguistics": 2,
+          "acrobatics": 7,
+          "useMagicDevice": -1,
+          "climb": 14,
+          "sleightOfHand": 1,
+          "handleAnimal": -1,
+          "heal": 0,
+          "spellcraft": 17,
+          "ride": 1,
+          "stealth": -3,
+          "survival": 0,
+          "craft": 2,
+          "disguise": -1,
+          "diplomacy": -1,
+          "senseMotive": -1,
+          "perform": -1,
+          "bluff": -1
+        }
+      }
+    }
+  }
+}

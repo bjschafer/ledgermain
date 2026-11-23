@@ -2985,9 +2985,9 @@ export interface WornArmor {
    * `undefined` for body armor. Snapshotted from `ArmorRef.proficiency` at
    * pick-time ("lightShield"/"other" (bucklers) → "light", "heavyShield" →
    * "heavy", "towerShield" → "tower"), or chosen directly for a hand-entered
-   * custom shield. Body armor doesn't need an equivalent field — `type` above
-   * (already snapshotted, and already correctly one-stepped-lighter for
-   * mithral) is the light/medium/heavy signal proficiency checks use.
+   * custom shield. Body armor doesn't need an equivalent field: proficiency
+   * reads the catalog weight class through `armorId`, falling back to `type`
+   * (which mithral lightens, a shift that doesn't apply to proficiency).
    * Undefined means "unknown, don't penalize" rather than a guess — matches
    * `WeaponInstance.proficiency`'s omitted-field posture.
    */

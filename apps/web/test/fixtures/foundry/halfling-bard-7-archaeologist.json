@@ -1,0 +1,2929 @@
+{
+  "foundry": { "core": "14.370", "system": "11.11" },
+  "spec": {
+    "id": "halfling-bard-7-archaeologist",
+    "race": "Halfling",
+    "alignment": "ng",
+    "abilities": { "str": 10, "dex": 16, "con": 14, "int": 10, "wis": 10, "cha": 16 },
+    "classes": [{ "name": "Bard", "level": 7, "hp": 38 }],
+    "feats": ["Toughness", "Iron Will", "Great Fortitude", "Lightning Reflexes"],
+    "skills": {
+      "perception": 7,
+      "bluff": 7,
+      "diplomacy": 7,
+      "acrobatics": 7,
+      "useMagicDevice": 6,
+      "disableDevice": 4
+    },
+    "items": [{ "pack": "pf1.armors-and-shields", "name": "Leather Armor", "equipped": true }],
+    "archetype": {
+      "name": "Bard (Archaeologist)",
+      "features": [
+        "Archaeologist's Luck (Archaeologist)",
+        "Clever Explorer (Archaeologist)",
+        "Uncanny Dodge (Archaeologist)",
+        "Trap Sense (Archaeologist)",
+        "Rogue Talents (Archaeologist)",
+        "Evasion (Archaeologist)"
+      ],
+      "replaces": [
+        "Bardic Performance",
+        "Inspire Courage",
+        "Fascinate",
+        "Countersong",
+        "Distraction",
+        "Versatile Performance",
+        "Well-Versed",
+        "Inspire Competence",
+        "Suggestion"
+      ]
+    },
+    "scenarios": {
+      "base": {},
+      "buffs": {
+        "buffs": [
+          { "name": "Heroism", "level": 7 },
+          { "name": "Shield of Faith", "level": 7 }
+        ]
+      },
+      "sickened": { "conditions": ["sickened"] }
+    }
+  },
+  "scenarios": {
+    "base": {
+      "actor": {
+        "name": "halfling-bard-7-archaeologist [base]",
+        "type": "character",
+        "folder": "GuYuyoqdabfe4xZV",
+        "_id": "AultH4NhACwdj06O",
+        "system": {
+          "abilities": {
+            "str": { "value": 10 },
+            "dex": { "value": 16 },
+            "con": { "value": 14 },
+            "int": { "value": 10 },
+            "wis": { "value": 10 },
+            "cha": { "value": 16 }
+          },
+          "attributes": {
+            "savingThrows": {
+              "fort": { "ability": "con" },
+              "ref": { "ability": "dex" },
+              "will": { "ability": "wis" }
+            },
+            "hp": { "temp": 0, "nonlethal": 0, "offset": 0 },
+            "wounds": { "offset": 0 },
+            "vigor": { "temp": 0, "offset": 0 }
+          },
+          "details": { "notes": {}, "xp": { "value": 0 }, "alignment": "ng" },
+          "traits": { "size": "sm", "ageCategory": "adult", "stature": "tall" },
+          "currency": {},
+          "altCurrency": {}
+        },
+        "items": [
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.5WivCl3kkGv5iNiz" },
+            "name": "Perception",
+            "system": {
+              "ability": "wis",
+              "identifier": "perception",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.2h6hz5AkTDxKPFxr",
+              "sets": ["adventure"],
+              "rank": 7,
+              "acp": false,
+              "rt": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "fG68Pw1bxbcByKIK",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.AQXtsJXD7v2GEx3G" },
+            "name": "Disable Device",
+            "system": {
+              "ability": "dex",
+              "acp": true,
+              "identifier": "disableDevice",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.cSdUATLHBFfw3v4s",
+              "rt": true,
+              "sets": ["adventure"],
+              "rank": 4,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "y5lov4yeOkSImCKS",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.GgIafHeIJmKJMDhi" },
+            "name": "Acrobatics",
+            "system": {
+              "ability": "dex",
+              "acp": true,
+              "identifier": "acrobatics",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.gGfJO90ZuRT4sZ9X",
+              "sets": ["adventure"],
+              "rank": 7,
+              "rt": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "2UZErmgsHs579vFc",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.NRZkFdqsptHFvHaU" },
+            "name": "Use Magic Device",
+            "system": {
+              "ability": "cha",
+              "identifier": "useMagicDevice",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.A8j7nF6qHwuGEC2E",
+              "sets": ["adventure"],
+              "rank": 6,
+              "acp": false,
+              "rt": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "vS5svNrFXcbdkqiP",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.tm41rxa5wPTNjqTb" },
+            "name": "Diplomacy",
+            "system": {
+              "ability": "cha",
+              "identifier": "diplomacy",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.uB9Fy36RUjibxqvt",
+              "sets": ["adventure"],
+              "rank": 7,
+              "acp": false,
+              "rt": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "YHwTdvrgavC1agiy",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.ycFkyDUEzBP5Pl9J" },
+            "name": "Bluff",
+            "system": {
+              "ability": "cha",
+              "identifier": "bluff",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.kRK5XwVBvcMi35w2",
+              "sets": ["adventure"],
+              "rank": 7,
+              "acp": false,
+              "rt": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "KNqcMJj2vFUGQfkM",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.races.Item.Hf31mrYb3uucNyLO" },
+            "folder": "RWSoA7Fj9yqo0y9U",
+            "name": "Halfling",
+            "system": {
+              "changes": {
+                "4qkk6fpi": {
+                  "_id": "4qkk6fpi",
+                  "formula": "-2",
+                  "target": "str",
+                  "type": "racial"
+                },
+                "6mozrq07": {
+                  "_id": "6mozrq07",
+                  "formula": "2",
+                  "target": "skill.acrobatics",
+                  "type": "racial"
+                },
+                "6nb88ge9": {
+                  "_id": "6nb88ge9",
+                  "formula": "2",
+                  "target": "skill.perception",
+                  "type": "racial"
+                },
+                "6qmpu6j7": {
+                  "_id": "6qmpu6j7",
+                  "formula": "2",
+                  "target": "cha",
+                  "type": "racial"
+                },
+                "86l4gjk2": {
+                  "_id": "86l4gjk2",
+                  "formula": "2",
+                  "target": "skill.climb",
+                  "type": "racial"
+                },
+                "b17x28cb": {
+                  "_id": "b17x28cb",
+                  "formula": "2",
+                  "target": "dex",
+                  "type": "racial"
+                },
+                "bh8e3xbn": {
+                  "_id": "bh8e3xbn",
+                  "formula": "1",
+                  "target": "allSavingThrows",
+                  "type": "racial"
+                }
+              },
+              "contextNotes": {
+                "FY6xmjGZOXqZmVXC": { "target": "allSavingThrows", "text": "+[[2]] Racial vs Fear" }
+              },
+              "creatureSubtypes": ["halfling"],
+              "creatureTypes": ["humanoid"],
+              "languages": ["common", "halfling"],
+              "size": "sm",
+              "sources": [{ "id": "PZO1110", "pages": "26" }],
+              "speeds": { "land": 20 },
+              "tags": ["Core", "Western (Arcadia)"]
+            },
+            "type": "race",
+            "effects": [],
+            "flags": {},
+            "_id": "BedGiJIm0pUPKsos",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.classes.Item.6GjOjO6r3R06fLwE" },
+            "name": "Bard",
+            "system": {
+              "armorProf": ["lgt", "shl"],
+              "bab": "med",
+              "casting": {
+                "ability": "cha",
+                "cantrips": true,
+                "domain": 0,
+                "progression": "med",
+                "spells": "arcane",
+                "type": "spontaneous"
+              },
+              "classSkills": [
+                "acrobatics",
+                "appraise",
+                "artistry",
+                "bluff",
+                "climb",
+                "craft",
+                "diplomacy",
+                "disguise",
+                "escapeArtist",
+                "intimidate",
+                "knowledge",
+                "linguistics",
+                "lore",
+                "perception",
+                "perform",
+                "profession",
+                "senseMotive",
+                "sleightOfHand",
+                "spellcraft",
+                "stealth",
+                "useMagicDevice"
+              ],
+              "hd": 8,
+              "level": 7,
+              "links": {
+                "supplements": [
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.Pb9pxYrx6tS87euP" },
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.h56K6HEBOItImPPL" },
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.tWE66WvFjS1o0S4y" },
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.ZfCUTi1MiLgR4T7I" },
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.RF8ioMkLc7LNnNT1" },
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.Kq3GVZ1yMv3ERQCJ" },
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.IPy4aqFYbOppaqKC" },
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.S4VHXq1asXBwaRwo" },
+                  { "level": 2, "uuid": "Compendium.pf1.class-abilities.Item.HAqAsb5H56C6cZm3" },
+                  { "level": 2, "uuid": "Compendium.pf1.class-abilities.Item.wew6ophJrcab24m6" },
+                  { "level": 3, "uuid": "Compendium.pf1.class-abilities.Item.2M56kfIOws5yYtxq" },
+                  { "level": 5, "uuid": "Compendium.pf1.class-abilities.Item.5lDEyC6WejFyTEho" },
+                  { "level": 5, "uuid": "Compendium.pf1.class-abilities.Item.msQWK7TW7mufzf8l" },
+                  { "level": 6, "uuid": "Compendium.pf1.class-abilities.Item.vtrruBLKeimBrupy" },
+                  { "level": 8, "uuid": "Compendium.pf1.class-abilities.Item.pmWnRksUzrKvNOvy" },
+                  { "level": 9, "uuid": "Compendium.pf1.class-abilities.Item.X7gqbGkXTox6Ojhy" },
+                  { "level": 10, "uuid": "Compendium.pf1.class-abilities.Item.qamuc5DZdOJMlRrD" },
+                  { "level": 12, "uuid": "Compendium.pf1.class-abilities.Item.iGrgU1XzlweVO2tb" },
+                  { "level": 14, "uuid": "Compendium.pf1.class-abilities.Item.qfjvZrIgJUjRXUUL" },
+                  { "level": 15, "uuid": "Compendium.pf1.class-abilities.Item.LIFTbzT5WDcsDn0O" },
+                  { "level": 18, "uuid": "Compendium.pf1.class-abilities.Item.FnfX1SMG9uzBghnB" },
+                  { "level": 20, "uuid": "Compendium.pf1.class-abilities.Item.RSoy0ll1sNno6mJD" }
+                ]
+              },
+              "savingThrows": {
+                "fort": { "value": "low" },
+                "ref": { "value": "high" },
+                "will": { "value": "high" }
+              },
+              "skillsPerLevel": 6,
+              "sources": [{ "id": "PZO1110", "pages": "34-38" }],
+              "subType": "base",
+              "tag": "bard",
+              "wealth": "3d6 * 10",
+              "weaponProf": [
+                "simple",
+                "Longsword",
+                "Rapier",
+                "Sap",
+                "Shortsword",
+                "Shortbow",
+                "Whip"
+              ],
+              "hp": 38
+            },
+            "type": "class",
+            "effects": [],
+            "folder": null,
+            "flags": {
+              "pf1": {
+                "links": {
+                  "classAssociations": {
+                    "aBjjb3OnTTx5Hc2X": 1,
+                    "IbgNFRxwVprDq7RI": 1,
+                    "0YGpKoUTf3B5pgKT": 1,
+                    "JDvSO7JwSL78BB86": 1,
+                    "sc9aTEFHGZqQ35C0": 1,
+                    "VzbuGY3VQMdP859U": 1,
+                    "goinu2iuzaiL3v3O": 1,
+                    "X5FT47hT5bH4kOFF": 1,
+                    "Y2A71ARl8lBuPd7j": 2,
+                    "5pqA1Q2qz97jckK0": 3,
+                    "Gr8C5F3Wc8PuFZKC": 5,
+                    "GGuBMwO3Ks6VDVZT": 5,
+                    "dVReUG5wdPO6sRtd": 6,
+                    "oZrFI99l49CJVQO1": 2
+                  }
+                }
+              }
+            },
+            "_id": "tAwkO1yJadHnFXO1",
+            "sort": 0
+          },
+          {
+            "name": "Bard",
+            "type": "spellcasting",
+            "system": {
+              "identifier": "bard",
+              "kind": "arcane",
+              "class": "bard",
+              "type": "spontaneous",
+              "scale": "med",
+              "ability": "cha",
+              "asf": { "enabled": true },
+              "cantrips": { "enabled": true },
+              "slots": { "domain": { "formula": 0 }, "auto": true, "ability": { "auto": true } },
+              "cl": { "formula": "" },
+              "casts": {},
+              "preparation": {},
+              "concentration": {},
+              "dc": {},
+              "spellPoints": { "enabled": false, "offset": 0 },
+              "levels": {
+                "0": {},
+                "1": {},
+                "2": {},
+                "3": {},
+                "4": {},
+                "5": {},
+                "6": {},
+                "7": {},
+                "8": {},
+                "9": {}
+              },
+              "restrictions": []
+            },
+            "_id": "f908pvS3SAJ3YHOd",
+            "effects": [],
+            "folder": null,
+            "sort": 0,
+            "flags": {},
+            "_stats": { "compendiumSource": null }
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.Pb9pxYrx6tS87euP"
+            },
+            "name": "Bardic Knowledge",
+            "system": {
+              "abilityType": "ex",
+              "associations": { "classes": ["Bard", "Skald"] },
+              "changes": {
+                "6sscr87o": {
+                  "_id": "6sscr87o",
+                  "formula": "max(1, floor(@class.unlevel / 2))",
+                  "target": "skill.knowledge",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "35" }],
+              "subType": "classFeat",
+              "class": "bard",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 100000,
+            "_id": "aBjjb3OnTTx5Hc2X",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.IPy4aqFYbOppaqKC"
+            },
+            "name": "Cantrips",
+            "system": {
+              "associations": {
+                "classes": [
+                  "Arcanist",
+                  "Bard",
+                  "Magus",
+                  "Skald",
+                  "Sorcerer",
+                  "Summoner",
+                  "Summoner (Unchained)",
+                  "Witch",
+                  "Wizard"
+                ]
+              },
+              "sources": [
+                { "id": "PZO1110", "pages": "34, 70, 77" },
+                { "id": "PZO1115", "pages": "54, 65" },
+                { "id": "PZO1117", "pages": "9" },
+                { "id": "PZO1131", "pages": "25" },
+                { "id": "PZO1129", "pages": "8, 49" }
+              ],
+              "subType": "classFeat",
+              "class": "bard",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 700000,
+            "_id": "goinu2iuzaiL3v3O",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.S4VHXq1asXBwaRwo"
+            },
+            "name": "Bard Spells",
+            "system": {
+              "associations": { "classes": ["Bard"] },
+              "sources": [{ "id": "PZO1110", "pages": "35" }],
+              "subType": "classFeat",
+              "class": "bard",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 800000,
+            "_id": "X5FT47hT5bH4kOFF",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.5lDEyC6WejFyTEho"
+            },
+            "name": "Exchange Spell (Medium)",
+            "system": {
+              "associations": {
+                "classes": [
+                  "Bard",
+                  "Hunter",
+                  "Inquisitor",
+                  "Medium",
+                  "Mesmerist",
+                  "Occultist",
+                  "Skald",
+                  "Spiritualist",
+                  "Summoner",
+                  "Summoner (Unchained)"
+                ]
+              },
+              "sources": [
+                { "id": "PZO1110", "pages": "35" },
+                { "id": "PZO1129", "pages": "26,49" },
+                { "id": "PZO1115", "pages": "38,55" },
+                { "id": "PZO1132", "pages": "30,38,47,72" },
+                { "id": "PZO1131", "pages": "25" }
+              ],
+              "subType": "classFeat",
+              "class": "bard",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 1200000,
+            "_id": "Gr8C5F3Wc8PuFZKC",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.msQWK7TW7mufzf8l"
+            },
+            "name": "Lore Master",
+            "system": {
+              "abilityType": "ex",
+              "actions": {
+                "vdpeu8pfvgw0werj": {
+                  "_id": "vdpeu8pfvgw0werj",
+                  "activation": {
+                    "type": "standard",
+                    "unchained": { "cost": 2, "type": "action" }
+                  },
+                  "name": "Take 20",
+                  "sort": 0
+                }
+              },
+              "associations": { "classes": ["Bard"] },
+              "sources": [{ "id": "PZO1110", "pages": "38" }],
+              "subType": "classFeat",
+              "tag": "loreMaster",
+              "uses": { "maxFormula": "floor((@class.unlevel + 1) / 6)", "per": "day" },
+              "class": "bard",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 1300000,
+            "_id": "GGuBMwO3Ks6VDVZT",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1e-archetypes.pf-arch-features.Item.PRvaJBuSUDG32wYz"
+            },
+            "name": "Archaeologist's Luck (Archaeologist)",
+            "system": {
+              "abilityType": "ex",
+              "actions": {
+                "t93uUl9leMnhbtUY": {
+                  "_id": "t93uUl9leMnhbtUY",
+                  "activation": { "type": "swift", "unchained": { "type": "action" } },
+                  "img": "icons/tools/instruments/harp-lap-brown.webp",
+                  "name": "Use",
+                  "range": { "units": "personal" },
+                  "sort": 0
+                }
+              },
+              "associations": { "classes": ["Bard"] },
+              "sources": [{ "id": "PZO1118", "pages": "32" }],
+              "subType": "classFeat",
+              "tags": ["Archaeologist"],
+              "uses": { "maxFormula": "4 + @abilities.cha.mod", "per": "day" },
+              "_pending": { "actions": true },
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "gdd38IGrm5slV5b2",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1e-archetypes.pf-arch-features.Item.1zlJJj6W7TeXvahc"
+            },
+            "name": "Clever Explorer (Archaeologist)",
+            "system": {
+              "associations": { "classes": ["Bard"] },
+              "sources": [{ "id": "PZO1118", "pages": "32" }],
+              "subType": "classFeat",
+              "tags": ["Archaeologist"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "PyPdtGRuNX6PVnPY",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1e-archetypes.pf-arch-features.Item.wbdg7SRZvXqba5lQ"
+            },
+            "name": "Uncanny Dodge (Archaeologist)",
+            "system": {
+              "associations": { "classes": ["Bard"] },
+              "sources": [{ "id": "PZO1118", "pages": "32" }],
+              "subType": "classFeat",
+              "tags": ["Archaeologist"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "ZmjPkfIvnkLf26xd",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1e-archetypes.pf-arch-features.Item.Frlze5Na5lg4bSLi"
+            },
+            "name": "Trap Sense (Archaeologist)",
+            "system": {
+              "abilityType": "ex",
+              "actions": {
+                "LrUey2MlA6ujwqFx": {
+                  "_id": "LrUey2MlA6ujwqFx",
+                  "activation": { "type": "nonaction", "unchained": { "type": "nonaction" } },
+                  "img": "icons/tools/instruments/harp-lap-brown.webp",
+                  "name": "Use",
+                  "sort": 0
+                }
+              },
+              "associations": { "classes": ["Bard"] },
+              "contextNotes": {
+                "81oBxxH3X5nq5rp8": {
+                  "target": "ref",
+                  "text": "+[[floor(@classes.rogue.level/3)]] vs. traps"
+                },
+                "ZPXV3pjU7Cb0G9XY": {
+                  "target": "ac",
+                  "text": "+[[floor(@classes.rogue.level/3)]] dodge vs. traps"
+                }
+              },
+              "sources": [{ "id": "PZO1118", "pages": "32" }],
+              "subType": "classFeat",
+              "tags": ["Archaeologist"],
+              "_pending": { "actions": true, "contextNotes": true },
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "5dojYPLIyzkUqCoH",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1e-archetypes.pf-arch-features.Item.3RuYRzQvUYKM2M3x"
+            },
+            "name": "Rogue Talents (Archaeologist)",
+            "system": {
+              "associations": { "classes": ["Bard"] },
+              "sources": [{ "id": "PZO1118", "pages": "32" }],
+              "subType": "classFeat",
+              "tags": ["Archaeologist"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "0zPfVNBePC3s4zZI",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1e-archetypes.pf-arch-features.Item.iftc6b32LjAyvIDg"
+            },
+            "name": "Evasion (Archaeologist)",
+            "system": {
+              "associations": { "classes": ["Bard"] },
+              "sources": [{ "id": "PZO1118", "pages": "32" }],
+              "subType": "classFeat",
+              "tags": ["Archaeologist"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "cD3LCMvjM2DfYbgv",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1e-archetypes.pf-archetypes.Item.oVozWPmhJfYSxC7T"
+            },
+            "folder": "Xp99iiO8M955HvSy",
+            "name": "Bard (Archaeologist)",
+            "system": {
+              "associations": { "classes": ["Bard"] },
+              "links": {
+                "supplements": [
+                  {
+                    "level": 1,
+                    "uuid": "Compendium.pf1e-archetypes.pf-arch-features.Item.PRvaJBuSUDG32wYz"
+                  },
+                  {
+                    "level": 2,
+                    "uuid": "Compendium.pf1e-archetypes.pf-arch-features.Item.1zlJJj6W7TeXvahc"
+                  },
+                  {
+                    "level": 2,
+                    "uuid": "Compendium.pf1e-archetypes.pf-arch-features.Item.wbdg7SRZvXqba5lQ"
+                  },
+                  {
+                    "level": 3,
+                    "uuid": "Compendium.pf1e-archetypes.pf-arch-features.Item.dyjOR4tQIxevBKGG"
+                  },
+                  {
+                    "level": 4,
+                    "uuid": "Compendium.pf1e-archetypes.pf-arch-features.Item.3RuYRzQvUYKM2M3x"
+                  },
+                  {
+                    "level": 6,
+                    "uuid": "Compendium.pf1e-archetypes.pf-arch-features.Item.iftc6b32LjAyvIDg"
+                  },
+                  {
+                    "level": 12,
+                    "uuid": "Compendium.pf1e-archetypes.pf-arch-features.Item.RYDGWTi4ad8RGRFK"
+                  }
+                ]
+              },
+              "sources": [{ "id": "PZO1118", "pages": "32" }],
+              "subType": "misc",
+              "tags": ["Archaeologist"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "_id": "ieZx945CJCEfxVUp",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.8snLqsJN4LLL00Nq" },
+            "name": "Toughness",
+            "system": {
+              "changes": {
+                "bl5pemy2": {
+                  "_id": "bl5pemy2",
+                  "formula": "max(3, @attributes.hd.total)",
+                  "target": "mhp",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "116, 135" }],
+              "subType": "feat",
+              "tags": ["General", "Defensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "hdNdgq0ZaRmGiMEd",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.iAbIGhm7T2OK9Brt" },
+            "name": "Iron Will",
+            "system": {
+              "changes": {
+                "vafl2kz4": {
+                  "_id": "vafl2kz4",
+                  "formula": "2",
+                  "target": "will",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "115, 129" }],
+              "subType": "feat",
+              "tags": ["General", "Saving Throw"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "AY0IUx5lMQwIDcV6",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.fVRnBIHR4Jq6btvm" },
+            "name": "Great Fortitude",
+            "system": {
+              "changes": {
+                "0rubibb4": {
+                  "_id": "0rubibb4",
+                  "formula": "2",
+                  "target": "fort",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "115, 124" }],
+              "subType": "feat",
+              "tags": ["General", "Saving Throw", "Defensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "GgP2GnKuYx4VeGms",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.0bZf3SDkvVOe2ujH" },
+            "name": "Lightning Reflexes",
+            "system": {
+              "changes": {
+                "ni86uxwa": {
+                  "_id": "ni86uxwa",
+                  "formula": "2",
+                  "target": "ref",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "115, 130" }],
+              "subType": "feat",
+              "tags": ["General", "Saving Throw"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "eJPT8oqLFoPigOpO",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.armors-and-shields.Item.6YCQkebsf4vR508H"
+            },
+            "folder": "LQyo9lDGQU29eyig",
+            "name": "Leather Armor",
+            "system": {
+              "armor": {
+                "dex": 6,
+                "material": { "base": { "value": "leather" }, "addon": [] },
+                "value": 2,
+                "alignments": {}
+              },
+              "baseTypes": ["Leather Armor"],
+              "equipmentSubtype": "lightArmor",
+              "equipped": true,
+              "hardness": 2,
+              "hp": { "base": 10 },
+              "price": { "base": 10, "unit": "gp" },
+              "quantity": 1,
+              "slot": "armor",
+              "sources": [{ "id": "PZO1110", "pages": "151" }],
+              "spellFailure": 10,
+              "subType": "armor",
+              "weight": { "value": 15 },
+              "mods": {}
+            },
+            "type": "equipment",
+            "effects": [],
+            "flags": {},
+            "_id": "NnvbdCO7qN1W19dd",
+            "sort": 0
+          }
+        ],
+        "effects": [],
+        "sort": 0,
+        "flags": {}
+      },
+      "derived": {
+        "abilities": {
+          "str": { "total": 8, "mod": -1 },
+          "dex": { "total": 18, "mod": 4 },
+          "con": { "total": 14, "mod": 2 },
+          "int": { "total": 10, "mod": 0 },
+          "wis": { "total": 10, "mod": 0 },
+          "cha": { "total": 18, "mod": 4 }
+        },
+        "ac": { "normal": 17, "touch": 15, "flatFooted": 13 },
+        "cmb": 3,
+        "cmd": { "total": 17, "flatFooted": 13 },
+        "saves": { "fort": 7, "ref": 12, "will": 8 },
+        "init": 4,
+        "bab": 5,
+        "attack": { "melee": 5, "ranged": 10 },
+        "hp": { "max": 59 },
+        "speed": { "land": 20 },
+        "sr": 0,
+        "acp": 0,
+        "skills": {
+          "perception": 12,
+          "knowledge": 3,
+          "knowledge.geography": 3,
+          "knowledge.nobility": 3,
+          "knowledge.local": 3,
+          "knowledge.dungeoneering": 3,
+          "knowledge.religion": 3,
+          "knowledge.nature": 3,
+          "knowledge.arcana": 3,
+          "knowledge.history": 3,
+          "knowledge.planes": 3,
+          "knowledge.engineering": 3,
+          "intimidate": 4,
+          "appraise": 0,
+          "profession": 0,
+          "fly": 6,
+          "disableDevice": 8,
+          "swim": -1,
+          "escapeArtist": 4,
+          "linguistics": 0,
+          "acrobatics": 16,
+          "useMagicDevice": 13,
+          "climb": 1,
+          "sleightOfHand": 4,
+          "handleAnimal": 4,
+          "heal": 0,
+          "spellcraft": 0,
+          "ride": 4,
+          "stealth": 8,
+          "survival": 0,
+          "craft": 0,
+          "disguise": 4,
+          "diplomacy": 14,
+          "senseMotive": 4,
+          "perform": 4,
+          "bluff": 14
+        }
+      }
+    },
+    "buffs": {
+      "actor": {
+        "name": "halfling-bard-7-archaeologist [buffs]",
+        "type": "character",
+        "folder": "GuYuyoqdabfe4xZV",
+        "_id": "r8XohnR8N0vLyoTE",
+        "system": {
+          "abilities": {
+            "str": { "value": 10 },
+            "dex": { "value": 16 },
+            "con": { "value": 14 },
+            "int": { "value": 10 },
+            "wis": { "value": 10 },
+            "cha": { "value": 16 }
+          },
+          "attributes": {
+            "savingThrows": {
+              "fort": { "ability": "con" },
+              "ref": { "ability": "dex" },
+              "will": { "ability": "wis" }
+            },
+            "hp": { "temp": 0, "nonlethal": 0, "offset": 0 },
+            "wounds": { "offset": 0 },
+            "vigor": { "temp": 0, "offset": 0 }
+          },
+          "details": { "notes": {}, "xp": { "value": 0 }, "alignment": "ng" },
+          "traits": { "size": "sm", "ageCategory": "adult", "stature": "tall" },
+          "currency": {},
+          "altCurrency": {}
+        },
+        "items": [
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.5WivCl3kkGv5iNiz" },
+            "name": "Perception",
+            "system": {
+              "ability": "wis",
+              "identifier": "perception",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.2h6hz5AkTDxKPFxr",
+              "sets": ["adventure"],
+              "rank": 7,
+              "acp": false,
+              "rt": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "QbJTwy5juSdqtYT2",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.AQXtsJXD7v2GEx3G" },
+            "name": "Disable Device",
+            "system": {
+              "ability": "dex",
+              "acp": true,
+              "identifier": "disableDevice",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.cSdUATLHBFfw3v4s",
+              "rt": true,
+              "sets": ["adventure"],
+              "rank": 4,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "zlLXvjCHwo0UtCqm",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.GgIafHeIJmKJMDhi" },
+            "name": "Acrobatics",
+            "system": {
+              "ability": "dex",
+              "acp": true,
+              "identifier": "acrobatics",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.gGfJO90ZuRT4sZ9X",
+              "sets": ["adventure"],
+              "rank": 7,
+              "rt": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "czBjk9DSuUW6wXd6",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.NRZkFdqsptHFvHaU" },
+            "name": "Use Magic Device",
+            "system": {
+              "ability": "cha",
+              "identifier": "useMagicDevice",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.A8j7nF6qHwuGEC2E",
+              "sets": ["adventure"],
+              "rank": 6,
+              "acp": false,
+              "rt": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "DxY7WE43NSgxzBar",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.tm41rxa5wPTNjqTb" },
+            "name": "Diplomacy",
+            "system": {
+              "ability": "cha",
+              "identifier": "diplomacy",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.uB9Fy36RUjibxqvt",
+              "sets": ["adventure"],
+              "rank": 7,
+              "acp": false,
+              "rt": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "gIZ65lqNZf7oJvSD",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.ycFkyDUEzBP5Pl9J" },
+            "name": "Bluff",
+            "system": {
+              "ability": "cha",
+              "identifier": "bluff",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.kRK5XwVBvcMi35w2",
+              "sets": ["adventure"],
+              "rank": 7,
+              "acp": false,
+              "rt": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "WC43Vekxh3aQw6S1",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.races.Item.Hf31mrYb3uucNyLO" },
+            "folder": "RWSoA7Fj9yqo0y9U",
+            "name": "Halfling",
+            "system": {
+              "changes": {
+                "4qkk6fpi": {
+                  "_id": "4qkk6fpi",
+                  "formula": "-2",
+                  "target": "str",
+                  "type": "racial"
+                },
+                "6mozrq07": {
+                  "_id": "6mozrq07",
+                  "formula": "2",
+                  "target": "skill.acrobatics",
+                  "type": "racial"
+                },
+                "6nb88ge9": {
+                  "_id": "6nb88ge9",
+                  "formula": "2",
+                  "target": "skill.perception",
+                  "type": "racial"
+                },
+                "6qmpu6j7": {
+                  "_id": "6qmpu6j7",
+                  "formula": "2",
+                  "target": "cha",
+                  "type": "racial"
+                },
+                "86l4gjk2": {
+                  "_id": "86l4gjk2",
+                  "formula": "2",
+                  "target": "skill.climb",
+                  "type": "racial"
+                },
+                "b17x28cb": {
+                  "_id": "b17x28cb",
+                  "formula": "2",
+                  "target": "dex",
+                  "type": "racial"
+                },
+                "bh8e3xbn": {
+                  "_id": "bh8e3xbn",
+                  "formula": "1",
+                  "target": "allSavingThrows",
+                  "type": "racial"
+                }
+              },
+              "contextNotes": {
+                "FY6xmjGZOXqZmVXC": { "target": "allSavingThrows", "text": "+[[2]] Racial vs Fear" }
+              },
+              "creatureSubtypes": ["halfling"],
+              "creatureTypes": ["humanoid"],
+              "languages": ["common", "halfling"],
+              "size": "sm",
+              "sources": [{ "id": "PZO1110", "pages": "26" }],
+              "speeds": { "land": 20 },
+              "tags": ["Core", "Western (Arcadia)"]
+            },
+            "type": "race",
+            "effects": [],
+            "flags": {},
+            "_id": "akaxyfWfOPuv1x52",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.classes.Item.6GjOjO6r3R06fLwE" },
+            "name": "Bard",
+            "system": {
+              "armorProf": ["lgt", "shl"],
+              "bab": "med",
+              "casting": {
+                "ability": "cha",
+                "cantrips": true,
+                "domain": 0,
+                "progression": "med",
+                "spells": "arcane",
+                "type": "spontaneous"
+              },
+              "classSkills": [
+                "acrobatics",
+                "appraise",
+                "artistry",
+                "bluff",
+                "climb",
+                "craft",
+                "diplomacy",
+                "disguise",
+                "escapeArtist",
+                "intimidate",
+                "knowledge",
+                "linguistics",
+                "lore",
+                "perception",
+                "perform",
+                "profession",
+                "senseMotive",
+                "sleightOfHand",
+                "spellcraft",
+                "stealth",
+                "useMagicDevice"
+              ],
+              "hd": 8,
+              "level": 7,
+              "links": {
+                "supplements": [
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.Pb9pxYrx6tS87euP" },
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.h56K6HEBOItImPPL" },
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.tWE66WvFjS1o0S4y" },
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.ZfCUTi1MiLgR4T7I" },
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.RF8ioMkLc7LNnNT1" },
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.Kq3GVZ1yMv3ERQCJ" },
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.IPy4aqFYbOppaqKC" },
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.S4VHXq1asXBwaRwo" },
+                  { "level": 2, "uuid": "Compendium.pf1.class-abilities.Item.HAqAsb5H56C6cZm3" },
+                  { "level": 2, "uuid": "Compendium.pf1.class-abilities.Item.wew6ophJrcab24m6" },
+                  { "level": 3, "uuid": "Compendium.pf1.class-abilities.Item.2M56kfIOws5yYtxq" },
+                  { "level": 5, "uuid": "Compendium.pf1.class-abilities.Item.5lDEyC6WejFyTEho" },
+                  { "level": 5, "uuid": "Compendium.pf1.class-abilities.Item.msQWK7TW7mufzf8l" },
+                  { "level": 6, "uuid": "Compendium.pf1.class-abilities.Item.vtrruBLKeimBrupy" },
+                  { "level": 8, "uuid": "Compendium.pf1.class-abilities.Item.pmWnRksUzrKvNOvy" },
+                  { "level": 9, "uuid": "Compendium.pf1.class-abilities.Item.X7gqbGkXTox6Ojhy" },
+                  { "level": 10, "uuid": "Compendium.pf1.class-abilities.Item.qamuc5DZdOJMlRrD" },
+                  { "level": 12, "uuid": "Compendium.pf1.class-abilities.Item.iGrgU1XzlweVO2tb" },
+                  { "level": 14, "uuid": "Compendium.pf1.class-abilities.Item.qfjvZrIgJUjRXUUL" },
+                  { "level": 15, "uuid": "Compendium.pf1.class-abilities.Item.LIFTbzT5WDcsDn0O" },
+                  { "level": 18, "uuid": "Compendium.pf1.class-abilities.Item.FnfX1SMG9uzBghnB" },
+                  { "level": 20, "uuid": "Compendium.pf1.class-abilities.Item.RSoy0ll1sNno6mJD" }
+                ]
+              },
+              "savingThrows": {
+                "fort": { "value": "low" },
+                "ref": { "value": "high" },
+                "will": { "value": "high" }
+              },
+              "skillsPerLevel": 6,
+              "sources": [{ "id": "PZO1110", "pages": "34-38" }],
+              "subType": "base",
+              "tag": "bard",
+              "wealth": "3d6 * 10",
+              "weaponProf": [
+                "simple",
+                "Longsword",
+                "Rapier",
+                "Sap",
+                "Shortsword",
+                "Shortbow",
+                "Whip"
+              ],
+              "hp": 38
+            },
+            "type": "class",
+            "effects": [],
+            "folder": null,
+            "flags": {
+              "pf1": {
+                "links": {
+                  "classAssociations": {
+                    "KsNAwnSZ1unlf7Ld": 1,
+                    "tS3YC0pkz1wrRQEf": 1,
+                    "orkLAXsmMB0KrF8e": 1,
+                    "xLF2ojpxOT9rq3lV": 1,
+                    "Dz8gfpEs7WLzExdz": 1,
+                    "eonr7Qjz3UZpQApn": 1,
+                    "yX1NZqW5UNZXHlpD": 1,
+                    "C7FDmKGtaVyPyZj3": 2,
+                    "qG8UWrXbBqYY9XwK": 2,
+                    "6b71Ar6Y8HzCb844": 3,
+                    "36YLbT1FNzNrzvtJ": 5,
+                    "8pF7ly6MRY57jwA8": 5,
+                    "517TkYR4VvL8BcPv": 6,
+                    "nc3Uqxq9GQaUxuaW": 1
+                  }
+                }
+              }
+            },
+            "_id": "KZUSgrjo5CjlDrca",
+            "sort": 0
+          },
+          {
+            "name": "Bard",
+            "type": "spellcasting",
+            "system": {
+              "identifier": "bard",
+              "kind": "arcane",
+              "class": "bard",
+              "type": "spontaneous",
+              "scale": "med",
+              "ability": "cha",
+              "asf": { "enabled": true },
+              "cantrips": { "enabled": true },
+              "slots": { "domain": { "formula": 0 }, "auto": true, "ability": { "auto": true } },
+              "cl": { "formula": "" },
+              "casts": {},
+              "preparation": {},
+              "concentration": {},
+              "dc": {},
+              "spellPoints": { "enabled": false, "offset": 0 },
+              "levels": {
+                "0": {},
+                "1": {},
+                "2": {},
+                "3": {},
+                "4": {},
+                "5": {},
+                "6": {},
+                "7": {},
+                "8": {},
+                "9": {}
+              },
+              "restrictions": []
+            },
+            "_id": "TApCZU1eQ8AWUnj9",
+            "effects": [],
+            "folder": null,
+            "sort": 0,
+            "flags": {},
+            "_stats": { "compendiumSource": null }
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.Pb9pxYrx6tS87euP"
+            },
+            "name": "Bardic Knowledge",
+            "system": {
+              "abilityType": "ex",
+              "associations": { "classes": ["Bard", "Skald"] },
+              "changes": {
+                "6sscr87o": {
+                  "_id": "6sscr87o",
+                  "formula": "max(1, floor(@class.unlevel / 2))",
+                  "target": "skill.knowledge",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "35" }],
+              "subType": "classFeat",
+              "class": "bard",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 100000,
+            "_id": "KsNAwnSZ1unlf7Ld",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.IPy4aqFYbOppaqKC"
+            },
+            "name": "Cantrips",
+            "system": {
+              "associations": {
+                "classes": [
+                  "Arcanist",
+                  "Bard",
+                  "Magus",
+                  "Skald",
+                  "Sorcerer",
+                  "Summoner",
+                  "Summoner (Unchained)",
+                  "Witch",
+                  "Wizard"
+                ]
+              },
+              "sources": [
+                { "id": "PZO1110", "pages": "34, 70, 77" },
+                { "id": "PZO1115", "pages": "54, 65" },
+                { "id": "PZO1117", "pages": "9" },
+                { "id": "PZO1131", "pages": "25" },
+                { "id": "PZO1129", "pages": "8, 49" }
+              ],
+              "subType": "classFeat",
+              "class": "bard",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 700000,
+            "_id": "eonr7Qjz3UZpQApn",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.S4VHXq1asXBwaRwo"
+            },
+            "name": "Bard Spells",
+            "system": {
+              "associations": { "classes": ["Bard"] },
+              "sources": [{ "id": "PZO1110", "pages": "35" }],
+              "subType": "classFeat",
+              "class": "bard",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 800000,
+            "_id": "yX1NZqW5UNZXHlpD",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.5lDEyC6WejFyTEho"
+            },
+            "name": "Exchange Spell (Medium)",
+            "system": {
+              "associations": {
+                "classes": [
+                  "Bard",
+                  "Hunter",
+                  "Inquisitor",
+                  "Medium",
+                  "Mesmerist",
+                  "Occultist",
+                  "Skald",
+                  "Spiritualist",
+                  "Summoner",
+                  "Summoner (Unchained)"
+                ]
+              },
+              "sources": [
+                { "id": "PZO1110", "pages": "35" },
+                { "id": "PZO1129", "pages": "26,49" },
+                { "id": "PZO1115", "pages": "38,55" },
+                { "id": "PZO1132", "pages": "30,38,47,72" },
+                { "id": "PZO1131", "pages": "25" }
+              ],
+              "subType": "classFeat",
+              "class": "bard",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 1200000,
+            "_id": "36YLbT1FNzNrzvtJ",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.msQWK7TW7mufzf8l"
+            },
+            "name": "Lore Master",
+            "system": {
+              "abilityType": "ex",
+              "actions": {
+                "vdpeu8pfvgw0werj": {
+                  "_id": "vdpeu8pfvgw0werj",
+                  "activation": {
+                    "type": "standard",
+                    "unchained": { "cost": 2, "type": "action" }
+                  },
+                  "name": "Take 20",
+                  "sort": 0
+                }
+              },
+              "associations": { "classes": ["Bard"] },
+              "sources": [{ "id": "PZO1110", "pages": "38" }],
+              "subType": "classFeat",
+              "tag": "loreMaster",
+              "uses": { "maxFormula": "floor((@class.unlevel + 1) / 6)", "per": "day" },
+              "class": "bard",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 1300000,
+            "_id": "8pF7ly6MRY57jwA8",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1e-archetypes.pf-archetypes.Item.oVozWPmhJfYSxC7T"
+            },
+            "folder": "Xp99iiO8M955HvSy",
+            "name": "Bard (Archaeologist)",
+            "system": {
+              "associations": { "classes": ["Bard"] },
+              "links": {
+                "supplements": [
+                  {
+                    "level": 1,
+                    "uuid": "Compendium.pf1e-archetypes.pf-arch-features.Item.PRvaJBuSUDG32wYz"
+                  },
+                  {
+                    "level": 2,
+                    "uuid": "Compendium.pf1e-archetypes.pf-arch-features.Item.1zlJJj6W7TeXvahc"
+                  },
+                  {
+                    "level": 2,
+                    "uuid": "Compendium.pf1e-archetypes.pf-arch-features.Item.wbdg7SRZvXqba5lQ"
+                  },
+                  {
+                    "level": 3,
+                    "uuid": "Compendium.pf1e-archetypes.pf-arch-features.Item.dyjOR4tQIxevBKGG"
+                  },
+                  {
+                    "level": 4,
+                    "uuid": "Compendium.pf1e-archetypes.pf-arch-features.Item.3RuYRzQvUYKM2M3x"
+                  },
+                  {
+                    "level": 6,
+                    "uuid": "Compendium.pf1e-archetypes.pf-arch-features.Item.iftc6b32LjAyvIDg"
+                  },
+                  {
+                    "level": 12,
+                    "uuid": "Compendium.pf1e-archetypes.pf-arch-features.Item.RYDGWTi4ad8RGRFK"
+                  }
+                ]
+              },
+              "sources": [{ "id": "PZO1118", "pages": "32" }],
+              "subType": "misc",
+              "tags": ["Archaeologist"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "_id": "IDzI52IrFtxlmskm",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1e-archetypes.pf-arch-features.Item.PRvaJBuSUDG32wYz"
+            },
+            "name": "Archaeologist's Luck (Archaeologist)",
+            "system": {
+              "abilityType": "ex",
+              "actions": {
+                "t93uUl9leMnhbtUY": {
+                  "_id": "t93uUl9leMnhbtUY",
+                  "activation": { "type": "swift", "unchained": { "type": "action" } },
+                  "img": "icons/tools/instruments/harp-lap-brown.webp",
+                  "name": "Use",
+                  "range": { "units": "personal" },
+                  "sort": 0
+                }
+              },
+              "associations": { "classes": ["Bard"] },
+              "sources": [{ "id": "PZO1118", "pages": "32" }],
+              "subType": "classFeat",
+              "tags": ["Archaeologist"],
+              "uses": { "maxFormula": "4 + @abilities.cha.mod", "per": "day" },
+              "_pending": { "actions": true },
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "7nYfVuiRN1KCLkm1",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1e-archetypes.pf-arch-features.Item.1zlJJj6W7TeXvahc"
+            },
+            "name": "Clever Explorer (Archaeologist)",
+            "system": {
+              "associations": { "classes": ["Bard"] },
+              "sources": [{ "id": "PZO1118", "pages": "32" }],
+              "subType": "classFeat",
+              "tags": ["Archaeologist"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "kN2XDgao0Q6l7ht6",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1e-archetypes.pf-arch-features.Item.wbdg7SRZvXqba5lQ"
+            },
+            "name": "Uncanny Dodge (Archaeologist)",
+            "system": {
+              "associations": { "classes": ["Bard"] },
+              "sources": [{ "id": "PZO1118", "pages": "32" }],
+              "subType": "classFeat",
+              "tags": ["Archaeologist"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "hbFyJq22petPUYIz",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1e-archetypes.pf-arch-features.Item.Frlze5Na5lg4bSLi"
+            },
+            "name": "Trap Sense (Archaeologist)",
+            "system": {
+              "abilityType": "ex",
+              "actions": {
+                "LrUey2MlA6ujwqFx": {
+                  "_id": "LrUey2MlA6ujwqFx",
+                  "activation": { "type": "nonaction", "unchained": { "type": "nonaction" } },
+                  "img": "icons/tools/instruments/harp-lap-brown.webp",
+                  "name": "Use",
+                  "sort": 0
+                }
+              },
+              "associations": { "classes": ["Bard"] },
+              "contextNotes": {
+                "81oBxxH3X5nq5rp8": {
+                  "target": "ref",
+                  "text": "+[[floor(@classes.rogue.level/3)]] vs. traps"
+                },
+                "ZPXV3pjU7Cb0G9XY": {
+                  "target": "ac",
+                  "text": "+[[floor(@classes.rogue.level/3)]] dodge vs. traps"
+                }
+              },
+              "sources": [{ "id": "PZO1118", "pages": "32" }],
+              "subType": "classFeat",
+              "tags": ["Archaeologist"],
+              "_pending": { "actions": true, "contextNotes": true },
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "bVhBFC1AroLm66fI",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1e-archetypes.pf-arch-features.Item.3RuYRzQvUYKM2M3x"
+            },
+            "name": "Rogue Talents (Archaeologist)",
+            "system": {
+              "associations": { "classes": ["Bard"] },
+              "sources": [{ "id": "PZO1118", "pages": "32" }],
+              "subType": "classFeat",
+              "tags": ["Archaeologist"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "saTCahFYTP7fGR5J",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1e-archetypes.pf-arch-features.Item.iftc6b32LjAyvIDg"
+            },
+            "name": "Evasion (Archaeologist)",
+            "system": {
+              "associations": { "classes": ["Bard"] },
+              "sources": [{ "id": "PZO1118", "pages": "32" }],
+              "subType": "classFeat",
+              "tags": ["Archaeologist"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "n0qpY4ztsr8IlhZ1",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.iAbIGhm7T2OK9Brt" },
+            "name": "Iron Will",
+            "system": {
+              "changes": {
+                "vafl2kz4": {
+                  "_id": "vafl2kz4",
+                  "formula": "2",
+                  "target": "will",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "115, 129" }],
+              "subType": "feat",
+              "tags": ["General", "Saving Throw"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "desLx9zyjpGrm4zk",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.fVRnBIHR4Jq6btvm" },
+            "name": "Great Fortitude",
+            "system": {
+              "changes": {
+                "0rubibb4": {
+                  "_id": "0rubibb4",
+                  "formula": "2",
+                  "target": "fort",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "115, 124" }],
+              "subType": "feat",
+              "tags": ["General", "Saving Throw", "Defensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "ySqk3B7FuEp9gF1N",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.0bZf3SDkvVOe2ujH" },
+            "name": "Lightning Reflexes",
+            "system": {
+              "changes": {
+                "ni86uxwa": {
+                  "_id": "ni86uxwa",
+                  "formula": "2",
+                  "target": "ref",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "115, 130" }],
+              "subType": "feat",
+              "tags": ["General", "Saving Throw"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "5AMMp6lPysnu9svH",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.8snLqsJN4LLL00Nq" },
+            "name": "Toughness",
+            "system": {
+              "changes": {
+                "bl5pemy2": {
+                  "_id": "bl5pemy2",
+                  "formula": "max(3, @attributes.hd.total)",
+                  "target": "mhp",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "116, 135" }],
+              "subType": "feat",
+              "tags": ["General", "Defensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "PPP0wi74MGurBrwh",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.armors-and-shields.Item.6YCQkebsf4vR508H"
+            },
+            "folder": "LQyo9lDGQU29eyig",
+            "name": "Leather Armor",
+            "system": {
+              "armor": {
+                "dex": 6,
+                "material": { "base": { "value": "leather" }, "addon": [] },
+                "value": 2,
+                "alignments": {}
+              },
+              "baseTypes": ["Leather Armor"],
+              "equipmentSubtype": "lightArmor",
+              "equipped": true,
+              "hardness": 2,
+              "hp": { "base": 10 },
+              "price": { "base": 10, "unit": "gp" },
+              "quantity": 1,
+              "slot": "armor",
+              "sources": [{ "id": "PZO1110", "pages": "151" }],
+              "spellFailure": 10,
+              "subType": "armor",
+              "weight": { "value": 15 },
+              "mods": {}
+            },
+            "type": "equipment",
+            "effects": [],
+            "flags": {},
+            "_id": "EaLTnAc1yqUt1ls1",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.buffs.Item.ulvEcJsFba6Fg4g9" },
+            "folder": "abSp08elNrsecBYc",
+            "name": "Heroism",
+            "system": {
+              "changes": {
+                "nueem2us": {
+                  "_id": "nueem2us",
+                  "formula": "2",
+                  "target": "attack",
+                  "type": "morale"
+                },
+                "qmgiyv88": {
+                  "_id": "qmgiyv88",
+                  "formula": "2",
+                  "target": "allSavingThrows",
+                  "type": "morale"
+                },
+                "zstphu4j": {
+                  "_id": "zstphu4j",
+                  "formula": "2",
+                  "target": "skills",
+                  "type": "morale"
+                }
+              },
+              "duration": { "end": "initiative", "units": "minute", "value": "@item.level * 10" },
+              "level": 7,
+              "sources": [{ "id": "PZO1110", "pages": "295" }],
+              "subType": "spell",
+              "active": true
+            },
+            "type": "buff",
+            "effects": [],
+            "flags": {},
+            "_id": "yUG0dcoA7fBpo4JV",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.buffs.Item.WgCWQxR53UdVSGPB" },
+            "folder": "abSp08elNrsecBYc",
+            "name": "Shield of Faith",
+            "system": {
+              "changes": {
+                "qrnq0w11": {
+                  "_id": "qrnq0w11",
+                  "formula": "2 + min(3, floor(@item.level / 6))",
+                  "target": "ac",
+                  "type": "deflection"
+                }
+              },
+              "duration": { "end": "initiative", "units": "minute", "value": "@item.level" },
+              "level": 7,
+              "sources": [{ "id": "PZO1110", "pages": "342" }],
+              "subType": "spell",
+              "active": true
+            },
+            "type": "buff",
+            "effects": [],
+            "flags": {},
+            "_id": "C2QBTfsSQZEPV0JU",
+            "sort": 0
+          }
+        ],
+        "effects": [],
+        "sort": 0,
+        "flags": {}
+      },
+      "derived": {
+        "abilities": {
+          "str": { "total": 8, "mod": -1 },
+          "dex": { "total": 18, "mod": 4 },
+          "con": { "total": 14, "mod": 2 },
+          "int": { "total": 10, "mod": 0 },
+          "wis": { "total": 10, "mod": 0 },
+          "cha": { "total": 18, "mod": 4 }
+        },
+        "ac": { "normal": 20, "touch": 18, "flatFooted": 16 },
+        "cmb": 5,
+        "cmd": { "total": 20, "flatFooted": 16 },
+        "saves": { "fort": 9, "ref": 14, "will": 10 },
+        "init": 4,
+        "bab": 5,
+        "attack": { "melee": 7, "ranged": 12 },
+        "hp": { "max": 59 },
+        "speed": { "land": 20 },
+        "sr": 0,
+        "acp": 0,
+        "skills": {
+          "perception": 14,
+          "knowledge": 5,
+          "knowledge.geography": 5,
+          "knowledge.nobility": 5,
+          "knowledge.local": 5,
+          "knowledge.dungeoneering": 5,
+          "knowledge.religion": 5,
+          "knowledge.nature": 5,
+          "knowledge.arcana": 5,
+          "knowledge.history": 5,
+          "knowledge.planes": 5,
+          "knowledge.engineering": 5,
+          "intimidate": 6,
+          "appraise": 2,
+          "profession": 2,
+          "fly": 8,
+          "disableDevice": 10,
+          "swim": 1,
+          "escapeArtist": 6,
+          "linguistics": 2,
+          "acrobatics": 18,
+          "useMagicDevice": 15,
+          "climb": 3,
+          "sleightOfHand": 6,
+          "handleAnimal": 6,
+          "heal": 2,
+          "spellcraft": 2,
+          "ride": 6,
+          "stealth": 10,
+          "survival": 2,
+          "craft": 2,
+          "disguise": 6,
+          "diplomacy": 16,
+          "senseMotive": 6,
+          "perform": 6,
+          "bluff": 16
+        }
+      }
+    },
+    "sickened": {
+      "actor": {
+        "name": "halfling-bard-7-archaeologist [sickened]",
+        "type": "character",
+        "folder": "GuYuyoqdabfe4xZV",
+        "_id": "QaH0Esz2R4ntwYCp",
+        "system": {
+          "abilities": {
+            "str": { "value": 10 },
+            "dex": { "value": 16 },
+            "con": { "value": 14 },
+            "int": { "value": 10 },
+            "wis": { "value": 10 },
+            "cha": { "value": 16 }
+          },
+          "attributes": {
+            "savingThrows": {
+              "fort": { "ability": "con" },
+              "ref": { "ability": "dex" },
+              "will": { "ability": "wis" }
+            },
+            "hp": { "temp": 0, "nonlethal": 0, "offset": 0 },
+            "wounds": { "offset": 0 },
+            "vigor": { "temp": 0, "offset": 0 }
+          },
+          "details": { "notes": {}, "xp": { "value": 0 }, "alignment": "ng" },
+          "traits": { "size": "sm", "ageCategory": "adult", "stature": "tall" },
+          "currency": {},
+          "altCurrency": {}
+        },
+        "items": [
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.5WivCl3kkGv5iNiz" },
+            "name": "Perception",
+            "system": {
+              "ability": "wis",
+              "identifier": "perception",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.2h6hz5AkTDxKPFxr",
+              "sets": ["adventure"],
+              "rank": 7,
+              "acp": false,
+              "rt": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "S8lL9CXJyGrXubRb",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.AQXtsJXD7v2GEx3G" },
+            "name": "Disable Device",
+            "system": {
+              "ability": "dex",
+              "acp": true,
+              "identifier": "disableDevice",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.cSdUATLHBFfw3v4s",
+              "rt": true,
+              "sets": ["adventure"],
+              "rank": 4,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "O0geya16GLipqPmu",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.GgIafHeIJmKJMDhi" },
+            "name": "Acrobatics",
+            "system": {
+              "ability": "dex",
+              "acp": true,
+              "identifier": "acrobatics",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.gGfJO90ZuRT4sZ9X",
+              "sets": ["adventure"],
+              "rank": 7,
+              "rt": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "EUvRJaC2kJIytTwx",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.NRZkFdqsptHFvHaU" },
+            "name": "Use Magic Device",
+            "system": {
+              "ability": "cha",
+              "identifier": "useMagicDevice",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.A8j7nF6qHwuGEC2E",
+              "sets": ["adventure"],
+              "rank": 6,
+              "acp": false,
+              "rt": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "r8otbvZqFRVONCjz",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.tm41rxa5wPTNjqTb" },
+            "name": "Diplomacy",
+            "system": {
+              "ability": "cha",
+              "identifier": "diplomacy",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.uB9Fy36RUjibxqvt",
+              "sets": ["adventure"],
+              "rank": 7,
+              "acp": false,
+              "rt": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "dijedoX5iUFgvQJP",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.ycFkyDUEzBP5Pl9J" },
+            "name": "Bluff",
+            "system": {
+              "ability": "cha",
+              "identifier": "bluff",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.kRK5XwVBvcMi35w2",
+              "sets": ["adventure"],
+              "rank": 7,
+              "acp": false,
+              "rt": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "KPZQSGvPbiJNp51N",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.races.Item.Hf31mrYb3uucNyLO" },
+            "folder": "RWSoA7Fj9yqo0y9U",
+            "name": "Halfling",
+            "system": {
+              "changes": {
+                "4qkk6fpi": {
+                  "_id": "4qkk6fpi",
+                  "formula": "-2",
+                  "target": "str",
+                  "type": "racial"
+                },
+                "6mozrq07": {
+                  "_id": "6mozrq07",
+                  "formula": "2",
+                  "target": "skill.acrobatics",
+                  "type": "racial"
+                },
+                "6nb88ge9": {
+                  "_id": "6nb88ge9",
+                  "formula": "2",
+                  "target": "skill.perception",
+                  "type": "racial"
+                },
+                "6qmpu6j7": {
+                  "_id": "6qmpu6j7",
+                  "formula": "2",
+                  "target": "cha",
+                  "type": "racial"
+                },
+                "86l4gjk2": {
+                  "_id": "86l4gjk2",
+                  "formula": "2",
+                  "target": "skill.climb",
+                  "type": "racial"
+                },
+                "b17x28cb": {
+                  "_id": "b17x28cb",
+                  "formula": "2",
+                  "target": "dex",
+                  "type": "racial"
+                },
+                "bh8e3xbn": {
+                  "_id": "bh8e3xbn",
+                  "formula": "1",
+                  "target": "allSavingThrows",
+                  "type": "racial"
+                }
+              },
+              "contextNotes": {
+                "FY6xmjGZOXqZmVXC": { "target": "allSavingThrows", "text": "+[[2]] Racial vs Fear" }
+              },
+              "creatureSubtypes": ["halfling"],
+              "creatureTypes": ["humanoid"],
+              "languages": ["common", "halfling"],
+              "size": "sm",
+              "sources": [{ "id": "PZO1110", "pages": "26" }],
+              "speeds": { "land": 20 },
+              "tags": ["Core", "Western (Arcadia)"]
+            },
+            "type": "race",
+            "effects": [],
+            "flags": {},
+            "_id": "kQE375BN7oKx7OM0",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.classes.Item.6GjOjO6r3R06fLwE" },
+            "name": "Bard",
+            "system": {
+              "armorProf": ["lgt", "shl"],
+              "bab": "med",
+              "casting": {
+                "ability": "cha",
+                "cantrips": true,
+                "domain": 0,
+                "progression": "med",
+                "spells": "arcane",
+                "type": "spontaneous"
+              },
+              "classSkills": [
+                "acrobatics",
+                "appraise",
+                "artistry",
+                "bluff",
+                "climb",
+                "craft",
+                "diplomacy",
+                "disguise",
+                "escapeArtist",
+                "intimidate",
+                "knowledge",
+                "linguistics",
+                "lore",
+                "perception",
+                "perform",
+                "profession",
+                "senseMotive",
+                "sleightOfHand",
+                "spellcraft",
+                "stealth",
+                "useMagicDevice"
+              ],
+              "hd": 8,
+              "level": 7,
+              "links": {
+                "supplements": [
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.Pb9pxYrx6tS87euP" },
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.h56K6HEBOItImPPL" },
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.tWE66WvFjS1o0S4y" },
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.ZfCUTi1MiLgR4T7I" },
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.RF8ioMkLc7LNnNT1" },
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.Kq3GVZ1yMv3ERQCJ" },
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.IPy4aqFYbOppaqKC" },
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.S4VHXq1asXBwaRwo" },
+                  { "level": 2, "uuid": "Compendium.pf1.class-abilities.Item.HAqAsb5H56C6cZm3" },
+                  { "level": 2, "uuid": "Compendium.pf1.class-abilities.Item.wew6ophJrcab24m6" },
+                  { "level": 3, "uuid": "Compendium.pf1.class-abilities.Item.2M56kfIOws5yYtxq" },
+                  { "level": 5, "uuid": "Compendium.pf1.class-abilities.Item.5lDEyC6WejFyTEho" },
+                  { "level": 5, "uuid": "Compendium.pf1.class-abilities.Item.msQWK7TW7mufzf8l" },
+                  { "level": 6, "uuid": "Compendium.pf1.class-abilities.Item.vtrruBLKeimBrupy" },
+                  { "level": 8, "uuid": "Compendium.pf1.class-abilities.Item.pmWnRksUzrKvNOvy" },
+                  { "level": 9, "uuid": "Compendium.pf1.class-abilities.Item.X7gqbGkXTox6Ojhy" },
+                  { "level": 10, "uuid": "Compendium.pf1.class-abilities.Item.qamuc5DZdOJMlRrD" },
+                  { "level": 12, "uuid": "Compendium.pf1.class-abilities.Item.iGrgU1XzlweVO2tb" },
+                  { "level": 14, "uuid": "Compendium.pf1.class-abilities.Item.qfjvZrIgJUjRXUUL" },
+                  { "level": 15, "uuid": "Compendium.pf1.class-abilities.Item.LIFTbzT5WDcsDn0O" },
+                  { "level": 18, "uuid": "Compendium.pf1.class-abilities.Item.FnfX1SMG9uzBghnB" },
+                  { "level": 20, "uuid": "Compendium.pf1.class-abilities.Item.RSoy0ll1sNno6mJD" }
+                ]
+              },
+              "savingThrows": {
+                "fort": { "value": "low" },
+                "ref": { "value": "high" },
+                "will": { "value": "high" }
+              },
+              "skillsPerLevel": 6,
+              "sources": [{ "id": "PZO1110", "pages": "34-38" }],
+              "subType": "base",
+              "tag": "bard",
+              "wealth": "3d6 * 10",
+              "weaponProf": [
+                "simple",
+                "Longsword",
+                "Rapier",
+                "Sap",
+                "Shortsword",
+                "Shortbow",
+                "Whip"
+              ],
+              "hp": 38
+            },
+            "type": "class",
+            "effects": [],
+            "folder": null,
+            "flags": {
+              "pf1": {
+                "links": {
+                  "classAssociations": {
+                    "vvt7wLqQ4wzgYYUw": 1,
+                    "Vp1qeRQ5MyICfkBu": 1,
+                    "ZbNnAjfTDzPxjnJq": 1,
+                    "P7wmjjkihMgB78Of": 1,
+                    "NIdROPBzCTaeDEuo": 1,
+                    "O1QYvBW1eswBDJmN": 1,
+                    "3iIghIHWkMyVhsxy": 1,
+                    "wurs6kjqcQMJ5eqC": 1,
+                    "s9sEumHGfujAJTwH": 2,
+                    "5LkHWw1C7ou3EnZV": 2,
+                    "nDB8OY5PISO51qFt": 5,
+                    "LifxvcQ13ohDIm6L": 3,
+                    "Nf0DXYRAcVhEI7Is": 6,
+                    "gPApOPT86qpK78Q0": 5
+                  }
+                }
+              }
+            },
+            "_id": "Iz0FBzjhVllcUJkV",
+            "sort": 0
+          },
+          {
+            "name": "Bard",
+            "type": "spellcasting",
+            "system": {
+              "identifier": "bard",
+              "kind": "arcane",
+              "class": "bard",
+              "type": "spontaneous",
+              "scale": "med",
+              "ability": "cha",
+              "asf": { "enabled": true },
+              "cantrips": { "enabled": true },
+              "slots": { "domain": { "formula": 0 }, "auto": true, "ability": { "auto": true } },
+              "cl": { "formula": "" },
+              "casts": {},
+              "preparation": {},
+              "concentration": {},
+              "dc": {},
+              "spellPoints": { "enabled": false, "offset": 0 },
+              "levels": {
+                "0": {},
+                "1": {},
+                "2": {},
+                "3": {},
+                "4": {},
+                "5": {},
+                "6": {},
+                "7": {},
+                "8": {},
+                "9": {}
+              },
+              "restrictions": []
+            },
+            "_id": "R9eKYhMfGtoYNWFN",
+            "effects": [],
+            "folder": null,
+            "sort": 0,
+            "flags": {},
+            "_stats": { "compendiumSource": null }
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.Pb9pxYrx6tS87euP"
+            },
+            "name": "Bardic Knowledge",
+            "system": {
+              "abilityType": "ex",
+              "associations": { "classes": ["Bard", "Skald"] },
+              "changes": {
+                "6sscr87o": {
+                  "_id": "6sscr87o",
+                  "formula": "max(1, floor(@class.unlevel / 2))",
+                  "target": "skill.knowledge",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "35" }],
+              "subType": "classFeat",
+              "class": "bard",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 100000,
+            "_id": "NIdROPBzCTaeDEuo",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.S4VHXq1asXBwaRwo"
+            },
+            "name": "Bard Spells",
+            "system": {
+              "associations": { "classes": ["Bard"] },
+              "sources": [{ "id": "PZO1110", "pages": "35" }],
+              "subType": "classFeat",
+              "class": "bard",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 800000,
+            "_id": "3iIghIHWkMyVhsxy",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.IPy4aqFYbOppaqKC"
+            },
+            "name": "Cantrips",
+            "system": {
+              "associations": {
+                "classes": [
+                  "Arcanist",
+                  "Bard",
+                  "Magus",
+                  "Skald",
+                  "Sorcerer",
+                  "Summoner",
+                  "Summoner (Unchained)",
+                  "Witch",
+                  "Wizard"
+                ]
+              },
+              "sources": [
+                { "id": "PZO1110", "pages": "34, 70, 77" },
+                { "id": "PZO1115", "pages": "54, 65" },
+                { "id": "PZO1117", "pages": "9" },
+                { "id": "PZO1131", "pages": "25" },
+                { "id": "PZO1129", "pages": "8, 49" }
+              ],
+              "subType": "classFeat",
+              "class": "bard",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 700000,
+            "_id": "wurs6kjqcQMJ5eqC",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.5lDEyC6WejFyTEho"
+            },
+            "name": "Exchange Spell (Medium)",
+            "system": {
+              "associations": {
+                "classes": [
+                  "Bard",
+                  "Hunter",
+                  "Inquisitor",
+                  "Medium",
+                  "Mesmerist",
+                  "Occultist",
+                  "Skald",
+                  "Spiritualist",
+                  "Summoner",
+                  "Summoner (Unchained)"
+                ]
+              },
+              "sources": [
+                { "id": "PZO1110", "pages": "35" },
+                { "id": "PZO1129", "pages": "26,49" },
+                { "id": "PZO1115", "pages": "38,55" },
+                { "id": "PZO1132", "pages": "30,38,47,72" },
+                { "id": "PZO1131", "pages": "25" }
+              ],
+              "subType": "classFeat",
+              "class": "bard",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 1200000,
+            "_id": "nDB8OY5PISO51qFt",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.msQWK7TW7mufzf8l"
+            },
+            "name": "Lore Master",
+            "system": {
+              "abilityType": "ex",
+              "actions": {
+                "vdpeu8pfvgw0werj": {
+                  "_id": "vdpeu8pfvgw0werj",
+                  "activation": {
+                    "type": "standard",
+                    "unchained": { "cost": 2, "type": "action" }
+                  },
+                  "name": "Take 20",
+                  "sort": 0
+                }
+              },
+              "associations": { "classes": ["Bard"] },
+              "sources": [{ "id": "PZO1110", "pages": "38" }],
+              "subType": "classFeat",
+              "tag": "loreMaster",
+              "uses": { "maxFormula": "floor((@class.unlevel + 1) / 6)", "per": "day" },
+              "class": "bard",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 1300000,
+            "_id": "gPApOPT86qpK78Q0",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1e-archetypes.pf-archetypes.Item.oVozWPmhJfYSxC7T"
+            },
+            "folder": "Xp99iiO8M955HvSy",
+            "name": "Bard (Archaeologist)",
+            "system": {
+              "associations": { "classes": ["Bard"] },
+              "links": {
+                "supplements": [
+                  {
+                    "level": 1,
+                    "uuid": "Compendium.pf1e-archetypes.pf-arch-features.Item.PRvaJBuSUDG32wYz"
+                  },
+                  {
+                    "level": 2,
+                    "uuid": "Compendium.pf1e-archetypes.pf-arch-features.Item.1zlJJj6W7TeXvahc"
+                  },
+                  {
+                    "level": 2,
+                    "uuid": "Compendium.pf1e-archetypes.pf-arch-features.Item.wbdg7SRZvXqba5lQ"
+                  },
+                  {
+                    "level": 3,
+                    "uuid": "Compendium.pf1e-archetypes.pf-arch-features.Item.dyjOR4tQIxevBKGG"
+                  },
+                  {
+                    "level": 4,
+                    "uuid": "Compendium.pf1e-archetypes.pf-arch-features.Item.3RuYRzQvUYKM2M3x"
+                  },
+                  {
+                    "level": 6,
+                    "uuid": "Compendium.pf1e-archetypes.pf-arch-features.Item.iftc6b32LjAyvIDg"
+                  },
+                  {
+                    "level": 12,
+                    "uuid": "Compendium.pf1e-archetypes.pf-arch-features.Item.RYDGWTi4ad8RGRFK"
+                  }
+                ]
+              },
+              "sources": [{ "id": "PZO1118", "pages": "32" }],
+              "subType": "misc",
+              "tags": ["Archaeologist"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "_id": "OyfKXGLqk2tkNdN0",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1e-archetypes.pf-arch-features.Item.1zlJJj6W7TeXvahc"
+            },
+            "name": "Clever Explorer (Archaeologist)",
+            "system": {
+              "associations": { "classes": ["Bard"] },
+              "sources": [{ "id": "PZO1118", "pages": "32" }],
+              "subType": "classFeat",
+              "tags": ["Archaeologist"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "F9M1i5ZHkPJ0b6GO",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1e-archetypes.pf-arch-features.Item.PRvaJBuSUDG32wYz"
+            },
+            "name": "Archaeologist's Luck (Archaeologist)",
+            "system": {
+              "abilityType": "ex",
+              "actions": {
+                "t93uUl9leMnhbtUY": {
+                  "_id": "t93uUl9leMnhbtUY",
+                  "activation": { "type": "swift", "unchained": { "type": "action" } },
+                  "img": "icons/tools/instruments/harp-lap-brown.webp",
+                  "name": "Use",
+                  "range": { "units": "personal" },
+                  "sort": 0
+                }
+              },
+              "associations": { "classes": ["Bard"] },
+              "sources": [{ "id": "PZO1118", "pages": "32" }],
+              "subType": "classFeat",
+              "tags": ["Archaeologist"],
+              "uses": { "maxFormula": "4 + @abilities.cha.mod", "per": "day" },
+              "_pending": { "actions": true },
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "1WzEaJLCQqY6iXYc",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1e-archetypes.pf-arch-features.Item.Frlze5Na5lg4bSLi"
+            },
+            "name": "Trap Sense (Archaeologist)",
+            "system": {
+              "abilityType": "ex",
+              "actions": {
+                "LrUey2MlA6ujwqFx": {
+                  "_id": "LrUey2MlA6ujwqFx",
+                  "activation": { "type": "nonaction", "unchained": { "type": "nonaction" } },
+                  "img": "icons/tools/instruments/harp-lap-brown.webp",
+                  "name": "Use",
+                  "sort": 0
+                }
+              },
+              "associations": { "classes": ["Bard"] },
+              "contextNotes": {
+                "81oBxxH3X5nq5rp8": {
+                  "target": "ref",
+                  "text": "+[[floor(@classes.rogue.level/3)]] vs. traps"
+                },
+                "ZPXV3pjU7Cb0G9XY": {
+                  "target": "ac",
+                  "text": "+[[floor(@classes.rogue.level/3)]] dodge vs. traps"
+                }
+              },
+              "sources": [{ "id": "PZO1118", "pages": "32" }],
+              "subType": "classFeat",
+              "tags": ["Archaeologist"],
+              "_pending": { "actions": true, "contextNotes": true },
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "jm9YVwtLVbzIWxBL",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1e-archetypes.pf-arch-features.Item.wbdg7SRZvXqba5lQ"
+            },
+            "name": "Uncanny Dodge (Archaeologist)",
+            "system": {
+              "associations": { "classes": ["Bard"] },
+              "sources": [{ "id": "PZO1118", "pages": "32" }],
+              "subType": "classFeat",
+              "tags": ["Archaeologist"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "CUPVO4I8cREJbK3X",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1e-archetypes.pf-arch-features.Item.3RuYRzQvUYKM2M3x"
+            },
+            "name": "Rogue Talents (Archaeologist)",
+            "system": {
+              "associations": { "classes": ["Bard"] },
+              "sources": [{ "id": "PZO1118", "pages": "32" }],
+              "subType": "classFeat",
+              "tags": ["Archaeologist"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "VXhI9X8338rzuWMf",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1e-archetypes.pf-arch-features.Item.iftc6b32LjAyvIDg"
+            },
+            "name": "Evasion (Archaeologist)",
+            "system": {
+              "associations": { "classes": ["Bard"] },
+              "sources": [{ "id": "PZO1118", "pages": "32" }],
+              "subType": "classFeat",
+              "tags": ["Archaeologist"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "50X6PvUKnTVW077U",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.8snLqsJN4LLL00Nq" },
+            "name": "Toughness",
+            "system": {
+              "changes": {
+                "bl5pemy2": {
+                  "_id": "bl5pemy2",
+                  "formula": "max(3, @attributes.hd.total)",
+                  "target": "mhp",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "116, 135" }],
+              "subType": "feat",
+              "tags": ["General", "Defensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "b9WQpLiwgTwR0Agd",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.iAbIGhm7T2OK9Brt" },
+            "name": "Iron Will",
+            "system": {
+              "changes": {
+                "vafl2kz4": {
+                  "_id": "vafl2kz4",
+                  "formula": "2",
+                  "target": "will",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "115, 129" }],
+              "subType": "feat",
+              "tags": ["General", "Saving Throw"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "pZRgFWeVwnDnZba8",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.fVRnBIHR4Jq6btvm" },
+            "name": "Great Fortitude",
+            "system": {
+              "changes": {
+                "0rubibb4": {
+                  "_id": "0rubibb4",
+                  "formula": "2",
+                  "target": "fort",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "115, 124" }],
+              "subType": "feat",
+              "tags": ["General", "Saving Throw", "Defensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "BXqZ0keL85y5xyrz",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.0bZf3SDkvVOe2ujH" },
+            "name": "Lightning Reflexes",
+            "system": {
+              "changes": {
+                "ni86uxwa": {
+                  "_id": "ni86uxwa",
+                  "formula": "2",
+                  "target": "ref",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "115, 130" }],
+              "subType": "feat",
+              "tags": ["General", "Saving Throw"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "C1XdO26OZoYR0MXZ",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.armors-and-shields.Item.6YCQkebsf4vR508H"
+            },
+            "folder": "LQyo9lDGQU29eyig",
+            "name": "Leather Armor",
+            "system": {
+              "armor": {
+                "dex": 6,
+                "material": { "base": { "value": "leather" }, "addon": [] },
+                "value": 2,
+                "alignments": {}
+              },
+              "baseTypes": ["Leather Armor"],
+              "equipmentSubtype": "lightArmor",
+              "equipped": true,
+              "hardness": 2,
+              "hp": { "base": 10 },
+              "price": { "base": 10, "unit": "gp" },
+              "quantity": 1,
+              "slot": "armor",
+              "sources": [{ "id": "PZO1110", "pages": "151" }],
+              "spellFailure": 10,
+              "subType": "armor",
+              "weight": { "value": 15 },
+              "mods": {}
+            },
+            "type": "equipment",
+            "effects": [],
+            "flags": {},
+            "_id": "sIowa6qXUThAAmgs",
+            "sort": 0
+          }
+        ],
+        "effects": [
+          {
+            "name": "Sickened",
+            "img": "systems/pf1/icons/conditions/sickened.svg",
+            "statuses": ["sickened"],
+            "showIcon": 2,
+            "_id": "b56gsWcNhFRQ7sqh",
+            "type": "base",
+            "system": { "changes": [] },
+            "disabled": false,
+            "start": {
+              "time": 0,
+              "combat": null,
+              "combatant": null,
+              "initiative": null,
+              "round": null,
+              "turn": null
+            },
+            "duration": { "value": null, "units": "seconds", "expiry": null, "expired": false },
+            "description": "",
+            "origin": null,
+            "tint": "#ffffff",
+            "transfer": false,
+            "folder": null,
+            "sort": 0,
+            "flags": { "pf1": { "autoDelete": true } },
+            "_stats": {
+              "coreVersion": "14.370",
+              "systemId": "pf1",
+              "systemVersion": "11.11",
+              "createdTime": 1795403586318,
+              "modifiedTime": 1795403586318,
+              "lastModifiedBy": "AKnVcnI4fMKGUzTH",
+              "compendiumSource": null,
+              "duplicateSource": null,
+              "exportSource": null
+            }
+          }
+        ],
+        "sort": 0,
+        "flags": {}
+      },
+      "derived": {
+        "abilities": {
+          "str": { "total": 8, "mod": -1 },
+          "dex": { "total": 18, "mod": 4 },
+          "con": { "total": 14, "mod": 2 },
+          "int": { "total": 10, "mod": 0 },
+          "wis": { "total": 10, "mod": 0 },
+          "cha": { "total": 18, "mod": 4 }
+        },
+        "ac": { "normal": 17, "touch": 15, "flatFooted": 13 },
+        "cmb": 1,
+        "cmd": { "total": 17, "flatFooted": 13 },
+        "saves": { "fort": 5, "ref": 10, "will": 6 },
+        "init": 2,
+        "bab": 5,
+        "attack": { "melee": 3, "ranged": 8 },
+        "hp": { "max": 59 },
+        "speed": { "land": 20 },
+        "sr": 0,
+        "acp": 0,
+        "skills": {
+          "perception": 10,
+          "knowledge": 1,
+          "knowledge.geography": 1,
+          "knowledge.nobility": 1,
+          "knowledge.local": 1,
+          "knowledge.dungeoneering": 1,
+          "knowledge.religion": 1,
+          "knowledge.nature": 1,
+          "knowledge.arcana": 1,
+          "knowledge.history": 1,
+          "knowledge.planes": 1,
+          "knowledge.engineering": 1,
+          "intimidate": 2,
+          "appraise": -2,
+          "profession": -2,
+          "fly": 4,
+          "disableDevice": 6,
+          "swim": -3,
+          "escapeArtist": 2,
+          "linguistics": -2,
+          "acrobatics": 14,
+          "useMagicDevice": 11,
+          "climb": -1,
+          "sleightOfHand": 2,
+          "handleAnimal": 2,
+          "heal": -2,
+          "spellcraft": -2,
+          "ride": 2,
+          "stealth": 6,
+          "survival": -2,
+          "craft": -2,
+          "disguise": 2,
+          "diplomacy": 12,
+          "senseMotive": 2,
+          "perform": 2,
+          "bluff": 12
+        }
+      }
+    }
+  }
+}

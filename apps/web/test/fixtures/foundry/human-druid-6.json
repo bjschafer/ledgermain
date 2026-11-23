@@ -1,0 +1,2788 @@
+{
+  "foundry": { "core": "14.370", "system": "11.11" },
+  "spec": {
+    "id": "human-druid-6",
+    "race": "Human",
+    "flexibleAbility": "wis",
+    "alignment": "n",
+    "abilities": { "str": 14, "dex": 12, "con": 14, "int": 10, "wis": 16, "cha": 8 },
+    "classes": [{ "name": "Druid", "level": 6, "hp": 33 }],
+    "feats": ["Toughness", "Iron Will", "Great Fortitude", "Natural Spell"],
+    "skills": { "climb": 6, "survival": 6, "knowledge.nature": 6, "perception": 6 },
+    "items": [
+      { "pack": "pf1.armors-and-shields", "name": "Hide Armor", "equipped": true },
+      { "pack": "pf1.armors-and-shields", "name": "Light Wooden Shield", "equipped": true },
+      { "pack": "pf1.items", "name": "Cloak of Resistance +1", "equipped": true }
+    ],
+    "scenarios": {
+      "base": {},
+      "buffs": {
+        "buffs": [
+          { "name": "Barkskin", "level": 6 },
+          { "name": "Owl's Wisdom", "level": 6 },
+          { "name": "Longstrider", "level": 6 }
+        ]
+      },
+      "conditions": { "conditions": ["fatigued"] }
+    }
+  },
+  "scenarios": {
+    "base": {
+      "actor": {
+        "name": "human-druid-6 [base]",
+        "type": "character",
+        "folder": "GuYuyoqdabfe4xZV",
+        "_id": "Kk02C5wNp71twj31",
+        "system": {
+          "abilities": {
+            "str": { "value": 14 },
+            "dex": { "value": 12 },
+            "con": { "value": 14 },
+            "int": { "value": 10 },
+            "wis": { "value": 16 },
+            "cha": { "value": 8 }
+          },
+          "attributes": {
+            "savingThrows": {
+              "fort": { "ability": "con" },
+              "ref": { "ability": "dex" },
+              "will": { "ability": "wis" }
+            },
+            "hp": { "temp": 0, "nonlethal": 0, "offset": 0 },
+            "wounds": { "offset": 0 },
+            "vigor": { "temp": 0, "offset": 0 }
+          },
+          "details": { "notes": {}, "xp": { "value": 0 }, "alignment": "n" },
+          "traits": { "size": "med", "ageCategory": "adult", "stature": "tall" },
+          "currency": {},
+          "altCurrency": {}
+        },
+        "items": [
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.5WivCl3kkGv5iNiz" },
+            "name": "Perception",
+            "system": {
+              "ability": "wis",
+              "identifier": "perception",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.2h6hz5AkTDxKPFxr",
+              "sets": ["adventure"],
+              "rank": 6,
+              "acp": false,
+              "rt": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "UaCKQkXAp3IicxQb",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.NbW51ORcxEJnEY8H" },
+            "name": "Climb",
+            "system": {
+              "ability": "str",
+              "acp": true,
+              "identifier": "climb",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.ZAwjVOTwsBpZRgw4",
+              "sets": ["adventure"],
+              "rank": 6,
+              "rt": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "DkbP5XHKVP3j6QKA",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.Wz3oclMlbRJiINGi" },
+            "name": "Nature",
+            "system": {
+              "ability": "int",
+              "grouping": "knowledge",
+              "identifier": "nature",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.BWeqgXSZvUQl68vt",
+              "rt": true,
+              "sets": ["adventure"],
+              "rank": 6,
+              "acp": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "liRiojCjWjI4o8gs",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.pJeOF9bUvspDzyq9" },
+            "name": "Survival",
+            "system": {
+              "ability": "wis",
+              "identifier": "survival",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.pLdYavy4nssLEoGV",
+              "sets": ["adventure"],
+              "rank": 6,
+              "acp": false,
+              "rt": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "lUyH1LRd7lVlIjqV",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.races.Item.e6IaBxKgMxy1yKlr" },
+            "folder": "RWSoA7Fj9yqo0y9U",
+            "name": "Human",
+            "system": {
+              "changes": {
+                "ahb0k14u": {
+                  "_id": "ahb0k14u",
+                  "formula": "@attributes.hd.total",
+                  "target": "bonusSkillRanks",
+                  "type": "untyped"
+                },
+                "ywxkp0hu": {
+                  "_id": "ywxkp0hu",
+                  "formula": "1",
+                  "target": "bonusFeats",
+                  "type": "untyped"
+                },
+                "lmflex01": { "_id": "lmflex01", "formula": "2", "target": "wis", "type": "racial" }
+              },
+              "creatureSubtypes": ["human"],
+              "creatureTypes": ["humanoid"],
+              "languages": ["common"],
+              "size": "med",
+              "sources": [{ "id": "PZO1110", "pages": "27" }],
+              "speeds": { "land": 30 },
+              "tags": [
+                "Core",
+                "Western (Arcadia)",
+                "Eastern (Casmaron)",
+                "Northern (Crown of the World)",
+                "Southern (Garund)"
+              ]
+            },
+            "type": "race",
+            "effects": [],
+            "flags": {},
+            "_id": "fd5tVdGapAye3O3V",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.classes.Item.7eZQP0MzeO2svmVF" },
+            "name": "Druid",
+            "system": {
+              "alignment": "Any neutral",
+              "armorProf": ["lgt", "med", "shl", "No Metal Armors"],
+              "bab": "med",
+              "casting": {
+                "ability": "wis",
+                "cantrips": true,
+                "domain": 1,
+                "progression": "high",
+                "spells": "divine",
+                "type": "prepared"
+              },
+              "classSkills": [
+                "artistry",
+                "climb",
+                "craft",
+                "fly",
+                "handleAnimal",
+                "heal",
+                "knowledge.geography",
+                "knowledge.nature",
+                "lore",
+                "perception",
+                "profession",
+                "ride",
+                "spellcraft",
+                "survival",
+                "swim"
+              ],
+              "hd": 8,
+              "level": 6,
+              "links": {
+                "supplements": [
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.wZ40bxNVn95BbLBV" },
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.UJPlPj3RUKLvmKzM" },
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.Yr8dfM2d8JEWoYkr" },
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.utbMg45UlQKSuak9" },
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.exdHrqciehozr5SD" },
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.HL53FUqkS4PZCMIK" },
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.RaFl9SpbAlXqhsDk" },
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.YGxrR8krrZAviojA" },
+                  { "level": 2, "uuid": "Compendium.pf1.class-abilities.Item.5iXq1igb1Cq0qobT" },
+                  { "level": 3, "uuid": "Compendium.pf1.class-abilities.Item.adslhIPLFgIaHBfh" },
+                  { "level": 4, "uuid": "Compendium.pf1.class-abilities.Item.0j7haa7K5O1CJ3ot" },
+                  { "level": 4, "uuid": "Compendium.pf1.class-abilities.Item.sJdBOE9lwz5XAkUi" },
+                  { "level": 9, "uuid": "Compendium.pf1.class-abilities.Item.yzmKDxR63yS5fqlc" },
+                  { "level": 13, "uuid": "Compendium.pf1.class-abilities.Item.MXj2WoyW7vLxiVYw" },
+                  { "level": 15, "uuid": "Compendium.pf1.class-abilities.Item.5JlthJkVGEHPZypG" }
+                ]
+              },
+              "savingThrows": {
+                "fort": { "value": "high" },
+                "ref": { "value": "low" },
+                "will": { "value": "high" }
+              },
+              "skillsPerLevel": 4,
+              "sources": [{ "id": "PZO1110", "pages": "48-54" }],
+              "subType": "base",
+              "tag": "druid",
+              "wealth": "2d6 * 10",
+              "weaponProf": [
+                "Club",
+                "Dagger",
+                "Dart",
+                "Quarterstaff",
+                "Scimitar",
+                "Scythe",
+                "Sickle",
+                "Shortspear",
+                "Sling",
+                "Spear"
+              ],
+              "hp": 33
+            },
+            "type": "class",
+            "effects": [],
+            "folder": null,
+            "flags": {
+              "pf1": {
+                "links": {
+                  "classAssociations": {
+                    "Rh0rRu6aYgMR40oY": 1,
+                    "xDtVnNCdk3nMOAsV": 1,
+                    "MQOPVI3YpzmvF5uO": 1,
+                    "i6ucAweA2NN901X9": 1,
+                    "gTBBe94WD7jQomP1": 1,
+                    "zXtirYq4BHfUjVMQ": 1,
+                    "5DrVHHVPZr3We1H2": 1,
+                    "F4uii2vCwyaIYj7z": 1,
+                    "cXEX8CHUytnzsOoJ": 2,
+                    "ItA4qIdAa9zsGIVa": 3,
+                    "V3png1CayxNmvoto": 4,
+                    "INAvSkJzMhCGRMvR": 4
+                  }
+                }
+              }
+            },
+            "_id": "b4PZdhgaG0XLFmdv",
+            "sort": 0
+          },
+          {
+            "name": "Druid",
+            "type": "spellcasting",
+            "system": {
+              "identifier": "druid",
+              "kind": "divine",
+              "class": "druid",
+              "type": "prepared",
+              "scale": "high",
+              "ability": "wis",
+              "asf": { "enabled": false },
+              "cantrips": { "enabled": true },
+              "slots": { "domain": { "formula": 1 }, "auto": true, "ability": { "auto": true } },
+              "cl": { "formula": "" },
+              "casts": {},
+              "preparation": {},
+              "concentration": {},
+              "dc": {},
+              "spellPoints": { "enabled": false, "offset": 0 },
+              "levels": {
+                "0": {},
+                "1": {},
+                "2": {},
+                "3": {},
+                "4": {},
+                "5": {},
+                "6": {},
+                "7": {},
+                "8": {},
+                "9": {}
+              },
+              "restrictions": []
+            },
+            "_id": "pbotxwHOSTxgd6sf",
+            "effects": [],
+            "folder": null,
+            "sort": 0,
+            "flags": {},
+            "_stats": { "compendiumSource": null }
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.wZ40bxNVn95BbLBV"
+            },
+            "name": "Nature Bond",
+            "system": {
+              "abilityType": "ex",
+              "associations": { "classes": ["Druid"] },
+              "sources": [{ "id": "PZO1110", "pages": "50" }],
+              "subType": "classFeat",
+              "class": "druid",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 100000,
+            "_id": "Rh0rRu6aYgMR40oY",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.UJPlPj3RUKLvmKzM"
+            },
+            "name": "Nature Sense",
+            "system": {
+              "abilityType": "ex",
+              "associations": { "classes": ["Druid"] },
+              "changes": {
+                "02pgkjh1": {
+                  "_id": "02pgkjh1",
+                  "formula": "2",
+                  "target": "skill.survival",
+                  "type": "untyped"
+                },
+                "ghuk6l76": {
+                  "_id": "ghuk6l76",
+                  "formula": "2",
+                  "target": "skill.knowledge.nature",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "50" }],
+              "subType": "classFeat",
+              "class": "druid",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 200000,
+            "_id": "xDtVnNCdk3nMOAsV",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.Yr8dfM2d8JEWoYkr"
+            },
+            "name": "Wild Empathy",
+            "system": {
+              "abilityType": "ex",
+              "associations": { "classes": ["Druid", "Hunter", "Ranger", "Shifter"] },
+              "sources": [
+                { "id": "PZO1110", "pages": "50, 64-65" },
+                { "id": "PZO1129", "pages": "28" },
+                { "id": "PZO1140", "pages": "27" }
+              ],
+              "subType": "classFeat",
+              "class": "druid",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 300000,
+            "_id": "MQOPVI3YpzmvF5uO",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.utbMg45UlQKSuak9"
+            },
+            "name": "Spontaneous Casting (DRU)",
+            "system": {
+              "associations": { "classes": ["Druid"] },
+              "sources": [{ "id": "PZO1110", "pages": "49" }],
+              "subType": "classFeat",
+              "class": "druid",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 400000,
+            "_id": "i6ucAweA2NN901X9",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.exdHrqciehozr5SD"
+            },
+            "name": "Chaotic, Evil, Good, and Lawful Spells",
+            "system": {
+              "associations": { "classes": ["Cleric", "Druid", "Hunter", "Warpriest"] },
+              "sources": [
+                { "id": "PZO1110", "pages": "41, 49" },
+                { "id": "PZO1129", "pages": "26, 60" }
+              ],
+              "subType": "classFeat",
+              "class": "druid",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 500000,
+            "_id": "gTBBe94WD7jQomP1",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.HL53FUqkS4PZCMIK"
+            },
+            "name": "Bonus Languages (DRU)",
+            "system": {
+              "associations": { "classes": ["Druid"] },
+              "languages": ["druidic"],
+              "sources": [{ "id": "PZO1110", "pages": "50" }],
+              "subType": "classFeat",
+              "class": "druid",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 600000,
+            "_id": "zXtirYq4BHfUjVMQ",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.RaFl9SpbAlXqhsDk"
+            },
+            "name": "Orisons",
+            "system": {
+              "associations": {
+                "classes": ["Cleric", "Druid", "Inquisitor", "Oracle", "Shaman", "Warpriest"]
+              },
+              "sources": [
+                { "id": "PZO1110", "pages": "38, 48" },
+                { "id": "PZO1115", "pages": "38, 42" },
+                { "id": "PZO1129", "pages": "35, 60" }
+              ],
+              "subType": "classFeat",
+              "class": "druid",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 700000,
+            "_id": "5DrVHHVPZr3We1H2",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.YGxrR8krrZAviojA"
+            },
+            "name": "Druid Spells",
+            "system": {
+              "associations": { "classes": ["Druid"] },
+              "sources": [{ "id": "PZO1110", "pages": "49" }],
+              "subType": "classFeat",
+              "class": "druid",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 800000,
+            "_id": "F4uii2vCwyaIYj7z",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.5iXq1igb1Cq0qobT"
+            },
+            "name": "Woodland Stride",
+            "system": {
+              "abilityType": "ex",
+              "associations": {
+                "classes": ["Druid", "Hunter", "Oracle", "Ranger", "Shifter", "Slayer", "Sorcerer"]
+              },
+              "sources": [
+                { "id": "PZO1110", "pages": "51, 66-67, 76" },
+                { "id": "PZO1129", "pages": "29" },
+                { "id": "PZO1140", "pages": "27" }
+              ],
+              "subType": "classFeat",
+              "tags": [
+                "Wood Mystery",
+                "Slayer Talent, Advanced",
+                "Bloodline Power",
+                "Fey Bloodline"
+              ],
+              "class": "druid",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 900000,
+            "_id": "cXEX8CHUytnzsOoJ",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.adslhIPLFgIaHBfh"
+            },
+            "name": "Trackless Step",
+            "system": {
+              "abilityType": "ex",
+              "associations": { "classes": ["Druid", "Shifter"] },
+              "sources": [
+                { "id": "PZO1110", "pages": "51" },
+                { "id": "PZO1140", "pages": "28" }
+              ],
+              "subType": "classFeat",
+              "class": "druid",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 1000000,
+            "_id": "ItA4qIdAa9zsGIVa",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.0j7haa7K5O1CJ3ot"
+            },
+            "name": "Resist Nature's Lure",
+            "system": {
+              "abilityType": "ex",
+              "associations": { "classes": ["Druid"] },
+              "contextNotes": {
+                "m7Ei1oAqdyHRfUvv": {
+                  "target": "allSavingThrows",
+                  "text": "+4 bonus against the spell-like and supernatural abilities of fey or spells that target plants."
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "51" }],
+              "subType": "classFeat",
+              "class": "druid",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 1100000,
+            "_id": "V3png1CayxNmvoto",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.sJdBOE9lwz5XAkUi"
+            },
+            "name": "Wild Shape",
+            "system": {
+              "abilityType": "su",
+              "actions": {
+                "t1lo0qlokxp4kze3": {
+                  "_id": "t1lo0qlokxp4kze3",
+                  "activation": {
+                    "type": "standard",
+                    "unchained": { "cost": 2, "type": "action" }
+                  },
+                  "duration": { "units": "hour", "value": "@attributes.hd.total" },
+                  "name": "Use",
+                  "range": { "units": "personal" },
+                  "sort": 0,
+                  "target": { "value": "Self" }
+                }
+              },
+              "associations": { "classes": ["Druid"] },
+              "sources": [{ "id": "PZO1110", "pages": "51" }],
+              "subType": "classFeat",
+              "tag": "wildShape",
+              "uses": { "maxFormula": "min(floor((@class.unlevel - 2) / 2), 8)", "per": "day" },
+              "class": "druid",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 1200000,
+            "_id": "INAvSkJzMhCGRMvR",
+            "folder": null
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.8snLqsJN4LLL00Nq" },
+            "name": "Toughness",
+            "system": {
+              "changes": {
+                "bl5pemy2": {
+                  "_id": "bl5pemy2",
+                  "formula": "max(3, @attributes.hd.total)",
+                  "target": "mhp",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "116, 135" }],
+              "subType": "feat",
+              "tags": ["General", "Defensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "oVeZwyFXsWlH5FKR",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.iAbIGhm7T2OK9Brt" },
+            "name": "Iron Will",
+            "system": {
+              "changes": {
+                "vafl2kz4": {
+                  "_id": "vafl2kz4",
+                  "formula": "2",
+                  "target": "will",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "115, 129" }],
+              "subType": "feat",
+              "tags": ["General", "Saving Throw"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "4fpOU0L9hYUoan3v",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.fVRnBIHR4Jq6btvm" },
+            "name": "Great Fortitude",
+            "system": {
+              "changes": {
+                "0rubibb4": {
+                  "_id": "0rubibb4",
+                  "formula": "2",
+                  "target": "fort",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "115, 124" }],
+              "subType": "feat",
+              "tags": ["General", "Saving Throw", "Defensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "8iD0SGu7oJgiUtKM",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.JUBqOpBA3agQwNvu" },
+            "name": "Natural Spell",
+            "system": {
+              "sources": [{ "id": "PZO1110", "pages": "115, 131" }],
+              "subType": "feat",
+              "tags": ["General", "Magic"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "O5fsnioLNsaAryDY",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.armors-and-shields.Item.aI6gSI7gnCLCucw0"
+            },
+            "folder": "33jGfHlDL34jvwnX",
+            "name": "Hide Armor",
+            "system": {
+              "armor": {
+                "acp": 3,
+                "dex": 4,
+                "material": { "base": { "value": "leather" }, "addon": [] },
+                "value": 4,
+                "alignments": {}
+              },
+              "baseTypes": ["Hide Armor"],
+              "equipmentSubtype": "mediumArmor",
+              "equipped": true,
+              "hardness": 2,
+              "hp": { "base": 20 },
+              "price": { "base": 15, "unit": "gp" },
+              "quantity": 1,
+              "slot": "armor",
+              "sources": [{ "id": "PZO1110", "pages": "151" }],
+              "spellFailure": 20,
+              "subType": "armor",
+              "weight": { "value": 25 },
+              "mods": {}
+            },
+            "type": "equipment",
+            "effects": [],
+            "flags": {},
+            "_id": "f5XGs7Jbv40ID00j",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.armors-and-shields.Item.l1qNkx4xGXelq6yY"
+            },
+            "folder": "DtVJVwL87ELQxk7u",
+            "name": "Light Wooden Shield",
+            "system": {
+              "actions": {
+                "ssnk6JSRh4Vo04Z9": {
+                  "_id": "ssnk6JSRh4Vo04Z9",
+                  "ability": { "attack": "str", "critMult": 2, "critRange": 20, "damage": "str" },
+                  "actionType": "mwak",
+                  "activation": { "type": "attack", "unchained": { "type": "attack" } },
+                  "damage": {
+                    "parts": [{ "formula": "sizeRoll(1, 3, @size)", "types": ["bludgeoning"] }]
+                  },
+                  "duration": { "units": "inst" },
+                  "extraAttacks": { "type": "standard" },
+                  "name": "Bash",
+                  "range": { "units": "melee" },
+                  "sort": 0
+                }
+              },
+              "armor": {
+                "acp": 1,
+                "material": { "base": { "value": "wood" }, "addon": [] },
+                "value": 1,
+                "alignments": {}
+              },
+              "equipmentSubtype": "lightShield",
+              "equipped": true,
+              "hardness": 5,
+              "hp": { "base": 7 },
+              "price": { "base": 3, "unit": "gp" },
+              "quantity": 1,
+              "slot": "shield",
+              "sources": [{ "id": "PZO1110", "pages": "142, 148, 151, 152" }],
+              "spellFailure": 5,
+              "subType": "shield",
+              "weight": { "value": 5 },
+              "mods": {}
+            },
+            "type": "equipment",
+            "effects": [],
+            "flags": {},
+            "_id": "rdwhEH2iPo9k7oJ9",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.items.Item.MrxwYWWezbJTZLog" },
+            "folder": "TQir6rREbQbhFUtK",
+            "name": "Cloak of Resistance +1",
+            "system": {
+              "armor": {
+                "material": {
+                  "base": { "value": "leather" },
+                  "normal": { "value": "leather" },
+                  "addon": []
+                },
+                "alignments": {}
+              },
+              "aura": { "school": "abj" },
+              "changes": {
+                "7okw4xq4": {
+                  "_id": "7okw4xq4",
+                  "formula": "1",
+                  "target": "allSavingThrows",
+                  "type": "resist"
+                }
+              },
+              "cl": 5,
+              "creation": {
+                "cost": { "unit": "gp", "value": 500 },
+                "description": "<p>@UUID[Compendium.pf1.feats.Item.tD76K8QGco9scT0r]{Craft Wondrous Item}, @UUID[Compendium.pf1.spells.Item.g8j278xcu2s1zlwy]{resistance}, creator's caster level must be at least three times the cloak's bonus</p>"
+              },
+              "equipmentSubtype": "lightArmor",
+              "equipped": true,
+              "hp": { "base": 10 },
+              "price": { "base": 1000, "unit": "gp" },
+              "quantity": 1,
+              "resizing": true,
+              "slot": "shoulders",
+              "sources": [
+                { "id": "PZO1123", "pages": "264" },
+                { "id": "PZO1110", "pages": "507" }
+              ],
+              "subType": "wondrous",
+              "unidentified": { "name": "Cloak", "price": { "base": 0, "unit": "gp" } },
+              "weight": { "value": 1 },
+              "mods": {}
+            },
+            "type": "equipment",
+            "effects": [],
+            "flags": {},
+            "_id": "AVknsLaZpGylXLFG",
+            "sort": 0
+          }
+        ],
+        "effects": [],
+        "sort": 0,
+        "flags": {}
+      },
+      "derived": {
+        "abilities": {
+          "str": { "total": 14, "mod": 2 },
+          "dex": { "total": 12, "mod": 1 },
+          "con": { "total": 14, "mod": 2 },
+          "int": { "total": 10, "mod": 0 },
+          "wis": { "total": 18, "mod": 4 },
+          "cha": { "total": 8, "mod": -1 }
+        },
+        "ac": { "normal": 16, "touch": 11, "flatFooted": 15 },
+        "cmb": 6,
+        "cmd": { "total": 17, "flatFooted": 16 },
+        "saves": { "fort": 10, "ref": 4, "will": 12 },
+        "init": 1,
+        "bab": 4,
+        "attack": { "melee": 6, "ranged": 5 },
+        "hp": { "max": 51 },
+        "speed": { "land": 20 },
+        "sr": 0,
+        "acp": 4,
+        "skills": {
+          "perception": 13,
+          "knowledge": 0,
+          "knowledge.geography": 0,
+          "knowledge.nobility": 0,
+          "knowledge.local": 0,
+          "knowledge.dungeoneering": 0,
+          "knowledge.religion": 0,
+          "knowledge.nature": 11,
+          "knowledge.arcana": 0,
+          "knowledge.history": 0,
+          "knowledge.planes": 0,
+          "knowledge.engineering": 0,
+          "intimidate": -1,
+          "appraise": 0,
+          "profession": 4,
+          "fly": -3,
+          "disableDevice": -3,
+          "swim": -2,
+          "escapeArtist": -3,
+          "linguistics": 0,
+          "acrobatics": -3,
+          "useMagicDevice": -1,
+          "climb": 7,
+          "sleightOfHand": -3,
+          "handleAnimal": -1,
+          "heal": 4,
+          "spellcraft": 0,
+          "ride": -3,
+          "stealth": -3,
+          "survival": 15,
+          "craft": 0,
+          "disguise": -1,
+          "diplomacy": -1,
+          "senseMotive": -1,
+          "perform": -1,
+          "bluff": -1
+        }
+      }
+    },
+    "buffs": {
+      "actor": {
+        "name": "human-druid-6 [buffs]",
+        "type": "character",
+        "folder": "GuYuyoqdabfe4xZV",
+        "_id": "dPgXmp0xmAKBfdj3",
+        "system": {
+          "abilities": {
+            "str": { "value": 14 },
+            "dex": { "value": 12 },
+            "con": { "value": 14 },
+            "int": { "value": 10 },
+            "wis": { "value": 16 },
+            "cha": { "value": 8 }
+          },
+          "attributes": {
+            "savingThrows": {
+              "fort": { "ability": "con" },
+              "ref": { "ability": "dex" },
+              "will": { "ability": "wis" }
+            },
+            "hp": { "temp": 0, "nonlethal": 0, "offset": 0 },
+            "wounds": { "offset": 0 },
+            "vigor": { "temp": 0, "offset": 0 }
+          },
+          "details": { "notes": {}, "xp": { "value": 0 }, "alignment": "n" },
+          "traits": { "size": "med", "ageCategory": "adult", "stature": "tall" },
+          "currency": {},
+          "altCurrency": {}
+        },
+        "items": [
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.5WivCl3kkGv5iNiz" },
+            "name": "Perception",
+            "system": {
+              "ability": "wis",
+              "identifier": "perception",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.2h6hz5AkTDxKPFxr",
+              "sets": ["adventure"],
+              "rank": 6,
+              "acp": false,
+              "rt": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "R0uF7fF8ngdTBzPI",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.NbW51ORcxEJnEY8H" },
+            "name": "Climb",
+            "system": {
+              "ability": "str",
+              "acp": true,
+              "identifier": "climb",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.ZAwjVOTwsBpZRgw4",
+              "sets": ["adventure"],
+              "rank": 6,
+              "rt": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "V3BIO7nKs2ZLhR0n",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.Wz3oclMlbRJiINGi" },
+            "name": "Nature",
+            "system": {
+              "ability": "int",
+              "grouping": "knowledge",
+              "identifier": "nature",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.BWeqgXSZvUQl68vt",
+              "rt": true,
+              "sets": ["adventure"],
+              "rank": 6,
+              "acp": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "T9DdCX7jPnbHtwGg",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.pJeOF9bUvspDzyq9" },
+            "name": "Survival",
+            "system": {
+              "ability": "wis",
+              "identifier": "survival",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.pLdYavy4nssLEoGV",
+              "sets": ["adventure"],
+              "rank": 6,
+              "acp": false,
+              "rt": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "yG37G2QXfrTeCbV3",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.races.Item.e6IaBxKgMxy1yKlr" },
+            "folder": "RWSoA7Fj9yqo0y9U",
+            "name": "Human",
+            "system": {
+              "changes": {
+                "ahb0k14u": {
+                  "_id": "ahb0k14u",
+                  "formula": "@attributes.hd.total",
+                  "target": "bonusSkillRanks",
+                  "type": "untyped"
+                },
+                "ywxkp0hu": {
+                  "_id": "ywxkp0hu",
+                  "formula": "1",
+                  "target": "bonusFeats",
+                  "type": "untyped"
+                },
+                "lmflex01": { "_id": "lmflex01", "formula": "2", "target": "wis", "type": "racial" }
+              },
+              "creatureSubtypes": ["human"],
+              "creatureTypes": ["humanoid"],
+              "languages": ["common"],
+              "size": "med",
+              "sources": [{ "id": "PZO1110", "pages": "27" }],
+              "speeds": { "land": 30 },
+              "tags": [
+                "Core",
+                "Western (Arcadia)",
+                "Eastern (Casmaron)",
+                "Northern (Crown of the World)",
+                "Southern (Garund)"
+              ]
+            },
+            "type": "race",
+            "effects": [],
+            "flags": {},
+            "_id": "8nPtbRRGF6Evmnje",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.classes.Item.7eZQP0MzeO2svmVF" },
+            "name": "Druid",
+            "system": {
+              "alignment": "Any neutral",
+              "armorProf": ["lgt", "med", "shl", "No Metal Armors"],
+              "bab": "med",
+              "casting": {
+                "ability": "wis",
+                "cantrips": true,
+                "domain": 1,
+                "progression": "high",
+                "spells": "divine",
+                "type": "prepared"
+              },
+              "classSkills": [
+                "artistry",
+                "climb",
+                "craft",
+                "fly",
+                "handleAnimal",
+                "heal",
+                "knowledge.geography",
+                "knowledge.nature",
+                "lore",
+                "perception",
+                "profession",
+                "ride",
+                "spellcraft",
+                "survival",
+                "swim"
+              ],
+              "hd": 8,
+              "level": 6,
+              "links": {
+                "supplements": [
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.wZ40bxNVn95BbLBV" },
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.UJPlPj3RUKLvmKzM" },
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.Yr8dfM2d8JEWoYkr" },
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.utbMg45UlQKSuak9" },
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.exdHrqciehozr5SD" },
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.HL53FUqkS4PZCMIK" },
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.RaFl9SpbAlXqhsDk" },
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.YGxrR8krrZAviojA" },
+                  { "level": 2, "uuid": "Compendium.pf1.class-abilities.Item.5iXq1igb1Cq0qobT" },
+                  { "level": 3, "uuid": "Compendium.pf1.class-abilities.Item.adslhIPLFgIaHBfh" },
+                  { "level": 4, "uuid": "Compendium.pf1.class-abilities.Item.0j7haa7K5O1CJ3ot" },
+                  { "level": 4, "uuid": "Compendium.pf1.class-abilities.Item.sJdBOE9lwz5XAkUi" },
+                  { "level": 9, "uuid": "Compendium.pf1.class-abilities.Item.yzmKDxR63yS5fqlc" },
+                  { "level": 13, "uuid": "Compendium.pf1.class-abilities.Item.MXj2WoyW7vLxiVYw" },
+                  { "level": 15, "uuid": "Compendium.pf1.class-abilities.Item.5JlthJkVGEHPZypG" }
+                ]
+              },
+              "savingThrows": {
+                "fort": { "value": "high" },
+                "ref": { "value": "low" },
+                "will": { "value": "high" }
+              },
+              "skillsPerLevel": 4,
+              "sources": [{ "id": "PZO1110", "pages": "48-54" }],
+              "subType": "base",
+              "tag": "druid",
+              "wealth": "2d6 * 10",
+              "weaponProf": [
+                "Club",
+                "Dagger",
+                "Dart",
+                "Quarterstaff",
+                "Scimitar",
+                "Scythe",
+                "Sickle",
+                "Shortspear",
+                "Sling",
+                "Spear"
+              ],
+              "hp": 33
+            },
+            "type": "class",
+            "effects": [],
+            "folder": null,
+            "flags": {
+              "pf1": {
+                "links": {
+                  "classAssociations": {
+                    "SjMggTnmZA8f4OgP": 1,
+                    "NBtPJwsHbYjAxwh9": 1,
+                    "i523idS1OdDjvdGc": 1,
+                    "pgbC84opzZSMrqPz": 1,
+                    "Kze2HuqKVPCl44hk": 1,
+                    "GX0hNssvrK9LwIzp": 1,
+                    "Oy1buIKWR78JFqKS": 1,
+                    "mmEoBTmT7kRONJ8u": 1,
+                    "HqofaGirXSi2hKzC": 2,
+                    "94gVEcmhT3e4cCxg": 3,
+                    "awmihI4wKBtTTwzT": 4,
+                    "QzZL9lxZgEeimyuU": 4
+                  }
+                }
+              }
+            },
+            "_id": "UCDfna0bun6KVxSC",
+            "sort": 0
+          },
+          {
+            "name": "Druid",
+            "type": "spellcasting",
+            "system": {
+              "identifier": "druid",
+              "kind": "divine",
+              "class": "druid",
+              "type": "prepared",
+              "scale": "high",
+              "ability": "wis",
+              "asf": { "enabled": false },
+              "cantrips": { "enabled": true },
+              "slots": { "domain": { "formula": 1 }, "auto": true, "ability": { "auto": true } },
+              "cl": { "formula": "" },
+              "casts": {},
+              "preparation": {},
+              "concentration": {},
+              "dc": {},
+              "spellPoints": { "enabled": false, "offset": 0 },
+              "levels": {
+                "0": {},
+                "1": {},
+                "2": {},
+                "3": {},
+                "4": {},
+                "5": {},
+                "6": {},
+                "7": {},
+                "8": {},
+                "9": {}
+              },
+              "restrictions": []
+            },
+            "_id": "DEnwaDdAknFIByAb",
+            "effects": [],
+            "folder": null,
+            "sort": 0,
+            "flags": {},
+            "_stats": { "compendiumSource": null }
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.wZ40bxNVn95BbLBV"
+            },
+            "name": "Nature Bond",
+            "system": {
+              "abilityType": "ex",
+              "associations": { "classes": ["Druid"] },
+              "sources": [{ "id": "PZO1110", "pages": "50" }],
+              "subType": "classFeat",
+              "class": "druid",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 100000,
+            "_id": "SjMggTnmZA8f4OgP",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.UJPlPj3RUKLvmKzM"
+            },
+            "name": "Nature Sense",
+            "system": {
+              "abilityType": "ex",
+              "associations": { "classes": ["Druid"] },
+              "changes": {
+                "02pgkjh1": {
+                  "_id": "02pgkjh1",
+                  "formula": "2",
+                  "target": "skill.survival",
+                  "type": "untyped"
+                },
+                "ghuk6l76": {
+                  "_id": "ghuk6l76",
+                  "formula": "2",
+                  "target": "skill.knowledge.nature",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "50" }],
+              "subType": "classFeat",
+              "class": "druid",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 200000,
+            "_id": "NBtPJwsHbYjAxwh9",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.Yr8dfM2d8JEWoYkr"
+            },
+            "name": "Wild Empathy",
+            "system": {
+              "abilityType": "ex",
+              "associations": { "classes": ["Druid", "Hunter", "Ranger", "Shifter"] },
+              "sources": [
+                { "id": "PZO1110", "pages": "50, 64-65" },
+                { "id": "PZO1129", "pages": "28" },
+                { "id": "PZO1140", "pages": "27" }
+              ],
+              "subType": "classFeat",
+              "class": "druid",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 300000,
+            "_id": "i523idS1OdDjvdGc",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.utbMg45UlQKSuak9"
+            },
+            "name": "Spontaneous Casting (DRU)",
+            "system": {
+              "associations": { "classes": ["Druid"] },
+              "sources": [{ "id": "PZO1110", "pages": "49" }],
+              "subType": "classFeat",
+              "class": "druid",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 400000,
+            "_id": "pgbC84opzZSMrqPz",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.exdHrqciehozr5SD"
+            },
+            "name": "Chaotic, Evil, Good, and Lawful Spells",
+            "system": {
+              "associations": { "classes": ["Cleric", "Druid", "Hunter", "Warpriest"] },
+              "sources": [
+                { "id": "PZO1110", "pages": "41, 49" },
+                { "id": "PZO1129", "pages": "26, 60" }
+              ],
+              "subType": "classFeat",
+              "class": "druid",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 500000,
+            "_id": "Kze2HuqKVPCl44hk",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.HL53FUqkS4PZCMIK"
+            },
+            "name": "Bonus Languages (DRU)",
+            "system": {
+              "associations": { "classes": ["Druid"] },
+              "languages": ["druidic"],
+              "sources": [{ "id": "PZO1110", "pages": "50" }],
+              "subType": "classFeat",
+              "class": "druid",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 600000,
+            "_id": "GX0hNssvrK9LwIzp",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.RaFl9SpbAlXqhsDk"
+            },
+            "name": "Orisons",
+            "system": {
+              "associations": {
+                "classes": ["Cleric", "Druid", "Inquisitor", "Oracle", "Shaman", "Warpriest"]
+              },
+              "sources": [
+                { "id": "PZO1110", "pages": "38, 48" },
+                { "id": "PZO1115", "pages": "38, 42" },
+                { "id": "PZO1129", "pages": "35, 60" }
+              ],
+              "subType": "classFeat",
+              "class": "druid",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 700000,
+            "_id": "Oy1buIKWR78JFqKS",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.YGxrR8krrZAviojA"
+            },
+            "name": "Druid Spells",
+            "system": {
+              "associations": { "classes": ["Druid"] },
+              "sources": [{ "id": "PZO1110", "pages": "49" }],
+              "subType": "classFeat",
+              "class": "druid",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 800000,
+            "_id": "mmEoBTmT7kRONJ8u",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.5iXq1igb1Cq0qobT"
+            },
+            "name": "Woodland Stride",
+            "system": {
+              "abilityType": "ex",
+              "associations": {
+                "classes": ["Druid", "Hunter", "Oracle", "Ranger", "Shifter", "Slayer", "Sorcerer"]
+              },
+              "sources": [
+                { "id": "PZO1110", "pages": "51, 66-67, 76" },
+                { "id": "PZO1129", "pages": "29" },
+                { "id": "PZO1140", "pages": "27" }
+              ],
+              "subType": "classFeat",
+              "tags": [
+                "Wood Mystery",
+                "Slayer Talent, Advanced",
+                "Bloodline Power",
+                "Fey Bloodline"
+              ],
+              "class": "druid",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 900000,
+            "_id": "HqofaGirXSi2hKzC",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.adslhIPLFgIaHBfh"
+            },
+            "name": "Trackless Step",
+            "system": {
+              "abilityType": "ex",
+              "associations": { "classes": ["Druid", "Shifter"] },
+              "sources": [
+                { "id": "PZO1110", "pages": "51" },
+                { "id": "PZO1140", "pages": "28" }
+              ],
+              "subType": "classFeat",
+              "class": "druid",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 1000000,
+            "_id": "94gVEcmhT3e4cCxg",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.0j7haa7K5O1CJ3ot"
+            },
+            "name": "Resist Nature's Lure",
+            "system": {
+              "abilityType": "ex",
+              "associations": { "classes": ["Druid"] },
+              "contextNotes": {
+                "m7Ei1oAqdyHRfUvv": {
+                  "target": "allSavingThrows",
+                  "text": "+4 bonus against the spell-like and supernatural abilities of fey or spells that target plants."
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "51" }],
+              "subType": "classFeat",
+              "class": "druid",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 1100000,
+            "_id": "awmihI4wKBtTTwzT",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.sJdBOE9lwz5XAkUi"
+            },
+            "name": "Wild Shape",
+            "system": {
+              "abilityType": "su",
+              "actions": {
+                "t1lo0qlokxp4kze3": {
+                  "_id": "t1lo0qlokxp4kze3",
+                  "activation": {
+                    "type": "standard",
+                    "unchained": { "cost": 2, "type": "action" }
+                  },
+                  "duration": { "units": "hour", "value": "@attributes.hd.total" },
+                  "name": "Use",
+                  "range": { "units": "personal" },
+                  "sort": 0,
+                  "target": { "value": "Self" }
+                }
+              },
+              "associations": { "classes": ["Druid"] },
+              "sources": [{ "id": "PZO1110", "pages": "51" }],
+              "subType": "classFeat",
+              "tag": "wildShape",
+              "uses": { "maxFormula": "min(floor((@class.unlevel - 2) / 2), 8)", "per": "day" },
+              "class": "druid",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 1200000,
+            "_id": "QzZL9lxZgEeimyuU",
+            "folder": null
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.8snLqsJN4LLL00Nq" },
+            "name": "Toughness",
+            "system": {
+              "changes": {
+                "bl5pemy2": {
+                  "_id": "bl5pemy2",
+                  "formula": "max(3, @attributes.hd.total)",
+                  "target": "mhp",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "116, 135" }],
+              "subType": "feat",
+              "tags": ["General", "Defensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "1imiWQmncJnRqq8F",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.iAbIGhm7T2OK9Brt" },
+            "name": "Iron Will",
+            "system": {
+              "changes": {
+                "vafl2kz4": {
+                  "_id": "vafl2kz4",
+                  "formula": "2",
+                  "target": "will",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "115, 129" }],
+              "subType": "feat",
+              "tags": ["General", "Saving Throw"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "iiw1rjXs6j21KBbr",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.fVRnBIHR4Jq6btvm" },
+            "name": "Great Fortitude",
+            "system": {
+              "changes": {
+                "0rubibb4": {
+                  "_id": "0rubibb4",
+                  "formula": "2",
+                  "target": "fort",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "115, 124" }],
+              "subType": "feat",
+              "tags": ["General", "Saving Throw", "Defensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "lt31mRWo8fIqT0gd",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.JUBqOpBA3agQwNvu" },
+            "name": "Natural Spell",
+            "system": {
+              "sources": [{ "id": "PZO1110", "pages": "115, 131" }],
+              "subType": "feat",
+              "tags": ["General", "Magic"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "vA2BS4MV9kDoY8Ko",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.armors-and-shields.Item.aI6gSI7gnCLCucw0"
+            },
+            "folder": "33jGfHlDL34jvwnX",
+            "name": "Hide Armor",
+            "system": {
+              "armor": {
+                "acp": 3,
+                "dex": 4,
+                "material": { "base": { "value": "leather" }, "addon": [] },
+                "value": 4,
+                "alignments": {}
+              },
+              "baseTypes": ["Hide Armor"],
+              "equipmentSubtype": "mediumArmor",
+              "equipped": true,
+              "hardness": 2,
+              "hp": { "base": 20 },
+              "price": { "base": 15, "unit": "gp" },
+              "quantity": 1,
+              "slot": "armor",
+              "sources": [{ "id": "PZO1110", "pages": "151" }],
+              "spellFailure": 20,
+              "subType": "armor",
+              "weight": { "value": 25 },
+              "mods": {}
+            },
+            "type": "equipment",
+            "effects": [],
+            "flags": {},
+            "_id": "5wqM9LS26EOGPpU0",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.items.Item.MrxwYWWezbJTZLog" },
+            "folder": "TQir6rREbQbhFUtK",
+            "name": "Cloak of Resistance +1",
+            "system": {
+              "armor": {
+                "material": {
+                  "base": { "value": "leather" },
+                  "normal": { "value": "leather" },
+                  "addon": []
+                },
+                "alignments": {}
+              },
+              "aura": { "school": "abj" },
+              "changes": {
+                "7okw4xq4": {
+                  "_id": "7okw4xq4",
+                  "formula": "1",
+                  "target": "allSavingThrows",
+                  "type": "resist"
+                }
+              },
+              "cl": 5,
+              "creation": {
+                "cost": { "unit": "gp", "value": 500 },
+                "description": "<p>@UUID[Compendium.pf1.feats.Item.tD76K8QGco9scT0r]{Craft Wondrous Item}, @UUID[Compendium.pf1.spells.Item.g8j278xcu2s1zlwy]{resistance}, creator's caster level must be at least three times the cloak's bonus</p>"
+              },
+              "equipmentSubtype": "lightArmor",
+              "equipped": true,
+              "hp": { "base": 10 },
+              "price": { "base": 1000, "unit": "gp" },
+              "quantity": 1,
+              "resizing": true,
+              "slot": "shoulders",
+              "sources": [
+                { "id": "PZO1123", "pages": "264" },
+                { "id": "PZO1110", "pages": "507" }
+              ],
+              "subType": "wondrous",
+              "unidentified": { "name": "Cloak", "price": { "base": 0, "unit": "gp" } },
+              "weight": { "value": 1 },
+              "mods": {}
+            },
+            "type": "equipment",
+            "effects": [],
+            "flags": {},
+            "_id": "Jw2wXNYaVS18uX83",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.armors-and-shields.Item.l1qNkx4xGXelq6yY"
+            },
+            "folder": "DtVJVwL87ELQxk7u",
+            "name": "Light Wooden Shield",
+            "system": {
+              "actions": {
+                "ssnk6JSRh4Vo04Z9": {
+                  "_id": "ssnk6JSRh4Vo04Z9",
+                  "ability": { "attack": "str", "critMult": 2, "critRange": 20, "damage": "str" },
+                  "actionType": "mwak",
+                  "activation": { "type": "attack", "unchained": { "type": "attack" } },
+                  "damage": {
+                    "parts": [{ "formula": "sizeRoll(1, 3, @size)", "types": ["bludgeoning"] }]
+                  },
+                  "duration": { "units": "inst" },
+                  "extraAttacks": { "type": "standard" },
+                  "name": "Bash",
+                  "range": { "units": "melee" },
+                  "sort": 0
+                }
+              },
+              "armor": {
+                "acp": 1,
+                "material": { "base": { "value": "wood" }, "addon": [] },
+                "value": 1,
+                "alignments": {}
+              },
+              "equipmentSubtype": "lightShield",
+              "equipped": true,
+              "hardness": 5,
+              "hp": { "base": 7 },
+              "price": { "base": 3, "unit": "gp" },
+              "quantity": 1,
+              "slot": "shield",
+              "sources": [{ "id": "PZO1110", "pages": "142, 148, 151, 152" }],
+              "spellFailure": 5,
+              "subType": "shield",
+              "weight": { "value": 5 },
+              "mods": {}
+            },
+            "type": "equipment",
+            "effects": [],
+            "flags": {},
+            "_id": "d1ma6uzxQdFTXKD9",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.buffs.Item.kG8EriOOSJmDmYZd" },
+            "folder": "abSp08elNrsecBYc",
+            "name": "Barkskin",
+            "system": {
+              "changes": {
+                "zjfo24qt": {
+                  "_id": "zjfo24qt",
+                  "formula": "clamp(2 + floor((@item.level - 3) / 3), 2, 5)",
+                  "target": "nac",
+                  "type": "enh"
+                }
+              },
+              "duration": { "end": "initiative", "units": "minute", "value": "@item.level * 10" },
+              "level": 6,
+              "sources": [{ "id": "PZO1110", "pages": "246" }],
+              "subType": "spell",
+              "active": true
+            },
+            "type": "buff",
+            "effects": [],
+            "flags": {},
+            "_id": "NtnRR2tmlv3syFDF",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.buffs.Item.qmHamauveVs3q6F0" },
+            "folder": "abSp08elNrsecBYc",
+            "name": "Longstrider",
+            "system": {
+              "changes": {
+                "jy6dc40n": {
+                  "_id": "jy6dc40n",
+                  "formula": "10",
+                  "target": "landSpeed",
+                  "type": "enh"
+                }
+              },
+              "duration": { "end": "initiative", "units": "hour", "value": "@item.level" },
+              "level": 6,
+              "sources": [{ "id": "PZO1110", "pages": "305" }],
+              "subType": "spell",
+              "active": true
+            },
+            "type": "buff",
+            "effects": [],
+            "flags": {},
+            "_id": "dfZXz8Q5mTdzo8JZ",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.buffs.Item.1W9YmqCqawLmMXmf" },
+            "folder": "abSp08elNrsecBYc",
+            "name": "Owl's Wisdom",
+            "system": {
+              "changes": {
+                "o943eq2i": { "_id": "o943eq2i", "formula": "4", "target": "wis", "type": "enh" }
+              },
+              "duration": { "end": "initiative", "units": "minute", "value": "@item.level" },
+              "level": 6,
+              "sources": [{ "id": "PZO1110", "pages": "318" }],
+              "subType": "spell",
+              "active": true
+            },
+            "type": "buff",
+            "effects": [],
+            "flags": {},
+            "_id": "HNjEEt5NUnfEzNR7",
+            "sort": 0
+          }
+        ],
+        "effects": [],
+        "sort": 0,
+        "flags": {}
+      },
+      "derived": {
+        "abilities": {
+          "str": { "total": 14, "mod": 2 },
+          "dex": { "total": 12, "mod": 1 },
+          "con": { "total": 14, "mod": 2 },
+          "int": { "total": 10, "mod": 0 },
+          "wis": { "total": 22, "mod": 6 },
+          "cha": { "total": 8, "mod": -1 }
+        },
+        "ac": { "normal": 19, "touch": 11, "flatFooted": 18 },
+        "cmb": 6,
+        "cmd": { "total": 17, "flatFooted": 16 },
+        "saves": { "fort": 10, "ref": 4, "will": 14 },
+        "init": 1,
+        "bab": 4,
+        "attack": { "melee": 6, "ranged": 5 },
+        "hp": { "max": 51 },
+        "speed": { "land": 30 },
+        "sr": 0,
+        "acp": 4,
+        "skills": {
+          "perception": 15,
+          "knowledge": 0,
+          "knowledge.geography": 0,
+          "knowledge.nobility": 0,
+          "knowledge.local": 0,
+          "knowledge.dungeoneering": 0,
+          "knowledge.religion": 0,
+          "knowledge.nature": 11,
+          "knowledge.arcana": 0,
+          "knowledge.history": 0,
+          "knowledge.planes": 0,
+          "knowledge.engineering": 0,
+          "intimidate": -1,
+          "appraise": 0,
+          "profession": 6,
+          "fly": -3,
+          "disableDevice": -3,
+          "swim": -2,
+          "escapeArtist": -3,
+          "linguistics": 0,
+          "acrobatics": -3,
+          "useMagicDevice": -1,
+          "climb": 7,
+          "sleightOfHand": -3,
+          "handleAnimal": -1,
+          "heal": 6,
+          "spellcraft": 0,
+          "ride": -3,
+          "stealth": -3,
+          "survival": 17,
+          "craft": 0,
+          "disguise": -1,
+          "diplomacy": -1,
+          "senseMotive": -1,
+          "perform": -1,
+          "bluff": -1
+        }
+      }
+    },
+    "conditions": {
+      "actor": {
+        "name": "human-druid-6 [conditions]",
+        "type": "character",
+        "folder": "GuYuyoqdabfe4xZV",
+        "_id": "4uHiy7Ze8l4km8sU",
+        "system": {
+          "abilities": {
+            "str": { "value": 14 },
+            "dex": { "value": 12 },
+            "con": { "value": 14 },
+            "int": { "value": 10 },
+            "wis": { "value": 16 },
+            "cha": { "value": 8 }
+          },
+          "attributes": {
+            "savingThrows": {
+              "fort": { "ability": "con" },
+              "ref": { "ability": "dex" },
+              "will": { "ability": "wis" }
+            },
+            "hp": { "temp": 0, "nonlethal": 0, "offset": 0 },
+            "wounds": { "offset": 0 },
+            "vigor": { "temp": 0, "offset": 0 }
+          },
+          "details": { "notes": {}, "xp": { "value": 0 }, "alignment": "n" },
+          "traits": { "size": "med", "ageCategory": "adult", "stature": "tall" },
+          "currency": {},
+          "altCurrency": {}
+        },
+        "items": [
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.5WivCl3kkGv5iNiz" },
+            "name": "Perception",
+            "system": {
+              "ability": "wis",
+              "identifier": "perception",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.2h6hz5AkTDxKPFxr",
+              "sets": ["adventure"],
+              "rank": 6,
+              "acp": false,
+              "rt": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "Gz0mf1TtQwEbHNsi",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.NbW51ORcxEJnEY8H" },
+            "name": "Climb",
+            "system": {
+              "ability": "str",
+              "acp": true,
+              "identifier": "climb",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.ZAwjVOTwsBpZRgw4",
+              "sets": ["adventure"],
+              "rank": 6,
+              "rt": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "gf3E3M8fiNRseR4C",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.Wz3oclMlbRJiINGi" },
+            "name": "Nature",
+            "system": {
+              "ability": "int",
+              "grouping": "knowledge",
+              "identifier": "nature",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.BWeqgXSZvUQl68vt",
+              "rt": true,
+              "sets": ["adventure"],
+              "rank": 6,
+              "acp": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "gfPA240tGGooW6yK",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.pJeOF9bUvspDzyq9" },
+            "name": "Survival",
+            "system": {
+              "ability": "wis",
+              "identifier": "survival",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.pLdYavy4nssLEoGV",
+              "sets": ["adventure"],
+              "rank": 6,
+              "acp": false,
+              "rt": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "JYtU8xENCJ2mttLA",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.races.Item.e6IaBxKgMxy1yKlr" },
+            "folder": "RWSoA7Fj9yqo0y9U",
+            "name": "Human",
+            "system": {
+              "changes": {
+                "ahb0k14u": {
+                  "_id": "ahb0k14u",
+                  "formula": "@attributes.hd.total",
+                  "target": "bonusSkillRanks",
+                  "type": "untyped"
+                },
+                "ywxkp0hu": {
+                  "_id": "ywxkp0hu",
+                  "formula": "1",
+                  "target": "bonusFeats",
+                  "type": "untyped"
+                },
+                "lmflex01": { "_id": "lmflex01", "formula": "2", "target": "wis", "type": "racial" }
+              },
+              "creatureSubtypes": ["human"],
+              "creatureTypes": ["humanoid"],
+              "languages": ["common"],
+              "size": "med",
+              "sources": [{ "id": "PZO1110", "pages": "27" }],
+              "speeds": { "land": 30 },
+              "tags": [
+                "Core",
+                "Western (Arcadia)",
+                "Eastern (Casmaron)",
+                "Northern (Crown of the World)",
+                "Southern (Garund)"
+              ]
+            },
+            "type": "race",
+            "effects": [],
+            "flags": {},
+            "_id": "vn4zWzUyTG6sS1sy",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.classes.Item.7eZQP0MzeO2svmVF" },
+            "name": "Druid",
+            "system": {
+              "alignment": "Any neutral",
+              "armorProf": ["lgt", "med", "shl", "No Metal Armors"],
+              "bab": "med",
+              "casting": {
+                "ability": "wis",
+                "cantrips": true,
+                "domain": 1,
+                "progression": "high",
+                "spells": "divine",
+                "type": "prepared"
+              },
+              "classSkills": [
+                "artistry",
+                "climb",
+                "craft",
+                "fly",
+                "handleAnimal",
+                "heal",
+                "knowledge.geography",
+                "knowledge.nature",
+                "lore",
+                "perception",
+                "profession",
+                "ride",
+                "spellcraft",
+                "survival",
+                "swim"
+              ],
+              "hd": 8,
+              "level": 6,
+              "links": {
+                "supplements": [
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.wZ40bxNVn95BbLBV" },
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.UJPlPj3RUKLvmKzM" },
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.Yr8dfM2d8JEWoYkr" },
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.utbMg45UlQKSuak9" },
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.exdHrqciehozr5SD" },
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.HL53FUqkS4PZCMIK" },
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.RaFl9SpbAlXqhsDk" },
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.YGxrR8krrZAviojA" },
+                  { "level": 2, "uuid": "Compendium.pf1.class-abilities.Item.5iXq1igb1Cq0qobT" },
+                  { "level": 3, "uuid": "Compendium.pf1.class-abilities.Item.adslhIPLFgIaHBfh" },
+                  { "level": 4, "uuid": "Compendium.pf1.class-abilities.Item.0j7haa7K5O1CJ3ot" },
+                  { "level": 4, "uuid": "Compendium.pf1.class-abilities.Item.sJdBOE9lwz5XAkUi" },
+                  { "level": 9, "uuid": "Compendium.pf1.class-abilities.Item.yzmKDxR63yS5fqlc" },
+                  { "level": 13, "uuid": "Compendium.pf1.class-abilities.Item.MXj2WoyW7vLxiVYw" },
+                  { "level": 15, "uuid": "Compendium.pf1.class-abilities.Item.5JlthJkVGEHPZypG" }
+                ]
+              },
+              "savingThrows": {
+                "fort": { "value": "high" },
+                "ref": { "value": "low" },
+                "will": { "value": "high" }
+              },
+              "skillsPerLevel": 4,
+              "sources": [{ "id": "PZO1110", "pages": "48-54" }],
+              "subType": "base",
+              "tag": "druid",
+              "wealth": "2d6 * 10",
+              "weaponProf": [
+                "Club",
+                "Dagger",
+                "Dart",
+                "Quarterstaff",
+                "Scimitar",
+                "Scythe",
+                "Sickle",
+                "Shortspear",
+                "Sling",
+                "Spear"
+              ],
+              "hp": 33
+            },
+            "type": "class",
+            "effects": [],
+            "folder": null,
+            "flags": {
+              "pf1": {
+                "links": {
+                  "classAssociations": {
+                    "qgEcTmce5DjhiacG": 1,
+                    "D6WhDYqSn52GBOOI": 1,
+                    "qXWKiWc79PEiCAsy": 1,
+                    "CLtdxPXvqyGFKQ2b": 1,
+                    "1yyCUcUU6UbtN3eF": 1,
+                    "vDlI1EgOGp3PH5ZG": 1,
+                    "EUni6e2maUSCLJ7J": 1,
+                    "WeLUyXFgQDLnv0Vz": 1,
+                    "lbjD0b9ojWKfcKXT": 2,
+                    "EPtGEz07PsYBM08K": 3,
+                    "MbJmMPNnAzAAjNjL": 4,
+                    "SmkIeINNo2NRvX4d": 4
+                  }
+                }
+              }
+            },
+            "_id": "wvGMbbg7XCLvjQ0J",
+            "sort": 0
+          },
+          {
+            "name": "Druid",
+            "type": "spellcasting",
+            "system": {
+              "identifier": "druid",
+              "kind": "divine",
+              "class": "druid",
+              "type": "prepared",
+              "scale": "high",
+              "ability": "wis",
+              "asf": { "enabled": false },
+              "cantrips": { "enabled": true },
+              "slots": { "domain": { "formula": 1 }, "auto": true, "ability": { "auto": true } },
+              "cl": { "formula": "" },
+              "casts": {},
+              "preparation": {},
+              "concentration": {},
+              "dc": {},
+              "spellPoints": { "enabled": false, "offset": 0 },
+              "levels": {
+                "0": {},
+                "1": {},
+                "2": {},
+                "3": {},
+                "4": {},
+                "5": {},
+                "6": {},
+                "7": {},
+                "8": {},
+                "9": {}
+              },
+              "restrictions": []
+            },
+            "_id": "NQhYExJ5nziBxGiy",
+            "effects": [],
+            "folder": null,
+            "sort": 0,
+            "flags": {},
+            "_stats": { "compendiumSource": null }
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.wZ40bxNVn95BbLBV"
+            },
+            "name": "Nature Bond",
+            "system": {
+              "abilityType": "ex",
+              "associations": { "classes": ["Druid"] },
+              "sources": [{ "id": "PZO1110", "pages": "50" }],
+              "subType": "classFeat",
+              "class": "druid",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 100000,
+            "_id": "qgEcTmce5DjhiacG",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.UJPlPj3RUKLvmKzM"
+            },
+            "name": "Nature Sense",
+            "system": {
+              "abilityType": "ex",
+              "associations": { "classes": ["Druid"] },
+              "changes": {
+                "02pgkjh1": {
+                  "_id": "02pgkjh1",
+                  "formula": "2",
+                  "target": "skill.survival",
+                  "type": "untyped"
+                },
+                "ghuk6l76": {
+                  "_id": "ghuk6l76",
+                  "formula": "2",
+                  "target": "skill.knowledge.nature",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "50" }],
+              "subType": "classFeat",
+              "class": "druid",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 200000,
+            "_id": "D6WhDYqSn52GBOOI",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.Yr8dfM2d8JEWoYkr"
+            },
+            "name": "Wild Empathy",
+            "system": {
+              "abilityType": "ex",
+              "associations": { "classes": ["Druid", "Hunter", "Ranger", "Shifter"] },
+              "sources": [
+                { "id": "PZO1110", "pages": "50, 64-65" },
+                { "id": "PZO1129", "pages": "28" },
+                { "id": "PZO1140", "pages": "27" }
+              ],
+              "subType": "classFeat",
+              "class": "druid",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 300000,
+            "_id": "qXWKiWc79PEiCAsy",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.exdHrqciehozr5SD"
+            },
+            "name": "Chaotic, Evil, Good, and Lawful Spells",
+            "system": {
+              "associations": { "classes": ["Cleric", "Druid", "Hunter", "Warpriest"] },
+              "sources": [
+                { "id": "PZO1110", "pages": "41, 49" },
+                { "id": "PZO1129", "pages": "26, 60" }
+              ],
+              "subType": "classFeat",
+              "class": "druid",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 500000,
+            "_id": "CLtdxPXvqyGFKQ2b",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.HL53FUqkS4PZCMIK"
+            },
+            "name": "Bonus Languages (DRU)",
+            "system": {
+              "associations": { "classes": ["Druid"] },
+              "languages": ["druidic"],
+              "sources": [{ "id": "PZO1110", "pages": "50" }],
+              "subType": "classFeat",
+              "class": "druid",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 600000,
+            "_id": "1yyCUcUU6UbtN3eF",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.RaFl9SpbAlXqhsDk"
+            },
+            "name": "Orisons",
+            "system": {
+              "associations": {
+                "classes": ["Cleric", "Druid", "Inquisitor", "Oracle", "Shaman", "Warpriest"]
+              },
+              "sources": [
+                { "id": "PZO1110", "pages": "38, 48" },
+                { "id": "PZO1115", "pages": "38, 42" },
+                { "id": "PZO1129", "pages": "35, 60" }
+              ],
+              "subType": "classFeat",
+              "class": "druid",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 700000,
+            "_id": "vDlI1EgOGp3PH5ZG",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.YGxrR8krrZAviojA"
+            },
+            "name": "Druid Spells",
+            "system": {
+              "associations": { "classes": ["Druid"] },
+              "sources": [{ "id": "PZO1110", "pages": "49" }],
+              "subType": "classFeat",
+              "class": "druid",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 800000,
+            "_id": "EUni6e2maUSCLJ7J",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.utbMg45UlQKSuak9"
+            },
+            "name": "Spontaneous Casting (DRU)",
+            "system": {
+              "associations": { "classes": ["Druid"] },
+              "sources": [{ "id": "PZO1110", "pages": "49" }],
+              "subType": "classFeat",
+              "class": "druid",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 400000,
+            "_id": "WeLUyXFgQDLnv0Vz",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.5iXq1igb1Cq0qobT"
+            },
+            "name": "Woodland Stride",
+            "system": {
+              "abilityType": "ex",
+              "associations": {
+                "classes": ["Druid", "Hunter", "Oracle", "Ranger", "Shifter", "Slayer", "Sorcerer"]
+              },
+              "sources": [
+                { "id": "PZO1110", "pages": "51, 66-67, 76" },
+                { "id": "PZO1129", "pages": "29" },
+                { "id": "PZO1140", "pages": "27" }
+              ],
+              "subType": "classFeat",
+              "tags": [
+                "Wood Mystery",
+                "Slayer Talent, Advanced",
+                "Bloodline Power",
+                "Fey Bloodline"
+              ],
+              "class": "druid",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 900000,
+            "_id": "lbjD0b9ojWKfcKXT",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.adslhIPLFgIaHBfh"
+            },
+            "name": "Trackless Step",
+            "system": {
+              "abilityType": "ex",
+              "associations": { "classes": ["Druid", "Shifter"] },
+              "sources": [
+                { "id": "PZO1110", "pages": "51" },
+                { "id": "PZO1140", "pages": "28" }
+              ],
+              "subType": "classFeat",
+              "class": "druid",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 1000000,
+            "_id": "EPtGEz07PsYBM08K",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.0j7haa7K5O1CJ3ot"
+            },
+            "name": "Resist Nature's Lure",
+            "system": {
+              "abilityType": "ex",
+              "associations": { "classes": ["Druid"] },
+              "contextNotes": {
+                "m7Ei1oAqdyHRfUvv": {
+                  "target": "allSavingThrows",
+                  "text": "+4 bonus against the spell-like and supernatural abilities of fey or spells that target plants."
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "51" }],
+              "subType": "classFeat",
+              "class": "druid",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 1100000,
+            "_id": "MbJmMPNnAzAAjNjL",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.sJdBOE9lwz5XAkUi"
+            },
+            "name": "Wild Shape",
+            "system": {
+              "abilityType": "su",
+              "actions": {
+                "t1lo0qlokxp4kze3": {
+                  "_id": "t1lo0qlokxp4kze3",
+                  "activation": {
+                    "type": "standard",
+                    "unchained": { "cost": 2, "type": "action" }
+                  },
+                  "duration": { "units": "hour", "value": "@attributes.hd.total" },
+                  "name": "Use",
+                  "range": { "units": "personal" },
+                  "sort": 0,
+                  "target": { "value": "Self" }
+                }
+              },
+              "associations": { "classes": ["Druid"] },
+              "sources": [{ "id": "PZO1110", "pages": "51" }],
+              "subType": "classFeat",
+              "tag": "wildShape",
+              "uses": { "maxFormula": "min(floor((@class.unlevel - 2) / 2), 8)", "per": "day" },
+              "class": "druid",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 1200000,
+            "_id": "SmkIeINNo2NRvX4d",
+            "folder": null
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.8snLqsJN4LLL00Nq" },
+            "name": "Toughness",
+            "system": {
+              "changes": {
+                "bl5pemy2": {
+                  "_id": "bl5pemy2",
+                  "formula": "max(3, @attributes.hd.total)",
+                  "target": "mhp",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "116, 135" }],
+              "subType": "feat",
+              "tags": ["General", "Defensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "ZQ8DBmQYzhViwnx4",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.iAbIGhm7T2OK9Brt" },
+            "name": "Iron Will",
+            "system": {
+              "changes": {
+                "vafl2kz4": {
+                  "_id": "vafl2kz4",
+                  "formula": "2",
+                  "target": "will",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "115, 129" }],
+              "subType": "feat",
+              "tags": ["General", "Saving Throw"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "Mb2lt4Auj0nHOri3",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.fVRnBIHR4Jq6btvm" },
+            "name": "Great Fortitude",
+            "system": {
+              "changes": {
+                "0rubibb4": {
+                  "_id": "0rubibb4",
+                  "formula": "2",
+                  "target": "fort",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "115, 124" }],
+              "subType": "feat",
+              "tags": ["General", "Saving Throw", "Defensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "TsKDj3ohTWN76PRo",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.JUBqOpBA3agQwNvu" },
+            "name": "Natural Spell",
+            "system": {
+              "sources": [{ "id": "PZO1110", "pages": "115, 131" }],
+              "subType": "feat",
+              "tags": ["General", "Magic"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "vu9mSwPslPgdy0TM",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.armors-and-shields.Item.aI6gSI7gnCLCucw0"
+            },
+            "folder": "33jGfHlDL34jvwnX",
+            "name": "Hide Armor",
+            "system": {
+              "armor": {
+                "acp": 3,
+                "dex": 4,
+                "material": { "base": { "value": "leather" }, "addon": [] },
+                "value": 4,
+                "alignments": {}
+              },
+              "baseTypes": ["Hide Armor"],
+              "equipmentSubtype": "mediumArmor",
+              "equipped": true,
+              "hardness": 2,
+              "hp": { "base": 20 },
+              "price": { "base": 15, "unit": "gp" },
+              "quantity": 1,
+              "slot": "armor",
+              "sources": [{ "id": "PZO1110", "pages": "151" }],
+              "spellFailure": 20,
+              "subType": "armor",
+              "weight": { "value": 25 },
+              "mods": {}
+            },
+            "type": "equipment",
+            "effects": [],
+            "flags": {},
+            "_id": "N667TC7tVCMCcVgH",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.armors-and-shields.Item.l1qNkx4xGXelq6yY"
+            },
+            "folder": "DtVJVwL87ELQxk7u",
+            "name": "Light Wooden Shield",
+            "system": {
+              "actions": {
+                "ssnk6JSRh4Vo04Z9": {
+                  "_id": "ssnk6JSRh4Vo04Z9",
+                  "ability": { "attack": "str", "critMult": 2, "critRange": 20, "damage": "str" },
+                  "actionType": "mwak",
+                  "activation": { "type": "attack", "unchained": { "type": "attack" } },
+                  "damage": {
+                    "parts": [{ "formula": "sizeRoll(1, 3, @size)", "types": ["bludgeoning"] }]
+                  },
+                  "duration": { "units": "inst" },
+                  "extraAttacks": { "type": "standard" },
+                  "name": "Bash",
+                  "range": { "units": "melee" },
+                  "sort": 0
+                }
+              },
+              "armor": {
+                "acp": 1,
+                "material": { "base": { "value": "wood" }, "addon": [] },
+                "value": 1,
+                "alignments": {}
+              },
+              "equipmentSubtype": "lightShield",
+              "equipped": true,
+              "hardness": 5,
+              "hp": { "base": 7 },
+              "price": { "base": 3, "unit": "gp" },
+              "quantity": 1,
+              "slot": "shield",
+              "sources": [{ "id": "PZO1110", "pages": "142, 148, 151, 152" }],
+              "spellFailure": 5,
+              "subType": "shield",
+              "weight": { "value": 5 },
+              "mods": {}
+            },
+            "type": "equipment",
+            "effects": [],
+            "flags": {},
+            "_id": "oozzxObZsCh17lhm",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.items.Item.MrxwYWWezbJTZLog" },
+            "folder": "TQir6rREbQbhFUtK",
+            "name": "Cloak of Resistance +1",
+            "system": {
+              "armor": {
+                "material": {
+                  "base": { "value": "leather" },
+                  "normal": { "value": "leather" },
+                  "addon": []
+                },
+                "alignments": {}
+              },
+              "aura": { "school": "abj" },
+              "changes": {
+                "7okw4xq4": {
+                  "_id": "7okw4xq4",
+                  "formula": "1",
+                  "target": "allSavingThrows",
+                  "type": "resist"
+                }
+              },
+              "cl": 5,
+              "creation": {
+                "cost": { "unit": "gp", "value": 500 },
+                "description": "<p>@UUID[Compendium.pf1.feats.Item.tD76K8QGco9scT0r]{Craft Wondrous Item}, @UUID[Compendium.pf1.spells.Item.g8j278xcu2s1zlwy]{resistance}, creator's caster level must be at least three times the cloak's bonus</p>"
+              },
+              "equipmentSubtype": "lightArmor",
+              "equipped": true,
+              "hp": { "base": 10 },
+              "price": { "base": 1000, "unit": "gp" },
+              "quantity": 1,
+              "resizing": true,
+              "slot": "shoulders",
+              "sources": [
+                { "id": "PZO1123", "pages": "264" },
+                { "id": "PZO1110", "pages": "507" }
+              ],
+              "subType": "wondrous",
+              "unidentified": { "name": "Cloak", "price": { "base": 0, "unit": "gp" } },
+              "weight": { "value": 1 },
+              "mods": {}
+            },
+            "type": "equipment",
+            "effects": [],
+            "flags": {},
+            "_id": "HGN6t0p8PaNmwPRg",
+            "sort": 0
+          }
+        ],
+        "effects": [
+          {
+            "name": "Fatigued",
+            "img": "icons/svg/unconscious.svg",
+            "statuses": ["fatigued"],
+            "showIcon": 2,
+            "_id": "ZLGtIXkUQTyGd8vc",
+            "type": "base",
+            "system": { "changes": [] },
+            "disabled": false,
+            "start": {
+              "time": 0,
+              "combat": null,
+              "combatant": null,
+              "initiative": null,
+              "round": null,
+              "turn": null
+            },
+            "duration": { "value": null, "units": "seconds", "expiry": null, "expired": false },
+            "description": "",
+            "origin": null,
+            "tint": "#ffffff",
+            "transfer": false,
+            "folder": null,
+            "sort": 0,
+            "flags": { "pf1": { "autoDelete": true } },
+            "_stats": {
+              "coreVersion": "14.370",
+              "systemId": "pf1",
+              "systemVersion": "11.11",
+              "createdTime": 1795403170144,
+              "modifiedTime": 1795403170144,
+              "lastModifiedBy": "jnrEqpgUjbAxjuLp",
+              "compendiumSource": null,
+              "duplicateSource": null,
+              "exportSource": null
+            }
+          }
+        ],
+        "sort": 0,
+        "flags": {}
+      },
+      "derived": {
+        "abilities": {
+          "str": { "total": 14, "mod": 1 },
+          "dex": { "total": 12, "mod": 0 },
+          "con": { "total": 14, "mod": 2 },
+          "int": { "total": 10, "mod": 0 },
+          "wis": { "total": 18, "mod": 4 },
+          "cha": { "total": 8, "mod": -1 }
+        },
+        "ac": { "normal": 15, "touch": 10, "flatFooted": 15 },
+        "cmb": 5,
+        "cmd": { "total": 15, "flatFooted": 15 },
+        "saves": { "fort": 10, "ref": 3, "will": 12 },
+        "init": 0,
+        "bab": 4,
+        "attack": { "melee": 5, "ranged": 4 },
+        "hp": { "max": 51 },
+        "speed": { "land": 20 },
+        "sr": 0,
+        "acp": 4,
+        "skills": {
+          "perception": 13,
+          "knowledge": 0,
+          "knowledge.geography": 0,
+          "knowledge.nobility": 0,
+          "knowledge.local": 0,
+          "knowledge.dungeoneering": 0,
+          "knowledge.religion": 0,
+          "knowledge.nature": 11,
+          "knowledge.arcana": 0,
+          "knowledge.history": 0,
+          "knowledge.planes": 0,
+          "knowledge.engineering": 0,
+          "intimidate": -1,
+          "appraise": 0,
+          "profession": 4,
+          "fly": -4,
+          "disableDevice": -4,
+          "swim": -3,
+          "escapeArtist": -4,
+          "linguistics": 0,
+          "acrobatics": -4,
+          "useMagicDevice": -1,
+          "climb": 6,
+          "sleightOfHand": -4,
+          "handleAnimal": -1,
+          "heal": 4,
+          "spellcraft": 0,
+          "ride": -4,
+          "stealth": -4,
+          "survival": 15,
+          "craft": 0,
+          "disguise": -1,
+          "diplomacy": -1,
+          "senseMotive": -1,
+          "perform": -1,
+          "bluff": -1
+        }
+      }
+    }
+  }
+}

@@ -58,6 +58,8 @@ const APPLIED_TARGETS = new Set<string>([
   "tempHp",
   // whole-skills bonus (computeSkills globalSkillMods)
   "skills",
+  // skills keyed to one ability (computeSkills abilitySkillMods)
+  ...ABILITY_IDS.map((ab) => `${ab}Skills`),
   // general/melee/ranged attack + damage
   "attack",
   "mattack",
@@ -181,12 +183,6 @@ export const UNAPPLIED_TARGET_LABELS: Record<string, string> = {
   intChecks: "Int-based ability checks",
   wisChecks: "Wis-based ability checks",
   chaChecks: "Cha-based ability checks",
-  strSkills: "Str-based skill checks",
-  dexSkills: "Dex-based skill checks",
-  conSkills: "Con-based skill checks",
-  intSkills: "Int-based skill checks",
-  wisSkills: "Wis-based skill checks",
-  chaSkills: "Cha-based skill checks",
   strPen: "Strength penalties",
   dexPen: "Dexterity penalties",
   conPen: "Constitution penalties",

@@ -1,0 +1,2925 @@
+{
+  "foundry": { "core": "14.370", "system": "11.11" },
+  "spec": {
+    "id": "human-fighter-12",
+    "race": "Human",
+    "flexibleAbility": "str",
+    "alignment": "ln",
+    "abilities": { "str": 16, "dex": 14, "con": 14, "int": 10, "wis": 12, "cha": 8 },
+    "classes": [{ "name": "Fighter", "level": 12, "hp": 76 }],
+    "feats": [
+      "Power Attack",
+      "Toughness",
+      "Iron Will",
+      "Lightning Reflexes",
+      "Great Fortitude",
+      "Improved Initiative",
+      "Endurance",
+      "Dodge",
+      "Mobility",
+      "Spring Attack",
+      "Cleave",
+      "Great Cleave",
+      "Blind-Fight",
+      "Combat Reflexes"
+    ],
+    "skills": { "climb": 6, "intimidate": 6, "perception": 6, "swim": 6 },
+    "items": [
+      {
+        "pack": "pf1.armors-and-shields",
+        "name": "Full Plate",
+        "equipped": true,
+        "enh": 2,
+        "material": { "id": "mithral", "maxDex": 3, "acp": 3, "spellFailure": 25 }
+      },
+      { "pack": "pf1.armors-and-shields", "name": "Heavy Steel Shield", "equipped": true },
+      { "pack": "pf1.items", "name": "Belt of Giant Strength +2", "equipped": true },
+      { "pack": "pf1.items", "name": "Cloak of Resistance +1", "equipped": true }
+    ],
+    "scenarios": {
+      "base": {},
+      "haste": { "buffs": [{ "name": "Haste", "level": 12 }] },
+      "enlarged": { "buffs": [{ "name": "Enlarge Person", "level": 12 }] }
+    }
+  },
+  "scenarios": {
+    "base": {
+      "actor": {
+        "name": "human-fighter-12 [base]",
+        "type": "character",
+        "folder": "GuYuyoqdabfe4xZV",
+        "_id": "ANeP0Z6sDSRb1sZd",
+        "system": {
+          "abilities": {
+            "str": { "value": 16 },
+            "dex": { "value": 14 },
+            "con": { "value": 14 },
+            "int": { "value": 10 },
+            "wis": { "value": 12 },
+            "cha": { "value": 8 }
+          },
+          "attributes": {
+            "savingThrows": {
+              "fort": { "ability": "con" },
+              "ref": { "ability": "dex" },
+              "will": { "ability": "wis" }
+            },
+            "hp": { "temp": 0, "nonlethal": 0, "offset": 0 },
+            "wounds": { "offset": 0 },
+            "vigor": { "temp": 0, "offset": 0 }
+          },
+          "details": { "notes": {}, "xp": { "value": 0 }, "alignment": "ln" },
+          "traits": { "size": "med", "ageCategory": "adult", "stature": "tall" },
+          "currency": {},
+          "altCurrency": {}
+        },
+        "items": [
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.5WivCl3kkGv5iNiz" },
+            "name": "Perception",
+            "system": {
+              "ability": "wis",
+              "identifier": "perception",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.2h6hz5AkTDxKPFxr",
+              "sets": ["adventure"],
+              "rank": 6,
+              "acp": false,
+              "rt": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "HtTbRwvtpGnZBecq",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.6cOI6UozWx1PeOnr" },
+            "name": "Intimidate",
+            "system": {
+              "ability": "cha",
+              "identifier": "intimidate",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.KNn8uxHu23phKC0y",
+              "sets": ["adventure"],
+              "rank": 6,
+              "acp": false,
+              "rt": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "yqjE4cQLycLTiWXC",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.AihuO12FpILo3RXh" },
+            "name": "Swim",
+            "system": {
+              "ability": "str",
+              "acp": true,
+              "identifier": "swim",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.xhmDhOXuBbfVcD0Q",
+              "sets": ["adventure"],
+              "rank": 6,
+              "rt": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "kDS8k6n2b5IMPKxf",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.NbW51ORcxEJnEY8H" },
+            "name": "Climb",
+            "system": {
+              "ability": "str",
+              "acp": true,
+              "identifier": "climb",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.ZAwjVOTwsBpZRgw4",
+              "sets": ["adventure"],
+              "rank": 6,
+              "rt": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "EXwxgIl2nWDaeB5Y",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.races.Item.e6IaBxKgMxy1yKlr" },
+            "folder": "RWSoA7Fj9yqo0y9U",
+            "name": "Human",
+            "system": {
+              "changes": {
+                "ahb0k14u": {
+                  "_id": "ahb0k14u",
+                  "formula": "@attributes.hd.total",
+                  "target": "bonusSkillRanks",
+                  "type": "untyped"
+                },
+                "ywxkp0hu": {
+                  "_id": "ywxkp0hu",
+                  "formula": "1",
+                  "target": "bonusFeats",
+                  "type": "untyped"
+                },
+                "lmflex01": { "_id": "lmflex01", "formula": "2", "target": "str", "type": "racial" }
+              },
+              "creatureSubtypes": ["human"],
+              "creatureTypes": ["humanoid"],
+              "languages": ["common"],
+              "size": "med",
+              "sources": [{ "id": "PZO1110", "pages": "27" }],
+              "speeds": { "land": 30 },
+              "tags": [
+                "Core",
+                "Western (Arcadia)",
+                "Eastern (Casmaron)",
+                "Northern (Crown of the World)",
+                "Southern (Garund)"
+              ]
+            },
+            "type": "race",
+            "effects": [],
+            "flags": {},
+            "_id": "iTEDWpyvZMxz8je7",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.classes.Item.WLqBCT5DqmGAx8Wd" },
+            "name": "Fighter",
+            "system": {
+              "armorProf": ["lgt", "med", "hvy", "shl", "twr"],
+              "bab": "high",
+              "classSkills": [
+                "artistry",
+                "climb",
+                "craft",
+                "handleAnimal",
+                "intimidate",
+                "knowledge.dungeoneering",
+                "knowledge.engineering",
+                "lore",
+                "profession",
+                "ride",
+                "survival",
+                "swim"
+              ],
+              "hd": 10,
+              "hp": 76,
+              "level": 12,
+              "links": {
+                "supplements": [
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.CV8BsY3ciUb9TA1Y" },
+                  { "level": 2, "uuid": "Compendium.pf1.class-abilities.Item.h0Brxw6khcjlEf1T" },
+                  { "level": 3, "uuid": "Compendium.pf1.class-abilities.Item.5JFfSqLMCpbRmERa" },
+                  { "level": 5, "uuid": "Compendium.pf1.class-abilities.Item.RzEzudurxQFirFoF" },
+                  { "level": 7, "uuid": "Compendium.pf1.class-abilities.Item.iqeyCQIIVnNt0p3h" },
+                  { "level": 20, "uuid": "Compendium.pf1.class-abilities.Item.McXAM1BoPHZLO1n4" }
+                ]
+              },
+              "savingThrows": {
+                "fort": { "value": "high" },
+                "ref": { "value": "low" },
+                "will": { "value": "low" }
+              },
+              "skillsPerLevel": 2,
+              "sources": [{ "id": "PZO1110", "pages": "55-56" }],
+              "subType": "base",
+              "tag": "fighter",
+              "wealth": "5d6 * 10",
+              "weaponProf": ["simple", "martial"]
+            },
+            "type": "class",
+            "effects": [],
+            "folder": null,
+            "flags": {
+              "pf1": {
+                "links": {
+                  "classAssociations": {
+                    "hgGfF81moVXJxTew": 1,
+                    "u6axT84Sw3Wm9m6B": 2,
+                    "AZPadAaQZm1pfIhA": 3,
+                    "eCJDua2y4I5HZiG3": 5,
+                    "thMDJ1A7azVxo8RR": 7
+                  }
+                }
+              }
+            },
+            "_id": "LNSkm9GLW4uiFihA",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.CV8BsY3ciUb9TA1Y"
+            },
+            "name": "Bonus Feats (FGT)",
+            "system": {
+              "associations": { "classes": ["Fighter"] },
+              "changes": {
+                "yoxm5fp1": {
+                  "_id": "yoxm5fp1",
+                  "formula": "1 + floor(@class.unlevel / 2)",
+                  "target": "bonusFeats",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "55" }],
+              "subType": "classFeat",
+              "class": "fighter",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 100000,
+            "_id": "hgGfF81moVXJxTew",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.h0Brxw6khcjlEf1T"
+            },
+            "name": "Bravery",
+            "system": {
+              "abilityType": "ex",
+              "associations": { "classes": ["Fighter"] },
+              "contextNotes": {
+                "8o852MvQnKASJDU4": {
+                  "target": "will",
+                  "text": "+[[floor((@class.level + 2) / 4)]] vs fear effects"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "55" }],
+              "subType": "classFeat",
+              "class": "fighter",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 200000,
+            "_id": "u6axT84Sw3Wm9m6B",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.5JFfSqLMCpbRmERa"
+            },
+            "name": "Armor Training",
+            "system": {
+              "abilityType": "ex",
+              "associations": { "classes": ["Fighter"] },
+              "changeFlags": ["mediumArmorFullSpeed"],
+              "changes": {
+                "e0zzcqzk": {
+                  "_id": "e0zzcqzk",
+                  "formula": "clamp(floor((@class.unlevel + 1) / 4), 0, 4)",
+                  "target": "mDexA",
+                  "type": "untyped"
+                },
+                "pv0gclyb": {
+                  "_id": "pv0gclyb",
+                  "formula": "-clamp(floor((@class.unlevel + 1) / 4), 0, 4)",
+                  "target": "acpA",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "55-56" }],
+              "subType": "classFeat",
+              "class": "fighter",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 300000,
+            "_id": "AZPadAaQZm1pfIhA",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.RzEzudurxQFirFoF"
+            },
+            "name": "Weapon Training",
+            "system": {
+              "abilityType": "ex",
+              "associations": { "classes": ["Fighter"] },
+              "sources": [{ "id": "PZO1110", "pages": "56" }],
+              "subType": "classFeat",
+              "class": "fighter",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 400000,
+            "_id": "eCJDua2y4I5HZiG3",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.iqeyCQIIVnNt0p3h"
+            },
+            "name": "Armor Training (Heavy Armor)",
+            "system": {
+              "abilityType": "ex",
+              "associations": { "classes": ["Fighter"] },
+              "changeFlags": ["heavyArmorFullSpeed"],
+              "sources": [{ "id": "PZO1110", "pages": "56" }],
+              "subType": "classFeat",
+              "class": "fighter",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 500000,
+            "_id": "thMDJ1A7azVxo8RR",
+            "folder": null
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.8snLqsJN4LLL00Nq" },
+            "name": "Toughness",
+            "system": {
+              "changes": {
+                "bl5pemy2": {
+                  "_id": "bl5pemy2",
+                  "formula": "max(3, @attributes.hd.total)",
+                  "target": "mhp",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "116, 135" }],
+              "subType": "feat",
+              "tags": ["General", "Defensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "TfluTId2ogkFNZHu",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.FUW5mIXHNBBIQ1Sq" },
+            "name": "Power Attack",
+            "system": {
+              "changeFlags": ["powerAttack"],
+              "sources": [{ "id": "PZO1110", "pages": "116, 131" }],
+              "subType": "feat",
+              "tags": ["Combat", "Offensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "hjK2oH7xA4hh4eAv",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.iAbIGhm7T2OK9Brt" },
+            "name": "Iron Will",
+            "system": {
+              "changes": {
+                "vafl2kz4": {
+                  "_id": "vafl2kz4",
+                  "formula": "2",
+                  "target": "will",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "115, 129" }],
+              "subType": "feat",
+              "tags": ["General", "Saving Throw"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "DWrRP877Hhas4btI",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.0bZf3SDkvVOe2ujH" },
+            "name": "Lightning Reflexes",
+            "system": {
+              "changes": {
+                "ni86uxwa": {
+                  "_id": "ni86uxwa",
+                  "formula": "2",
+                  "target": "ref",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "115, 130" }],
+              "subType": "feat",
+              "tags": ["General", "Saving Throw"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "EflFQaljALFb5z63",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.fVRnBIHR4Jq6btvm" },
+            "name": "Great Fortitude",
+            "system": {
+              "changes": {
+                "0rubibb4": {
+                  "_id": "0rubibb4",
+                  "formula": "2",
+                  "target": "fort",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "115, 124" }],
+              "subType": "feat",
+              "tags": ["General", "Saving Throw", "Defensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "Vak9OHn58SdqGY9l",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.Uuiu3p982omhMEPj" },
+            "name": "Improved Initiative",
+            "system": {
+              "changes": {
+                "ign7okhi": {
+                  "_id": "ign7okhi",
+                  "formula": "4",
+                  "target": "init",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "115, 127" }],
+              "subType": "feat",
+              "tags": ["Combat"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "bzwFzHs8k1ktEfuW",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.ehqx8txNRGMaNOPt" },
+            "name": "Endurance",
+            "system": {
+              "sources": [{ "id": "PZO1110", "pages": "115, 122" }],
+              "subType": "feat",
+              "tags": ["General"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "6CffzCIwgKHcnwUB",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.R7L4SlGRlnThqFrP" },
+            "name": "Mobility",
+            "system": {
+              "sources": [{ "id": "PZO1110", "pages": "114, 130" }],
+              "subType": "feat",
+              "tags": ["Combat", "Movement", "Defensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "XzdDPk3Zmvx3V4Af",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.JreaiTHdyWFNj3Tb" },
+            "name": "Dodge",
+            "system": {
+              "changes": {
+                "9onhsept": { "_id": "9onhsept", "formula": "1", "target": "ac", "type": "dodge" }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "114, 122" }],
+              "subType": "feat",
+              "tags": ["Combat", "Defensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "pK0IJxbAQeVo7CgC",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.Zeq6RWYv5otvg8q7" },
+            "name": "Cleave",
+            "system": {
+              "actions": {
+                "YKPDCAoDrghiYAzi": {
+                  "_id": "YKPDCAoDrghiYAzi",
+                  "activation": {
+                    "type": "standard",
+                    "unchained": { "cost": 2, "type": "action" }
+                  },
+                  "name": "Use",
+                  "notes": {
+                    "effect": ["[[-2]] penalty to your Armor Class until your next turn."]
+                  },
+                  "sort": 0
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "116, 119" }],
+              "subType": "feat",
+              "tags": ["Combat", "Combat Trick"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "FYfPqU8vKzBp9Yzp",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.6HSMdwX1VS6nZ6Zf" },
+            "name": "Great Cleave",
+            "system": {
+              "actions": {
+                "9qJAoXcYkvy8E6Mf": {
+                  "_id": "9qJAoXcYkvy8E6Mf",
+                  "activation": {
+                    "type": "standard",
+                    "unchained": { "cost": 2, "type": "action" }
+                  },
+                  "name": "Use",
+                  "notes": {
+                    "effect": ["[[-2]] penalty to your Armor Class until your next turn."]
+                  },
+                  "sort": 0
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "116, 124" }],
+              "subType": "feat",
+              "tags": ["Combat", "Offensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "eWBgY0H1s75PXpwv",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.ugQyUpqPBDsqLyra" },
+            "name": "Spring Attack",
+            "system": {
+              "actions": {
+                "9ilekjpdPWfwe7eo": {
+                  "_id": "9ilekjpdPWfwe7eo",
+                  "activation": { "type": "full", "unchained": { "cost": 3, "type": "action" } },
+                  "duration": { "units": "inst" },
+                  "name": "Use",
+                  "range": { "units": "seeText" },
+                  "sort": 0,
+                  "target": { "value": "One Target" }
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "114, 134" }],
+              "subType": "feat",
+              "tags": ["Combat", "Offensive", "Movement"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "z3UEq2AAAXzsK8na",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.pmAO1Sni8xx71pLF" },
+            "name": "Blind-Fight",
+            "system": {
+              "contextNotes": {
+                "ovA4iSc5VuvC7QRw": {
+                  "target": "attack",
+                  "text": "Reroll miss chances for concealment"
+                },
+                "vEJy1tBUxNerNBqH": {
+                  "target": "ac",
+                  "text": "Invisible attacker gets no advantages related to hitting you in melee"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "114, 118" }],
+              "subType": "feat",
+              "tags": ["Combat", "Combat Trick"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "xBrsN2rdRB7OrfQB",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.h9nHYLxXvIXBTmup" },
+            "name": "Combat Reflexes",
+            "system": {
+              "actions": {
+                "kzof1vn44xdata40": {
+                  "_id": "kzof1vn44xdata40",
+                  "activation": { "type": "passive", "unchained": { "type": "passive" } },
+                  "img": "systems/pf1/icons/feats/combat-reflexes.jpg",
+                  "name": "Use",
+                  "sort": 0
+                }
+              },
+              "contextNotes": {
+                "HcSjLnpsyXGSEHAb": {
+                  "target": "attack",
+                  "text": "[[@item.uses.value]] AoO available."
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "114, 119-120" }],
+              "subType": "feat",
+              "tag": "combatReflexes",
+              "tags": ["Combat", "Combat Trick"],
+              "uses": {
+                "maxFormula": "1 + max(0, @abilities.dex.mod)",
+                "per": "round",
+                "value": 0
+              },
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "VInW6BdPsXJ146Mv",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.armors-and-shields.Item.h65qEp22nsyRoeRa"
+            },
+            "folder": "cTxChlqZ2nSmuKP5",
+            "name": "Full Plate",
+            "system": {
+              "armor": {
+                "acp": 3,
+                "dex": 3,
+                "material": { "base": { "value": "mithral" }, "addon": [] },
+                "value": 9,
+                "enh": 2,
+                "alignments": {}
+              },
+              "baseTypes": ["Full Plate"],
+              "equipmentSubtype": "heavyArmor",
+              "equipped": true,
+              "hardness": 10,
+              "hp": { "base": 45 },
+              "price": { "base": 1500, "unit": "gp" },
+              "quantity": 1,
+              "slot": "armor",
+              "sources": [{ "id": "PZO1110", "pages": "150, 151" }],
+              "spellFailure": 25,
+              "subType": "armor",
+              "weight": { "value": 50 },
+              "mods": {}
+            },
+            "type": "equipment",
+            "effects": [],
+            "flags": {},
+            "_id": "ouoqqEEvVCN95wyM",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.armors-and-shields.Item.2fK608aSYU9QDmzw"
+            },
+            "folder": "DtVJVwL87ELQxk7u",
+            "name": "Heavy Steel Shield",
+            "system": {
+              "actions": {
+                "6JirvCBGQLj1EafK": {
+                  "_id": "6JirvCBGQLj1EafK",
+                  "ability": { "attack": "str", "critMult": 2, "critRange": 20, "damage": "str" },
+                  "actionType": "mwak",
+                  "activation": { "type": "attack", "unchained": { "type": "attack" } },
+                  "damage": {
+                    "parts": [{ "formula": "sizeRoll(1, 4, @size)", "types": ["bludgeoning"] }]
+                  },
+                  "duration": { "units": "inst" },
+                  "extraAttacks": { "type": "standard" },
+                  "name": "Bash",
+                  "range": { "units": "melee" },
+                  "sort": 0
+                }
+              },
+              "armor": {
+                "acp": 2,
+                "material": { "base": { "value": "steel" }, "addon": [] },
+                "value": 2,
+                "alignments": {}
+              },
+              "equipmentSubtype": "heavyShield",
+              "equipped": true,
+              "hardness": 10,
+              "hp": { "base": 20 },
+              "price": { "base": 20, "unit": "gp" },
+              "quantity": 1,
+              "slot": "shield",
+              "sources": [{ "id": "PZO1110", "pages": "142, 148, 151-152" }],
+              "spellFailure": 15,
+              "subType": "shield",
+              "weight": { "value": 15 },
+              "mods": {}
+            },
+            "type": "equipment",
+            "effects": [],
+            "flags": {},
+            "_id": "FFzS3j9nCLWvG36e",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.items.Item.eIxzoEGDNZXWgnKk" },
+            "folder": "qhnlPkeZecr9UJfi",
+            "name": "Belt of Giant Strength +2",
+            "system": {
+              "armor": {
+                "material": {
+                  "base": { "value": "leather" },
+                  "normal": { "value": "leather" },
+                  "addon": []
+                },
+                "alignments": {}
+              },
+              "aura": { "school": "trs" },
+              "changes": {
+                "t520pbf6": { "_id": "t520pbf6", "formula": "2", "target": "str", "type": "enh" }
+              },
+              "cl": 8,
+              "creation": {
+                "cost": { "unit": "gp", "value": 2000 },
+                "description": "<p>@UUID[Compendium.pf1.feats.Item.tD76K8QGco9scT0r]{Craft Wondrous Item}, @UUID[Compendium.pf1.spells.Item.05i5rxwim12hwktu]{bull's strength}</p>"
+              },
+              "equipmentSubtype": "lightArmor",
+              "equipped": true,
+              "hp": { "base": 10 },
+              "price": { "base": 4000, "unit": "gp" },
+              "quantity": 1,
+              "resizing": true,
+              "slot": "belt",
+              "sources": [
+                { "id": "PZO1123", "pages": "208" },
+                { "id": "PZO1110", "pages": "502" }
+              ],
+              "subType": "wondrous",
+              "unidentified": { "name": "Belt", "price": { "base": 0, "unit": "gp" } },
+              "weight": { "value": 1 },
+              "mods": {}
+            },
+            "type": "equipment",
+            "effects": [],
+            "flags": {},
+            "_id": "E36hTjgxVDAUiozx",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.items.Item.MrxwYWWezbJTZLog" },
+            "folder": "TQir6rREbQbhFUtK",
+            "name": "Cloak of Resistance +1",
+            "system": {
+              "armor": {
+                "material": {
+                  "base": { "value": "leather" },
+                  "normal": { "value": "leather" },
+                  "addon": []
+                },
+                "alignments": {}
+              },
+              "aura": { "school": "abj" },
+              "changes": {
+                "7okw4xq4": {
+                  "_id": "7okw4xq4",
+                  "formula": "1",
+                  "target": "allSavingThrows",
+                  "type": "resist"
+                }
+              },
+              "cl": 5,
+              "creation": {
+                "cost": { "unit": "gp", "value": 500 },
+                "description": "<p>@UUID[Compendium.pf1.feats.Item.tD76K8QGco9scT0r]{Craft Wondrous Item}, @UUID[Compendium.pf1.spells.Item.g8j278xcu2s1zlwy]{resistance}, creator's caster level must be at least three times the cloak's bonus</p>"
+              },
+              "equipmentSubtype": "lightArmor",
+              "equipped": true,
+              "hp": { "base": 10 },
+              "price": { "base": 1000, "unit": "gp" },
+              "quantity": 1,
+              "resizing": true,
+              "slot": "shoulders",
+              "sources": [
+                { "id": "PZO1123", "pages": "264" },
+                { "id": "PZO1110", "pages": "507" }
+              ],
+              "subType": "wondrous",
+              "unidentified": { "name": "Cloak", "price": { "base": 0, "unit": "gp" } },
+              "weight": { "value": 1 },
+              "mods": {}
+            },
+            "type": "equipment",
+            "effects": [],
+            "flags": {},
+            "_id": "tjMLiTExWCCLh7MT",
+            "sort": 0
+          }
+        ],
+        "effects": [],
+        "sort": 0,
+        "flags": {}
+      },
+      "derived": {
+        "abilities": {
+          "str": { "total": 20, "mod": 5 },
+          "dex": { "total": 14, "mod": 2 },
+          "con": { "total": 14, "mod": 2 },
+          "int": { "total": 10, "mod": 0 },
+          "wis": { "total": 12, "mod": 1 },
+          "cha": { "total": 8, "mod": -1 }
+        },
+        "ac": { "normal": 26, "touch": 13, "flatFooted": 23 },
+        "cmb": 17,
+        "cmd": { "total": 30, "flatFooted": 27 },
+        "saves": { "fort": 13, "ref": 9, "will": 8 },
+        "init": 6,
+        "bab": 12,
+        "attack": { "melee": 17, "ranged": 14 },
+        "hp": { "max": 112 },
+        "speed": { "land": 30 },
+        "sr": 0,
+        "acp": 2,
+        "skills": {
+          "perception": 7,
+          "knowledge": 0,
+          "knowledge.geography": 0,
+          "knowledge.nobility": 0,
+          "knowledge.local": 0,
+          "knowledge.dungeoneering": 0,
+          "knowledge.religion": 0,
+          "knowledge.nature": 0,
+          "knowledge.arcana": 0,
+          "knowledge.history": 0,
+          "knowledge.planes": 0,
+          "knowledge.engineering": 0,
+          "intimidate": 8,
+          "appraise": 0,
+          "profession": 1,
+          "fly": 0,
+          "disableDevice": 0,
+          "swim": 12,
+          "escapeArtist": 0,
+          "linguistics": 0,
+          "acrobatics": 0,
+          "useMagicDevice": -1,
+          "climb": 12,
+          "sleightOfHand": 0,
+          "handleAnimal": -1,
+          "heal": 1,
+          "spellcraft": 0,
+          "ride": 0,
+          "stealth": 0,
+          "survival": 1,
+          "craft": 0,
+          "disguise": -1,
+          "diplomacy": -1,
+          "senseMotive": -1,
+          "perform": -1,
+          "bluff": -1
+        }
+      }
+    },
+    "haste": {
+      "actor": {
+        "name": "human-fighter-12 [haste]",
+        "type": "character",
+        "folder": "GuYuyoqdabfe4xZV",
+        "_id": "QLZFu1uYN7gbGzGw",
+        "system": {
+          "abilities": {
+            "str": { "value": 16 },
+            "dex": { "value": 14 },
+            "con": { "value": 14 },
+            "int": { "value": 10 },
+            "wis": { "value": 12 },
+            "cha": { "value": 8 }
+          },
+          "attributes": {
+            "savingThrows": {
+              "fort": { "ability": "con" },
+              "ref": { "ability": "dex" },
+              "will": { "ability": "wis" }
+            },
+            "hp": { "temp": 0, "nonlethal": 0, "offset": 0 },
+            "wounds": { "offset": 0 },
+            "vigor": { "temp": 0, "offset": 0 }
+          },
+          "details": { "notes": {}, "xp": { "value": 0 }, "alignment": "ln" },
+          "traits": { "size": "med", "ageCategory": "adult", "stature": "tall" },
+          "currency": {},
+          "altCurrency": {}
+        },
+        "items": [
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.5WivCl3kkGv5iNiz" },
+            "name": "Perception",
+            "system": {
+              "ability": "wis",
+              "identifier": "perception",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.2h6hz5AkTDxKPFxr",
+              "sets": ["adventure"],
+              "rank": 6,
+              "acp": false,
+              "rt": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "yQheCZrTLpx1zk5t",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.6cOI6UozWx1PeOnr" },
+            "name": "Intimidate",
+            "system": {
+              "ability": "cha",
+              "identifier": "intimidate",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.KNn8uxHu23phKC0y",
+              "sets": ["adventure"],
+              "rank": 6,
+              "acp": false,
+              "rt": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "QlSZ4cUeJzE3syEC",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.AihuO12FpILo3RXh" },
+            "name": "Swim",
+            "system": {
+              "ability": "str",
+              "acp": true,
+              "identifier": "swim",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.xhmDhOXuBbfVcD0Q",
+              "sets": ["adventure"],
+              "rank": 6,
+              "rt": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "Ow6TRwc5JhqVAphk",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.NbW51ORcxEJnEY8H" },
+            "name": "Climb",
+            "system": {
+              "ability": "str",
+              "acp": true,
+              "identifier": "climb",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.ZAwjVOTwsBpZRgw4",
+              "sets": ["adventure"],
+              "rank": 6,
+              "rt": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "QUbPwUWqdToUTcL7",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.races.Item.e6IaBxKgMxy1yKlr" },
+            "folder": "RWSoA7Fj9yqo0y9U",
+            "name": "Human",
+            "system": {
+              "changes": {
+                "ahb0k14u": {
+                  "_id": "ahb0k14u",
+                  "formula": "@attributes.hd.total",
+                  "target": "bonusSkillRanks",
+                  "type": "untyped"
+                },
+                "ywxkp0hu": {
+                  "_id": "ywxkp0hu",
+                  "formula": "1",
+                  "target": "bonusFeats",
+                  "type": "untyped"
+                },
+                "lmflex01": { "_id": "lmflex01", "formula": "2", "target": "str", "type": "racial" }
+              },
+              "creatureSubtypes": ["human"],
+              "creatureTypes": ["humanoid"],
+              "languages": ["common"],
+              "size": "med",
+              "sources": [{ "id": "PZO1110", "pages": "27" }],
+              "speeds": { "land": 30 },
+              "tags": [
+                "Core",
+                "Western (Arcadia)",
+                "Eastern (Casmaron)",
+                "Northern (Crown of the World)",
+                "Southern (Garund)"
+              ]
+            },
+            "type": "race",
+            "effects": [],
+            "flags": {},
+            "_id": "QBaS3GemABOSa2jM",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.classes.Item.WLqBCT5DqmGAx8Wd" },
+            "name": "Fighter",
+            "system": {
+              "armorProf": ["lgt", "med", "hvy", "shl", "twr"],
+              "bab": "high",
+              "classSkills": [
+                "artistry",
+                "climb",
+                "craft",
+                "handleAnimal",
+                "intimidate",
+                "knowledge.dungeoneering",
+                "knowledge.engineering",
+                "lore",
+                "profession",
+                "ride",
+                "survival",
+                "swim"
+              ],
+              "hd": 10,
+              "hp": 76,
+              "level": 12,
+              "links": {
+                "supplements": [
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.CV8BsY3ciUb9TA1Y" },
+                  { "level": 2, "uuid": "Compendium.pf1.class-abilities.Item.h0Brxw6khcjlEf1T" },
+                  { "level": 3, "uuid": "Compendium.pf1.class-abilities.Item.5JFfSqLMCpbRmERa" },
+                  { "level": 5, "uuid": "Compendium.pf1.class-abilities.Item.RzEzudurxQFirFoF" },
+                  { "level": 7, "uuid": "Compendium.pf1.class-abilities.Item.iqeyCQIIVnNt0p3h" },
+                  { "level": 20, "uuid": "Compendium.pf1.class-abilities.Item.McXAM1BoPHZLO1n4" }
+                ]
+              },
+              "savingThrows": {
+                "fort": { "value": "high" },
+                "ref": { "value": "low" },
+                "will": { "value": "low" }
+              },
+              "skillsPerLevel": 2,
+              "sources": [{ "id": "PZO1110", "pages": "55-56" }],
+              "subType": "base",
+              "tag": "fighter",
+              "wealth": "5d6 * 10",
+              "weaponProf": ["simple", "martial"]
+            },
+            "type": "class",
+            "effects": [],
+            "folder": null,
+            "flags": {
+              "pf1": {
+                "links": {
+                  "classAssociations": {
+                    "gCQHOKnZdagDKP3H": 1,
+                    "jEzN18DvSQ2tUMF7": 3,
+                    "lRS8yccdTuiWO6Nw": 5,
+                    "4PemVJlp6Bl1HYKO": 7,
+                    "ELjtC9rah1ITWU4T": 2
+                  }
+                }
+              }
+            },
+            "_id": "wFr6ihCZjdk46MsL",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.CV8BsY3ciUb9TA1Y"
+            },
+            "name": "Bonus Feats (FGT)",
+            "system": {
+              "associations": { "classes": ["Fighter"] },
+              "changes": {
+                "yoxm5fp1": {
+                  "_id": "yoxm5fp1",
+                  "formula": "1 + floor(@class.unlevel / 2)",
+                  "target": "bonusFeats",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "55" }],
+              "subType": "classFeat",
+              "class": "fighter",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 100000,
+            "_id": "gCQHOKnZdagDKP3H",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.5JFfSqLMCpbRmERa"
+            },
+            "name": "Armor Training",
+            "system": {
+              "abilityType": "ex",
+              "associations": { "classes": ["Fighter"] },
+              "changeFlags": ["mediumArmorFullSpeed"],
+              "changes": {
+                "e0zzcqzk": {
+                  "_id": "e0zzcqzk",
+                  "formula": "clamp(floor((@class.unlevel + 1) / 4), 0, 4)",
+                  "target": "mDexA",
+                  "type": "untyped"
+                },
+                "pv0gclyb": {
+                  "_id": "pv0gclyb",
+                  "formula": "-clamp(floor((@class.unlevel + 1) / 4), 0, 4)",
+                  "target": "acpA",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "55-56" }],
+              "subType": "classFeat",
+              "class": "fighter",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 300000,
+            "_id": "jEzN18DvSQ2tUMF7",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.RzEzudurxQFirFoF"
+            },
+            "name": "Weapon Training",
+            "system": {
+              "abilityType": "ex",
+              "associations": { "classes": ["Fighter"] },
+              "sources": [{ "id": "PZO1110", "pages": "56" }],
+              "subType": "classFeat",
+              "class": "fighter",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 400000,
+            "_id": "lRS8yccdTuiWO6Nw",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.iqeyCQIIVnNt0p3h"
+            },
+            "name": "Armor Training (Heavy Armor)",
+            "system": {
+              "abilityType": "ex",
+              "associations": { "classes": ["Fighter"] },
+              "changeFlags": ["heavyArmorFullSpeed"],
+              "sources": [{ "id": "PZO1110", "pages": "56" }],
+              "subType": "classFeat",
+              "class": "fighter",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 500000,
+            "_id": "4PemVJlp6Bl1HYKO",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.h0Brxw6khcjlEf1T"
+            },
+            "name": "Bravery",
+            "system": {
+              "abilityType": "ex",
+              "associations": { "classes": ["Fighter"] },
+              "contextNotes": {
+                "8o852MvQnKASJDU4": {
+                  "target": "will",
+                  "text": "+[[floor((@class.level + 2) / 4)]] vs fear effects"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "55" }],
+              "subType": "classFeat",
+              "class": "fighter",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 200000,
+            "_id": "ELjtC9rah1ITWU4T",
+            "folder": null
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.FUW5mIXHNBBIQ1Sq" },
+            "name": "Power Attack",
+            "system": {
+              "changeFlags": ["powerAttack"],
+              "sources": [{ "id": "PZO1110", "pages": "116, 131" }],
+              "subType": "feat",
+              "tags": ["Combat", "Offensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "5lVRTco7nZQnwBpX",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.8snLqsJN4LLL00Nq" },
+            "name": "Toughness",
+            "system": {
+              "changes": {
+                "bl5pemy2": {
+                  "_id": "bl5pemy2",
+                  "formula": "max(3, @attributes.hd.total)",
+                  "target": "mhp",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "116, 135" }],
+              "subType": "feat",
+              "tags": ["General", "Defensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "8BWcajfLannsgS8t",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.iAbIGhm7T2OK9Brt" },
+            "name": "Iron Will",
+            "system": {
+              "changes": {
+                "vafl2kz4": {
+                  "_id": "vafl2kz4",
+                  "formula": "2",
+                  "target": "will",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "115, 129" }],
+              "subType": "feat",
+              "tags": ["General", "Saving Throw"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "U7oXIzbwdkJAxPx0",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.0bZf3SDkvVOe2ujH" },
+            "name": "Lightning Reflexes",
+            "system": {
+              "changes": {
+                "ni86uxwa": {
+                  "_id": "ni86uxwa",
+                  "formula": "2",
+                  "target": "ref",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "115, 130" }],
+              "subType": "feat",
+              "tags": ["General", "Saving Throw"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "fGQpXeepGwBbI269",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.fVRnBIHR4Jq6btvm" },
+            "name": "Great Fortitude",
+            "system": {
+              "changes": {
+                "0rubibb4": {
+                  "_id": "0rubibb4",
+                  "formula": "2",
+                  "target": "fort",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "115, 124" }],
+              "subType": "feat",
+              "tags": ["General", "Saving Throw", "Defensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "q0ixEerSPNjE785C",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.Uuiu3p982omhMEPj" },
+            "name": "Improved Initiative",
+            "system": {
+              "changes": {
+                "ign7okhi": {
+                  "_id": "ign7okhi",
+                  "formula": "4",
+                  "target": "init",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "115, 127" }],
+              "subType": "feat",
+              "tags": ["Combat"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "mOUCqOBykxds2fc8",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.ehqx8txNRGMaNOPt" },
+            "name": "Endurance",
+            "system": {
+              "sources": [{ "id": "PZO1110", "pages": "115, 122" }],
+              "subType": "feat",
+              "tags": ["General"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "YR1GxfNNnijDIlZe",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.JreaiTHdyWFNj3Tb" },
+            "name": "Dodge",
+            "system": {
+              "changes": {
+                "9onhsept": { "_id": "9onhsept", "formula": "1", "target": "ac", "type": "dodge" }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "114, 122" }],
+              "subType": "feat",
+              "tags": ["Combat", "Defensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "pjNS8HZkcTVD4XFS",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.R7L4SlGRlnThqFrP" },
+            "name": "Mobility",
+            "system": {
+              "sources": [{ "id": "PZO1110", "pages": "114, 130" }],
+              "subType": "feat",
+              "tags": ["Combat", "Movement", "Defensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "PpzuYJxa0CfrSWxF",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.Zeq6RWYv5otvg8q7" },
+            "name": "Cleave",
+            "system": {
+              "actions": {
+                "YKPDCAoDrghiYAzi": {
+                  "_id": "YKPDCAoDrghiYAzi",
+                  "activation": {
+                    "type": "standard",
+                    "unchained": { "cost": 2, "type": "action" }
+                  },
+                  "name": "Use",
+                  "notes": {
+                    "effect": ["[[-2]] penalty to your Armor Class until your next turn."]
+                  },
+                  "sort": 0
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "116, 119" }],
+              "subType": "feat",
+              "tags": ["Combat", "Combat Trick"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "Xw25cIB9N24891My",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.ugQyUpqPBDsqLyra" },
+            "name": "Spring Attack",
+            "system": {
+              "actions": {
+                "9ilekjpdPWfwe7eo": {
+                  "_id": "9ilekjpdPWfwe7eo",
+                  "activation": { "type": "full", "unchained": { "cost": 3, "type": "action" } },
+                  "duration": { "units": "inst" },
+                  "name": "Use",
+                  "range": { "units": "seeText" },
+                  "sort": 0,
+                  "target": { "value": "One Target" }
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "114, 134" }],
+              "subType": "feat",
+              "tags": ["Combat", "Offensive", "Movement"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "kvyBA2m9TcsDAdBv",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.6HSMdwX1VS6nZ6Zf" },
+            "name": "Great Cleave",
+            "system": {
+              "actions": {
+                "9qJAoXcYkvy8E6Mf": {
+                  "_id": "9qJAoXcYkvy8E6Mf",
+                  "activation": {
+                    "type": "standard",
+                    "unchained": { "cost": 2, "type": "action" }
+                  },
+                  "name": "Use",
+                  "notes": {
+                    "effect": ["[[-2]] penalty to your Armor Class until your next turn."]
+                  },
+                  "sort": 0
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "116, 124" }],
+              "subType": "feat",
+              "tags": ["Combat", "Offensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "9zybf2HpJWmWGLcn",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.pmAO1Sni8xx71pLF" },
+            "name": "Blind-Fight",
+            "system": {
+              "contextNotes": {
+                "ovA4iSc5VuvC7QRw": {
+                  "target": "attack",
+                  "text": "Reroll miss chances for concealment"
+                },
+                "vEJy1tBUxNerNBqH": {
+                  "target": "ac",
+                  "text": "Invisible attacker gets no advantages related to hitting you in melee"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "114, 118" }],
+              "subType": "feat",
+              "tags": ["Combat", "Combat Trick"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "GEtcMuYYbFxdzGph",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.h9nHYLxXvIXBTmup" },
+            "name": "Combat Reflexes",
+            "system": {
+              "actions": {
+                "kzof1vn44xdata40": {
+                  "_id": "kzof1vn44xdata40",
+                  "activation": { "type": "passive", "unchained": { "type": "passive" } },
+                  "img": "systems/pf1/icons/feats/combat-reflexes.jpg",
+                  "name": "Use",
+                  "sort": 0
+                }
+              },
+              "contextNotes": {
+                "HcSjLnpsyXGSEHAb": {
+                  "target": "attack",
+                  "text": "[[@item.uses.value]] AoO available."
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "114, 119-120" }],
+              "subType": "feat",
+              "tag": "combatReflexes",
+              "tags": ["Combat", "Combat Trick"],
+              "uses": {
+                "maxFormula": "1 + max(0, @abilities.dex.mod)",
+                "per": "round",
+                "value": 0
+              },
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "vHibkUNgMSEw12PE",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.armors-and-shields.Item.h65qEp22nsyRoeRa"
+            },
+            "folder": "cTxChlqZ2nSmuKP5",
+            "name": "Full Plate",
+            "system": {
+              "armor": {
+                "acp": 3,
+                "dex": 3,
+                "material": { "base": { "value": "mithral" }, "addon": [] },
+                "value": 9,
+                "enh": 2,
+                "alignments": {}
+              },
+              "baseTypes": ["Full Plate"],
+              "equipmentSubtype": "heavyArmor",
+              "equipped": true,
+              "hardness": 10,
+              "hp": { "base": 45 },
+              "price": { "base": 1500, "unit": "gp" },
+              "quantity": 1,
+              "slot": "armor",
+              "sources": [{ "id": "PZO1110", "pages": "150, 151" }],
+              "spellFailure": 25,
+              "subType": "armor",
+              "weight": { "value": 50 },
+              "mods": {}
+            },
+            "type": "equipment",
+            "effects": [],
+            "flags": {},
+            "_id": "Rd5QFVjddhBYgZ9V",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.armors-and-shields.Item.2fK608aSYU9QDmzw"
+            },
+            "folder": "DtVJVwL87ELQxk7u",
+            "name": "Heavy Steel Shield",
+            "system": {
+              "actions": {
+                "6JirvCBGQLj1EafK": {
+                  "_id": "6JirvCBGQLj1EafK",
+                  "ability": { "attack": "str", "critMult": 2, "critRange": 20, "damage": "str" },
+                  "actionType": "mwak",
+                  "activation": { "type": "attack", "unchained": { "type": "attack" } },
+                  "damage": {
+                    "parts": [{ "formula": "sizeRoll(1, 4, @size)", "types": ["bludgeoning"] }]
+                  },
+                  "duration": { "units": "inst" },
+                  "extraAttacks": { "type": "standard" },
+                  "name": "Bash",
+                  "range": { "units": "melee" },
+                  "sort": 0
+                }
+              },
+              "armor": {
+                "acp": 2,
+                "material": { "base": { "value": "steel" }, "addon": [] },
+                "value": 2,
+                "alignments": {}
+              },
+              "equipmentSubtype": "heavyShield",
+              "equipped": true,
+              "hardness": 10,
+              "hp": { "base": 20 },
+              "price": { "base": 20, "unit": "gp" },
+              "quantity": 1,
+              "slot": "shield",
+              "sources": [{ "id": "PZO1110", "pages": "142, 148, 151-152" }],
+              "spellFailure": 15,
+              "subType": "shield",
+              "weight": { "value": 15 },
+              "mods": {}
+            },
+            "type": "equipment",
+            "effects": [],
+            "flags": {},
+            "_id": "qwNeu88raeIPdqm3",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.items.Item.eIxzoEGDNZXWgnKk" },
+            "folder": "qhnlPkeZecr9UJfi",
+            "name": "Belt of Giant Strength +2",
+            "system": {
+              "armor": {
+                "material": {
+                  "base": { "value": "leather" },
+                  "normal": { "value": "leather" },
+                  "addon": []
+                },
+                "alignments": {}
+              },
+              "aura": { "school": "trs" },
+              "changes": {
+                "t520pbf6": { "_id": "t520pbf6", "formula": "2", "target": "str", "type": "enh" }
+              },
+              "cl": 8,
+              "creation": {
+                "cost": { "unit": "gp", "value": 2000 },
+                "description": "<p>@UUID[Compendium.pf1.feats.Item.tD76K8QGco9scT0r]{Craft Wondrous Item}, @UUID[Compendium.pf1.spells.Item.05i5rxwim12hwktu]{bull's strength}</p>"
+              },
+              "equipmentSubtype": "lightArmor",
+              "equipped": true,
+              "hp": { "base": 10 },
+              "price": { "base": 4000, "unit": "gp" },
+              "quantity": 1,
+              "resizing": true,
+              "slot": "belt",
+              "sources": [
+                { "id": "PZO1123", "pages": "208" },
+                { "id": "PZO1110", "pages": "502" }
+              ],
+              "subType": "wondrous",
+              "unidentified": { "name": "Belt", "price": { "base": 0, "unit": "gp" } },
+              "weight": { "value": 1 },
+              "mods": {}
+            },
+            "type": "equipment",
+            "effects": [],
+            "flags": {},
+            "_id": "bjQbJNcQhXQ253SQ",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.items.Item.MrxwYWWezbJTZLog" },
+            "folder": "TQir6rREbQbhFUtK",
+            "name": "Cloak of Resistance +1",
+            "system": {
+              "armor": {
+                "material": {
+                  "base": { "value": "leather" },
+                  "normal": { "value": "leather" },
+                  "addon": []
+                },
+                "alignments": {}
+              },
+              "aura": { "school": "abj" },
+              "changes": {
+                "7okw4xq4": {
+                  "_id": "7okw4xq4",
+                  "formula": "1",
+                  "target": "allSavingThrows",
+                  "type": "resist"
+                }
+              },
+              "cl": 5,
+              "creation": {
+                "cost": { "unit": "gp", "value": 500 },
+                "description": "<p>@UUID[Compendium.pf1.feats.Item.tD76K8QGco9scT0r]{Craft Wondrous Item}, @UUID[Compendium.pf1.spells.Item.g8j278xcu2s1zlwy]{resistance}, creator's caster level must be at least three times the cloak's bonus</p>"
+              },
+              "equipmentSubtype": "lightArmor",
+              "equipped": true,
+              "hp": { "base": 10 },
+              "price": { "base": 1000, "unit": "gp" },
+              "quantity": 1,
+              "resizing": true,
+              "slot": "shoulders",
+              "sources": [
+                { "id": "PZO1123", "pages": "264" },
+                { "id": "PZO1110", "pages": "507" }
+              ],
+              "subType": "wondrous",
+              "unidentified": { "name": "Cloak", "price": { "base": 0, "unit": "gp" } },
+              "weight": { "value": 1 },
+              "mods": {}
+            },
+            "type": "equipment",
+            "effects": [],
+            "flags": {},
+            "_id": "VtMBnrdGkX1p9A4A",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.buffs.Item.NWImcWGTjCtw1Zf0" },
+            "folder": "abSp08elNrsecBYc",
+            "name": "Haste",
+            "system": {
+              "changeFlags": ["haste"],
+              "changes": {
+                "4iimhrzg": {
+                  "_id": "4iimhrzg",
+                  "formula": "min(@attributes.speed.burrow.base, 30)",
+                  "target": "burrowSpeed",
+                  "type": "enh"
+                },
+                "8chno7s8": {
+                  "_id": "8chno7s8",
+                  "formula": "min(@attributes.speed.climb.base, 30)",
+                  "target": "climbSpeed",
+                  "type": "enh"
+                },
+                "i5jeb69f": { "_id": "i5jeb69f", "formula": "1", "target": "ac", "type": "haste" },
+                "kvfxvcqw": {
+                  "_id": "kvfxvcqw",
+                  "formula": "1",
+                  "target": "attack",
+                  "type": "haste"
+                },
+                "o3i44my7": {
+                  "_id": "o3i44my7",
+                  "formula": "min(@attributes.speed.swim.base, 30)",
+                  "target": "swimSpeed",
+                  "type": "enh"
+                },
+                "t7kdmcvh": {
+                  "_id": "t7kdmcvh",
+                  "formula": "min(@attributes.speed.land.base, 30)",
+                  "target": "landSpeed",
+                  "type": "enh"
+                },
+                "uog1v33r": {
+                  "_id": "uog1v33r",
+                  "formula": "min(@attributes.speed.fly.base, 30)",
+                  "target": "flySpeed",
+                  "type": "enh"
+                },
+                "uv25ffcw": { "_id": "uv25ffcw", "formula": "1", "target": "ref", "type": "haste" }
+              },
+              "duration": { "end": "initiative", "units": "round", "value": "@item.level" },
+              "level": 12,
+              "sources": [{ "id": "PZO1110", "pages": "293" }],
+              "subType": "spell",
+              "active": true
+            },
+            "type": "buff",
+            "effects": [],
+            "flags": {},
+            "_id": "ElD0hAbsy4cYRs1X",
+            "sort": 0
+          }
+        ],
+        "effects": [],
+        "sort": 0,
+        "flags": {}
+      },
+      "derived": {
+        "abilities": {
+          "str": { "total": 20, "mod": 5 },
+          "dex": { "total": 14, "mod": 2 },
+          "con": { "total": 14, "mod": 2 },
+          "int": { "total": 10, "mod": 0 },
+          "wis": { "total": 12, "mod": 1 },
+          "cha": { "total": 8, "mod": -1 }
+        },
+        "ac": { "normal": 27, "touch": 14, "flatFooted": 23 },
+        "cmb": 18,
+        "cmd": { "total": 31, "flatFooted": 27 },
+        "saves": { "fort": 13, "ref": 10, "will": 8 },
+        "init": 6,
+        "bab": 12,
+        "attack": { "melee": 18, "ranged": 15 },
+        "hp": { "max": 112 },
+        "speed": { "land": 60 },
+        "sr": 0,
+        "acp": 2,
+        "skills": {
+          "perception": 7,
+          "knowledge": 0,
+          "knowledge.geography": 0,
+          "knowledge.nobility": 0,
+          "knowledge.local": 0,
+          "knowledge.dungeoneering": 0,
+          "knowledge.religion": 0,
+          "knowledge.nature": 0,
+          "knowledge.arcana": 0,
+          "knowledge.history": 0,
+          "knowledge.planes": 0,
+          "knowledge.engineering": 0,
+          "intimidate": 8,
+          "appraise": 0,
+          "profession": 1,
+          "fly": 0,
+          "disableDevice": 0,
+          "swim": 12,
+          "escapeArtist": 0,
+          "linguistics": 0,
+          "acrobatics": 0,
+          "useMagicDevice": -1,
+          "climb": 12,
+          "sleightOfHand": 0,
+          "handleAnimal": -1,
+          "heal": 1,
+          "spellcraft": 0,
+          "ride": 0,
+          "stealth": 0,
+          "survival": 1,
+          "craft": 0,
+          "disguise": -1,
+          "diplomacy": -1,
+          "senseMotive": -1,
+          "perform": -1,
+          "bluff": -1
+        }
+      }
+    },
+    "enlarged": {
+      "actor": {
+        "name": "human-fighter-12 [enlarged]",
+        "type": "character",
+        "folder": "GuYuyoqdabfe4xZV",
+        "_id": "eKlwBvtLhmLxE4CV",
+        "system": {
+          "abilities": {
+            "str": { "value": 16 },
+            "dex": { "value": 14 },
+            "con": { "value": 14 },
+            "int": { "value": 10 },
+            "wis": { "value": 12 },
+            "cha": { "value": 8 }
+          },
+          "attributes": {
+            "savingThrows": {
+              "fort": { "ability": "con" },
+              "ref": { "ability": "dex" },
+              "will": { "ability": "wis" }
+            },
+            "hp": { "temp": 0, "nonlethal": 0, "offset": 0 },
+            "wounds": { "offset": 0 },
+            "vigor": { "temp": 0, "offset": 0 }
+          },
+          "details": { "notes": {}, "xp": { "value": 0 }, "alignment": "ln" },
+          "traits": { "size": "med", "ageCategory": "adult", "stature": "tall" },
+          "currency": {},
+          "altCurrency": {}
+        },
+        "items": [
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.5WivCl3kkGv5iNiz" },
+            "name": "Perception",
+            "system": {
+              "ability": "wis",
+              "identifier": "perception",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.2h6hz5AkTDxKPFxr",
+              "sets": ["adventure"],
+              "rank": 6,
+              "acp": false,
+              "rt": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "Em2WLlk6Drs4tT3S",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.6cOI6UozWx1PeOnr" },
+            "name": "Intimidate",
+            "system": {
+              "ability": "cha",
+              "identifier": "intimidate",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.KNn8uxHu23phKC0y",
+              "sets": ["adventure"],
+              "rank": 6,
+              "acp": false,
+              "rt": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "7FuNvM67K937W52Q",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.AihuO12FpILo3RXh" },
+            "name": "Swim",
+            "system": {
+              "ability": "str",
+              "acp": true,
+              "identifier": "swim",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.xhmDhOXuBbfVcD0Q",
+              "sets": ["adventure"],
+              "rank": 6,
+              "rt": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "BhAoufOuFan0RzoR",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.NbW51ORcxEJnEY8H" },
+            "name": "Climb",
+            "system": {
+              "ability": "str",
+              "acp": true,
+              "identifier": "climb",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.ZAwjVOTwsBpZRgw4",
+              "sets": ["adventure"],
+              "rank": 6,
+              "rt": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "eUpLORvZmxvGXRgM",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.races.Item.e6IaBxKgMxy1yKlr" },
+            "folder": "RWSoA7Fj9yqo0y9U",
+            "name": "Human",
+            "system": {
+              "changes": {
+                "ahb0k14u": {
+                  "_id": "ahb0k14u",
+                  "formula": "@attributes.hd.total",
+                  "target": "bonusSkillRanks",
+                  "type": "untyped"
+                },
+                "ywxkp0hu": {
+                  "_id": "ywxkp0hu",
+                  "formula": "1",
+                  "target": "bonusFeats",
+                  "type": "untyped"
+                },
+                "lmflex01": { "_id": "lmflex01", "formula": "2", "target": "str", "type": "racial" }
+              },
+              "creatureSubtypes": ["human"],
+              "creatureTypes": ["humanoid"],
+              "languages": ["common"],
+              "size": "med",
+              "sources": [{ "id": "PZO1110", "pages": "27" }],
+              "speeds": { "land": 30 },
+              "tags": [
+                "Core",
+                "Western (Arcadia)",
+                "Eastern (Casmaron)",
+                "Northern (Crown of the World)",
+                "Southern (Garund)"
+              ]
+            },
+            "type": "race",
+            "effects": [],
+            "flags": {},
+            "_id": "8yrqoDljIrMDxULb",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.classes.Item.WLqBCT5DqmGAx8Wd" },
+            "name": "Fighter",
+            "system": {
+              "armorProf": ["lgt", "med", "hvy", "shl", "twr"],
+              "bab": "high",
+              "classSkills": [
+                "artistry",
+                "climb",
+                "craft",
+                "handleAnimal",
+                "intimidate",
+                "knowledge.dungeoneering",
+                "knowledge.engineering",
+                "lore",
+                "profession",
+                "ride",
+                "survival",
+                "swim"
+              ],
+              "hd": 10,
+              "hp": 76,
+              "level": 12,
+              "links": {
+                "supplements": [
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.CV8BsY3ciUb9TA1Y" },
+                  { "level": 2, "uuid": "Compendium.pf1.class-abilities.Item.h0Brxw6khcjlEf1T" },
+                  { "level": 3, "uuid": "Compendium.pf1.class-abilities.Item.5JFfSqLMCpbRmERa" },
+                  { "level": 5, "uuid": "Compendium.pf1.class-abilities.Item.RzEzudurxQFirFoF" },
+                  { "level": 7, "uuid": "Compendium.pf1.class-abilities.Item.iqeyCQIIVnNt0p3h" },
+                  { "level": 20, "uuid": "Compendium.pf1.class-abilities.Item.McXAM1BoPHZLO1n4" }
+                ]
+              },
+              "savingThrows": {
+                "fort": { "value": "high" },
+                "ref": { "value": "low" },
+                "will": { "value": "low" }
+              },
+              "skillsPerLevel": 2,
+              "sources": [{ "id": "PZO1110", "pages": "55-56" }],
+              "subType": "base",
+              "tag": "fighter",
+              "wealth": "5d6 * 10",
+              "weaponProf": ["simple", "martial"]
+            },
+            "type": "class",
+            "effects": [],
+            "folder": null,
+            "flags": {
+              "pf1": {
+                "links": {
+                  "classAssociations": {
+                    "sGNdNHmGv99iMBgr": 2,
+                    "VwtE9RM8JTSbZmkH": 3,
+                    "J2kHknIq8liJZZbf": 5,
+                    "KBxLAfIJcyx5j7Jo": 7,
+                    "wCLzVsHALbgRS0Rm": 1
+                  }
+                }
+              }
+            },
+            "_id": "2if2A9lBOvVwv33g",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.h0Brxw6khcjlEf1T"
+            },
+            "name": "Bravery",
+            "system": {
+              "abilityType": "ex",
+              "associations": { "classes": ["Fighter"] },
+              "contextNotes": {
+                "8o852MvQnKASJDU4": {
+                  "target": "will",
+                  "text": "+[[floor((@class.level + 2) / 4)]] vs fear effects"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "55" }],
+              "subType": "classFeat",
+              "class": "fighter",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 200000,
+            "_id": "sGNdNHmGv99iMBgr",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.5JFfSqLMCpbRmERa"
+            },
+            "name": "Armor Training",
+            "system": {
+              "abilityType": "ex",
+              "associations": { "classes": ["Fighter"] },
+              "changeFlags": ["mediumArmorFullSpeed"],
+              "changes": {
+                "e0zzcqzk": {
+                  "_id": "e0zzcqzk",
+                  "formula": "clamp(floor((@class.unlevel + 1) / 4), 0, 4)",
+                  "target": "mDexA",
+                  "type": "untyped"
+                },
+                "pv0gclyb": {
+                  "_id": "pv0gclyb",
+                  "formula": "-clamp(floor((@class.unlevel + 1) / 4), 0, 4)",
+                  "target": "acpA",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "55-56" }],
+              "subType": "classFeat",
+              "class": "fighter",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 300000,
+            "_id": "VwtE9RM8JTSbZmkH",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.RzEzudurxQFirFoF"
+            },
+            "name": "Weapon Training",
+            "system": {
+              "abilityType": "ex",
+              "associations": { "classes": ["Fighter"] },
+              "sources": [{ "id": "PZO1110", "pages": "56" }],
+              "subType": "classFeat",
+              "class": "fighter",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 400000,
+            "_id": "J2kHknIq8liJZZbf",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.iqeyCQIIVnNt0p3h"
+            },
+            "name": "Armor Training (Heavy Armor)",
+            "system": {
+              "abilityType": "ex",
+              "associations": { "classes": ["Fighter"] },
+              "changeFlags": ["heavyArmorFullSpeed"],
+              "sources": [{ "id": "PZO1110", "pages": "56" }],
+              "subType": "classFeat",
+              "class": "fighter",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 500000,
+            "_id": "KBxLAfIJcyx5j7Jo",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.CV8BsY3ciUb9TA1Y"
+            },
+            "name": "Bonus Feats (FGT)",
+            "system": {
+              "associations": { "classes": ["Fighter"] },
+              "changes": {
+                "yoxm5fp1": {
+                  "_id": "yoxm5fp1",
+                  "formula": "1 + floor(@class.unlevel / 2)",
+                  "target": "bonusFeats",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "55" }],
+              "subType": "classFeat",
+              "class": "fighter",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 100000,
+            "_id": "wCLzVsHALbgRS0Rm",
+            "folder": null
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.FUW5mIXHNBBIQ1Sq" },
+            "name": "Power Attack",
+            "system": {
+              "changeFlags": ["powerAttack"],
+              "sources": [{ "id": "PZO1110", "pages": "116, 131" }],
+              "subType": "feat",
+              "tags": ["Combat", "Offensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "yXpEPn8sMMjnxziE",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.8snLqsJN4LLL00Nq" },
+            "name": "Toughness",
+            "system": {
+              "changes": {
+                "bl5pemy2": {
+                  "_id": "bl5pemy2",
+                  "formula": "max(3, @attributes.hd.total)",
+                  "target": "mhp",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "116, 135" }],
+              "subType": "feat",
+              "tags": ["General", "Defensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "JIb9gOyfp9KFvDEV",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.iAbIGhm7T2OK9Brt" },
+            "name": "Iron Will",
+            "system": {
+              "changes": {
+                "vafl2kz4": {
+                  "_id": "vafl2kz4",
+                  "formula": "2",
+                  "target": "will",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "115, 129" }],
+              "subType": "feat",
+              "tags": ["General", "Saving Throw"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "aWO5Bc37Hk9TfDmF",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.0bZf3SDkvVOe2ujH" },
+            "name": "Lightning Reflexes",
+            "system": {
+              "changes": {
+                "ni86uxwa": {
+                  "_id": "ni86uxwa",
+                  "formula": "2",
+                  "target": "ref",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "115, 130" }],
+              "subType": "feat",
+              "tags": ["General", "Saving Throw"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "W8k7n4AmjINZ7X8Q",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.fVRnBIHR4Jq6btvm" },
+            "name": "Great Fortitude",
+            "system": {
+              "changes": {
+                "0rubibb4": {
+                  "_id": "0rubibb4",
+                  "formula": "2",
+                  "target": "fort",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "115, 124" }],
+              "subType": "feat",
+              "tags": ["General", "Saving Throw", "Defensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "hKcFaou1ms2pzHAI",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.ehqx8txNRGMaNOPt" },
+            "name": "Endurance",
+            "system": {
+              "sources": [{ "id": "PZO1110", "pages": "115, 122" }],
+              "subType": "feat",
+              "tags": ["General"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "vwRVg05hNNZwlhpO",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.JreaiTHdyWFNj3Tb" },
+            "name": "Dodge",
+            "system": {
+              "changes": {
+                "9onhsept": { "_id": "9onhsept", "formula": "1", "target": "ac", "type": "dodge" }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "114, 122" }],
+              "subType": "feat",
+              "tags": ["Combat", "Defensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "Qy9eQIv2PB2w01ns",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.R7L4SlGRlnThqFrP" },
+            "name": "Mobility",
+            "system": {
+              "sources": [{ "id": "PZO1110", "pages": "114, 130" }],
+              "subType": "feat",
+              "tags": ["Combat", "Movement", "Defensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "TSpyZTG25MxupEqf",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.ugQyUpqPBDsqLyra" },
+            "name": "Spring Attack",
+            "system": {
+              "actions": {
+                "9ilekjpdPWfwe7eo": {
+                  "_id": "9ilekjpdPWfwe7eo",
+                  "activation": { "type": "full", "unchained": { "cost": 3, "type": "action" } },
+                  "duration": { "units": "inst" },
+                  "name": "Use",
+                  "range": { "units": "seeText" },
+                  "sort": 0,
+                  "target": { "value": "One Target" }
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "114, 134" }],
+              "subType": "feat",
+              "tags": ["Combat", "Offensive", "Movement"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "dOcmwUhd78HzsbTu",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.Zeq6RWYv5otvg8q7" },
+            "name": "Cleave",
+            "system": {
+              "actions": {
+                "YKPDCAoDrghiYAzi": {
+                  "_id": "YKPDCAoDrghiYAzi",
+                  "activation": {
+                    "type": "standard",
+                    "unchained": { "cost": 2, "type": "action" }
+                  },
+                  "name": "Use",
+                  "notes": {
+                    "effect": ["[[-2]] penalty to your Armor Class until your next turn."]
+                  },
+                  "sort": 0
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "116, 119" }],
+              "subType": "feat",
+              "tags": ["Combat", "Combat Trick"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "pVu1YrGgC3EkLZD6",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.6HSMdwX1VS6nZ6Zf" },
+            "name": "Great Cleave",
+            "system": {
+              "actions": {
+                "9qJAoXcYkvy8E6Mf": {
+                  "_id": "9qJAoXcYkvy8E6Mf",
+                  "activation": {
+                    "type": "standard",
+                    "unchained": { "cost": 2, "type": "action" }
+                  },
+                  "name": "Use",
+                  "notes": {
+                    "effect": ["[[-2]] penalty to your Armor Class until your next turn."]
+                  },
+                  "sort": 0
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "116, 124" }],
+              "subType": "feat",
+              "tags": ["Combat", "Offensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "9mbrlRxoH1v4nHc9",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.pmAO1Sni8xx71pLF" },
+            "name": "Blind-Fight",
+            "system": {
+              "contextNotes": {
+                "ovA4iSc5VuvC7QRw": {
+                  "target": "attack",
+                  "text": "Reroll miss chances for concealment"
+                },
+                "vEJy1tBUxNerNBqH": {
+                  "target": "ac",
+                  "text": "Invisible attacker gets no advantages related to hitting you in melee"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "114, 118" }],
+              "subType": "feat",
+              "tags": ["Combat", "Combat Trick"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "XAztUlY8EcJd31TP",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.h9nHYLxXvIXBTmup" },
+            "name": "Combat Reflexes",
+            "system": {
+              "actions": {
+                "kzof1vn44xdata40": {
+                  "_id": "kzof1vn44xdata40",
+                  "activation": { "type": "passive", "unchained": { "type": "passive" } },
+                  "img": "systems/pf1/icons/feats/combat-reflexes.jpg",
+                  "name": "Use",
+                  "sort": 0
+                }
+              },
+              "contextNotes": {
+                "HcSjLnpsyXGSEHAb": {
+                  "target": "attack",
+                  "text": "[[@item.uses.value]] AoO available."
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "114, 119-120" }],
+              "subType": "feat",
+              "tag": "combatReflexes",
+              "tags": ["Combat", "Combat Trick"],
+              "uses": {
+                "maxFormula": "1 + max(0, @abilities.dex.mod)",
+                "per": "round",
+                "value": 0
+              },
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "Wp8wGopBikYR4LPG",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.Uuiu3p982omhMEPj" },
+            "name": "Improved Initiative",
+            "system": {
+              "changes": {
+                "ign7okhi": {
+                  "_id": "ign7okhi",
+                  "formula": "4",
+                  "target": "init",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "115, 127" }],
+              "subType": "feat",
+              "tags": ["Combat"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "buVwts8abozlu50x",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.armors-and-shields.Item.h65qEp22nsyRoeRa"
+            },
+            "folder": "cTxChlqZ2nSmuKP5",
+            "name": "Full Plate",
+            "system": {
+              "armor": {
+                "acp": 3,
+                "dex": 3,
+                "material": { "base": { "value": "mithral" }, "addon": [] },
+                "value": 9,
+                "enh": 2,
+                "alignments": {}
+              },
+              "baseTypes": ["Full Plate"],
+              "equipmentSubtype": "heavyArmor",
+              "equipped": true,
+              "hardness": 10,
+              "hp": { "base": 45 },
+              "price": { "base": 1500, "unit": "gp" },
+              "quantity": 1,
+              "slot": "armor",
+              "sources": [{ "id": "PZO1110", "pages": "150, 151" }],
+              "spellFailure": 25,
+              "subType": "armor",
+              "weight": { "value": 50 },
+              "mods": {}
+            },
+            "type": "equipment",
+            "effects": [],
+            "flags": {},
+            "_id": "ECaB4YkmtzFsKceG",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.armors-and-shields.Item.2fK608aSYU9QDmzw"
+            },
+            "folder": "DtVJVwL87ELQxk7u",
+            "name": "Heavy Steel Shield",
+            "system": {
+              "actions": {
+                "6JirvCBGQLj1EafK": {
+                  "_id": "6JirvCBGQLj1EafK",
+                  "ability": { "attack": "str", "critMult": 2, "critRange": 20, "damage": "str" },
+                  "actionType": "mwak",
+                  "activation": { "type": "attack", "unchained": { "type": "attack" } },
+                  "damage": {
+                    "parts": [{ "formula": "sizeRoll(1, 4, @size)", "types": ["bludgeoning"] }]
+                  },
+                  "duration": { "units": "inst" },
+                  "extraAttacks": { "type": "standard" },
+                  "name": "Bash",
+                  "range": { "units": "melee" },
+                  "sort": 0
+                }
+              },
+              "armor": {
+                "acp": 2,
+                "material": { "base": { "value": "steel" }, "addon": [] },
+                "value": 2,
+                "alignments": {}
+              },
+              "equipmentSubtype": "heavyShield",
+              "equipped": true,
+              "hardness": 10,
+              "hp": { "base": 20 },
+              "price": { "base": 20, "unit": "gp" },
+              "quantity": 1,
+              "slot": "shield",
+              "sources": [{ "id": "PZO1110", "pages": "142, 148, 151-152" }],
+              "spellFailure": 15,
+              "subType": "shield",
+              "weight": { "value": 15 },
+              "mods": {}
+            },
+            "type": "equipment",
+            "effects": [],
+            "flags": {},
+            "_id": "oaLFK2rQwdCD33zf",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.items.Item.eIxzoEGDNZXWgnKk" },
+            "folder": "qhnlPkeZecr9UJfi",
+            "name": "Belt of Giant Strength +2",
+            "system": {
+              "armor": {
+                "material": {
+                  "base": { "value": "leather" },
+                  "normal": { "value": "leather" },
+                  "addon": []
+                },
+                "alignments": {}
+              },
+              "aura": { "school": "trs" },
+              "changes": {
+                "t520pbf6": { "_id": "t520pbf6", "formula": "2", "target": "str", "type": "enh" }
+              },
+              "cl": 8,
+              "creation": {
+                "cost": { "unit": "gp", "value": 2000 },
+                "description": "<p>@UUID[Compendium.pf1.feats.Item.tD76K8QGco9scT0r]{Craft Wondrous Item}, @UUID[Compendium.pf1.spells.Item.05i5rxwim12hwktu]{bull's strength}</p>"
+              },
+              "equipmentSubtype": "lightArmor",
+              "equipped": true,
+              "hp": { "base": 10 },
+              "price": { "base": 4000, "unit": "gp" },
+              "quantity": 1,
+              "resizing": true,
+              "slot": "belt",
+              "sources": [
+                { "id": "PZO1123", "pages": "208" },
+                { "id": "PZO1110", "pages": "502" }
+              ],
+              "subType": "wondrous",
+              "unidentified": { "name": "Belt", "price": { "base": 0, "unit": "gp" } },
+              "weight": { "value": 1 },
+              "mods": {}
+            },
+            "type": "equipment",
+            "effects": [],
+            "flags": {},
+            "_id": "ax56N2iWaM9yOmgI",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.items.Item.MrxwYWWezbJTZLog" },
+            "folder": "TQir6rREbQbhFUtK",
+            "name": "Cloak of Resistance +1",
+            "system": {
+              "armor": {
+                "material": {
+                  "base": { "value": "leather" },
+                  "normal": { "value": "leather" },
+                  "addon": []
+                },
+                "alignments": {}
+              },
+              "aura": { "school": "abj" },
+              "changes": {
+                "7okw4xq4": {
+                  "_id": "7okw4xq4",
+                  "formula": "1",
+                  "target": "allSavingThrows",
+                  "type": "resist"
+                }
+              },
+              "cl": 5,
+              "creation": {
+                "cost": { "unit": "gp", "value": 500 },
+                "description": "<p>@UUID[Compendium.pf1.feats.Item.tD76K8QGco9scT0r]{Craft Wondrous Item}, @UUID[Compendium.pf1.spells.Item.g8j278xcu2s1zlwy]{resistance}, creator's caster level must be at least three times the cloak's bonus</p>"
+              },
+              "equipmentSubtype": "lightArmor",
+              "equipped": true,
+              "hp": { "base": 10 },
+              "price": { "base": 1000, "unit": "gp" },
+              "quantity": 1,
+              "resizing": true,
+              "slot": "shoulders",
+              "sources": [
+                { "id": "PZO1123", "pages": "264" },
+                { "id": "PZO1110", "pages": "507" }
+              ],
+              "subType": "wondrous",
+              "unidentified": { "name": "Cloak", "price": { "base": 0, "unit": "gp" } },
+              "weight": { "value": 1 },
+              "mods": {}
+            },
+            "type": "equipment",
+            "effects": [],
+            "flags": {},
+            "_id": "WWXRWhsV2WzUvoDF",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.buffs.Item.1ovEWVzSp5yZXeVm" },
+            "folder": "abSp08elNrsecBYc",
+            "name": "Enlarge Person",
+            "system": {
+              "changes": {
+                "0mV4oumV": { "_id": "0mV4oumV", "formula": "-2", "target": "dex", "type": "size" },
+                "Arn47LiL": {
+                  "_id": "Arn47LiL",
+                  "formula": "-2",
+                  "target": "carryStr",
+                  "type": "untyped"
+                },
+                "LgrZLyFq": {
+                  "_id": "LgrZLyFq",
+                  "formula": "-0.5",
+                  "target": "carryMult",
+                  "type": "untyped"
+                },
+                "MnTVtnTS": {
+                  "_id": "MnTVtnTS",
+                  "formula": "1",
+                  "target": "size",
+                  "type": "untyped"
+                },
+                "xRCU1fzc": { "_id": "xRCU1fzc", "formula": "2", "target": "str", "type": "size" }
+              },
+              "duration": { "end": "initiative", "units": "minute", "value": "@item.level" },
+              "level": 12,
+              "sources": [{ "id": "PZO1110", "pages": "277, 278" }],
+              "subType": "spell",
+              "active": true
+            },
+            "type": "buff",
+            "effects": [],
+            "flags": {},
+            "_id": "9c3gFZkcSLbUi5ua",
+            "sort": 0
+          }
+        ],
+        "effects": [],
+        "sort": 0,
+        "flags": {}
+      },
+      "derived": {
+        "abilities": {
+          "str": { "total": 22, "mod": 6 },
+          "dex": { "total": 12, "mod": 1 },
+          "con": { "total": 14, "mod": 2 },
+          "int": { "total": 10, "mod": 0 },
+          "wis": { "total": 12, "mod": 1 },
+          "cha": { "total": 8, "mod": -1 }
+        },
+        "ac": { "normal": 24, "touch": 11, "flatFooted": 22 },
+        "cmb": 19,
+        "cmd": { "total": 31, "flatFooted": 29 },
+        "saves": { "fort": 13, "ref": 8, "will": 8 },
+        "init": 5,
+        "bab": 12,
+        "attack": { "melee": 17, "ranged": 12 },
+        "hp": { "max": 112 },
+        "speed": { "land": 30 },
+        "sr": 0,
+        "acp": 2,
+        "skills": {
+          "perception": 7,
+          "knowledge": 0,
+          "knowledge.geography": 0,
+          "knowledge.nobility": 0,
+          "knowledge.local": 0,
+          "knowledge.dungeoneering": 0,
+          "knowledge.religion": 0,
+          "knowledge.nature": 0,
+          "knowledge.arcana": 0,
+          "knowledge.history": 0,
+          "knowledge.planes": 0,
+          "knowledge.engineering": 0,
+          "intimidate": 8,
+          "appraise": 0,
+          "profession": 1,
+          "fly": -3,
+          "disableDevice": -1,
+          "swim": 13,
+          "escapeArtist": -1,
+          "linguistics": 0,
+          "acrobatics": -1,
+          "useMagicDevice": -1,
+          "climb": 13,
+          "sleightOfHand": -1,
+          "handleAnimal": -1,
+          "heal": 1,
+          "spellcraft": 0,
+          "ride": -1,
+          "stealth": -5,
+          "survival": 1,
+          "craft": 0,
+          "disguise": -1,
+          "diplomacy": -1,
+          "senseMotive": -1,
+          "perform": -1,
+          "bluff": -1
+        }
+      }
+    }
+  }
+}

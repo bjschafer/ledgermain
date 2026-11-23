@@ -70,21 +70,19 @@ describe("armorPieceAcp() (CRB, Equipment: masterwork armor)", () => {
     expect(armorPieceAcp({ masterwork: true })).toBe(0);
   });
 
-  it("mithral +1 chainmail: -2 listed (already includes masterwork) stays -2, not -1", () => {
-    // Mithral armor is "always considered masterwork" (special materials
-    // rule) and its own -3 ACP adjustment already reflects that — applied at
-    // pick time in `apps/web/src/model/materials.ts` (chainmail 5 magnitude
-    // - 3 = 2, i.e. acp -2). The +1 enhancement must not stack a further -1
-    // on top of the material's already-inclusive reduction.
-    expect(armorPieceAcp({ acp: -2, enhancement: 1, material: "mithral" })).toBe(-2);
+  it("mithral chainmail: -2 listed takes the masterwork -1 too, with or without enhancement", () => {
+    // CRB p. 154: mithral armor is always masterwork, and its ACP is
+    // "decreased by 3". Chainmail's 5 is applied at pick time as 2
+    // (`apps/web/src/model/materials.ts`); masterwork then lessens it by 1.
+    expect(armorPieceAcp({ acp: -2, material: "mithral" })).toBe(-1);
+    expect(armorPieceAcp({ acp: -2, enhancement: 1, material: "mithral" })).toBe(-1);
   });
 
-  it("darkwood +1 tower shield: -8 listed (already includes masterwork) stays -8, not -7", () => {
-    // Core Rulebook, Special Materials: a darkwood shield's armor check
-    // penalty "is lessened by 2 compared to an ordinary shield of its type",
-    // and darkwood is always masterwork. A tower shield's listed 10 is
-    // applied at pick time as 8; the +1 must not stack a further -1.
-    expect(armorPieceAcp({ acp: -8, enhancement: 1, material: "darkwood" })).toBe(-8);
+  it("darkwood tower shield: -8 listed takes the masterwork -1 too", () => {
+    // CRB p. 154: a darkwood shield's penalty "is lessened by 2 compared to
+    // an ordinary shield of its type", and darkwood is always masterwork. A
+    // tower shield's listed 10 is applied at pick time as 8, then -1.
+    expect(armorPieceAcp({ acp: -8, material: "darkwood" })).toBe(-7);
   });
 
   it("non-mithral special material still gets the ordinary masterwork -1", () => {
@@ -123,7 +121,7 @@ describe("compute: masterwork/magic armor ACP reaches skills (CRB, Equipment: ma
     expect(sheet.skills.clm!.acp).toBe(0);
   });
 
-  it("mithral +1 chainmail: Climb's ACP is -2, not -1 (no double-counting masterwork)", () => {
+  it("mithral +1 chainmail: Climb's ACP is -1 (chainmail 5, mithral -3, masterwork -1)", () => {
     const sheet = compute(
       makeDoc({
         slot: "armor",
@@ -136,6 +134,6 @@ describe("compute: masterwork/magic armor ACP reaches skills (CRB, Equipment: ma
       }),
       ref,
     );
-    expect(sheet.skills.clm!.acp).toBe(-2);
+    expect(sheet.skills.clm!.acp).toBe(-1);
   });
 });

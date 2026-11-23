@@ -1,0 +1,1171 @@
+{
+  "foundry": { "core": "14.370", "system": "11.11" },
+  "spec": {
+    "id": "gnome-wizard-1",
+    "race": "Gnome",
+    "alignment": "ng",
+    "abilities": { "str": 8, "dex": 14, "con": 14, "int": 16, "wis": 10, "cha": 10 },
+    "classes": [{ "name": "Wizard", "level": 1, "hp": 6 }],
+    "feats": ["Toughness"],
+    "skills": { "spellcraft": 1, "knowledge.arcana": 1, "perception": 1, "fly": 1 },
+    "items": [],
+    "scenarios": { "base": {}, "enlarge": { "buffs": [{ "name": "Enlarge Person", "level": 1 }] } }
+  },
+  "scenarios": {
+    "base": {
+      "actor": {
+        "name": "gnome-wizard-1 [base]",
+        "type": "character",
+        "folder": "GuYuyoqdabfe4xZV",
+        "_id": "GHsWCYuONAILfqhx",
+        "system": {
+          "abilities": {
+            "str": { "value": 8 },
+            "dex": { "value": 14 },
+            "con": { "value": 14 },
+            "int": { "value": 16 },
+            "wis": { "value": 10 },
+            "cha": { "value": 10 }
+          },
+          "attributes": {
+            "savingThrows": {
+              "fort": { "ability": "con" },
+              "ref": { "ability": "dex" },
+              "will": { "ability": "wis" }
+            },
+            "hp": { "temp": 0, "nonlethal": 0, "offset": 0 },
+            "wounds": { "offset": 0 },
+            "vigor": { "temp": 0, "offset": 0 }
+          },
+          "details": { "notes": {}, "xp": { "value": 0 }, "alignment": "ng" },
+          "traits": { "size": "sm", "ageCategory": "adult", "stature": "tall" },
+          "currency": {},
+          "altCurrency": {}
+        },
+        "items": [
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.5WivCl3kkGv5iNiz" },
+            "name": "Perception",
+            "system": {
+              "ability": "wis",
+              "identifier": "perception",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.2h6hz5AkTDxKPFxr",
+              "sets": ["adventure"],
+              "rank": 1,
+              "acp": false,
+              "rt": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "hG12aDKB0p1g3PAN",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.AGrCZyOwda8TKDKb" },
+            "name": "Fly",
+            "system": {
+              "ability": "dex",
+              "acp": true,
+              "identifier": "fly",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.iH69GIwm8BjecrPN",
+              "sets": ["adventure"],
+              "rank": 1,
+              "rt": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "dqvJXs6Z8FcuNPOK",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.az8CVJgEw3BFJpgG" },
+            "name": "Arcana",
+            "system": {
+              "ability": "int",
+              "grouping": "knowledge",
+              "identifier": "arcana",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.BWeqgXSZvUQl68vt",
+              "rt": true,
+              "sets": ["adventure"],
+              "rank": 1,
+              "acp": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "1XSjXc1dQRVZibXv",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.iLD7iQ9Y6FNLpXZc" },
+            "name": "Spellcraft",
+            "system": {
+              "ability": "int",
+              "identifier": "spellcraft",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.VRD7jxiIAxKPt6EF",
+              "rt": true,
+              "sets": ["adventure"],
+              "rank": 1,
+              "acp": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "fpi3WKgM8xZvtBdW",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.races.Item.efwHEwjvL9Z94MJI" },
+            "folder": "RWSoA7Fj9yqo0y9U",
+            "name": "Gnome",
+            "system": {
+              "changeFlags": ["lowLightVision"],
+              "changes": {
+                "1yu39n9h": {
+                  "_id": "1yu39n9h",
+                  "formula": "2",
+                  "target": "cha",
+                  "type": "racial"
+                },
+                "cssv57sq": {
+                  "_id": "cssv57sq",
+                  "formula": "2",
+                  "target": "skill.perception",
+                  "type": "racial"
+                },
+                "kezkn3k4": {
+                  "_id": "kezkn3k4",
+                  "formula": "2",
+                  "target": "con",
+                  "type": "racial"
+                },
+                "pi8lg4y1": {
+                  "_id": "pi8lg4y1",
+                  "formula": "-2",
+                  "target": "str",
+                  "type": "racial"
+                }
+              },
+              "contextNotes": {
+                "2VVtubnj9rrf3z3Q": {
+                  "target": "allSavingThrows",
+                  "text": "+[[2]] Racial vs Illusion Effects"
+                },
+                "8VYecivoJ8BlCNQm": {
+                  "target": "attack",
+                  "text": "+[[1]] Racial vs Humanoids (Reptillian, Goblinoid)"
+                },
+                "wAewWcmcsFaUYtuL": { "target": "ac", "text": "+[[4]] Dodge vs Giants" }
+              },
+              "creatureSubtypes": ["gnome"],
+              "creatureTypes": ["humanoid"],
+              "languages": ["common", "gnome", "sylvan"],
+              "size": "sm",
+              "sources": [{ "id": "PZO1110", "pages": "23" }],
+              "speeds": { "land": 20 },
+              "tags": ["Core"]
+            },
+            "type": "race",
+            "effects": [],
+            "flags": {},
+            "_id": "37K51CzIEly8nnT8",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.classes.Item.0c4lYDywj6bQ0i8r" },
+            "name": "Wizard",
+            "system": {
+              "bab": "low",
+              "casting": {
+                "ability": "int",
+                "cantrips": true,
+                "domain": 1,
+                "progression": "high",
+                "spells": "arcane",
+                "type": "prepared"
+              },
+              "classSkills": [
+                "appraise",
+                "artistry",
+                "craft",
+                "fly",
+                "knowledge",
+                "linguistics",
+                "lore",
+                "profession",
+                "spellcraft"
+              ],
+              "hd": 6,
+              "hp": 6,
+              "level": 1,
+              "links": {
+                "supplements": [
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.pW1PNlDcdGl7KuEa" },
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.20JWTam2dn7jjZFV" },
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.BS9WDbCy2Up3QHw9" },
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.IPy4aqFYbOppaqKC" },
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.4wdsdOkgv4uEkS9K" },
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.LrjNAKP05lZq2tZZ" },
+                  { "level": 5, "uuid": "Compendium.pf1.class-abilities.Item.2h3lI574tmVjOalQ" }
+                ]
+              },
+              "savingThrows": {
+                "fort": { "value": "low" },
+                "ref": { "value": "low" },
+                "will": { "value": "high" }
+              },
+              "skillsPerLevel": 2,
+              "sources": [{ "id": "PZO1110", "pages": "77-83" }],
+              "subType": "base",
+              "tag": "wizard",
+              "wealth": "2d6 * 10",
+              "weaponProf": ["Club", "Dagger", "Heavy Crossbow", "Light Crossbow", "Quarterstaff"]
+            },
+            "type": "class",
+            "effects": [],
+            "folder": null,
+            "flags": {
+              "pf1": {
+                "links": {
+                  "classAssociations": {
+                    "IpNo4gZVaMCqEVDp": 1,
+                    "bFPwQgww3Arhf9bK": 1,
+                    "w2vYRNiufVDKJR3z": 1,
+                    "8DPNFKltUr0UNmuU": 1,
+                    "wVwNibdF1GFst6c0": 1,
+                    "4cO4217jXSa2GALO": 1
+                  }
+                }
+              }
+            },
+            "_id": "Tg4N18vyzOEEbFv7",
+            "sort": 0
+          },
+          {
+            "name": "Wizard",
+            "type": "spellcasting",
+            "system": {
+              "identifier": "wizard",
+              "kind": "arcane",
+              "class": "wizard",
+              "type": "prepared",
+              "scale": "high",
+              "ability": "int",
+              "asf": { "enabled": true },
+              "cantrips": { "enabled": true },
+              "slots": { "domain": { "formula": 1 }, "auto": true, "ability": { "auto": true } },
+              "cl": { "formula": "" },
+              "casts": {},
+              "preparation": {},
+              "concentration": {},
+              "dc": {},
+              "spellPoints": { "enabled": false, "offset": 0 },
+              "levels": {
+                "0": {},
+                "1": {},
+                "2": {},
+                "3": {},
+                "4": {},
+                "5": {},
+                "6": {},
+                "7": {},
+                "8": {},
+                "9": {}
+              },
+              "restrictions": []
+            },
+            "_id": "H9jfnD09E40Pd09Y",
+            "effects": [],
+            "folder": null,
+            "sort": 0,
+            "flags": {},
+            "_stats": { "compendiumSource": null }
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.pW1PNlDcdGl7KuEa"
+            },
+            "name": "Arcane Bond",
+            "system": {
+              "associations": { "classes": ["Wizard"] },
+              "sources": [{ "id": "PZO1110", "pages": "78" }],
+              "subType": "classFeat",
+              "class": "wizard",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 100000,
+            "_id": "IpNo4gZVaMCqEVDp",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.20JWTam2dn7jjZFV"
+            },
+            "name": "Arcane School",
+            "system": {
+              "associations": { "classes": ["Wizard"] },
+              "sources": [{ "id": "PZO1110", "pages": "78-79, 79-82" }],
+              "subType": "classFeat",
+              "class": "wizard",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 200000,
+            "_id": "bFPwQgww3Arhf9bK",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.BS9WDbCy2Up3QHw9"
+            },
+            "name": "Scribe Scroll",
+            "system": {
+              "associations": { "classes": ["Wizard", "Skald"] },
+              "changes": {
+                "grspmq57": {
+                  "_id": "grspmq57",
+                  "formula": "1",
+                  "target": "bonusFeats",
+                  "type": "untyped"
+                }
+              },
+              "links": {
+                "supplements": [{ "uuid": "Compendium.pf1.feats.Item.tlRu8SYjzA7WCHN7" }],
+                "children": [{ "uuid": ".Item.UIt1wrjntrvQDEQt" }]
+              },
+              "sources": [{ "id": "PZO1110", "pages": "79" }],
+              "subType": "classFeat",
+              "class": "wizard",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 300000,
+            "_id": "w2vYRNiufVDKJR3z",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.4wdsdOkgv4uEkS9K"
+            },
+            "name": "Spellbooks (WIZ)",
+            "system": {
+              "associations": { "classes": ["Wizard"] },
+              "links": {
+                "supplements": [{ "uuid": "Compendium.pf1.items.Item.onurpjwtdogsedsg" }],
+                "children": [{ "uuid": ".Item.kswlnjvEHqWIDRVe" }]
+              },
+              "sources": [{ "id": "PZO1110", "pages": "79" }],
+              "subType": "classFeat",
+              "class": "wizard",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 500000,
+            "_id": "8DPNFKltUr0UNmuU",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.LrjNAKP05lZq2tZZ"
+            },
+            "name": "Wizard Spells",
+            "system": {
+              "associations": { "classes": ["Wizard"] },
+              "sources": [{ "id": "PZO1110", "pages": "77" }],
+              "subType": "classFeat",
+              "class": "wizard",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 600000,
+            "_id": "wVwNibdF1GFst6c0",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.IPy4aqFYbOppaqKC"
+            },
+            "name": "Cantrips",
+            "system": {
+              "associations": {
+                "classes": [
+                  "Arcanist",
+                  "Bard",
+                  "Magus",
+                  "Skald",
+                  "Sorcerer",
+                  "Summoner",
+                  "Summoner (Unchained)",
+                  "Witch",
+                  "Wizard"
+                ]
+              },
+              "sources": [
+                { "id": "PZO1110", "pages": "34, 70, 77" },
+                { "id": "PZO1115", "pages": "54, 65" },
+                { "id": "PZO1117", "pages": "9" },
+                { "id": "PZO1131", "pages": "25" },
+                { "id": "PZO1129", "pages": "8, 49" }
+              ],
+              "subType": "classFeat",
+              "class": "wizard",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 400000,
+            "_id": "4cO4217jXSa2GALO",
+            "folder": null
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.tlRu8SYjzA7WCHN7" },
+            "name": "Scribe Scroll",
+            "system": {
+              "sources": [{ "id": "PZO1110", "pages": "117, 133" }],
+              "subType": "feat",
+              "tags": ["General", "Item Creation"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": { "pf1": { "source": "Compendium.pf1.feats.Item.tlRu8SYjzA7WCHN7" } },
+            "sort": 600000,
+            "_id": "UIt1wrjntrvQDEQt",
+            "folder": null
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.items.Item.onurpjwtdogsedsg" },
+            "name": "Spellbook",
+            "system": {
+              "equipped": false,
+              "hp": { "base": 10 },
+              "price": { "base": 15, "unit": "gp" },
+              "quantity": 1,
+              "sources": [
+                { "id": "PZO1123", "pages": "77" },
+                { "id": "PZO1110", "pages": "158, 161" }
+              ],
+              "subType": "tool",
+              "weight": { "value": 3 }
+            },
+            "type": "loot",
+            "effects": [],
+            "flags": { "pf1": { "source": "Compendium.pf1.items.Item.onurpjwtdogsedsg" } },
+            "sort": 0,
+            "_id": "kswlnjvEHqWIDRVe",
+            "folder": null
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.8snLqsJN4LLL00Nq" },
+            "name": "Toughness",
+            "system": {
+              "changes": {
+                "bl5pemy2": {
+                  "_id": "bl5pemy2",
+                  "formula": "max(3, @attributes.hd.total)",
+                  "target": "mhp",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "116, 135" }],
+              "subType": "feat",
+              "tags": ["General", "Defensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "IPNBCpjsgvPSVBAq",
+            "sort": 0
+          }
+        ],
+        "effects": [],
+        "sort": 0,
+        "flags": {}
+      },
+      "derived": {
+        "abilities": {
+          "str": { "total": 6, "mod": -2 },
+          "dex": { "total": 14, "mod": 2 },
+          "con": { "total": 16, "mod": 3 },
+          "int": { "total": 16, "mod": 3 },
+          "wis": { "total": 10, "mod": 0 },
+          "cha": { "total": 12, "mod": 1 }
+        },
+        "ac": { "normal": 13, "touch": 13, "flatFooted": 11 },
+        "cmb": -3,
+        "cmd": { "total": 9, "flatFooted": 7 },
+        "saves": { "fort": 3, "ref": 2, "will": 2 },
+        "init": 2,
+        "bab": 0,
+        "attack": { "melee": -1, "ranged": 3 },
+        "hp": { "max": 12 },
+        "speed": { "land": 20 },
+        "sr": 0,
+        "acp": 0,
+        "skills": {
+          "perception": 3,
+          "knowledge": 3,
+          "knowledge.geography": 3,
+          "knowledge.nobility": 3,
+          "knowledge.local": 3,
+          "knowledge.dungeoneering": 3,
+          "knowledge.religion": 3,
+          "knowledge.nature": 3,
+          "knowledge.arcana": 7,
+          "knowledge.history": 3,
+          "knowledge.planes": 3,
+          "knowledge.engineering": 3,
+          "intimidate": 1,
+          "appraise": 3,
+          "profession": 0,
+          "fly": 8,
+          "disableDevice": 2,
+          "swim": -2,
+          "escapeArtist": 2,
+          "linguistics": 3,
+          "acrobatics": 2,
+          "useMagicDevice": 1,
+          "climb": -2,
+          "sleightOfHand": 2,
+          "handleAnimal": 1,
+          "heal": 0,
+          "spellcraft": 7,
+          "ride": 2,
+          "stealth": 6,
+          "survival": 0,
+          "craft": 3,
+          "disguise": 1,
+          "diplomacy": 1,
+          "senseMotive": 1,
+          "perform": 1,
+          "bluff": 1
+        }
+      }
+    },
+    "enlarge": {
+      "actor": {
+        "name": "gnome-wizard-1 [enlarge]",
+        "type": "character",
+        "folder": "GuYuyoqdabfe4xZV",
+        "_id": "RySaxT7ZLe0Fi2bi",
+        "system": {
+          "abilities": {
+            "str": { "value": 8 },
+            "dex": { "value": 14 },
+            "con": { "value": 14 },
+            "int": { "value": 16 },
+            "wis": { "value": 10 },
+            "cha": { "value": 10 }
+          },
+          "attributes": {
+            "savingThrows": {
+              "fort": { "ability": "con" },
+              "ref": { "ability": "dex" },
+              "will": { "ability": "wis" }
+            },
+            "hp": { "temp": 0, "nonlethal": 0, "offset": 0 },
+            "wounds": { "offset": 0 },
+            "vigor": { "temp": 0, "offset": 0 }
+          },
+          "details": { "notes": {}, "xp": { "value": 0 }, "alignment": "ng" },
+          "traits": { "size": "sm", "ageCategory": "adult", "stature": "tall" },
+          "currency": {},
+          "altCurrency": {}
+        },
+        "items": [
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.5WivCl3kkGv5iNiz" },
+            "name": "Perception",
+            "system": {
+              "ability": "wis",
+              "identifier": "perception",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.2h6hz5AkTDxKPFxr",
+              "sets": ["adventure"],
+              "rank": 1,
+              "acp": false,
+              "rt": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "32QpyvY3krCihTyx",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.AGrCZyOwda8TKDKb" },
+            "name": "Fly",
+            "system": {
+              "ability": "dex",
+              "acp": true,
+              "identifier": "fly",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.iH69GIwm8BjecrPN",
+              "sets": ["adventure"],
+              "rank": 1,
+              "rt": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "pQ9goNu9wsa6WfmM",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.az8CVJgEw3BFJpgG" },
+            "name": "Arcana",
+            "system": {
+              "ability": "int",
+              "grouping": "knowledge",
+              "identifier": "arcana",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.BWeqgXSZvUQl68vt",
+              "rt": true,
+              "sets": ["adventure"],
+              "rank": 1,
+              "acp": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "6xnZhoVAtRs5JSPt",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.iLD7iQ9Y6FNLpXZc" },
+            "name": "Spellcraft",
+            "system": {
+              "ability": "int",
+              "identifier": "spellcraft",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.VRD7jxiIAxKPt6EF",
+              "rt": true,
+              "sets": ["adventure"],
+              "rank": 1,
+              "acp": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "UXA1tkN9Vqjkn0tB",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.races.Item.efwHEwjvL9Z94MJI" },
+            "folder": "RWSoA7Fj9yqo0y9U",
+            "name": "Gnome",
+            "system": {
+              "changeFlags": ["lowLightVision"],
+              "changes": {
+                "1yu39n9h": {
+                  "_id": "1yu39n9h",
+                  "formula": "2",
+                  "target": "cha",
+                  "type": "racial"
+                },
+                "cssv57sq": {
+                  "_id": "cssv57sq",
+                  "formula": "2",
+                  "target": "skill.perception",
+                  "type": "racial"
+                },
+                "kezkn3k4": {
+                  "_id": "kezkn3k4",
+                  "formula": "2",
+                  "target": "con",
+                  "type": "racial"
+                },
+                "pi8lg4y1": {
+                  "_id": "pi8lg4y1",
+                  "formula": "-2",
+                  "target": "str",
+                  "type": "racial"
+                }
+              },
+              "contextNotes": {
+                "2VVtubnj9rrf3z3Q": {
+                  "target": "allSavingThrows",
+                  "text": "+[[2]] Racial vs Illusion Effects"
+                },
+                "8VYecivoJ8BlCNQm": {
+                  "target": "attack",
+                  "text": "+[[1]] Racial vs Humanoids (Reptillian, Goblinoid)"
+                },
+                "wAewWcmcsFaUYtuL": { "target": "ac", "text": "+[[4]] Dodge vs Giants" }
+              },
+              "creatureSubtypes": ["gnome"],
+              "creatureTypes": ["humanoid"],
+              "languages": ["common", "gnome", "sylvan"],
+              "size": "sm",
+              "sources": [{ "id": "PZO1110", "pages": "23" }],
+              "speeds": { "land": 20 },
+              "tags": ["Core"]
+            },
+            "type": "race",
+            "effects": [],
+            "flags": {},
+            "_id": "n6iA0IOHQAxtdzpM",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.classes.Item.0c4lYDywj6bQ0i8r" },
+            "name": "Wizard",
+            "system": {
+              "bab": "low",
+              "casting": {
+                "ability": "int",
+                "cantrips": true,
+                "domain": 1,
+                "progression": "high",
+                "spells": "arcane",
+                "type": "prepared"
+              },
+              "classSkills": [
+                "appraise",
+                "artistry",
+                "craft",
+                "fly",
+                "knowledge",
+                "linguistics",
+                "lore",
+                "profession",
+                "spellcraft"
+              ],
+              "hd": 6,
+              "hp": 6,
+              "level": 1,
+              "links": {
+                "supplements": [
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.pW1PNlDcdGl7KuEa" },
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.20JWTam2dn7jjZFV" },
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.BS9WDbCy2Up3QHw9" },
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.IPy4aqFYbOppaqKC" },
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.4wdsdOkgv4uEkS9K" },
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.LrjNAKP05lZq2tZZ" },
+                  { "level": 5, "uuid": "Compendium.pf1.class-abilities.Item.2h3lI574tmVjOalQ" }
+                ]
+              },
+              "savingThrows": {
+                "fort": { "value": "low" },
+                "ref": { "value": "low" },
+                "will": { "value": "high" }
+              },
+              "skillsPerLevel": 2,
+              "sources": [{ "id": "PZO1110", "pages": "77-83" }],
+              "subType": "base",
+              "tag": "wizard",
+              "wealth": "2d6 * 10",
+              "weaponProf": ["Club", "Dagger", "Heavy Crossbow", "Light Crossbow", "Quarterstaff"]
+            },
+            "type": "class",
+            "effects": [],
+            "folder": null,
+            "flags": {
+              "pf1": {
+                "links": {
+                  "classAssociations": {
+                    "Xbdq1glvTHY0SGpt": 1,
+                    "rK0tBmsy2c55bNAJ": 1,
+                    "UrYFaRnFpUlGes2k": 1,
+                    "9CkBi2fvTdK8CqNL": 1,
+                    "5EgGrsqVzNq1wOhP": 1,
+                    "b6S9a4F2qndVIE46": 1
+                  }
+                }
+              }
+            },
+            "_id": "1yTMU3KXjAuJ95Aw",
+            "sort": 0
+          },
+          {
+            "name": "Wizard",
+            "type": "spellcasting",
+            "system": {
+              "identifier": "wizard",
+              "kind": "arcane",
+              "class": "wizard",
+              "type": "prepared",
+              "scale": "high",
+              "ability": "int",
+              "asf": { "enabled": true },
+              "cantrips": { "enabled": true },
+              "slots": { "domain": { "formula": 1 }, "auto": true, "ability": { "auto": true } },
+              "cl": { "formula": "" },
+              "casts": {},
+              "preparation": {},
+              "concentration": {},
+              "dc": {},
+              "spellPoints": { "enabled": false, "offset": 0 },
+              "levels": {
+                "0": {},
+                "1": {},
+                "2": {},
+                "3": {},
+                "4": {},
+                "5": {},
+                "6": {},
+                "7": {},
+                "8": {},
+                "9": {}
+              },
+              "restrictions": []
+            },
+            "_id": "2CcTy7BfSenPBPnn",
+            "effects": [],
+            "folder": null,
+            "sort": 0,
+            "flags": {},
+            "_stats": { "compendiumSource": null }
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.pW1PNlDcdGl7KuEa"
+            },
+            "name": "Arcane Bond",
+            "system": {
+              "associations": { "classes": ["Wizard"] },
+              "sources": [{ "id": "PZO1110", "pages": "78" }],
+              "subType": "classFeat",
+              "class": "wizard",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 100000,
+            "_id": "Xbdq1glvTHY0SGpt",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.BS9WDbCy2Up3QHw9"
+            },
+            "name": "Scribe Scroll",
+            "system": {
+              "associations": { "classes": ["Wizard", "Skald"] },
+              "changes": {
+                "grspmq57": {
+                  "_id": "grspmq57",
+                  "formula": "1",
+                  "target": "bonusFeats",
+                  "type": "untyped"
+                }
+              },
+              "links": {
+                "supplements": [{ "uuid": "Compendium.pf1.feats.Item.tlRu8SYjzA7WCHN7" }],
+                "children": [{ "uuid": ".Item.FbcVV531SemwpWfn" }]
+              },
+              "sources": [{ "id": "PZO1110", "pages": "79" }],
+              "subType": "classFeat",
+              "class": "wizard",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 300000,
+            "_id": "rK0tBmsy2c55bNAJ",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.IPy4aqFYbOppaqKC"
+            },
+            "name": "Cantrips",
+            "system": {
+              "associations": {
+                "classes": [
+                  "Arcanist",
+                  "Bard",
+                  "Magus",
+                  "Skald",
+                  "Sorcerer",
+                  "Summoner",
+                  "Summoner (Unchained)",
+                  "Witch",
+                  "Wizard"
+                ]
+              },
+              "sources": [
+                { "id": "PZO1110", "pages": "34, 70, 77" },
+                { "id": "PZO1115", "pages": "54, 65" },
+                { "id": "PZO1117", "pages": "9" },
+                { "id": "PZO1131", "pages": "25" },
+                { "id": "PZO1129", "pages": "8, 49" }
+              ],
+              "subType": "classFeat",
+              "class": "wizard",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 400000,
+            "_id": "UrYFaRnFpUlGes2k",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.4wdsdOkgv4uEkS9K"
+            },
+            "name": "Spellbooks (WIZ)",
+            "system": {
+              "associations": { "classes": ["Wizard"] },
+              "links": {
+                "supplements": [{ "uuid": "Compendium.pf1.items.Item.onurpjwtdogsedsg" }],
+                "children": [{ "uuid": ".Item.22Tl7bXZpcc26zGr" }]
+              },
+              "sources": [{ "id": "PZO1110", "pages": "79" }],
+              "subType": "classFeat",
+              "class": "wizard",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 500000,
+            "_id": "9CkBi2fvTdK8CqNL",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.LrjNAKP05lZq2tZZ"
+            },
+            "name": "Wizard Spells",
+            "system": {
+              "associations": { "classes": ["Wizard"] },
+              "sources": [{ "id": "PZO1110", "pages": "77" }],
+              "subType": "classFeat",
+              "class": "wizard",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 600000,
+            "_id": "5EgGrsqVzNq1wOhP",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.20JWTam2dn7jjZFV"
+            },
+            "name": "Arcane School",
+            "system": {
+              "associations": { "classes": ["Wizard"] },
+              "sources": [{ "id": "PZO1110", "pages": "78-79, 79-82" }],
+              "subType": "classFeat",
+              "class": "wizard",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 200000,
+            "_id": "b6S9a4F2qndVIE46",
+            "folder": null
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.tlRu8SYjzA7WCHN7" },
+            "name": "Scribe Scroll",
+            "system": {
+              "sources": [{ "id": "PZO1110", "pages": "117, 133" }],
+              "subType": "feat",
+              "tags": ["General", "Item Creation"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": { "pf1": { "source": "Compendium.pf1.feats.Item.tlRu8SYjzA7WCHN7" } },
+            "sort": 600000,
+            "_id": "FbcVV531SemwpWfn",
+            "folder": null
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.items.Item.onurpjwtdogsedsg" },
+            "name": "Spellbook",
+            "system": {
+              "equipped": false,
+              "hp": { "base": 10 },
+              "price": { "base": 15, "unit": "gp" },
+              "quantity": 1,
+              "sources": [
+                { "id": "PZO1123", "pages": "77" },
+                { "id": "PZO1110", "pages": "158, 161" }
+              ],
+              "subType": "tool",
+              "weight": { "value": 3 }
+            },
+            "type": "loot",
+            "effects": [],
+            "flags": { "pf1": { "source": "Compendium.pf1.items.Item.onurpjwtdogsedsg" } },
+            "sort": 0,
+            "_id": "22Tl7bXZpcc26zGr",
+            "folder": null
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.8snLqsJN4LLL00Nq" },
+            "name": "Toughness",
+            "system": {
+              "changes": {
+                "bl5pemy2": {
+                  "_id": "bl5pemy2",
+                  "formula": "max(3, @attributes.hd.total)",
+                  "target": "mhp",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "116, 135" }],
+              "subType": "feat",
+              "tags": ["General", "Defensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "aIw3ahkk33SUj37g",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.buffs.Item.1ovEWVzSp5yZXeVm" },
+            "folder": "abSp08elNrsecBYc",
+            "name": "Enlarge Person",
+            "system": {
+              "changes": {
+                "0mV4oumV": { "_id": "0mV4oumV", "formula": "-2", "target": "dex", "type": "size" },
+                "Arn47LiL": {
+                  "_id": "Arn47LiL",
+                  "formula": "-2",
+                  "target": "carryStr",
+                  "type": "untyped"
+                },
+                "LgrZLyFq": {
+                  "_id": "LgrZLyFq",
+                  "formula": "-0.5",
+                  "target": "carryMult",
+                  "type": "untyped"
+                },
+                "MnTVtnTS": {
+                  "_id": "MnTVtnTS",
+                  "formula": "1",
+                  "target": "size",
+                  "type": "untyped"
+                },
+                "xRCU1fzc": { "_id": "xRCU1fzc", "formula": "2", "target": "str", "type": "size" }
+              },
+              "duration": { "end": "initiative", "units": "minute", "value": "@item.level" },
+              "level": 1,
+              "sources": [{ "id": "PZO1110", "pages": "277, 278" }],
+              "subType": "spell",
+              "active": true
+            },
+            "type": "buff",
+            "effects": [],
+            "flags": {},
+            "_id": "URR0GZv12gjA4moV",
+            "sort": 0
+          }
+        ],
+        "effects": [],
+        "sort": 0,
+        "flags": {}
+      },
+      "derived": {
+        "abilities": {
+          "str": { "total": 8, "mod": -1 },
+          "dex": { "total": 12, "mod": 1 },
+          "con": { "total": 16, "mod": 3 },
+          "int": { "total": 16, "mod": 3 },
+          "wis": { "total": 10, "mod": 0 },
+          "cha": { "total": 12, "mod": 1 }
+        },
+        "ac": { "normal": 11, "touch": 11, "flatFooted": 10 },
+        "cmb": -1,
+        "cmd": { "total": 10, "flatFooted": 9 },
+        "saves": { "fort": 3, "ref": 1, "will": 2 },
+        "init": 1,
+        "bab": 0,
+        "attack": { "melee": -1, "ranged": 1 },
+        "hp": { "max": 12 },
+        "speed": { "land": 20 },
+        "sr": 0,
+        "acp": 0,
+        "skills": {
+          "perception": 3,
+          "knowledge": 3,
+          "knowledge.geography": 3,
+          "knowledge.nobility": 3,
+          "knowledge.local": 3,
+          "knowledge.dungeoneering": 3,
+          "knowledge.religion": 3,
+          "knowledge.nature": 3,
+          "knowledge.arcana": 7,
+          "knowledge.history": 3,
+          "knowledge.planes": 3,
+          "knowledge.engineering": 3,
+          "intimidate": 1,
+          "appraise": 3,
+          "profession": 0,
+          "fly": 5,
+          "disableDevice": 1,
+          "swim": -1,
+          "escapeArtist": 1,
+          "linguistics": 3,
+          "acrobatics": 1,
+          "useMagicDevice": 1,
+          "climb": -1,
+          "sleightOfHand": 1,
+          "handleAnimal": 1,
+          "heal": 0,
+          "spellcraft": 7,
+          "ride": 1,
+          "stealth": 1,
+          "survival": 0,
+          "craft": 3,
+          "disguise": 1,
+          "diplomacy": 1,
+          "senseMotive": 1,
+          "perform": 1,
+          "bluff": 1
+        }
+      }
+    }
+  }
+}

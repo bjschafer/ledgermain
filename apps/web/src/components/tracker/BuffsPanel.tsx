@@ -281,7 +281,7 @@ function formulaHint(
  * Compact "this buff has effects the sheet can't apply" flag. Shown whenever
  * a buff's changes include a target `compute()` doesn't consume (see
  * `@pf1/engine`'s targets.ts) — e.g. Spell Resistance's `spellResist` or
- * Divine Power's `strChecks`/`strSkills`. Non-blocking, matches the existing
+ * Divine Power's `strChecks`. Non-blocking, matches the existing
  * `.soft` prose-prereq warning style.
  */
 /**

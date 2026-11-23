@@ -1,0 +1,2109 @@
+{
+  "foundry": { "core": "14.370", "system": "11.11" },
+  "spec": {
+    "id": "human-fighter-1",
+    "race": "Human",
+    "flexibleAbility": "str",
+    "alignment": "ln",
+    "abilities": { "str": 16, "dex": 14, "con": 14, "int": 10, "wis": 12, "cha": 8 },
+    "classes": [{ "name": "Fighter", "level": 1, "hp": 10 }],
+    "feats": ["Power Attack", "Dodge", "Toughness"],
+    "skills": { "climb": 1, "intimidate": 1 },
+    "items": [
+      { "pack": "pf1.armors-and-shields", "name": "Scale Mail", "equipped": true },
+      { "pack": "pf1.armors-and-shields", "name": "Heavy Steel Shield", "equipped": true },
+      { "pack": "pf1.weapons-and-ammo", "name": "Longsword", "equipped": true },
+      { "pack": "pf1.weapons-and-ammo", "name": "Greatsword", "equipped": true },
+      { "pack": "pf1.items", "name": "Backpack, common", "equipped": true },
+      { "pack": "pf1.items", "name": "Bedroll", "equipped": true },
+      { "pack": "pf1.items", "name": "Rope", "equipped": true },
+      { "pack": "pf1.items", "name": "Grappling hook, common", "equipped": true },
+      { "pack": "pf1.items", "name": "Waterskin", "equipped": true },
+      { "pack": "pf1.items", "name": "Anvil, blacksmith (100 lbs)", "equipped": true },
+      { "pack": "pf1.items", "name": "Chest, medium", "equipped": true }
+    ],
+    "scenarios": {
+      "base": {},
+      "buffs": { "buffs": [{ "name": "Bless", "level": 1 }] },
+      "conditions": { "conditions": ["shaken"] }
+    }
+  },
+  "scenarios": {
+    "base": {
+      "actor": {
+        "name": "human-fighter-1 [base]",
+        "type": "character",
+        "folder": "GuYuyoqdabfe4xZV",
+        "_id": "qprAYLnkgDhMSaT3",
+        "system": {
+          "abilities": {
+            "str": { "value": 16 },
+            "dex": { "value": 14 },
+            "con": { "value": 14 },
+            "int": { "value": 10 },
+            "wis": { "value": 12 },
+            "cha": { "value": 8 }
+          },
+          "attributes": {
+            "savingThrows": {
+              "fort": { "ability": "con" },
+              "ref": { "ability": "dex" },
+              "will": { "ability": "wis" }
+            },
+            "hp": { "temp": 0, "nonlethal": 0, "offset": 0 },
+            "wounds": { "offset": 0 },
+            "vigor": { "temp": 0, "offset": 0 }
+          },
+          "details": { "notes": {}, "xp": { "value": 0 }, "alignment": "ln" },
+          "traits": { "size": "med", "ageCategory": "adult", "stature": "tall" },
+          "currency": {},
+          "altCurrency": {}
+        },
+        "items": [
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.6cOI6UozWx1PeOnr" },
+            "name": "Intimidate",
+            "system": {
+              "ability": "cha",
+              "identifier": "intimidate",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.KNn8uxHu23phKC0y",
+              "sets": ["adventure"],
+              "rank": 1,
+              "acp": false,
+              "rt": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "xDmlH4Faa4cWCs7Q",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.NbW51ORcxEJnEY8H" },
+            "name": "Climb",
+            "system": {
+              "ability": "str",
+              "acp": true,
+              "identifier": "climb",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.ZAwjVOTwsBpZRgw4",
+              "sets": ["adventure"],
+              "rank": 1,
+              "rt": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "A7YrwJzNjQZPg3jV",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.races.Item.e6IaBxKgMxy1yKlr" },
+            "folder": "RWSoA7Fj9yqo0y9U",
+            "name": "Human",
+            "system": {
+              "changes": {
+                "ahb0k14u": {
+                  "_id": "ahb0k14u",
+                  "formula": "@attributes.hd.total",
+                  "target": "bonusSkillRanks",
+                  "type": "untyped"
+                },
+                "ywxkp0hu": {
+                  "_id": "ywxkp0hu",
+                  "formula": "1",
+                  "target": "bonusFeats",
+                  "type": "untyped"
+                },
+                "lmflex01": { "_id": "lmflex01", "formula": "2", "target": "str", "type": "racial" }
+              },
+              "creatureSubtypes": ["human"],
+              "creatureTypes": ["humanoid"],
+              "languages": ["common"],
+              "size": "med",
+              "sources": [{ "id": "PZO1110", "pages": "27" }],
+              "speeds": { "land": 30 },
+              "tags": [
+                "Core",
+                "Western (Arcadia)",
+                "Eastern (Casmaron)",
+                "Northern (Crown of the World)",
+                "Southern (Garund)"
+              ]
+            },
+            "type": "race",
+            "effects": [],
+            "flags": {},
+            "_id": "kHueWgf9TkYm3FRX",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.classes.Item.WLqBCT5DqmGAx8Wd" },
+            "name": "Fighter",
+            "system": {
+              "armorProf": ["lgt", "med", "hvy", "shl", "twr"],
+              "bab": "high",
+              "classSkills": [
+                "artistry",
+                "climb",
+                "craft",
+                "handleAnimal",
+                "intimidate",
+                "knowledge.dungeoneering",
+                "knowledge.engineering",
+                "lore",
+                "profession",
+                "ride",
+                "survival",
+                "swim"
+              ],
+              "hd": 10,
+              "hp": 10,
+              "level": 1,
+              "links": {
+                "supplements": [
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.CV8BsY3ciUb9TA1Y" },
+                  { "level": 2, "uuid": "Compendium.pf1.class-abilities.Item.h0Brxw6khcjlEf1T" },
+                  { "level": 3, "uuid": "Compendium.pf1.class-abilities.Item.5JFfSqLMCpbRmERa" },
+                  { "level": 5, "uuid": "Compendium.pf1.class-abilities.Item.RzEzudurxQFirFoF" },
+                  { "level": 7, "uuid": "Compendium.pf1.class-abilities.Item.iqeyCQIIVnNt0p3h" },
+                  { "level": 20, "uuid": "Compendium.pf1.class-abilities.Item.McXAM1BoPHZLO1n4" }
+                ]
+              },
+              "savingThrows": {
+                "fort": { "value": "high" },
+                "ref": { "value": "low" },
+                "will": { "value": "low" }
+              },
+              "skillsPerLevel": 2,
+              "sources": [{ "id": "PZO1110", "pages": "55-56" }],
+              "subType": "base",
+              "tag": "fighter",
+              "wealth": "5d6 * 10",
+              "weaponProf": ["simple", "martial"]
+            },
+            "type": "class",
+            "effects": [],
+            "folder": null,
+            "flags": { "pf1": { "links": { "classAssociations": { "6YoEofhMmhXquztn": 1 } } } },
+            "_id": "mnaDh6oHm7sqFaNX",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.CV8BsY3ciUb9TA1Y"
+            },
+            "name": "Bonus Feats (FGT)",
+            "system": {
+              "associations": { "classes": ["Fighter"] },
+              "changes": {
+                "yoxm5fp1": {
+                  "_id": "yoxm5fp1",
+                  "formula": "1 + floor(@class.unlevel / 2)",
+                  "target": "bonusFeats",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "55" }],
+              "subType": "classFeat",
+              "class": "fighter",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 100000,
+            "_id": "6YoEofhMmhXquztn",
+            "folder": null
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.FUW5mIXHNBBIQ1Sq" },
+            "name": "Power Attack",
+            "system": {
+              "changeFlags": ["powerAttack"],
+              "sources": [{ "id": "PZO1110", "pages": "116, 131" }],
+              "subType": "feat",
+              "tags": ["Combat", "Offensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "jGhBSTPAok4cBamy",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.JreaiTHdyWFNj3Tb" },
+            "name": "Dodge",
+            "system": {
+              "changes": {
+                "9onhsept": { "_id": "9onhsept", "formula": "1", "target": "ac", "type": "dodge" }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "114, 122" }],
+              "subType": "feat",
+              "tags": ["Combat", "Defensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "hNdlWXjHqh8bCWOe",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.8snLqsJN4LLL00Nq" },
+            "name": "Toughness",
+            "system": {
+              "changes": {
+                "bl5pemy2": {
+                  "_id": "bl5pemy2",
+                  "formula": "max(3, @attributes.hd.total)",
+                  "target": "mhp",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "116, 135" }],
+              "subType": "feat",
+              "tags": ["General", "Defensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "PuOXdBofom3z66p4",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.armors-and-shields.Item.2fK608aSYU9QDmzw"
+            },
+            "folder": "DtVJVwL87ELQxk7u",
+            "name": "Heavy Steel Shield",
+            "system": {
+              "actions": {
+                "6JirvCBGQLj1EafK": {
+                  "_id": "6JirvCBGQLj1EafK",
+                  "ability": { "attack": "str", "critMult": 2, "critRange": 20, "damage": "str" },
+                  "actionType": "mwak",
+                  "activation": { "type": "attack", "unchained": { "type": "attack" } },
+                  "damage": {
+                    "parts": [{ "formula": "sizeRoll(1, 4, @size)", "types": ["bludgeoning"] }]
+                  },
+                  "duration": { "units": "inst" },
+                  "extraAttacks": { "type": "standard" },
+                  "name": "Bash",
+                  "range": { "units": "melee" },
+                  "sort": 0
+                }
+              },
+              "armor": {
+                "acp": 2,
+                "material": { "base": { "value": "steel" }, "addon": [] },
+                "value": 2,
+                "alignments": {}
+              },
+              "equipmentSubtype": "heavyShield",
+              "equipped": true,
+              "hardness": 10,
+              "hp": { "base": 20 },
+              "price": { "base": 20, "unit": "gp" },
+              "quantity": 1,
+              "slot": "shield",
+              "sources": [{ "id": "PZO1110", "pages": "142, 148, 151-152" }],
+              "spellFailure": 15,
+              "subType": "shield",
+              "weight": { "value": 15 },
+              "mods": {}
+            },
+            "type": "equipment",
+            "effects": [],
+            "flags": {},
+            "_id": "Jdy8ahiSGp3mnfcf",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.weapons-and-ammo.Item.zWRlna42PMJVX6un"
+            },
+            "folder": "ojvASzhaCGmnx8xQ",
+            "name": "Longsword",
+            "system": {
+              "actions": {
+                "jelb63mz9vrxa43c": {
+                  "_id": "jelb63mz9vrxa43c",
+                  "ability": {
+                    "attack": "_default",
+                    "critMult": 2,
+                    "critRange": 19,
+                    "damage": "str"
+                  },
+                  "actionType": "mwak",
+                  "activation": { "type": "attack", "unchained": { "type": "attack" } },
+                  "damage": {
+                    "parts": [{ "formula": "sizeRoll(1, 8, @size)", "types": ["slashing"] }]
+                  },
+                  "duration": { "units": "inst" },
+                  "extraAttacks": { "type": "standard" },
+                  "name": "Attack",
+                  "range": { "units": "melee", "value": "0" },
+                  "sort": 0
+                }
+              },
+              "baseTypes": ["Longsword"],
+              "equipped": true,
+              "hardness": 10,
+              "hp": { "base": 5 },
+              "material": { "base": { "value": "steel" }, "addon": [] },
+              "price": { "base": 15, "unit": "gp" },
+              "quantity": 1,
+              "sources": [
+                { "id": "PZO1110", "pages": "142, 147" },
+                { "id": "PZO1123", "pages": "18" }
+              ],
+              "subType": "martial",
+              "tags": ["Eastern"],
+              "weaponGroups": ["bladesHeavy"],
+              "weaponSubtype": "1h",
+              "weight": { "value": 4 },
+              "alignments": {},
+              "mods": {}
+            },
+            "type": "weapon",
+            "effects": [],
+            "flags": {},
+            "_id": "ip5rRsbm7wnZrisu",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.weapons-and-ammo.Item.oyUApQSVsAqzyjdz"
+            },
+            "folder": "ojvASzhaCGmnx8xQ",
+            "name": "Greatsword",
+            "system": {
+              "actions": {
+                "137kuv1fu5ds6swb": {
+                  "_id": "137kuv1fu5ds6swb",
+                  "ability": {
+                    "attack": "_default",
+                    "critMult": 2,
+                    "critRange": 19,
+                    "damage": "str"
+                  },
+                  "actionType": "mwak",
+                  "activation": { "type": "attack", "unchained": { "type": "attack" } },
+                  "damage": {
+                    "parts": [{ "formula": "sizeRoll(2, 6, @size)", "types": ["slashing"] }]
+                  },
+                  "duration": { "units": "inst" },
+                  "extraAttacks": { "type": "standard" },
+                  "name": "Attack",
+                  "range": { "units": "melee", "value": "0" },
+                  "sort": 0
+                }
+              },
+              "baseTypes": ["Greatsword"],
+              "equipped": true,
+              "hands": 2,
+              "hardness": 10,
+              "held": "2h",
+              "hp": { "base": 10 },
+              "material": { "base": { "value": "steel" }, "addon": [] },
+              "price": { "base": 50, "unit": "gp" },
+              "quantity": 1,
+              "sources": [
+                { "id": "PZO1110", "pages": "143, 146" },
+                { "id": "PZO1123", "pages": "18" }
+              ],
+              "subType": "martial",
+              "weaponGroups": ["bladesHeavy"],
+              "weaponSubtype": "2h",
+              "weight": { "value": 8 },
+              "alignments": {},
+              "mods": {}
+            },
+            "type": "weapon",
+            "effects": [],
+            "flags": {},
+            "_id": "4KrSySVpsGLoNA5P",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.items.Item.1BaxoJjpGn6D7Jk0" },
+            "flags": { "pf1": { "container": "xHQnf15yV6edm5lz" } },
+            "folder": "1uDzTmqE6tgpIano",
+            "name": "Backpack, common",
+            "system": {
+              "hp": { "base": 10 },
+              "price": { "base": 2, "unit": "gp" },
+              "quantity": 1,
+              "sources": [{ "id": "PZO1123", "pages": "58" }],
+              "weight": { "value": 2 },
+              "equipped": true
+            },
+            "type": "container",
+            "effects": [],
+            "_id": "2SDBeOSQtvnE3jtE",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.items.Item.0knejgHKvvzByqNH" },
+            "flags": { "pf1": { "container": "eRkG1d4hKYEgxuRa" } },
+            "folder": "1uDzTmqE6tgpIano",
+            "name": "Bedroll",
+            "system": {
+              "equipped": true,
+              "hp": { "base": 10 },
+              "price": { "base": 1, "unit": "sp" },
+              "quantity": 1,
+              "sources": [
+                { "id": "PZO1123", "pages": "56" },
+                { "id": "PZO1110", "pages": "158" }
+              ],
+              "subType": "adventuring",
+              "weight": { "value": 5 }
+            },
+            "type": "loot",
+            "effects": [],
+            "_id": "WlZBopCzhj1b8i20",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.items.Item.72WQloAVgsJK42Bz" },
+            "flags": { "pf1": { "container": "gsNpMbSOoLgSHSIl" } },
+            "folder": "1uDzTmqE6tgpIano",
+            "name": "Rope",
+            "system": {
+              "equipped": true,
+              "hp": { "base": 2 },
+              "price": { "base": 1, "unit": "gp" },
+              "quantity": 1,
+              "sources": [
+                { "id": "PZO1123", "pages": "58, 70" },
+                { "id": "PZO1110", "pages": "157, 158" }
+              ],
+              "subType": "adventuring",
+              "weight": { "value": 10 }
+            },
+            "type": "loot",
+            "effects": [],
+            "_id": "gSpHX3Qm6P4YKDZa",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.items.Item.gnynrdudvahpbxkz" },
+            "folder": "BzkdxtDgGZ96mdwR",
+            "name": "Grappling hook, common",
+            "system": {
+              "actions": {
+                "Vl2OjpyOzAneEcmO": {
+                  "_id": "Vl2OjpyOzAneEcmO",
+                  "ability": { "critMult": 2, "critRange": 20 },
+                  "actionType": "twak",
+                  "activation": { "type": "attack", "unchained": { "type": "attack" } },
+                  "name": "Throw",
+                  "range": { "maxIncrements": 5, "units": "ft", "value": "10" },
+                  "sort": 0
+                }
+              },
+              "equipped": true,
+              "hp": { "base": 10 },
+              "price": { "base": 1, "unit": "gp" },
+              "quantity": 1,
+              "sources": [
+                { "id": "PZO1123", "pages": "57, 65" },
+                { "id": "PZO1110", "pages": "155, 158" }
+              ],
+              "subType": "adventuring",
+              "weight": { "value": 4 }
+            },
+            "type": "loot",
+            "effects": [],
+            "flags": {},
+            "_id": "HfsrIVsC7vPBu6Pt",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.items.Item.1HuqT5PUwrN04Ofe" },
+            "flags": { "pf1": { "container": "NSMSSJ0Gd82OdHtd" } },
+            "folder": "1uDzTmqE6tgpIano",
+            "name": "Waterskin",
+            "system": {
+              "equipped": true,
+              "hp": { "base": 10 },
+              "price": { "base": 1, "unit": "gp" },
+              "quantity": 1,
+              "sources": [
+                { "id": "PZO1123", "pages": "58" },
+                { "id": "PZO1110", "pages": "158" }
+              ],
+              "subType": "adventuring",
+              "weight": { "value": 4 }
+            },
+            "type": "loot",
+            "effects": [],
+            "_id": "TXqKFMtxhmJQ5s1q",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.items.Item.5vrvV8Z68dhHLjAX" },
+            "folder": "hN7XSgK640IpD3iM",
+            "name": "Anvil, blacksmith (100 lbs)",
+            "system": {
+              "equipped": true,
+              "hp": { "base": 10 },
+              "price": { "base": 5, "unit": "gp" },
+              "quantity": 1,
+              "sources": [
+                { "id": "PZO1123", "pages": "77" },
+                { "id": "PZO9410", "pages": "19" },
+                { "id": "PZO1115", "pages": "184" }
+              ],
+              "subType": "tool",
+              "weight": { "value": 100 }
+            },
+            "type": "loot",
+            "effects": [],
+            "flags": {},
+            "_id": "O8U2Q51SBpRKFD4k",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.items.Item.dm72XBYOw8W3VGdU" },
+            "folder": "BzkdxtDgGZ96mdwR",
+            "name": "Chest, medium",
+            "system": {
+              "equipped": true,
+              "hp": { "base": 15 },
+              "price": { "base": 5, "unit": "gp" },
+              "quantity": 1,
+              "sources": [
+                { "id": "PZO1123", "pages": "56" },
+                { "id": "PZO1115", "pages": "181" },
+                { "id": "PZO9410", "pages": "19" },
+                { "id": "PZO1110", "pages": "158" }
+              ],
+              "weight": { "value": 50 }
+            },
+            "type": "container",
+            "effects": [],
+            "flags": {},
+            "_id": "nbykr6lSA110ylHW",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.armors-and-shields.Item.nnDSj5NxUb9Q8z8S"
+            },
+            "folder": "33jGfHlDL34jvwnX",
+            "name": "Scale Mail",
+            "system": {
+              "armor": {
+                "acp": 4,
+                "dex": 3,
+                "material": { "base": { "value": "steel" }, "addon": [] },
+                "value": 5,
+                "alignments": {}
+              },
+              "baseTypes": ["Scale Mail"],
+              "equipmentSubtype": "mediumArmor",
+              "equipped": true,
+              "hardness": 10,
+              "hp": { "base": 25 },
+              "price": { "base": 50, "unit": "gp" },
+              "quantity": 1,
+              "slot": "armor",
+              "sources": [{ "id": "PZO1110", "pages": "151" }],
+              "spellFailure": 25,
+              "subType": "armor",
+              "weight": { "value": 30 },
+              "mods": {}
+            },
+            "type": "equipment",
+            "effects": [],
+            "flags": {},
+            "_id": "8O5MQ0BZyAz4SLpe",
+            "sort": 0
+          }
+        ],
+        "effects": [],
+        "sort": 0,
+        "flags": {}
+      },
+      "derived": {
+        "abilities": {
+          "str": { "total": 18, "mod": 4 },
+          "dex": { "total": 14, "mod": 2 },
+          "con": { "total": 14, "mod": 2 },
+          "int": { "total": 10, "mod": 0 },
+          "wis": { "total": 12, "mod": 1 },
+          "cha": { "total": 8, "mod": -1 }
+        },
+        "ac": { "normal": 19, "touch": 12, "flatFooted": 17 },
+        "cmb": 5,
+        "cmd": { "total": 18, "flatFooted": 15 },
+        "saves": { "fort": 4, "ref": 2, "will": 1 },
+        "init": 2,
+        "bab": 1,
+        "attack": { "melee": 5, "ranged": 3 },
+        "hp": { "max": 15 },
+        "speed": { "land": 20 },
+        "sr": 0,
+        "acp": 6,
+        "skills": {
+          "perception": 1,
+          "knowledge": 0,
+          "knowledge.geography": 0,
+          "knowledge.nobility": 0,
+          "knowledge.local": 0,
+          "knowledge.dungeoneering": 0,
+          "knowledge.religion": 0,
+          "knowledge.nature": 0,
+          "knowledge.arcana": 0,
+          "knowledge.history": 0,
+          "knowledge.planes": 0,
+          "knowledge.engineering": 0,
+          "intimidate": 3,
+          "appraise": 0,
+          "profession": 1,
+          "fly": -4,
+          "disableDevice": -4,
+          "swim": -2,
+          "escapeArtist": -4,
+          "linguistics": 0,
+          "acrobatics": -4,
+          "useMagicDevice": -1,
+          "climb": 2,
+          "sleightOfHand": -4,
+          "handleAnimal": -1,
+          "heal": 1,
+          "spellcraft": 0,
+          "ride": -4,
+          "stealth": -4,
+          "survival": 1,
+          "craft": 0,
+          "disguise": -1,
+          "diplomacy": -1,
+          "senseMotive": -1,
+          "perform": -1,
+          "bluff": -1
+        }
+      }
+    },
+    "buffs": {
+      "actor": {
+        "name": "human-fighter-1 [buffs]",
+        "type": "character",
+        "folder": "GuYuyoqdabfe4xZV",
+        "_id": "cjdW4hs7E8KZd86U",
+        "system": {
+          "abilities": {
+            "str": { "value": 16 },
+            "dex": { "value": 14 },
+            "con": { "value": 14 },
+            "int": { "value": 10 },
+            "wis": { "value": 12 },
+            "cha": { "value": 8 }
+          },
+          "attributes": {
+            "savingThrows": {
+              "fort": { "ability": "con" },
+              "ref": { "ability": "dex" },
+              "will": { "ability": "wis" }
+            },
+            "hp": { "temp": 0, "nonlethal": 0, "offset": 0 },
+            "wounds": { "offset": 0 },
+            "vigor": { "temp": 0, "offset": 0 }
+          },
+          "details": { "notes": {}, "xp": { "value": 0 }, "alignment": "ln" },
+          "traits": { "size": "med", "ageCategory": "adult", "stature": "tall" },
+          "currency": {},
+          "altCurrency": {}
+        },
+        "items": [
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.6cOI6UozWx1PeOnr" },
+            "name": "Intimidate",
+            "system": {
+              "ability": "cha",
+              "identifier": "intimidate",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.KNn8uxHu23phKC0y",
+              "sets": ["adventure"],
+              "rank": 1,
+              "acp": false,
+              "rt": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "XOw5YHxLzoW0Opwq",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.NbW51ORcxEJnEY8H" },
+            "name": "Climb",
+            "system": {
+              "ability": "str",
+              "acp": true,
+              "identifier": "climb",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.ZAwjVOTwsBpZRgw4",
+              "sets": ["adventure"],
+              "rank": 1,
+              "rt": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "6ytB6wtc4SIsZSkZ",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.races.Item.e6IaBxKgMxy1yKlr" },
+            "folder": "RWSoA7Fj9yqo0y9U",
+            "name": "Human",
+            "system": {
+              "changes": {
+                "ahb0k14u": {
+                  "_id": "ahb0k14u",
+                  "formula": "@attributes.hd.total",
+                  "target": "bonusSkillRanks",
+                  "type": "untyped"
+                },
+                "ywxkp0hu": {
+                  "_id": "ywxkp0hu",
+                  "formula": "1",
+                  "target": "bonusFeats",
+                  "type": "untyped"
+                },
+                "lmflex01": { "_id": "lmflex01", "formula": "2", "target": "str", "type": "racial" }
+              },
+              "creatureSubtypes": ["human"],
+              "creatureTypes": ["humanoid"],
+              "languages": ["common"],
+              "size": "med",
+              "sources": [{ "id": "PZO1110", "pages": "27" }],
+              "speeds": { "land": 30 },
+              "tags": [
+                "Core",
+                "Western (Arcadia)",
+                "Eastern (Casmaron)",
+                "Northern (Crown of the World)",
+                "Southern (Garund)"
+              ]
+            },
+            "type": "race",
+            "effects": [],
+            "flags": {},
+            "_id": "L7NySkHAAu1BkA3m",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.classes.Item.WLqBCT5DqmGAx8Wd" },
+            "name": "Fighter",
+            "system": {
+              "armorProf": ["lgt", "med", "hvy", "shl", "twr"],
+              "bab": "high",
+              "classSkills": [
+                "artistry",
+                "climb",
+                "craft",
+                "handleAnimal",
+                "intimidate",
+                "knowledge.dungeoneering",
+                "knowledge.engineering",
+                "lore",
+                "profession",
+                "ride",
+                "survival",
+                "swim"
+              ],
+              "hd": 10,
+              "hp": 10,
+              "level": 1,
+              "links": {
+                "supplements": [
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.CV8BsY3ciUb9TA1Y" },
+                  { "level": 2, "uuid": "Compendium.pf1.class-abilities.Item.h0Brxw6khcjlEf1T" },
+                  { "level": 3, "uuid": "Compendium.pf1.class-abilities.Item.5JFfSqLMCpbRmERa" },
+                  { "level": 5, "uuid": "Compendium.pf1.class-abilities.Item.RzEzudurxQFirFoF" },
+                  { "level": 7, "uuid": "Compendium.pf1.class-abilities.Item.iqeyCQIIVnNt0p3h" },
+                  { "level": 20, "uuid": "Compendium.pf1.class-abilities.Item.McXAM1BoPHZLO1n4" }
+                ]
+              },
+              "savingThrows": {
+                "fort": { "value": "high" },
+                "ref": { "value": "low" },
+                "will": { "value": "low" }
+              },
+              "skillsPerLevel": 2,
+              "sources": [{ "id": "PZO1110", "pages": "55-56" }],
+              "subType": "base",
+              "tag": "fighter",
+              "wealth": "5d6 * 10",
+              "weaponProf": ["simple", "martial"]
+            },
+            "type": "class",
+            "effects": [],
+            "folder": null,
+            "flags": { "pf1": { "links": { "classAssociations": { "ajRGNgxnqdaCENqn": 1 } } } },
+            "_id": "MDD86LIpWdEgPi0D",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.CV8BsY3ciUb9TA1Y"
+            },
+            "name": "Bonus Feats (FGT)",
+            "system": {
+              "associations": { "classes": ["Fighter"] },
+              "changes": {
+                "yoxm5fp1": {
+                  "_id": "yoxm5fp1",
+                  "formula": "1 + floor(@class.unlevel / 2)",
+                  "target": "bonusFeats",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "55" }],
+              "subType": "classFeat",
+              "class": "fighter",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 100000,
+            "_id": "ajRGNgxnqdaCENqn",
+            "folder": null
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.JreaiTHdyWFNj3Tb" },
+            "name": "Dodge",
+            "system": {
+              "changes": {
+                "9onhsept": { "_id": "9onhsept", "formula": "1", "target": "ac", "type": "dodge" }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "114, 122" }],
+              "subType": "feat",
+              "tags": ["Combat", "Defensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "R4hdDUYo7weTmcba",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.8snLqsJN4LLL00Nq" },
+            "name": "Toughness",
+            "system": {
+              "changes": {
+                "bl5pemy2": {
+                  "_id": "bl5pemy2",
+                  "formula": "max(3, @attributes.hd.total)",
+                  "target": "mhp",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "116, 135" }],
+              "subType": "feat",
+              "tags": ["General", "Defensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "GdMHPLBWJlX2kQ6C",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.FUW5mIXHNBBIQ1Sq" },
+            "name": "Power Attack",
+            "system": {
+              "changeFlags": ["powerAttack"],
+              "sources": [{ "id": "PZO1110", "pages": "116, 131" }],
+              "subType": "feat",
+              "tags": ["Combat", "Offensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "xfamHUkim7YbZDiN",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.armors-and-shields.Item.nnDSj5NxUb9Q8z8S"
+            },
+            "folder": "33jGfHlDL34jvwnX",
+            "name": "Scale Mail",
+            "system": {
+              "armor": {
+                "acp": 4,
+                "dex": 3,
+                "material": { "base": { "value": "steel" }, "addon": [] },
+                "value": 5,
+                "alignments": {}
+              },
+              "baseTypes": ["Scale Mail"],
+              "equipmentSubtype": "mediumArmor",
+              "equipped": true,
+              "hardness": 10,
+              "hp": { "base": 25 },
+              "price": { "base": 50, "unit": "gp" },
+              "quantity": 1,
+              "slot": "armor",
+              "sources": [{ "id": "PZO1110", "pages": "151" }],
+              "spellFailure": 25,
+              "subType": "armor",
+              "weight": { "value": 30 },
+              "mods": {}
+            },
+            "type": "equipment",
+            "effects": [],
+            "flags": {},
+            "_id": "N2p7D3yIN555sFYJ",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.armors-and-shields.Item.2fK608aSYU9QDmzw"
+            },
+            "folder": "DtVJVwL87ELQxk7u",
+            "name": "Heavy Steel Shield",
+            "system": {
+              "actions": {
+                "6JirvCBGQLj1EafK": {
+                  "_id": "6JirvCBGQLj1EafK",
+                  "ability": { "attack": "str", "critMult": 2, "critRange": 20, "damage": "str" },
+                  "actionType": "mwak",
+                  "activation": { "type": "attack", "unchained": { "type": "attack" } },
+                  "damage": {
+                    "parts": [{ "formula": "sizeRoll(1, 4, @size)", "types": ["bludgeoning"] }]
+                  },
+                  "duration": { "units": "inst" },
+                  "extraAttacks": { "type": "standard" },
+                  "name": "Bash",
+                  "range": { "units": "melee" },
+                  "sort": 0
+                }
+              },
+              "armor": {
+                "acp": 2,
+                "material": { "base": { "value": "steel" }, "addon": [] },
+                "value": 2,
+                "alignments": {}
+              },
+              "equipmentSubtype": "heavyShield",
+              "equipped": true,
+              "hardness": 10,
+              "hp": { "base": 20 },
+              "price": { "base": 20, "unit": "gp" },
+              "quantity": 1,
+              "slot": "shield",
+              "sources": [{ "id": "PZO1110", "pages": "142, 148, 151-152" }],
+              "spellFailure": 15,
+              "subType": "shield",
+              "weight": { "value": 15 },
+              "mods": {}
+            },
+            "type": "equipment",
+            "effects": [],
+            "flags": {},
+            "_id": "8tVyW5OR2JUEQ4zl",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.weapons-and-ammo.Item.zWRlna42PMJVX6un"
+            },
+            "folder": "ojvASzhaCGmnx8xQ",
+            "name": "Longsword",
+            "system": {
+              "actions": {
+                "jelb63mz9vrxa43c": {
+                  "_id": "jelb63mz9vrxa43c",
+                  "ability": {
+                    "attack": "_default",
+                    "critMult": 2,
+                    "critRange": 19,
+                    "damage": "str"
+                  },
+                  "actionType": "mwak",
+                  "activation": { "type": "attack", "unchained": { "type": "attack" } },
+                  "damage": {
+                    "parts": [{ "formula": "sizeRoll(1, 8, @size)", "types": ["slashing"] }]
+                  },
+                  "duration": { "units": "inst" },
+                  "extraAttacks": { "type": "standard" },
+                  "name": "Attack",
+                  "range": { "units": "melee", "value": "0" },
+                  "sort": 0
+                }
+              },
+              "baseTypes": ["Longsword"],
+              "equipped": true,
+              "hardness": 10,
+              "hp": { "base": 5 },
+              "material": { "base": { "value": "steel" }, "addon": [] },
+              "price": { "base": 15, "unit": "gp" },
+              "quantity": 1,
+              "sources": [
+                { "id": "PZO1110", "pages": "142, 147" },
+                { "id": "PZO1123", "pages": "18" }
+              ],
+              "subType": "martial",
+              "tags": ["Eastern"],
+              "weaponGroups": ["bladesHeavy"],
+              "weaponSubtype": "1h",
+              "weight": { "value": 4 },
+              "alignments": {},
+              "mods": {}
+            },
+            "type": "weapon",
+            "effects": [],
+            "flags": {},
+            "_id": "zVOGQ1nloX4xrh1e",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.weapons-and-ammo.Item.oyUApQSVsAqzyjdz"
+            },
+            "folder": "ojvASzhaCGmnx8xQ",
+            "name": "Greatsword",
+            "system": {
+              "actions": {
+                "137kuv1fu5ds6swb": {
+                  "_id": "137kuv1fu5ds6swb",
+                  "ability": {
+                    "attack": "_default",
+                    "critMult": 2,
+                    "critRange": 19,
+                    "damage": "str"
+                  },
+                  "actionType": "mwak",
+                  "activation": { "type": "attack", "unchained": { "type": "attack" } },
+                  "damage": {
+                    "parts": [{ "formula": "sizeRoll(2, 6, @size)", "types": ["slashing"] }]
+                  },
+                  "duration": { "units": "inst" },
+                  "extraAttacks": { "type": "standard" },
+                  "name": "Attack",
+                  "range": { "units": "melee", "value": "0" },
+                  "sort": 0
+                }
+              },
+              "baseTypes": ["Greatsword"],
+              "equipped": true,
+              "hands": 2,
+              "hardness": 10,
+              "held": "2h",
+              "hp": { "base": 10 },
+              "material": { "base": { "value": "steel" }, "addon": [] },
+              "price": { "base": 50, "unit": "gp" },
+              "quantity": 1,
+              "sources": [
+                { "id": "PZO1110", "pages": "143, 146" },
+                { "id": "PZO1123", "pages": "18" }
+              ],
+              "subType": "martial",
+              "weaponGroups": ["bladesHeavy"],
+              "weaponSubtype": "2h",
+              "weight": { "value": 8 },
+              "alignments": {},
+              "mods": {}
+            },
+            "type": "weapon",
+            "effects": [],
+            "flags": {},
+            "_id": "ixI6FqMBt3C9C9Pk",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.items.Item.1BaxoJjpGn6D7Jk0" },
+            "flags": { "pf1": { "container": "xHQnf15yV6edm5lz" } },
+            "folder": "1uDzTmqE6tgpIano",
+            "name": "Backpack, common",
+            "system": {
+              "hp": { "base": 10 },
+              "price": { "base": 2, "unit": "gp" },
+              "quantity": 1,
+              "sources": [{ "id": "PZO1123", "pages": "58" }],
+              "weight": { "value": 2 },
+              "equipped": true
+            },
+            "type": "container",
+            "effects": [],
+            "_id": "GQQxxBwiBBHzWUcA",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.items.Item.0knejgHKvvzByqNH" },
+            "flags": { "pf1": { "container": "eRkG1d4hKYEgxuRa" } },
+            "folder": "1uDzTmqE6tgpIano",
+            "name": "Bedroll",
+            "system": {
+              "equipped": true,
+              "hp": { "base": 10 },
+              "price": { "base": 1, "unit": "sp" },
+              "quantity": 1,
+              "sources": [
+                { "id": "PZO1123", "pages": "56" },
+                { "id": "PZO1110", "pages": "158" }
+              ],
+              "subType": "adventuring",
+              "weight": { "value": 5 }
+            },
+            "type": "loot",
+            "effects": [],
+            "_id": "JQSZSlwnLO2LMsbU",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.items.Item.72WQloAVgsJK42Bz" },
+            "flags": { "pf1": { "container": "gsNpMbSOoLgSHSIl" } },
+            "folder": "1uDzTmqE6tgpIano",
+            "name": "Rope",
+            "system": {
+              "equipped": true,
+              "hp": { "base": 2 },
+              "price": { "base": 1, "unit": "gp" },
+              "quantity": 1,
+              "sources": [
+                { "id": "PZO1123", "pages": "58, 70" },
+                { "id": "PZO1110", "pages": "157, 158" }
+              ],
+              "subType": "adventuring",
+              "weight": { "value": 10 }
+            },
+            "type": "loot",
+            "effects": [],
+            "_id": "SIxstqIUjmVh8QsY",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.items.Item.1HuqT5PUwrN04Ofe" },
+            "flags": { "pf1": { "container": "NSMSSJ0Gd82OdHtd" } },
+            "folder": "1uDzTmqE6tgpIano",
+            "name": "Waterskin",
+            "system": {
+              "equipped": true,
+              "hp": { "base": 10 },
+              "price": { "base": 1, "unit": "gp" },
+              "quantity": 1,
+              "sources": [
+                { "id": "PZO1123", "pages": "58" },
+                { "id": "PZO1110", "pages": "158" }
+              ],
+              "subType": "adventuring",
+              "weight": { "value": 4 }
+            },
+            "type": "loot",
+            "effects": [],
+            "_id": "97AxvJRTvm4nRNjN",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.items.Item.gnynrdudvahpbxkz" },
+            "folder": "BzkdxtDgGZ96mdwR",
+            "name": "Grappling hook, common",
+            "system": {
+              "actions": {
+                "Vl2OjpyOzAneEcmO": {
+                  "_id": "Vl2OjpyOzAneEcmO",
+                  "ability": { "critMult": 2, "critRange": 20 },
+                  "actionType": "twak",
+                  "activation": { "type": "attack", "unchained": { "type": "attack" } },
+                  "name": "Throw",
+                  "range": { "maxIncrements": 5, "units": "ft", "value": "10" },
+                  "sort": 0
+                }
+              },
+              "equipped": true,
+              "hp": { "base": 10 },
+              "price": { "base": 1, "unit": "gp" },
+              "quantity": 1,
+              "sources": [
+                { "id": "PZO1123", "pages": "57, 65" },
+                { "id": "PZO1110", "pages": "155, 158" }
+              ],
+              "subType": "adventuring",
+              "weight": { "value": 4 }
+            },
+            "type": "loot",
+            "effects": [],
+            "flags": {},
+            "_id": "zYfHmkXSP8pYOOpo",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.items.Item.5vrvV8Z68dhHLjAX" },
+            "folder": "hN7XSgK640IpD3iM",
+            "name": "Anvil, blacksmith (100 lbs)",
+            "system": {
+              "equipped": true,
+              "hp": { "base": 10 },
+              "price": { "base": 5, "unit": "gp" },
+              "quantity": 1,
+              "sources": [
+                { "id": "PZO1123", "pages": "77" },
+                { "id": "PZO9410", "pages": "19" },
+                { "id": "PZO1115", "pages": "184" }
+              ],
+              "subType": "tool",
+              "weight": { "value": 100 }
+            },
+            "type": "loot",
+            "effects": [],
+            "flags": {},
+            "_id": "eooV7xVcx7ZF7i82",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.items.Item.dm72XBYOw8W3VGdU" },
+            "folder": "BzkdxtDgGZ96mdwR",
+            "name": "Chest, medium",
+            "system": {
+              "equipped": true,
+              "hp": { "base": 15 },
+              "price": { "base": 5, "unit": "gp" },
+              "quantity": 1,
+              "sources": [
+                { "id": "PZO1123", "pages": "56" },
+                { "id": "PZO1115", "pages": "181" },
+                { "id": "PZO9410", "pages": "19" },
+                { "id": "PZO1110", "pages": "158" }
+              ],
+              "weight": { "value": 50 }
+            },
+            "type": "container",
+            "effects": [],
+            "flags": {},
+            "_id": "i3B2e0fjvfcRj812",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.buffs.Item.QYVZS8MfOKzjpCm1" },
+            "folder": "abSp08elNrsecBYc",
+            "name": "Bless",
+            "system": {
+              "changes": {
+                "e9subqu1": {
+                  "_id": "e9subqu1",
+                  "formula": "1",
+                  "target": "attack",
+                  "type": "morale"
+                }
+              },
+              "contextNotes": {
+                "cBdtzcfjCFDULxgX": {
+                  "target": "allSavingThrows",
+                  "text": "+[[1]] Morale vs Fear effects"
+                }
+              },
+              "duration": { "end": "initiative", "units": "minute", "value": "@item.level" },
+              "level": 1,
+              "sources": [{ "id": "PZO1110", "pages": "249" }],
+              "subType": "spell",
+              "active": true
+            },
+            "type": "buff",
+            "effects": [],
+            "flags": {},
+            "_id": "nEt70GdJgJw6WlYV",
+            "sort": 0
+          }
+        ],
+        "effects": [],
+        "sort": 0,
+        "flags": {}
+      },
+      "derived": {
+        "abilities": {
+          "str": { "total": 18, "mod": 4 },
+          "dex": { "total": 14, "mod": 2 },
+          "con": { "total": 14, "mod": 2 },
+          "int": { "total": 10, "mod": 0 },
+          "wis": { "total": 12, "mod": 1 },
+          "cha": { "total": 8, "mod": -1 }
+        },
+        "ac": { "normal": 19, "touch": 12, "flatFooted": 17 },
+        "cmb": 6,
+        "cmd": { "total": 18, "flatFooted": 15 },
+        "saves": { "fort": 4, "ref": 2, "will": 1 },
+        "init": 2,
+        "bab": 1,
+        "attack": { "melee": 6, "ranged": 4 },
+        "hp": { "max": 15 },
+        "speed": { "land": 20 },
+        "sr": 0,
+        "acp": 6,
+        "skills": {
+          "perception": 1,
+          "knowledge": 0,
+          "knowledge.geography": 0,
+          "knowledge.nobility": 0,
+          "knowledge.local": 0,
+          "knowledge.dungeoneering": 0,
+          "knowledge.religion": 0,
+          "knowledge.nature": 0,
+          "knowledge.arcana": 0,
+          "knowledge.history": 0,
+          "knowledge.planes": 0,
+          "knowledge.engineering": 0,
+          "intimidate": 3,
+          "appraise": 0,
+          "profession": 1,
+          "fly": -4,
+          "disableDevice": -4,
+          "swim": -2,
+          "escapeArtist": -4,
+          "linguistics": 0,
+          "acrobatics": -4,
+          "useMagicDevice": -1,
+          "climb": 2,
+          "sleightOfHand": -4,
+          "handleAnimal": -1,
+          "heal": 1,
+          "spellcraft": 0,
+          "ride": -4,
+          "stealth": -4,
+          "survival": 1,
+          "craft": 0,
+          "disguise": -1,
+          "diplomacy": -1,
+          "senseMotive": -1,
+          "perform": -1,
+          "bluff": -1
+        }
+      }
+    },
+    "conditions": {
+      "actor": {
+        "name": "human-fighter-1 [conditions]",
+        "type": "character",
+        "folder": "GuYuyoqdabfe4xZV",
+        "_id": "Y0vyUJiM5NYGXnwB",
+        "system": {
+          "abilities": {
+            "str": { "value": 16 },
+            "dex": { "value": 14 },
+            "con": { "value": 14 },
+            "int": { "value": 10 },
+            "wis": { "value": 12 },
+            "cha": { "value": 8 }
+          },
+          "attributes": {
+            "savingThrows": {
+              "fort": { "ability": "con" },
+              "ref": { "ability": "dex" },
+              "will": { "ability": "wis" }
+            },
+            "hp": { "temp": 0, "nonlethal": 0, "offset": 0 },
+            "wounds": { "offset": 0 },
+            "vigor": { "temp": 0, "offset": 0 }
+          },
+          "details": { "notes": {}, "xp": { "value": 0 }, "alignment": "ln" },
+          "traits": { "size": "med", "ageCategory": "adult", "stature": "tall" },
+          "currency": {},
+          "altCurrency": {}
+        },
+        "items": [
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.6cOI6UozWx1PeOnr" },
+            "name": "Intimidate",
+            "system": {
+              "ability": "cha",
+              "identifier": "intimidate",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.KNn8uxHu23phKC0y",
+              "sets": ["adventure"],
+              "rank": 1,
+              "acp": false,
+              "rt": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "hZgCvWn4k93SOtaE",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.NbW51ORcxEJnEY8H" },
+            "name": "Climb",
+            "system": {
+              "ability": "str",
+              "acp": true,
+              "identifier": "climb",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.ZAwjVOTwsBpZRgw4",
+              "sets": ["adventure"],
+              "rank": 1,
+              "rt": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "ziWLu1hxX3NxOOUJ",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.races.Item.e6IaBxKgMxy1yKlr" },
+            "folder": "RWSoA7Fj9yqo0y9U",
+            "name": "Human",
+            "system": {
+              "changes": {
+                "ahb0k14u": {
+                  "_id": "ahb0k14u",
+                  "formula": "@attributes.hd.total",
+                  "target": "bonusSkillRanks",
+                  "type": "untyped"
+                },
+                "ywxkp0hu": {
+                  "_id": "ywxkp0hu",
+                  "formula": "1",
+                  "target": "bonusFeats",
+                  "type": "untyped"
+                },
+                "lmflex01": { "_id": "lmflex01", "formula": "2", "target": "str", "type": "racial" }
+              },
+              "creatureSubtypes": ["human"],
+              "creatureTypes": ["humanoid"],
+              "languages": ["common"],
+              "size": "med",
+              "sources": [{ "id": "PZO1110", "pages": "27" }],
+              "speeds": { "land": 30 },
+              "tags": [
+                "Core",
+                "Western (Arcadia)",
+                "Eastern (Casmaron)",
+                "Northern (Crown of the World)",
+                "Southern (Garund)"
+              ]
+            },
+            "type": "race",
+            "effects": [],
+            "flags": {},
+            "_id": "see8YSIb3wEYI1Nd",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.classes.Item.WLqBCT5DqmGAx8Wd" },
+            "name": "Fighter",
+            "system": {
+              "armorProf": ["lgt", "med", "hvy", "shl", "twr"],
+              "bab": "high",
+              "classSkills": [
+                "artistry",
+                "climb",
+                "craft",
+                "handleAnimal",
+                "intimidate",
+                "knowledge.dungeoneering",
+                "knowledge.engineering",
+                "lore",
+                "profession",
+                "ride",
+                "survival",
+                "swim"
+              ],
+              "hd": 10,
+              "hp": 10,
+              "level": 1,
+              "links": {
+                "supplements": [
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.CV8BsY3ciUb9TA1Y" },
+                  { "level": 2, "uuid": "Compendium.pf1.class-abilities.Item.h0Brxw6khcjlEf1T" },
+                  { "level": 3, "uuid": "Compendium.pf1.class-abilities.Item.5JFfSqLMCpbRmERa" },
+                  { "level": 5, "uuid": "Compendium.pf1.class-abilities.Item.RzEzudurxQFirFoF" },
+                  { "level": 7, "uuid": "Compendium.pf1.class-abilities.Item.iqeyCQIIVnNt0p3h" },
+                  { "level": 20, "uuid": "Compendium.pf1.class-abilities.Item.McXAM1BoPHZLO1n4" }
+                ]
+              },
+              "savingThrows": {
+                "fort": { "value": "high" },
+                "ref": { "value": "low" },
+                "will": { "value": "low" }
+              },
+              "skillsPerLevel": 2,
+              "sources": [{ "id": "PZO1110", "pages": "55-56" }],
+              "subType": "base",
+              "tag": "fighter",
+              "wealth": "5d6 * 10",
+              "weaponProf": ["simple", "martial"]
+            },
+            "type": "class",
+            "effects": [],
+            "folder": null,
+            "flags": { "pf1": { "links": { "classAssociations": { "R5L79ku0YA0Fh5WZ": 1 } } } },
+            "_id": "MujMQxmXz84vmVUU",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.CV8BsY3ciUb9TA1Y"
+            },
+            "name": "Bonus Feats (FGT)",
+            "system": {
+              "associations": { "classes": ["Fighter"] },
+              "changes": {
+                "yoxm5fp1": {
+                  "_id": "yoxm5fp1",
+                  "formula": "1 + floor(@class.unlevel / 2)",
+                  "target": "bonusFeats",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "55" }],
+              "subType": "classFeat",
+              "class": "fighter",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 100000,
+            "_id": "R5L79ku0YA0Fh5WZ",
+            "folder": null
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.FUW5mIXHNBBIQ1Sq" },
+            "name": "Power Attack",
+            "system": {
+              "changeFlags": ["powerAttack"],
+              "sources": [{ "id": "PZO1110", "pages": "116, 131" }],
+              "subType": "feat",
+              "tags": ["Combat", "Offensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "UQioJFx61Q65qmOz",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.JreaiTHdyWFNj3Tb" },
+            "name": "Dodge",
+            "system": {
+              "changes": {
+                "9onhsept": { "_id": "9onhsept", "formula": "1", "target": "ac", "type": "dodge" }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "114, 122" }],
+              "subType": "feat",
+              "tags": ["Combat", "Defensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "8oVLurNyEwrUzboL",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.8snLqsJN4LLL00Nq" },
+            "name": "Toughness",
+            "system": {
+              "changes": {
+                "bl5pemy2": {
+                  "_id": "bl5pemy2",
+                  "formula": "max(3, @attributes.hd.total)",
+                  "target": "mhp",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "116, 135" }],
+              "subType": "feat",
+              "tags": ["General", "Defensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "oxrUvQWfGvXdaFC9",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.armors-and-shields.Item.nnDSj5NxUb9Q8z8S"
+            },
+            "folder": "33jGfHlDL34jvwnX",
+            "name": "Scale Mail",
+            "system": {
+              "armor": {
+                "acp": 4,
+                "dex": 3,
+                "material": { "base": { "value": "steel" }, "addon": [] },
+                "value": 5,
+                "alignments": {}
+              },
+              "baseTypes": ["Scale Mail"],
+              "equipmentSubtype": "mediumArmor",
+              "equipped": true,
+              "hardness": 10,
+              "hp": { "base": 25 },
+              "price": { "base": 50, "unit": "gp" },
+              "quantity": 1,
+              "slot": "armor",
+              "sources": [{ "id": "PZO1110", "pages": "151" }],
+              "spellFailure": 25,
+              "subType": "armor",
+              "weight": { "value": 30 },
+              "mods": {}
+            },
+            "type": "equipment",
+            "effects": [],
+            "flags": {},
+            "_id": "JvIhzvsFbk5IiU9T",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.armors-and-shields.Item.2fK608aSYU9QDmzw"
+            },
+            "folder": "DtVJVwL87ELQxk7u",
+            "name": "Heavy Steel Shield",
+            "system": {
+              "actions": {
+                "6JirvCBGQLj1EafK": {
+                  "_id": "6JirvCBGQLj1EafK",
+                  "ability": { "attack": "str", "critMult": 2, "critRange": 20, "damage": "str" },
+                  "actionType": "mwak",
+                  "activation": { "type": "attack", "unchained": { "type": "attack" } },
+                  "damage": {
+                    "parts": [{ "formula": "sizeRoll(1, 4, @size)", "types": ["bludgeoning"] }]
+                  },
+                  "duration": { "units": "inst" },
+                  "extraAttacks": { "type": "standard" },
+                  "name": "Bash",
+                  "range": { "units": "melee" },
+                  "sort": 0
+                }
+              },
+              "armor": {
+                "acp": 2,
+                "material": { "base": { "value": "steel" }, "addon": [] },
+                "value": 2,
+                "alignments": {}
+              },
+              "equipmentSubtype": "heavyShield",
+              "equipped": true,
+              "hardness": 10,
+              "hp": { "base": 20 },
+              "price": { "base": 20, "unit": "gp" },
+              "quantity": 1,
+              "slot": "shield",
+              "sources": [{ "id": "PZO1110", "pages": "142, 148, 151-152" }],
+              "spellFailure": 15,
+              "subType": "shield",
+              "weight": { "value": 15 },
+              "mods": {}
+            },
+            "type": "equipment",
+            "effects": [],
+            "flags": {},
+            "_id": "OhVWNT7okW6E0R67",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.weapons-and-ammo.Item.zWRlna42PMJVX6un"
+            },
+            "folder": "ojvASzhaCGmnx8xQ",
+            "name": "Longsword",
+            "system": {
+              "actions": {
+                "jelb63mz9vrxa43c": {
+                  "_id": "jelb63mz9vrxa43c",
+                  "ability": {
+                    "attack": "_default",
+                    "critMult": 2,
+                    "critRange": 19,
+                    "damage": "str"
+                  },
+                  "actionType": "mwak",
+                  "activation": { "type": "attack", "unchained": { "type": "attack" } },
+                  "damage": {
+                    "parts": [{ "formula": "sizeRoll(1, 8, @size)", "types": ["slashing"] }]
+                  },
+                  "duration": { "units": "inst" },
+                  "extraAttacks": { "type": "standard" },
+                  "name": "Attack",
+                  "range": { "units": "melee", "value": "0" },
+                  "sort": 0
+                }
+              },
+              "baseTypes": ["Longsword"],
+              "equipped": true,
+              "hardness": 10,
+              "hp": { "base": 5 },
+              "material": { "base": { "value": "steel" }, "addon": [] },
+              "price": { "base": 15, "unit": "gp" },
+              "quantity": 1,
+              "sources": [
+                { "id": "PZO1110", "pages": "142, 147" },
+                { "id": "PZO1123", "pages": "18" }
+              ],
+              "subType": "martial",
+              "tags": ["Eastern"],
+              "weaponGroups": ["bladesHeavy"],
+              "weaponSubtype": "1h",
+              "weight": { "value": 4 },
+              "alignments": {},
+              "mods": {}
+            },
+            "type": "weapon",
+            "effects": [],
+            "flags": {},
+            "_id": "yfkPRdaVBVMKwr3g",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.weapons-and-ammo.Item.oyUApQSVsAqzyjdz"
+            },
+            "folder": "ojvASzhaCGmnx8xQ",
+            "name": "Greatsword",
+            "system": {
+              "actions": {
+                "137kuv1fu5ds6swb": {
+                  "_id": "137kuv1fu5ds6swb",
+                  "ability": {
+                    "attack": "_default",
+                    "critMult": 2,
+                    "critRange": 19,
+                    "damage": "str"
+                  },
+                  "actionType": "mwak",
+                  "activation": { "type": "attack", "unchained": { "type": "attack" } },
+                  "damage": {
+                    "parts": [{ "formula": "sizeRoll(2, 6, @size)", "types": ["slashing"] }]
+                  },
+                  "duration": { "units": "inst" },
+                  "extraAttacks": { "type": "standard" },
+                  "name": "Attack",
+                  "range": { "units": "melee", "value": "0" },
+                  "sort": 0
+                }
+              },
+              "baseTypes": ["Greatsword"],
+              "equipped": true,
+              "hands": 2,
+              "hardness": 10,
+              "held": "2h",
+              "hp": { "base": 10 },
+              "material": { "base": { "value": "steel" }, "addon": [] },
+              "price": { "base": 50, "unit": "gp" },
+              "quantity": 1,
+              "sources": [
+                { "id": "PZO1110", "pages": "143, 146" },
+                { "id": "PZO1123", "pages": "18" }
+              ],
+              "subType": "martial",
+              "weaponGroups": ["bladesHeavy"],
+              "weaponSubtype": "2h",
+              "weight": { "value": 8 },
+              "alignments": {},
+              "mods": {}
+            },
+            "type": "weapon",
+            "effects": [],
+            "flags": {},
+            "_id": "AM2pC4wm7bCWrmO2",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.items.Item.1BaxoJjpGn6D7Jk0" },
+            "flags": { "pf1": { "container": "xHQnf15yV6edm5lz" } },
+            "folder": "1uDzTmqE6tgpIano",
+            "name": "Backpack, common",
+            "system": {
+              "hp": { "base": 10 },
+              "price": { "base": 2, "unit": "gp" },
+              "quantity": 1,
+              "sources": [{ "id": "PZO1123", "pages": "58" }],
+              "weight": { "value": 2 },
+              "equipped": true
+            },
+            "type": "container",
+            "effects": [],
+            "_id": "rIPyaRc9ClYoV2vJ",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.items.Item.72WQloAVgsJK42Bz" },
+            "flags": { "pf1": { "container": "gsNpMbSOoLgSHSIl" } },
+            "folder": "1uDzTmqE6tgpIano",
+            "name": "Rope",
+            "system": {
+              "equipped": true,
+              "hp": { "base": 2 },
+              "price": { "base": 1, "unit": "gp" },
+              "quantity": 1,
+              "sources": [
+                { "id": "PZO1123", "pages": "58, 70" },
+                { "id": "PZO1110", "pages": "157, 158" }
+              ],
+              "subType": "adventuring",
+              "weight": { "value": 10 }
+            },
+            "type": "loot",
+            "effects": [],
+            "_id": "vQSqDbgJ9S209jSu",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.items.Item.gnynrdudvahpbxkz" },
+            "folder": "BzkdxtDgGZ96mdwR",
+            "name": "Grappling hook, common",
+            "system": {
+              "actions": {
+                "Vl2OjpyOzAneEcmO": {
+                  "_id": "Vl2OjpyOzAneEcmO",
+                  "ability": { "critMult": 2, "critRange": 20 },
+                  "actionType": "twak",
+                  "activation": { "type": "attack", "unchained": { "type": "attack" } },
+                  "name": "Throw",
+                  "range": { "maxIncrements": 5, "units": "ft", "value": "10" },
+                  "sort": 0
+                }
+              },
+              "equipped": true,
+              "hp": { "base": 10 },
+              "price": { "base": 1, "unit": "gp" },
+              "quantity": 1,
+              "sources": [
+                { "id": "PZO1123", "pages": "57, 65" },
+                { "id": "PZO1110", "pages": "155, 158" }
+              ],
+              "subType": "adventuring",
+              "weight": { "value": 4 }
+            },
+            "type": "loot",
+            "effects": [],
+            "flags": {},
+            "_id": "JPHVYGcJTh9uMyno",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.items.Item.1HuqT5PUwrN04Ofe" },
+            "flags": { "pf1": { "container": "NSMSSJ0Gd82OdHtd" } },
+            "folder": "1uDzTmqE6tgpIano",
+            "name": "Waterskin",
+            "system": {
+              "equipped": true,
+              "hp": { "base": 10 },
+              "price": { "base": 1, "unit": "gp" },
+              "quantity": 1,
+              "sources": [
+                { "id": "PZO1123", "pages": "58" },
+                { "id": "PZO1110", "pages": "158" }
+              ],
+              "subType": "adventuring",
+              "weight": { "value": 4 }
+            },
+            "type": "loot",
+            "effects": [],
+            "_id": "bTZg7JJIPc04KHMO",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.items.Item.0knejgHKvvzByqNH" },
+            "flags": { "pf1": { "container": "eRkG1d4hKYEgxuRa" } },
+            "folder": "1uDzTmqE6tgpIano",
+            "name": "Bedroll",
+            "system": {
+              "equipped": true,
+              "hp": { "base": 10 },
+              "price": { "base": 1, "unit": "sp" },
+              "quantity": 1,
+              "sources": [
+                { "id": "PZO1123", "pages": "56" },
+                { "id": "PZO1110", "pages": "158" }
+              ],
+              "subType": "adventuring",
+              "weight": { "value": 5 }
+            },
+            "type": "loot",
+            "effects": [],
+            "_id": "7GHs2OORM48XmZVf",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.items.Item.5vrvV8Z68dhHLjAX" },
+            "folder": "hN7XSgK640IpD3iM",
+            "name": "Anvil, blacksmith (100 lbs)",
+            "system": {
+              "equipped": true,
+              "hp": { "base": 10 },
+              "price": { "base": 5, "unit": "gp" },
+              "quantity": 1,
+              "sources": [
+                { "id": "PZO1123", "pages": "77" },
+                { "id": "PZO9410", "pages": "19" },
+                { "id": "PZO1115", "pages": "184" }
+              ],
+              "subType": "tool",
+              "weight": { "value": 100 }
+            },
+            "type": "loot",
+            "effects": [],
+            "flags": {},
+            "_id": "eGOSf3kadYQTdye1",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.items.Item.dm72XBYOw8W3VGdU" },
+            "folder": "BzkdxtDgGZ96mdwR",
+            "name": "Chest, medium",
+            "system": {
+              "equipped": true,
+              "hp": { "base": 15 },
+              "price": { "base": 5, "unit": "gp" },
+              "quantity": 1,
+              "sources": [
+                { "id": "PZO1123", "pages": "56" },
+                { "id": "PZO1115", "pages": "181" },
+                { "id": "PZO9410", "pages": "19" },
+                { "id": "PZO1110", "pages": "158" }
+              ],
+              "weight": { "value": 50 }
+            },
+            "type": "container",
+            "effects": [],
+            "flags": {},
+            "_id": "aTiHqjNRXZM54wRo",
+            "sort": 0
+          }
+        ],
+        "effects": [
+          {
+            "name": "Shaken",
+            "img": "systems/pf1/icons/conditions/shaken.svg",
+            "statuses": ["shaken"],
+            "showIcon": 2,
+            "_id": "jpoit9EZm9u2MCbO",
+            "type": "base",
+            "system": { "changes": [] },
+            "disabled": false,
+            "start": {
+              "time": 0,
+              "combat": null,
+              "combatant": null,
+              "initiative": null,
+              "round": null,
+              "turn": null
+            },
+            "duration": { "value": null, "units": "seconds", "expiry": null, "expired": false },
+            "description": "",
+            "origin": null,
+            "tint": "#ffffff",
+            "transfer": false,
+            "folder": null,
+            "sort": 0,
+            "flags": { "pf1": { "autoDelete": true } },
+            "_stats": {
+              "coreVersion": "14.370",
+              "systemId": "pf1",
+              "systemVersion": "11.11",
+              "createdTime": 1795403241328,
+              "modifiedTime": 1795403241328,
+              "lastModifiedBy": "uwWDnh8N1IHSXHMc",
+              "compendiumSource": null,
+              "duplicateSource": null,
+              "exportSource": null
+            }
+          }
+        ],
+        "sort": 0,
+        "flags": {}
+      },
+      "derived": {
+        "abilities": {
+          "str": { "total": 18, "mod": 4 },
+          "dex": { "total": 14, "mod": 2 },
+          "con": { "total": 14, "mod": 2 },
+          "int": { "total": 10, "mod": 0 },
+          "wis": { "total": 12, "mod": 1 },
+          "cha": { "total": 8, "mod": -1 }
+        },
+        "ac": { "normal": 19, "touch": 12, "flatFooted": 17 },
+        "cmb": 3,
+        "cmd": { "total": 18, "flatFooted": 15 },
+        "saves": { "fort": 2, "ref": 0, "will": -1 },
+        "init": 0,
+        "bab": 1,
+        "attack": { "melee": 3, "ranged": 1 },
+        "hp": { "max": 15 },
+        "speed": { "land": 20 },
+        "sr": 0,
+        "acp": 6,
+        "skills": {
+          "perception": -1,
+          "knowledge": -2,
+          "knowledge.geography": -2,
+          "knowledge.nobility": -2,
+          "knowledge.local": -2,
+          "knowledge.dungeoneering": -2,
+          "knowledge.religion": -2,
+          "knowledge.nature": -2,
+          "knowledge.arcana": -2,
+          "knowledge.history": -2,
+          "knowledge.planes": -2,
+          "knowledge.engineering": -2,
+          "intimidate": 1,
+          "appraise": -2,
+          "profession": -1,
+          "fly": -6,
+          "disableDevice": -6,
+          "swim": -4,
+          "escapeArtist": -6,
+          "linguistics": -2,
+          "acrobatics": -6,
+          "useMagicDevice": -3,
+          "climb": 0,
+          "sleightOfHand": -6,
+          "handleAnimal": -3,
+          "heal": -1,
+          "spellcraft": -2,
+          "ride": -6,
+          "stealth": -6,
+          "survival": -1,
+          "craft": -2,
+          "disguise": -3,
+          "diplomacy": -3,
+          "senseMotive": -3,
+          "perform": -3,
+          "bluff": -3
+        }
+      }
+    }
+  }
+}

@@ -60,6 +60,7 @@ import { dexWeaponFeatSources } from "./dex-weapon-feats.js";
 import { chosenBonusClassSkills } from "./bonus-class-skills.js";
 import { traitGrantedClassSkills } from "./traits.js";
 import { featGrantedClassSkills } from "./feat-effects-resolve.js";
+import { ARMOR_TRAINING_GRANT_UUID } from "./archetype-tier-replacements.js";
 import { resolveClassFeatures } from "./archetypes.js";
 import { withGrantedFeats } from "./granted-feats.js";
 import { PIERCING_LIGHT_OR_ONE_HANDED_KEY } from "./grit-panache-spends.js";
@@ -318,9 +319,11 @@ export function scaleWeaponDamageDice(dice: string, fromSize: SizeId, toSize: Si
  * replace the mode's value outright rather than adding to it; when more than
  * one "set" change targets the same mode at once, the LOWEST wins — every
  * "set" change in the vendored slice is a penalty, so "lowest" is "most
- * restrictive," which is the correct way for such effects to combine. Plain
- * additive changes still apply on top of the base value whenever no "set" is
- * present for that mode.
+ * restrictive," which is the correct way for such effects to combine.
+ * Additive changes apply on top of the base value whenever no "set" is
+ * present: `base`-typed ones (barbarian fast movement, Travel domain) are
+ * untyped increases to base speed and sum, the rest stack by bonus type, so
+ * Haste's enhancement bonus doesn't add to a monk's enhancement bonus.
  */
 function applySpeedTarget(
   speeds: Record<string, number>,
@@ -335,7 +338,8 @@ function applySpeedTarget(
     speeds[mode] = Math.min(...setMods.map((m) => m.value));
     return;
   }
-  const addTotal = mods.reduce((s, m) => s + m.value, 0);
+  let addTotal = resolveStack(mods.filter((m) => m.type !== "base")).total;
+  for (const m of mods) if (m.type === "base") addTotal += m.value;
   if (addTotal) speeds[mode] = (speeds[mode] ?? 0) + addTotal;
 }
 
@@ -761,19 +765,21 @@ function heaviestWornArmorType(doc: CharacterDoc): number {
  * masterwork/enhancement reduction, so it applies uniformly whether the
  * armor came from `RefData` or was entered by hand.
  *
- * Mithral and darkwood are excluded: per RAW both are always masterwork, and
- * their pick-time ACP adjustments (mithral -3, a darkwood shield -2; see
- * `apps/web/src/model/materials.ts`) already represent that combined
- * reduction, not an additional stack on top of it.
+ * Mithral and darkwood items are always masterwork (CRB p. 154), so they
+ * take this -1 on top of their own pick-time reduction (mithral -3, a
+ * darkwood shield -2; see `apps/web/src/model/materials.ts`).
  */
 export function armorPieceAcp(
   armor: Pick<WornArmor, "acp" | "masterwork" | "enhancement" | "material">,
 ): number {
   const raw = armor.acp ?? 0;
   if (raw >= 0) return 0;
-  const masterworked = armor.masterwork === true || (armor.enhancement ?? 0) >= 1;
-  if (!masterworked || armor.material === "mithral" || armor.material === "darkwood") return raw;
-  return Math.min(0, raw + 1);
+  const masterworked =
+    armor.masterwork === true ||
+    (armor.enhancement ?? 0) >= 1 ||
+    armor.material === "mithral" ||
+    armor.material === "darkwood";
+  return masterworked ? Math.min(0, raw + 1) : raw;
 }
 
 /**
@@ -1086,18 +1092,21 @@ function computeSkills(
     }
   }
 
-  // Effective armor check penalty (negative), reduced by armor-training acpA.
-  const wornAcp = (doc.build.gear ?? []).reduce(
-    (s, inst) => (inst.equipped && inst.armor ? s + armorPieceAcp(inst.armor) : s),
-    0,
-  );
+  // Effective armor check penalty (negative). `acpA` reductions (armor
+  // training, CRB p. 55) lessen the body armor's penalty, never below 0, and
+  // leave a shield's alone.
   const acpReduction = forTarget(collected, "acpA").reduce((s, m) => s + Math.abs(m.value), 0);
+  const wornAcp = (doc.build.gear ?? []).reduce((s, inst) => {
+    if (!inst.equipped || !inst.armor) return s;
+    const acp = armorPieceAcp(inst.armor);
+    return s + (inst.armor.slot === "armor" ? Math.min(0, acp + acpReduction) : acp);
+  }, 0);
   // Encumbrance (optional rule): a medium/heavy load imposes its own flat
   // armor check penalty. RAW (CRB p.171, Carrying Capacity): when wearing
   // armor, use the WORSE of armor ACP or load ACP for each category — the two
   // never stack additively. Mirrors the max-Dex worse-of just below.
   const loadAcp = encumbrance?.acp ?? 0;
-  const effectiveAcp = Math.min(0, wornAcp + acpReduction, loadAcp);
+  const effectiveAcp = Math.min(0, wornAcp, loadAcp);
 
   // Every skill.* modifier target, split into its "skill." suffix. Resolved
   // against the final id set below (a raw target with a dot, e.g.
@@ -1144,8 +1153,12 @@ function computeSkills(
   }
 
   // Global skill-check modifiers (`skills` target, e.g. shaken/sickened) apply
-  // to every skill in addition to any per-skill modifiers.
+  // to every skill in addition to any per-skill modifiers; `<ability>Skills`
+  // (Divine Power's `strSkills`) to every skill keyed to that ability.
   const globalSkillMods = forTarget(collected, "skills");
+  const abilitySkillMods = new Map(
+    ABILITY_IDS.map((ab) => [ab, forTarget(collected, `${ab}Skills`)] as const),
+  );
 
   const ids = new Set<string>([...idsSoFar, ...miscBySkill.keys()]);
 
@@ -1159,7 +1172,11 @@ function computeSkills(
     const classSkillBonus = classSkill && ranks >= 1 ? 3 : 0;
     const usesAcp = skillUsesAcp(id);
     const acp = usesAcp ? effectiveAcp : 0;
-    const stack = resolveStack([...(miscBySkill.get(id) ?? []), ...globalSkillMods]);
+    const stack = resolveStack([
+      ...(miscBySkill.get(id) ?? []),
+      ...globalSkillMods,
+      ...abilitySkillMods.get(ability)!,
+    ]);
     // Size modifies Stealth and Fly (CRB pp. 97, 106): a halfling's +4 Stealth
     // comes from being Small, not a racial trait, as does Enlarge's -4.
     const sizeMod = id === "ste" ? STEALTH_SIZE_MOD[size] : id === "fly" ? FLY_SIZE_MOD[size] : 0;
@@ -1279,9 +1296,13 @@ function rogueFinesseTrainingMatches(doc: CharacterDoc, w: WeaponInstance): bool
  * non-proficient equipped piece, so multiple non-proficient items (a
  * non-proficient suit AND a non-proficient shield) stack, matching how their
  * ACP already stacks going into `wornAcp`.
+ *
+ * Mithral's one-category lightening doesn't apply to proficiency (CRB p.
+ * 154), so body armor is checked at its catalog weight class when it has one.
  */
 function nonProficientArmorAttackComponents(
   doc: CharacterDoc,
+  refData: RefData,
   proficiencies: DerivedProficiencies,
 ): ModifierComponent[] {
   const components: ModifierComponent[] = [];
@@ -1292,7 +1313,10 @@ function nonProficientArmorAttackComponents(
     if (!acp) continue;
     const proficient =
       a.slot === "armor"
-        ? isArmorTypeProficient(proficiencies, a.type)
+        ? isArmorTypeProficient(
+            proficiencies,
+            (inst.armorId && refData.armors[inst.armorId]?.weightClass) || a.type,
+          )
         : a.shieldTier
           ? isShieldTierProficient(proficiencies, a.shieldTier)
           : true;
@@ -1662,6 +1686,7 @@ function computeWeaponAttacks(
  */
 function computeAttackLines(
   doc: CharacterDoc,
+  refData: RefData,
   proficiencies: DerivedProficiencies,
   bab: number,
   sizeAttackMod: number,
@@ -1673,7 +1698,7 @@ function computeAttackLines(
   attack: { melee: ResolvedStat; ranged: ResolvedStat };
 } {
   const flatAttackPenaltyComponents = [
-    ...nonProficientArmorAttackComponents(doc, proficiencies),
+    ...nonProficientArmorAttackComponents(doc, refData, proficiencies),
     ...towerShieldAttackComponents(doc),
   ];
   const flatAttackPenalty = flatAttackPenaltyComponents.reduce((s, c) => s + c.value, 0);
@@ -1919,6 +1944,7 @@ function computeManeuvers(
  */
 function computeSpeeds(
   doc: CharacterDoc,
+  refData: RefData,
   race: Race | undefined,
   baseSpeeds: Readonly<Record<string, number>>,
   collected: CollectedModifier[],
@@ -1944,7 +1970,8 @@ function computeSpeeds(
   // modified by armor or encumbrance" — both reductions above are skipped
   // entirely when the race has the trait (and hasn't swapped it away via an
   // alternate racial trait), so a dwarf in full plate keeps her full 20 ft.
-  const armorSpeedPenalty = heaviestWornArmorType(doc) >= 2;
+  const armorSpeedPenalty =
+    heaviestWornArmorType(doc) > Math.max(1, armorTrainingSpeedType(doc, refData, collected));
   const slowAndSteady = hasSlowAndSteady(doc, race);
   if (
     !slowAndSteady &&
@@ -1954,6 +1981,27 @@ function computeSpeeds(
     speeds.land = Math.min(speeds.land, encumberedSpeed(speeds.land));
   }
   return speeds;
+}
+
+/**
+ * Heaviest armor type a fighter moves at normal speed in (CRB p. 55, Armor
+ * Training): medium once Armor Training is gained, heavy from 7th level.
+ * Keyed to the feature's own modifiers, so an archetype that trades Armor
+ * Training away loses the speed too. 0 when the character has none.
+ */
+function armorTrainingSpeedType(
+  doc: CharacterDoc,
+  refData: RefData,
+  collected: CollectedModifier[],
+): number {
+  const featureId = classByTag(refData, "fighter")?.features.find(
+    (g) => g.uuid === ARMOR_TRAINING_GRANT_UUID,
+  )?.featureId;
+  if (!featureId || !collected.some((m) => m.target === "mDexA" && m.sourceId === featureId)) {
+    return 0;
+  }
+  const fighterLevel = doc.identity.classes.find((c) => c.tag === "fighter")?.level ?? 0;
+  return fighterLevel >= 7 ? 3 : 2;
 }
 
 /**
@@ -2157,6 +2205,7 @@ export function compute(inputDoc: CharacterDoc, refData: RefData): DerivedSheet 
   const proficiencies = deriveProficiencies(doc, refData);
   const { flatAttackPenaltyComponents, attack } = computeAttackLines(
     doc,
+    refData,
     proficiencies,
     bab,
     sizeAttackMod,
@@ -2199,7 +2248,7 @@ export function compute(inputDoc: CharacterDoc, refData: RefData): DerivedSheet 
   // HP
   const hp = computeHp(doc, refData, abilities.con.mod, collected);
 
-  const speeds = computeSpeeds(doc, race, baseSpeeds, collected, encumbrance);
+  const speeds = computeSpeeds(doc, refData, race, baseSpeeds, collected, encumbrance);
 
   // Arcane spell failure — display-only, only for arcane casters.
   const arcaneSpellFailure = computeArcaneSpellFailure(doc);

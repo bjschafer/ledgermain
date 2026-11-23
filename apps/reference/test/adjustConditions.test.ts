@@ -59,10 +59,11 @@ describe("condition adjustments on a statblock", () => {
       "Perception +6, Stealth +4, Survival -1 (+3 when tracking by scent)",
     );
     expect(monster.senses).toBe("low-light vision, scent; Perception +6");
-    // Untouched: AC, hp, CMB/CMD, init.
+    // Initiative is a Dexterity check (CRB p. 178), so it takes the -2 too.
+    expect(monster.init).toBe("+0");
+    // Untouched: AC, hp, CMB/CMD.
     expect(monster.ac).toBe(14);
     expect(monster.cmb).toBe("+2");
-    expect(monster.init).toBe("+2");
   });
 
   // Sickened: shaken's penalties plus -2 on weapon damage rolls.

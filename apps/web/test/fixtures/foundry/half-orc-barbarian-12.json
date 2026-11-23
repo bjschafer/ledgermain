@@ -1,0 +1,2689 @@
+{
+  "foundry": { "core": "14.370", "system": "11.11" },
+  "spec": {
+    "id": "half-orc-barbarian-12",
+    "race": "Half-Orc",
+    "flexibleAbility": "str",
+    "alignment": "cn",
+    "abilities": { "str": 16, "dex": 14, "con": 14, "int": 10, "wis": 12, "cha": 8 },
+    "classes": [{ "name": "Barbarian", "level": 12, "hp": 89 }],
+    "feats": [
+      "Power Attack",
+      "Toughness",
+      "Iron Will",
+      "Cleave",
+      "Great Cleave",
+      "Improved Initiative"
+    ],
+    "skills": { "climb": 12, "swim": 12, "perception": 12, "intimidate": 12 },
+    "items": [
+      { "pack": "pf1.armors-and-shields", "name": "Hide Armor", "equipped": true },
+      { "pack": "pf1.armors-and-shields", "name": "Heavy Wooden Shield", "equipped": true },
+      { "pack": "pf1.items", "name": "Cloak of Resistance +1", "equipped": true }
+    ],
+    "scenarios": {
+      "base": {},
+      "rage": { "buffs": [{ "name": "Rage", "level": 12 }] },
+      "fatigued": { "conditions": ["fatigued"] }
+    }
+  },
+  "scenarios": {
+    "base": {
+      "actor": {
+        "name": "half-orc-barbarian-12 [base]",
+        "type": "character",
+        "folder": "GuYuyoqdabfe4xZV",
+        "_id": "wcHPVcR3NijMT5Qd",
+        "system": {
+          "abilities": {
+            "str": { "value": 16 },
+            "dex": { "value": 14 },
+            "con": { "value": 14 },
+            "int": { "value": 10 },
+            "wis": { "value": 12 },
+            "cha": { "value": 8 }
+          },
+          "attributes": {
+            "savingThrows": {
+              "fort": { "ability": "con" },
+              "ref": { "ability": "dex" },
+              "will": { "ability": "wis" }
+            },
+            "hp": { "temp": 0, "nonlethal": 0, "offset": 0 },
+            "wounds": { "offset": 0 },
+            "vigor": { "temp": 0, "offset": 0 }
+          },
+          "details": { "notes": {}, "xp": { "value": 0 }, "alignment": "cn" },
+          "traits": { "size": "med", "ageCategory": "adult", "stature": "tall" },
+          "currency": {},
+          "altCurrency": {}
+        },
+        "items": [
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.5WivCl3kkGv5iNiz" },
+            "name": "Perception",
+            "system": {
+              "ability": "wis",
+              "identifier": "perception",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.2h6hz5AkTDxKPFxr",
+              "sets": ["adventure"],
+              "rank": 12,
+              "acp": false,
+              "rt": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "9Hi88a9UZKkQj6Vo",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.6cOI6UozWx1PeOnr" },
+            "name": "Intimidate",
+            "system": {
+              "ability": "cha",
+              "identifier": "intimidate",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.KNn8uxHu23phKC0y",
+              "sets": ["adventure"],
+              "rank": 12,
+              "acp": false,
+              "rt": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "0rVPlL1kD8h95r6I",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.AihuO12FpILo3RXh" },
+            "name": "Swim",
+            "system": {
+              "ability": "str",
+              "acp": true,
+              "identifier": "swim",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.xhmDhOXuBbfVcD0Q",
+              "sets": ["adventure"],
+              "rank": 12,
+              "rt": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "arXw9gvn5e7cnNLD",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.NbW51ORcxEJnEY8H" },
+            "name": "Climb",
+            "system": {
+              "ability": "str",
+              "acp": true,
+              "identifier": "climb",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.ZAwjVOTwsBpZRgw4",
+              "sets": ["adventure"],
+              "rank": 12,
+              "rt": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "V1PXlhJjuw9JuYLN",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.races.Item.dCAXgdA6Db1Z3ccz" },
+            "folder": "RWSoA7Fj9yqo0y9U",
+            "name": "Half-Orc",
+            "system": {
+              "changes": {
+                "BxD6RnYK": {
+                  "_id": "BxD6RnYK",
+                  "formula": "60",
+                  "operator": "set",
+                  "target": "sensedv",
+                  "type": "untyped"
+                },
+                "iez8nkey": {
+                  "_id": "iez8nkey",
+                  "formula": "2",
+                  "target": "skill.intimidate",
+                  "type": "racial"
+                },
+                "lmflex01": { "_id": "lmflex01", "formula": "2", "target": "str", "type": "racial" }
+              },
+              "creatureSubtypes": ["human", "orc"],
+              "creatureTypes": ["humanoid"],
+              "languages": ["common", "orc"],
+              "size": "med",
+              "sources": [{ "id": "PZO1110", "pages": "25" }],
+              "speeds": { "land": 30 },
+              "tags": ["Core"],
+              "weaponProf": ["Greataxe", "Falchion"]
+            },
+            "type": "race",
+            "effects": [],
+            "flags": {},
+            "_id": "tF2JeaKMQjNaZRbc",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.classes.Item.g3pq7xWWdUVYw6ai" },
+            "name": "Barbarian",
+            "system": {
+              "alignment": "Any non-lawful",
+              "armorProf": ["lgt", "med", "shl"],
+              "bab": "high",
+              "classSkills": [
+                "acrobatics",
+                "artistry",
+                "climb",
+                "craft",
+                "handleAnimal",
+                "intimidate",
+                "knowledge.nature",
+                "lore",
+                "perception",
+                "ride",
+                "survival",
+                "swim"
+              ],
+              "hd": 12,
+              "hp": 89,
+              "level": 12,
+              "links": {
+                "supplements": [
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.WSqWT9ZIshtC5vlV" },
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.9EX00obqhGHcrOdp" },
+                  { "level": 2, "uuid": "Compendium.pf1.class-abilities.Item.7WaQxnVaaoL4AGr8" },
+                  { "level": 2, "uuid": "Compendium.pf1.class-abilities.Item.HdzsFdoGauXFjU2S" },
+                  { "level": 3, "uuid": "Compendium.pf1.class-abilities.Item.BoEkMviJrW0PKmhj" },
+                  { "level": 5, "uuid": "Compendium.pf1.class-abilities.Item.ZfnHhhTFQVo0Lj4P" },
+                  { "level": 7, "uuid": "Compendium.pf1.class-abilities.Item.RENIeTVjWB7Mq6Mw" },
+                  { "level": 11, "uuid": "Compendium.pf1.class-abilities.Item.IWNz5tJCnpig4UtX" },
+                  { "level": 14, "uuid": "Compendium.pf1.class-abilities.Item.Q3x319WbNkCssApD" },
+                  { "level": 16, "uuid": "Compendium.pf1.class-abilities.Item.aYdjgDZJCNvKpLQP" },
+                  { "level": 20, "uuid": "Compendium.pf1.class-abilities.Item.0v0NLj0tuVAu2Cla" }
+                ]
+              },
+              "savingThrows": {
+                "fort": { "value": "high" },
+                "ref": { "value": "low" },
+                "will": { "value": "low" }
+              },
+              "skillsPerLevel": 4,
+              "sources": [{ "id": "PZO1110", "pages": "31-34" }],
+              "subType": "base",
+              "tag": "barbarian",
+              "wealth": "3d6 * 10",
+              "weaponProf": ["simple", "martial"]
+            },
+            "type": "class",
+            "effects": [],
+            "folder": null,
+            "flags": {
+              "pf1": {
+                "links": {
+                  "classAssociations": {
+                    "jhUxzDUqzBSH2fJF": 1,
+                    "AYN4dgAhZRFkRRLc": 1,
+                    "RWhh2BSHcUtkk3Hx": 2,
+                    "BngPjD6LGrvDVxSH": 2,
+                    "vedYDSRwnzXQrLLm": 3,
+                    "IyBzfm8KypUtrfBr": 5,
+                    "TMqqdbcOOlV3xUGg": 7,
+                    "LVngn6xVRPqIQvcp": 11
+                  }
+                }
+              }
+            },
+            "_id": "HbE13OLroQYa5VO0",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.WSqWT9ZIshtC5vlV"
+            },
+            "name": "Rage",
+            "system": {
+              "abilityType": "ex",
+              "actions": {
+                "5bvc8dz7vtyunhph": {
+                  "_id": "5bvc8dz7vtyunhph",
+                  "activation": { "type": "free", "unchained": { "type": "free" } },
+                  "duration": { "units": "round" },
+                  "name": "Use",
+                  "range": { "units": "personal" },
+                  "sort": 0,
+                  "target": { "value": "Self" }
+                }
+              },
+              "associations": { "classes": ["Barbarian"] },
+              "links": {
+                "supplements": [{ "uuid": "Compendium.pf1.buffs.Item.UgjpRD8vtiSWRxuL" }],
+                "children": [{ "uuid": ".Item.lEtlQGUWmKNebdxH" }]
+              },
+              "sources": [{ "id": "PZO1110", "pages": "32" }],
+              "subType": "classFeat",
+              "tag": "rage",
+              "uses": {
+                "maxFormula": "4 + @abilities.con.mod + (2 * (@class.unlevel - 1))",
+                "per": "day"
+              },
+              "class": "barbarian",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 100000,
+            "_id": "jhUxzDUqzBSH2fJF",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.9EX00obqhGHcrOdp"
+            },
+            "name": "Fast Movement",
+            "system": {
+              "abilityType": "ex",
+              "associations": { "classes": ["Barbarian", "Barbarian (Unchained)", "Bloodrager"] },
+              "changes": {
+                "cu5r7fnq": {
+                  "_id": "cu5r7fnq",
+                  "formula": "if(and(lte(@armor.type, 2), lt(@attributes.encumbrance.level, 2)), 10)",
+                  "target": "landSpeed",
+                  "type": "base"
+                }
+              },
+              "sources": [
+                { "id": "PZO1110", "pages": "31" },
+                { "id": "PZO1129", "pages": "16" }
+              ],
+              "subType": "classFeat",
+              "class": "barbarian",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 200000,
+            "_id": "AYN4dgAhZRFkRRLc",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.7WaQxnVaaoL4AGr8"
+            },
+            "name": "Uncanny Dodge",
+            "system": {
+              "abilityType": "ex",
+              "associations": {
+                "classes": ["Barbarian", "Bloodrager", "Rogue", "Rogue (Unchained)", "Skald"]
+              },
+              "contextNotes": {
+                "ImkN87j6iTdKqStP": {
+                  "target": "cmd",
+                  "text": "Does not lose Dex bonus to AC if the attacker is invisible."
+                },
+                "leDfptnNLCyIJ57K": {
+                  "target": "ac",
+                  "text": "Does not lose Dex bonus to AC if the attacker is invisible."
+                },
+                "pzUE7ahoDiS0M0ia": { "target": "ac", "text": "Cannot be caught flat-footed." },
+                "uHEAXucUem1Cx6br": { "target": "cmd", "text": "Cannot be caught flat-footed." }
+              },
+              "sources": [
+                { "id": "PZO1110", "pages": "34, 69" },
+                { "id": "PZO1129", "pages": "15" }
+              ],
+              "subType": "classFeat",
+              "class": "barbarian",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 300000,
+            "_id": "RWhh2BSHcUtkk3Hx",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.HdzsFdoGauXFjU2S"
+            },
+            "name": "Rage Powers",
+            "system": {
+              "abilityType": "ex",
+              "associations": { "classes": ["Barbarian"] },
+              "sources": [{ "id": "PZO1110", "pages": "32" }],
+              "subType": "classFeat",
+              "class": "barbarian",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 400000,
+            "_id": "BngPjD6LGrvDVxSH",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.BoEkMviJrW0PKmhj"
+            },
+            "name": "Trap Sense",
+            "system": {
+              "abilityType": "ex",
+              "associations": { "classes": ["Rogue", "Barbarian", "Investigator", "Slayer"] },
+              "contextNotes": {
+                "JJ0NsLIk5pxQy7Sa": {
+                  "target": "ac",
+                  "text": "+[[floor(@class.unlevel / 3)]] dodge vs. traps"
+                },
+                "nXRlpKQ385bKsKPa": {
+                  "target": "ref",
+                  "text": "+[[floor(@class.unlevel / 3)]] vs. traps"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "31, 69" }],
+              "subType": "classFeat",
+              "class": "barbarian",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 500000,
+            "_id": "vedYDSRwnzXQrLLm",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.ZfnHhhTFQVo0Lj4P"
+            },
+            "name": "Improved Uncanny Dodge",
+            "system": {
+              "abilityType": "ex",
+              "associations": {
+                "classes": ["Barbarian", "Bloodrager", "Rogue", "Rogue (Unchained)", "Skald"]
+              },
+              "contextNotes": {
+                "mJhFn8rbacRQ208b": { "target": "ac", "text": "Cannot be flanked" }
+              },
+              "sources": [
+                { "id": "PZO1110", "pages": "34, 69" },
+                { "id": "PZO1129", "pages": "16" }
+              ],
+              "subType": "classFeat",
+              "class": "barbarian",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 600000,
+            "_id": "IyBzfm8KypUtrfBr",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.RENIeTVjWB7Mq6Mw"
+            },
+            "name": "Damage Reduction",
+            "system": {
+              "abilityType": "ex",
+              "associations": { "classes": ["Barbarian", "Bloodrager"] },
+              "sources": [
+                { "id": "PZO1110", "pages": "34" },
+                { "id": "PZO1129", "pages": "16" }
+              ],
+              "subType": "classFeat",
+              "class": "barbarian",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 700000,
+            "_id": "TMqqdbcOOlV3xUGg",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.IWNz5tJCnpig4UtX"
+            },
+            "name": "Greater Rage",
+            "system": {
+              "abilityType": "ex",
+              "associations": { "classes": ["Barbarian"] },
+              "sources": [{ "id": "PZO1110", "pages": "34" }],
+              "subType": "classFeat",
+              "class": "barbarian",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 800000,
+            "_id": "LVngn6xVRPqIQvcp",
+            "folder": null
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.buffs.Item.UgjpRD8vtiSWRxuL" },
+            "name": "Rage",
+            "system": {
+              "changes": {
+                "6i7dqnX9": {
+                  "_id": "6i7dqnX9",
+                  "formula": "4 + (floor(max(0, (@classes.barbarian.level - 2)) / 9) * 2)",
+                  "target": "con",
+                  "type": "morale"
+                },
+                "Ffm7Dn9d": {
+                  "_id": "Ffm7Dn9d",
+                  "formula": "-2",
+                  "target": "ac",
+                  "type": "untyped"
+                },
+                "lIgrzIpA": {
+                  "_id": "lIgrzIpA",
+                  "formula": "4 + (floor(max(0, (@classes.barbarian.level - 2)) / 9) * 2)",
+                  "target": "str",
+                  "type": "morale"
+                },
+                "vNiZTayy": {
+                  "_id": "vNiZTayy",
+                  "formula": "2 + floor(max(0, (@classes.barbarian.level - 2)) / 9)",
+                  "target": "will",
+                  "type": "morale"
+                }
+              },
+              "contextNotes": {
+                "2YH1sHf50Cy2h6DR": {
+                  "target": "allChecks",
+                  "text": "A barbarian cannot use any Charisma-, Dexterity-, or Intelligence-based skills (except Acrobatics, Fly, Intimidate, and Ride) or any ability that requires patience or concentration while raging."
+                },
+                "rFg2FtJtA3OKDxWB": {
+                  "target": "skills",
+                  "text": "A barbarian cannot use any Charisma-, Dexterity-, or Intelligence-based skills (except Acrobatics, Fly, Intimidate, and Ride) or any ability that requires patience or concentration while raging."
+                }
+              },
+              "duration": {
+                "end": "initiative",
+                "units": "round",
+                "value": "2 + @classes.barbarian.level * 2 + @abilities.con.mod"
+              },
+              "level": null,
+              "sources": [{ "id": "PZO1110", "pages": "32" }],
+              "subType": "feat"
+            },
+            "type": "buff",
+            "effects": [],
+            "flags": { "pf1": { "source": "Compendium.pf1.buffs.Item.UgjpRD8vtiSWRxuL" } },
+            "sort": 0,
+            "_id": "lEtlQGUWmKNebdxH",
+            "folder": null
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.8snLqsJN4LLL00Nq" },
+            "name": "Toughness",
+            "system": {
+              "changes": {
+                "bl5pemy2": {
+                  "_id": "bl5pemy2",
+                  "formula": "max(3, @attributes.hd.total)",
+                  "target": "mhp",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "116, 135" }],
+              "subType": "feat",
+              "tags": ["General", "Defensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "VzAQzK6gR4VKsVED",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.iAbIGhm7T2OK9Brt" },
+            "name": "Iron Will",
+            "system": {
+              "changes": {
+                "vafl2kz4": {
+                  "_id": "vafl2kz4",
+                  "formula": "2",
+                  "target": "will",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "115, 129" }],
+              "subType": "feat",
+              "tags": ["General", "Saving Throw"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "uwlucZg5PnwBpf15",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.Zeq6RWYv5otvg8q7" },
+            "name": "Cleave",
+            "system": {
+              "actions": {
+                "YKPDCAoDrghiYAzi": {
+                  "_id": "YKPDCAoDrghiYAzi",
+                  "activation": {
+                    "type": "standard",
+                    "unchained": { "cost": 2, "type": "action" }
+                  },
+                  "name": "Use",
+                  "notes": {
+                    "effect": ["[[-2]] penalty to your Armor Class until your next turn."]
+                  },
+                  "sort": 0
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "116, 119" }],
+              "subType": "feat",
+              "tags": ["Combat", "Combat Trick"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "Bo0rFFAexlIeuNgl",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.6HSMdwX1VS6nZ6Zf" },
+            "name": "Great Cleave",
+            "system": {
+              "actions": {
+                "9qJAoXcYkvy8E6Mf": {
+                  "_id": "9qJAoXcYkvy8E6Mf",
+                  "activation": {
+                    "type": "standard",
+                    "unchained": { "cost": 2, "type": "action" }
+                  },
+                  "name": "Use",
+                  "notes": {
+                    "effect": ["[[-2]] penalty to your Armor Class until your next turn."]
+                  },
+                  "sort": 0
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "116, 124" }],
+              "subType": "feat",
+              "tags": ["Combat", "Offensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "1b75eUHsfm7V8Ybo",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.Uuiu3p982omhMEPj" },
+            "name": "Improved Initiative",
+            "system": {
+              "changes": {
+                "ign7okhi": {
+                  "_id": "ign7okhi",
+                  "formula": "4",
+                  "target": "init",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "115, 127" }],
+              "subType": "feat",
+              "tags": ["Combat"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "jr2RPUr0KudfKsO7",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.FUW5mIXHNBBIQ1Sq" },
+            "name": "Power Attack",
+            "system": {
+              "changeFlags": ["powerAttack"],
+              "sources": [{ "id": "PZO1110", "pages": "116, 131" }],
+              "subType": "feat",
+              "tags": ["Combat", "Offensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "HBDdm8XMxiQNmPYU",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.armors-and-shields.Item.aI6gSI7gnCLCucw0"
+            },
+            "folder": "33jGfHlDL34jvwnX",
+            "name": "Hide Armor",
+            "system": {
+              "armor": {
+                "acp": 3,
+                "dex": 4,
+                "material": { "base": { "value": "leather" }, "addon": [] },
+                "value": 4,
+                "alignments": {}
+              },
+              "baseTypes": ["Hide Armor"],
+              "equipmentSubtype": "mediumArmor",
+              "equipped": true,
+              "hardness": 2,
+              "hp": { "base": 20 },
+              "price": { "base": 15, "unit": "gp" },
+              "quantity": 1,
+              "slot": "armor",
+              "sources": [{ "id": "PZO1110", "pages": "151" }],
+              "spellFailure": 20,
+              "subType": "armor",
+              "weight": { "value": 25 },
+              "mods": {}
+            },
+            "type": "equipment",
+            "effects": [],
+            "flags": {},
+            "_id": "9l1G3vtCNTM3kjP0",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.armors-and-shields.Item.6zjwZeZmhqmAFC82"
+            },
+            "folder": "DtVJVwL87ELQxk7u",
+            "name": "Heavy Wooden Shield",
+            "system": {
+              "actions": {
+                "zK6ZJX8WI56bdMNn": {
+                  "_id": "zK6ZJX8WI56bdMNn",
+                  "ability": { "attack": "str", "critMult": 2, "critRange": 20, "damage": "str" },
+                  "actionType": "mwak",
+                  "activation": { "type": "attack", "unchained": { "type": "attack" } },
+                  "damage": {
+                    "parts": [{ "formula": "sizeRoll(1, 4, @size)", "types": ["bludgeoning"] }]
+                  },
+                  "duration": { "units": "inst" },
+                  "extraAttacks": { "type": "standard" },
+                  "name": "Bash",
+                  "range": { "units": "melee" },
+                  "sort": 0
+                }
+              },
+              "armor": {
+                "acp": 2,
+                "material": { "base": { "value": "wood" }, "addon": [] },
+                "value": 2,
+                "alignments": {}
+              },
+              "equipmentSubtype": "heavyShield",
+              "equipped": true,
+              "hardness": 5,
+              "hp": { "base": 15 },
+              "price": { "base": 7, "unit": "gp" },
+              "quantity": 1,
+              "slot": "shield",
+              "sources": [{ "id": "PZO1110", "pages": "151-152" }],
+              "spellFailure": 15,
+              "subType": "shield",
+              "weight": { "value": 10 },
+              "mods": {}
+            },
+            "type": "equipment",
+            "effects": [],
+            "flags": {},
+            "_id": "oliyn2XEExIud0dg",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.items.Item.MrxwYWWezbJTZLog" },
+            "folder": "TQir6rREbQbhFUtK",
+            "name": "Cloak of Resistance +1",
+            "system": {
+              "armor": {
+                "material": {
+                  "base": { "value": "leather" },
+                  "normal": { "value": "leather" },
+                  "addon": []
+                },
+                "alignments": {}
+              },
+              "aura": { "school": "abj" },
+              "changes": {
+                "7okw4xq4": {
+                  "_id": "7okw4xq4",
+                  "formula": "1",
+                  "target": "allSavingThrows",
+                  "type": "resist"
+                }
+              },
+              "cl": 5,
+              "creation": {
+                "cost": { "unit": "gp", "value": 500 },
+                "description": "<p>@UUID[Compendium.pf1.feats.Item.tD76K8QGco9scT0r]{Craft Wondrous Item}, @UUID[Compendium.pf1.spells.Item.g8j278xcu2s1zlwy]{resistance}, creator's caster level must be at least three times the cloak's bonus</p>"
+              },
+              "equipmentSubtype": "lightArmor",
+              "equipped": true,
+              "hp": { "base": 10 },
+              "price": { "base": 1000, "unit": "gp" },
+              "quantity": 1,
+              "resizing": true,
+              "slot": "shoulders",
+              "sources": [
+                { "id": "PZO1123", "pages": "264" },
+                { "id": "PZO1110", "pages": "507" }
+              ],
+              "subType": "wondrous",
+              "unidentified": { "name": "Cloak", "price": { "base": 0, "unit": "gp" } },
+              "weight": { "value": 1 },
+              "mods": {}
+            },
+            "type": "equipment",
+            "effects": [],
+            "flags": {},
+            "_id": "XW4loKoY7CyzUH2n",
+            "sort": 0
+          }
+        ],
+        "effects": [],
+        "sort": 0,
+        "flags": {}
+      },
+      "derived": {
+        "abilities": {
+          "str": { "total": 18, "mod": 4 },
+          "dex": { "total": 14, "mod": 2 },
+          "con": { "total": 14, "mod": 2 },
+          "int": { "total": 10, "mod": 0 },
+          "wis": { "total": 12, "mod": 1 },
+          "cha": { "total": 8, "mod": -1 }
+        },
+        "ac": { "normal": 18, "touch": 12, "flatFooted": 16 },
+        "cmb": 16,
+        "cmd": { "total": 28, "flatFooted": 26 },
+        "saves": { "fort": 11, "ref": 7, "will": 8 },
+        "init": 6,
+        "bab": 12,
+        "attack": { "melee": 16, "ranged": 14 },
+        "hp": { "max": 125 },
+        "speed": { "land": 20 },
+        "sr": 0,
+        "acp": 5,
+        "skills": {
+          "perception": 16,
+          "knowledge": 0,
+          "knowledge.geography": 0,
+          "knowledge.nobility": 0,
+          "knowledge.local": 0,
+          "knowledge.dungeoneering": 0,
+          "knowledge.religion": 0,
+          "knowledge.nature": 0,
+          "knowledge.arcana": 0,
+          "knowledge.history": 0,
+          "knowledge.planes": 0,
+          "knowledge.engineering": 0,
+          "intimidate": 16,
+          "appraise": 0,
+          "profession": 1,
+          "fly": -3,
+          "disableDevice": -3,
+          "swim": 14,
+          "escapeArtist": -3,
+          "linguistics": 0,
+          "acrobatics": -3,
+          "useMagicDevice": -1,
+          "climb": 14,
+          "sleightOfHand": -3,
+          "handleAnimal": -1,
+          "heal": 1,
+          "spellcraft": 0,
+          "ride": -3,
+          "stealth": -3,
+          "survival": 1,
+          "craft": 0,
+          "disguise": -1,
+          "diplomacy": -1,
+          "senseMotive": -1,
+          "perform": -1,
+          "bluff": -1
+        }
+      }
+    },
+    "rage": {
+      "actor": {
+        "name": "half-orc-barbarian-12 [rage]",
+        "type": "character",
+        "folder": "GuYuyoqdabfe4xZV",
+        "_id": "FpaBROWNGs1EbK6n",
+        "system": {
+          "abilities": {
+            "str": { "value": 16 },
+            "dex": { "value": 14 },
+            "con": { "value": 14 },
+            "int": { "value": 10 },
+            "wis": { "value": 12 },
+            "cha": { "value": 8 }
+          },
+          "attributes": {
+            "savingThrows": {
+              "fort": { "ability": "con" },
+              "ref": { "ability": "dex" },
+              "will": { "ability": "wis" }
+            },
+            "hp": { "temp": 0, "nonlethal": 0, "offset": 0 },
+            "wounds": { "offset": 0 },
+            "vigor": { "temp": 0, "offset": 0 }
+          },
+          "details": { "notes": {}, "xp": { "value": 0 }, "alignment": "cn" },
+          "traits": { "size": "med", "ageCategory": "adult", "stature": "tall" },
+          "currency": {},
+          "altCurrency": {}
+        },
+        "items": [
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.5WivCl3kkGv5iNiz" },
+            "name": "Perception",
+            "system": {
+              "ability": "wis",
+              "identifier": "perception",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.2h6hz5AkTDxKPFxr",
+              "sets": ["adventure"],
+              "rank": 12,
+              "acp": false,
+              "rt": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "M3lD6VzPysCBgab9",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.6cOI6UozWx1PeOnr" },
+            "name": "Intimidate",
+            "system": {
+              "ability": "cha",
+              "identifier": "intimidate",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.KNn8uxHu23phKC0y",
+              "sets": ["adventure"],
+              "rank": 12,
+              "acp": false,
+              "rt": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "W7gNtTC2n04hBjkG",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.AihuO12FpILo3RXh" },
+            "name": "Swim",
+            "system": {
+              "ability": "str",
+              "acp": true,
+              "identifier": "swim",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.xhmDhOXuBbfVcD0Q",
+              "sets": ["adventure"],
+              "rank": 12,
+              "rt": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "K7i4HDx6mWSMUUJQ",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.NbW51ORcxEJnEY8H" },
+            "name": "Climb",
+            "system": {
+              "ability": "str",
+              "acp": true,
+              "identifier": "climb",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.ZAwjVOTwsBpZRgw4",
+              "sets": ["adventure"],
+              "rank": 12,
+              "rt": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "2WMWubyPJO7qcHVS",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.races.Item.dCAXgdA6Db1Z3ccz" },
+            "folder": "RWSoA7Fj9yqo0y9U",
+            "name": "Half-Orc",
+            "system": {
+              "changes": {
+                "BxD6RnYK": {
+                  "_id": "BxD6RnYK",
+                  "formula": "60",
+                  "operator": "set",
+                  "target": "sensedv",
+                  "type": "untyped"
+                },
+                "iez8nkey": {
+                  "_id": "iez8nkey",
+                  "formula": "2",
+                  "target": "skill.intimidate",
+                  "type": "racial"
+                },
+                "lmflex01": { "_id": "lmflex01", "formula": "2", "target": "str", "type": "racial" }
+              },
+              "creatureSubtypes": ["human", "orc"],
+              "creatureTypes": ["humanoid"],
+              "languages": ["common", "orc"],
+              "size": "med",
+              "sources": [{ "id": "PZO1110", "pages": "25" }],
+              "speeds": { "land": 30 },
+              "tags": ["Core"],
+              "weaponProf": ["Greataxe", "Falchion"]
+            },
+            "type": "race",
+            "effects": [],
+            "flags": {},
+            "_id": "3H2HCdsfy0UIKRpx",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.classes.Item.g3pq7xWWdUVYw6ai" },
+            "name": "Barbarian",
+            "system": {
+              "alignment": "Any non-lawful",
+              "armorProf": ["lgt", "med", "shl"],
+              "bab": "high",
+              "classSkills": [
+                "acrobatics",
+                "artistry",
+                "climb",
+                "craft",
+                "handleAnimal",
+                "intimidate",
+                "knowledge.nature",
+                "lore",
+                "perception",
+                "ride",
+                "survival",
+                "swim"
+              ],
+              "hd": 12,
+              "hp": 89,
+              "level": 12,
+              "links": {
+                "supplements": [
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.WSqWT9ZIshtC5vlV" },
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.9EX00obqhGHcrOdp" },
+                  { "level": 2, "uuid": "Compendium.pf1.class-abilities.Item.7WaQxnVaaoL4AGr8" },
+                  { "level": 2, "uuid": "Compendium.pf1.class-abilities.Item.HdzsFdoGauXFjU2S" },
+                  { "level": 3, "uuid": "Compendium.pf1.class-abilities.Item.BoEkMviJrW0PKmhj" },
+                  { "level": 5, "uuid": "Compendium.pf1.class-abilities.Item.ZfnHhhTFQVo0Lj4P" },
+                  { "level": 7, "uuid": "Compendium.pf1.class-abilities.Item.RENIeTVjWB7Mq6Mw" },
+                  { "level": 11, "uuid": "Compendium.pf1.class-abilities.Item.IWNz5tJCnpig4UtX" },
+                  { "level": 14, "uuid": "Compendium.pf1.class-abilities.Item.Q3x319WbNkCssApD" },
+                  { "level": 16, "uuid": "Compendium.pf1.class-abilities.Item.aYdjgDZJCNvKpLQP" },
+                  { "level": 20, "uuid": "Compendium.pf1.class-abilities.Item.0v0NLj0tuVAu2Cla" }
+                ]
+              },
+              "savingThrows": {
+                "fort": { "value": "high" },
+                "ref": { "value": "low" },
+                "will": { "value": "low" }
+              },
+              "skillsPerLevel": 4,
+              "sources": [{ "id": "PZO1110", "pages": "31-34" }],
+              "subType": "base",
+              "tag": "barbarian",
+              "wealth": "3d6 * 10",
+              "weaponProf": ["simple", "martial"]
+            },
+            "type": "class",
+            "effects": [],
+            "folder": null,
+            "flags": {
+              "pf1": {
+                "links": {
+                  "classAssociations": {
+                    "iiu5xFvCL74BRMSX": 1,
+                    "fS09yCZIspyqFD1Y": 1,
+                    "SLkDhVYfzFicxyKq": 2,
+                    "Ih7oYLCcqPKnUOxP": 2,
+                    "iJAL4G4p0E89MLRH": 3,
+                    "R17IbsrtlTz7FEdq": 7,
+                    "Z58S3aq3ZCiOTkhB": 5,
+                    "y3QqIC6YRUC3slpm": 11
+                  }
+                }
+              }
+            },
+            "_id": "lkuGF9tJIWkV6YT0",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.WSqWT9ZIshtC5vlV"
+            },
+            "name": "Rage",
+            "system": {
+              "abilityType": "ex",
+              "actions": {
+                "5bvc8dz7vtyunhph": {
+                  "_id": "5bvc8dz7vtyunhph",
+                  "activation": { "type": "free", "unchained": { "type": "free" } },
+                  "duration": { "units": "round" },
+                  "name": "Use",
+                  "range": { "units": "personal" },
+                  "sort": 0,
+                  "target": { "value": "Self" }
+                }
+              },
+              "associations": { "classes": ["Barbarian"] },
+              "links": {
+                "supplements": [{ "uuid": "Compendium.pf1.buffs.Item.UgjpRD8vtiSWRxuL" }],
+                "children": [{ "uuid": ".Item.clVfG7OcvX72GXGK" }]
+              },
+              "sources": [{ "id": "PZO1110", "pages": "32" }],
+              "subType": "classFeat",
+              "tag": "rage",
+              "uses": {
+                "maxFormula": "4 + @abilities.con.mod + (2 * (@class.unlevel - 1))",
+                "per": "day"
+              },
+              "class": "barbarian",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 100000,
+            "_id": "iiu5xFvCL74BRMSX",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.9EX00obqhGHcrOdp"
+            },
+            "name": "Fast Movement",
+            "system": {
+              "abilityType": "ex",
+              "associations": { "classes": ["Barbarian", "Barbarian (Unchained)", "Bloodrager"] },
+              "changes": {
+                "cu5r7fnq": {
+                  "_id": "cu5r7fnq",
+                  "formula": "if(and(lte(@armor.type, 2), lt(@attributes.encumbrance.level, 2)), 10)",
+                  "target": "landSpeed",
+                  "type": "base"
+                }
+              },
+              "sources": [
+                { "id": "PZO1110", "pages": "31" },
+                { "id": "PZO1129", "pages": "16" }
+              ],
+              "subType": "classFeat",
+              "class": "barbarian",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 200000,
+            "_id": "fS09yCZIspyqFD1Y",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.7WaQxnVaaoL4AGr8"
+            },
+            "name": "Uncanny Dodge",
+            "system": {
+              "abilityType": "ex",
+              "associations": {
+                "classes": ["Barbarian", "Bloodrager", "Rogue", "Rogue (Unchained)", "Skald"]
+              },
+              "contextNotes": {
+                "ImkN87j6iTdKqStP": {
+                  "target": "cmd",
+                  "text": "Does not lose Dex bonus to AC if the attacker is invisible."
+                },
+                "leDfptnNLCyIJ57K": {
+                  "target": "ac",
+                  "text": "Does not lose Dex bonus to AC if the attacker is invisible."
+                },
+                "pzUE7ahoDiS0M0ia": { "target": "ac", "text": "Cannot be caught flat-footed." },
+                "uHEAXucUem1Cx6br": { "target": "cmd", "text": "Cannot be caught flat-footed." }
+              },
+              "sources": [
+                { "id": "PZO1110", "pages": "34, 69" },
+                { "id": "PZO1129", "pages": "15" }
+              ],
+              "subType": "classFeat",
+              "class": "barbarian",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 300000,
+            "_id": "SLkDhVYfzFicxyKq",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.HdzsFdoGauXFjU2S"
+            },
+            "name": "Rage Powers",
+            "system": {
+              "abilityType": "ex",
+              "associations": { "classes": ["Barbarian"] },
+              "sources": [{ "id": "PZO1110", "pages": "32" }],
+              "subType": "classFeat",
+              "class": "barbarian",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 400000,
+            "_id": "Ih7oYLCcqPKnUOxP",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.BoEkMviJrW0PKmhj"
+            },
+            "name": "Trap Sense",
+            "system": {
+              "abilityType": "ex",
+              "associations": { "classes": ["Rogue", "Barbarian", "Investigator", "Slayer"] },
+              "contextNotes": {
+                "JJ0NsLIk5pxQy7Sa": {
+                  "target": "ac",
+                  "text": "+[[floor(@class.unlevel / 3)]] dodge vs. traps"
+                },
+                "nXRlpKQ385bKsKPa": {
+                  "target": "ref",
+                  "text": "+[[floor(@class.unlevel / 3)]] vs. traps"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "31, 69" }],
+              "subType": "classFeat",
+              "class": "barbarian",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 500000,
+            "_id": "iJAL4G4p0E89MLRH",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.RENIeTVjWB7Mq6Mw"
+            },
+            "name": "Damage Reduction",
+            "system": {
+              "abilityType": "ex",
+              "associations": { "classes": ["Barbarian", "Bloodrager"] },
+              "sources": [
+                { "id": "PZO1110", "pages": "34" },
+                { "id": "PZO1129", "pages": "16" }
+              ],
+              "subType": "classFeat",
+              "class": "barbarian",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 700000,
+            "_id": "R17IbsrtlTz7FEdq",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.ZfnHhhTFQVo0Lj4P"
+            },
+            "name": "Improved Uncanny Dodge",
+            "system": {
+              "abilityType": "ex",
+              "associations": {
+                "classes": ["Barbarian", "Bloodrager", "Rogue", "Rogue (Unchained)", "Skald"]
+              },
+              "contextNotes": {
+                "mJhFn8rbacRQ208b": { "target": "ac", "text": "Cannot be flanked" }
+              },
+              "sources": [
+                { "id": "PZO1110", "pages": "34, 69" },
+                { "id": "PZO1129", "pages": "16" }
+              ],
+              "subType": "classFeat",
+              "class": "barbarian",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 600000,
+            "_id": "Z58S3aq3ZCiOTkhB",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.IWNz5tJCnpig4UtX"
+            },
+            "name": "Greater Rage",
+            "system": {
+              "abilityType": "ex",
+              "associations": { "classes": ["Barbarian"] },
+              "sources": [{ "id": "PZO1110", "pages": "34" }],
+              "subType": "classFeat",
+              "class": "barbarian",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 800000,
+            "_id": "y3QqIC6YRUC3slpm",
+            "folder": null
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.buffs.Item.UgjpRD8vtiSWRxuL" },
+            "name": "Rage",
+            "system": {
+              "changes": {
+                "6i7dqnX9": {
+                  "_id": "6i7dqnX9",
+                  "formula": "4 + (floor(max(0, (@classes.barbarian.level - 2)) / 9) * 2)",
+                  "target": "con",
+                  "type": "morale"
+                },
+                "Ffm7Dn9d": {
+                  "_id": "Ffm7Dn9d",
+                  "formula": "-2",
+                  "target": "ac",
+                  "type": "untyped"
+                },
+                "lIgrzIpA": {
+                  "_id": "lIgrzIpA",
+                  "formula": "4 + (floor(max(0, (@classes.barbarian.level - 2)) / 9) * 2)",
+                  "target": "str",
+                  "type": "morale"
+                },
+                "vNiZTayy": {
+                  "_id": "vNiZTayy",
+                  "formula": "2 + floor(max(0, (@classes.barbarian.level - 2)) / 9)",
+                  "target": "will",
+                  "type": "morale"
+                }
+              },
+              "contextNotes": {
+                "2YH1sHf50Cy2h6DR": {
+                  "target": "allChecks",
+                  "text": "A barbarian cannot use any Charisma-, Dexterity-, or Intelligence-based skills (except Acrobatics, Fly, Intimidate, and Ride) or any ability that requires patience or concentration while raging."
+                },
+                "rFg2FtJtA3OKDxWB": {
+                  "target": "skills",
+                  "text": "A barbarian cannot use any Charisma-, Dexterity-, or Intelligence-based skills (except Acrobatics, Fly, Intimidate, and Ride) or any ability that requires patience or concentration while raging."
+                }
+              },
+              "duration": {
+                "end": "initiative",
+                "units": "round",
+                "value": "2 + @classes.barbarian.level * 2 + @abilities.con.mod"
+              },
+              "level": null,
+              "sources": [{ "id": "PZO1110", "pages": "32" }],
+              "subType": "feat"
+            },
+            "type": "buff",
+            "effects": [],
+            "flags": { "pf1": { "source": "Compendium.pf1.buffs.Item.UgjpRD8vtiSWRxuL" } },
+            "sort": 0,
+            "_id": "clVfG7OcvX72GXGK",
+            "folder": null
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.8snLqsJN4LLL00Nq" },
+            "name": "Toughness",
+            "system": {
+              "changes": {
+                "bl5pemy2": {
+                  "_id": "bl5pemy2",
+                  "formula": "max(3, @attributes.hd.total)",
+                  "target": "mhp",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "116, 135" }],
+              "subType": "feat",
+              "tags": ["General", "Defensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "UhnQmt1n3Ulefgrs",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.iAbIGhm7T2OK9Brt" },
+            "name": "Iron Will",
+            "system": {
+              "changes": {
+                "vafl2kz4": {
+                  "_id": "vafl2kz4",
+                  "formula": "2",
+                  "target": "will",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "115, 129" }],
+              "subType": "feat",
+              "tags": ["General", "Saving Throw"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "htUk66kA49aFmzjp",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.Zeq6RWYv5otvg8q7" },
+            "name": "Cleave",
+            "system": {
+              "actions": {
+                "YKPDCAoDrghiYAzi": {
+                  "_id": "YKPDCAoDrghiYAzi",
+                  "activation": {
+                    "type": "standard",
+                    "unchained": { "cost": 2, "type": "action" }
+                  },
+                  "name": "Use",
+                  "notes": {
+                    "effect": ["[[-2]] penalty to your Armor Class until your next turn."]
+                  },
+                  "sort": 0
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "116, 119" }],
+              "subType": "feat",
+              "tags": ["Combat", "Combat Trick"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "d2fOH4wJMCE46qZX",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.6HSMdwX1VS6nZ6Zf" },
+            "name": "Great Cleave",
+            "system": {
+              "actions": {
+                "9qJAoXcYkvy8E6Mf": {
+                  "_id": "9qJAoXcYkvy8E6Mf",
+                  "activation": {
+                    "type": "standard",
+                    "unchained": { "cost": 2, "type": "action" }
+                  },
+                  "name": "Use",
+                  "notes": {
+                    "effect": ["[[-2]] penalty to your Armor Class until your next turn."]
+                  },
+                  "sort": 0
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "116, 124" }],
+              "subType": "feat",
+              "tags": ["Combat", "Offensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "5Ln2YH7QnOkKJfQw",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.Uuiu3p982omhMEPj" },
+            "name": "Improved Initiative",
+            "system": {
+              "changes": {
+                "ign7okhi": {
+                  "_id": "ign7okhi",
+                  "formula": "4",
+                  "target": "init",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "115, 127" }],
+              "subType": "feat",
+              "tags": ["Combat"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "YE3O4NMkptcoEX96",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.FUW5mIXHNBBIQ1Sq" },
+            "name": "Power Attack",
+            "system": {
+              "changeFlags": ["powerAttack"],
+              "sources": [{ "id": "PZO1110", "pages": "116, 131" }],
+              "subType": "feat",
+              "tags": ["Combat", "Offensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "MUdxSyFOixV4vaMG",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.armors-and-shields.Item.aI6gSI7gnCLCucw0"
+            },
+            "folder": "33jGfHlDL34jvwnX",
+            "name": "Hide Armor",
+            "system": {
+              "armor": {
+                "acp": 3,
+                "dex": 4,
+                "material": { "base": { "value": "leather" }, "addon": [] },
+                "value": 4,
+                "alignments": {}
+              },
+              "baseTypes": ["Hide Armor"],
+              "equipmentSubtype": "mediumArmor",
+              "equipped": true,
+              "hardness": 2,
+              "hp": { "base": 20 },
+              "price": { "base": 15, "unit": "gp" },
+              "quantity": 1,
+              "slot": "armor",
+              "sources": [{ "id": "PZO1110", "pages": "151" }],
+              "spellFailure": 20,
+              "subType": "armor",
+              "weight": { "value": 25 },
+              "mods": {}
+            },
+            "type": "equipment",
+            "effects": [],
+            "flags": {},
+            "_id": "IWkK21v60B1EAh2r",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.armors-and-shields.Item.6zjwZeZmhqmAFC82"
+            },
+            "folder": "DtVJVwL87ELQxk7u",
+            "name": "Heavy Wooden Shield",
+            "system": {
+              "actions": {
+                "zK6ZJX8WI56bdMNn": {
+                  "_id": "zK6ZJX8WI56bdMNn",
+                  "ability": { "attack": "str", "critMult": 2, "critRange": 20, "damage": "str" },
+                  "actionType": "mwak",
+                  "activation": { "type": "attack", "unchained": { "type": "attack" } },
+                  "damage": {
+                    "parts": [{ "formula": "sizeRoll(1, 4, @size)", "types": ["bludgeoning"] }]
+                  },
+                  "duration": { "units": "inst" },
+                  "extraAttacks": { "type": "standard" },
+                  "name": "Bash",
+                  "range": { "units": "melee" },
+                  "sort": 0
+                }
+              },
+              "armor": {
+                "acp": 2,
+                "material": { "base": { "value": "wood" }, "addon": [] },
+                "value": 2,
+                "alignments": {}
+              },
+              "equipmentSubtype": "heavyShield",
+              "equipped": true,
+              "hardness": 5,
+              "hp": { "base": 15 },
+              "price": { "base": 7, "unit": "gp" },
+              "quantity": 1,
+              "slot": "shield",
+              "sources": [{ "id": "PZO1110", "pages": "151-152" }],
+              "spellFailure": 15,
+              "subType": "shield",
+              "weight": { "value": 10 },
+              "mods": {}
+            },
+            "type": "equipment",
+            "effects": [],
+            "flags": {},
+            "_id": "4HbFu1hqE8mFV2X3",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.items.Item.MrxwYWWezbJTZLog" },
+            "folder": "TQir6rREbQbhFUtK",
+            "name": "Cloak of Resistance +1",
+            "system": {
+              "armor": {
+                "material": {
+                  "base": { "value": "leather" },
+                  "normal": { "value": "leather" },
+                  "addon": []
+                },
+                "alignments": {}
+              },
+              "aura": { "school": "abj" },
+              "changes": {
+                "7okw4xq4": {
+                  "_id": "7okw4xq4",
+                  "formula": "1",
+                  "target": "allSavingThrows",
+                  "type": "resist"
+                }
+              },
+              "cl": 5,
+              "creation": {
+                "cost": { "unit": "gp", "value": 500 },
+                "description": "<p>@UUID[Compendium.pf1.feats.Item.tD76K8QGco9scT0r]{Craft Wondrous Item}, @UUID[Compendium.pf1.spells.Item.g8j278xcu2s1zlwy]{resistance}, creator's caster level must be at least three times the cloak's bonus</p>"
+              },
+              "equipmentSubtype": "lightArmor",
+              "equipped": true,
+              "hp": { "base": 10 },
+              "price": { "base": 1000, "unit": "gp" },
+              "quantity": 1,
+              "resizing": true,
+              "slot": "shoulders",
+              "sources": [
+                { "id": "PZO1123", "pages": "264" },
+                { "id": "PZO1110", "pages": "507" }
+              ],
+              "subType": "wondrous",
+              "unidentified": { "name": "Cloak", "price": { "base": 0, "unit": "gp" } },
+              "weight": { "value": 1 },
+              "mods": {}
+            },
+            "type": "equipment",
+            "effects": [],
+            "flags": {},
+            "_id": "W4CaooYxqN3PeHhp",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.buffs.Item.UgjpRD8vtiSWRxuL" },
+            "folder": "GoxdX8voXN2V3OVY",
+            "name": "Rage",
+            "system": {
+              "changes": {
+                "6i7dqnX9": {
+                  "_id": "6i7dqnX9",
+                  "formula": "4 + (floor(max(0, (@classes.barbarian.level - 2)) / 9) * 2)",
+                  "target": "con",
+                  "type": "morale"
+                },
+                "Ffm7Dn9d": {
+                  "_id": "Ffm7Dn9d",
+                  "formula": "-2",
+                  "target": "ac",
+                  "type": "untyped"
+                },
+                "lIgrzIpA": {
+                  "_id": "lIgrzIpA",
+                  "formula": "4 + (floor(max(0, (@classes.barbarian.level - 2)) / 9) * 2)",
+                  "target": "str",
+                  "type": "morale"
+                },
+                "vNiZTayy": {
+                  "_id": "vNiZTayy",
+                  "formula": "2 + floor(max(0, (@classes.barbarian.level - 2)) / 9)",
+                  "target": "will",
+                  "type": "morale"
+                }
+              },
+              "contextNotes": {
+                "2YH1sHf50Cy2h6DR": {
+                  "target": "allChecks",
+                  "text": "A barbarian cannot use any Charisma-, Dexterity-, or Intelligence-based skills (except Acrobatics, Fly, Intimidate, and Ride) or any ability that requires patience or concentration while raging."
+                },
+                "rFg2FtJtA3OKDxWB": {
+                  "target": "skills",
+                  "text": "A barbarian cannot use any Charisma-, Dexterity-, or Intelligence-based skills (except Acrobatics, Fly, Intimidate, and Ride) or any ability that requires patience or concentration while raging."
+                }
+              },
+              "duration": {
+                "end": "initiative",
+                "units": "round",
+                "value": "2 + @classes.barbarian.level * 2 + @abilities.con.mod"
+              },
+              "level": 12,
+              "sources": [{ "id": "PZO1110", "pages": "32" }],
+              "subType": "feat",
+              "active": true
+            },
+            "type": "buff",
+            "effects": [],
+            "flags": {},
+            "_id": "renVXr9YyWqM1OoZ",
+            "sort": 0
+          }
+        ],
+        "effects": [],
+        "sort": 0,
+        "flags": {}
+      },
+      "derived": {
+        "abilities": {
+          "str": { "total": 24, "mod": 7 },
+          "dex": { "total": 14, "mod": 2 },
+          "con": { "total": 20, "mod": 5 },
+          "int": { "total": 10, "mod": 0 },
+          "wis": { "total": 12, "mod": 1 },
+          "cha": { "total": 8, "mod": -1 }
+        },
+        "ac": { "normal": 16, "touch": 10, "flatFooted": 14 },
+        "cmb": 19,
+        "cmd": { "total": 31, "flatFooted": 29 },
+        "saves": { "fort": 14, "ref": 7, "will": 11 },
+        "init": 6,
+        "bab": 12,
+        "attack": { "melee": 19, "ranged": 14 },
+        "hp": { "max": 161 },
+        "speed": { "land": 20 },
+        "sr": 0,
+        "acp": 5,
+        "skills": {
+          "perception": 16,
+          "knowledge": 0,
+          "knowledge.geography": 0,
+          "knowledge.nobility": 0,
+          "knowledge.local": 0,
+          "knowledge.dungeoneering": 0,
+          "knowledge.religion": 0,
+          "knowledge.nature": 0,
+          "knowledge.arcana": 0,
+          "knowledge.history": 0,
+          "knowledge.planes": 0,
+          "knowledge.engineering": 0,
+          "intimidate": 16,
+          "appraise": 0,
+          "profession": 1,
+          "fly": -3,
+          "disableDevice": -3,
+          "swim": 17,
+          "escapeArtist": -3,
+          "linguistics": 0,
+          "acrobatics": -3,
+          "useMagicDevice": -1,
+          "climb": 17,
+          "sleightOfHand": -3,
+          "handleAnimal": -1,
+          "heal": 1,
+          "spellcraft": 0,
+          "ride": -3,
+          "stealth": -3,
+          "survival": 1,
+          "craft": 0,
+          "disguise": -1,
+          "diplomacy": -1,
+          "senseMotive": -1,
+          "perform": -1,
+          "bluff": -1
+        }
+      }
+    },
+    "fatigued": {
+      "actor": {
+        "name": "half-orc-barbarian-12 [fatigued]",
+        "type": "character",
+        "folder": "GuYuyoqdabfe4xZV",
+        "_id": "BbM1eQowVLwsVqe8",
+        "system": {
+          "abilities": {
+            "str": { "value": 16 },
+            "dex": { "value": 14 },
+            "con": { "value": 14 },
+            "int": { "value": 10 },
+            "wis": { "value": 12 },
+            "cha": { "value": 8 }
+          },
+          "attributes": {
+            "savingThrows": {
+              "fort": { "ability": "con" },
+              "ref": { "ability": "dex" },
+              "will": { "ability": "wis" }
+            },
+            "hp": { "temp": 0, "nonlethal": 0, "offset": 0 },
+            "wounds": { "offset": 0 },
+            "vigor": { "temp": 0, "offset": 0 }
+          },
+          "details": { "notes": {}, "xp": { "value": 0 }, "alignment": "cn" },
+          "traits": { "size": "med", "ageCategory": "adult", "stature": "tall" },
+          "currency": {},
+          "altCurrency": {}
+        },
+        "items": [
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.5WivCl3kkGv5iNiz" },
+            "name": "Perception",
+            "system": {
+              "ability": "wis",
+              "identifier": "perception",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.2h6hz5AkTDxKPFxr",
+              "sets": ["adventure"],
+              "rank": 12,
+              "acp": false,
+              "rt": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "KPpWSIazbEwIC14m",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.6cOI6UozWx1PeOnr" },
+            "name": "Intimidate",
+            "system": {
+              "ability": "cha",
+              "identifier": "intimidate",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.KNn8uxHu23phKC0y",
+              "sets": ["adventure"],
+              "rank": 12,
+              "acp": false,
+              "rt": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "0OSS9XJRqQ54I720",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.AihuO12FpILo3RXh" },
+            "name": "Swim",
+            "system": {
+              "ability": "str",
+              "acp": true,
+              "identifier": "swim",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.xhmDhOXuBbfVcD0Q",
+              "sets": ["adventure"],
+              "rank": 12,
+              "rt": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "YNxu0oywLfdAZYW3",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.skills-core.Item.NbW51ORcxEJnEY8H" },
+            "name": "Climb",
+            "system": {
+              "ability": "str",
+              "acp": true,
+              "identifier": "climb",
+              "reference": "Compendium.pf1.rules.JournalEntry.x175kVqUfLGPt8tC.JournalEntryPage.ZAwjVOTwsBpZRgw4",
+              "sets": ["adventure"],
+              "rank": 12,
+              "rt": false,
+              "custom": false,
+              "subskills": false
+            },
+            "type": "skill",
+            "effects": [],
+            "flags": {},
+            "_id": "yC0qKOFQFoasEoqj",
+            "folder": null,
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.races.Item.dCAXgdA6Db1Z3ccz" },
+            "folder": "RWSoA7Fj9yqo0y9U",
+            "name": "Half-Orc",
+            "system": {
+              "changes": {
+                "BxD6RnYK": {
+                  "_id": "BxD6RnYK",
+                  "formula": "60",
+                  "operator": "set",
+                  "target": "sensedv",
+                  "type": "untyped"
+                },
+                "iez8nkey": {
+                  "_id": "iez8nkey",
+                  "formula": "2",
+                  "target": "skill.intimidate",
+                  "type": "racial"
+                },
+                "lmflex01": { "_id": "lmflex01", "formula": "2", "target": "str", "type": "racial" }
+              },
+              "creatureSubtypes": ["human", "orc"],
+              "creatureTypes": ["humanoid"],
+              "languages": ["common", "orc"],
+              "size": "med",
+              "sources": [{ "id": "PZO1110", "pages": "25" }],
+              "speeds": { "land": 30 },
+              "tags": ["Core"],
+              "weaponProf": ["Greataxe", "Falchion"]
+            },
+            "type": "race",
+            "effects": [],
+            "flags": {},
+            "_id": "ol239J58scmzmaHy",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.classes.Item.g3pq7xWWdUVYw6ai" },
+            "name": "Barbarian",
+            "system": {
+              "alignment": "Any non-lawful",
+              "armorProf": ["lgt", "med", "shl"],
+              "bab": "high",
+              "classSkills": [
+                "acrobatics",
+                "artistry",
+                "climb",
+                "craft",
+                "handleAnimal",
+                "intimidate",
+                "knowledge.nature",
+                "lore",
+                "perception",
+                "ride",
+                "survival",
+                "swim"
+              ],
+              "hd": 12,
+              "hp": 89,
+              "level": 12,
+              "links": {
+                "supplements": [
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.WSqWT9ZIshtC5vlV" },
+                  { "level": 1, "uuid": "Compendium.pf1.class-abilities.Item.9EX00obqhGHcrOdp" },
+                  { "level": 2, "uuid": "Compendium.pf1.class-abilities.Item.7WaQxnVaaoL4AGr8" },
+                  { "level": 2, "uuid": "Compendium.pf1.class-abilities.Item.HdzsFdoGauXFjU2S" },
+                  { "level": 3, "uuid": "Compendium.pf1.class-abilities.Item.BoEkMviJrW0PKmhj" },
+                  { "level": 5, "uuid": "Compendium.pf1.class-abilities.Item.ZfnHhhTFQVo0Lj4P" },
+                  { "level": 7, "uuid": "Compendium.pf1.class-abilities.Item.RENIeTVjWB7Mq6Mw" },
+                  { "level": 11, "uuid": "Compendium.pf1.class-abilities.Item.IWNz5tJCnpig4UtX" },
+                  { "level": 14, "uuid": "Compendium.pf1.class-abilities.Item.Q3x319WbNkCssApD" },
+                  { "level": 16, "uuid": "Compendium.pf1.class-abilities.Item.aYdjgDZJCNvKpLQP" },
+                  { "level": 20, "uuid": "Compendium.pf1.class-abilities.Item.0v0NLj0tuVAu2Cla" }
+                ]
+              },
+              "savingThrows": {
+                "fort": { "value": "high" },
+                "ref": { "value": "low" },
+                "will": { "value": "low" }
+              },
+              "skillsPerLevel": 4,
+              "sources": [{ "id": "PZO1110", "pages": "31-34" }],
+              "subType": "base",
+              "tag": "barbarian",
+              "wealth": "3d6 * 10",
+              "weaponProf": ["simple", "martial"]
+            },
+            "type": "class",
+            "effects": [],
+            "folder": null,
+            "flags": {
+              "pf1": {
+                "links": {
+                  "classAssociations": {
+                    "QBL5Oe5Cdz7bxNcy": 1,
+                    "sK6pJuT031ZJ44jZ": 1,
+                    "LUjHnevt3lgin423": 2,
+                    "iA0MIulPaUmJ7bgg": 2,
+                    "GUq0yQq45flZa9tL": 3,
+                    "dCsiNnOn2juNQNXj": 5,
+                    "HxQJjxD9uj2b2Jym": 7,
+                    "sahwu1ZRun8szIL8": 11
+                  }
+                }
+              }
+            },
+            "_id": "9i5rYVULmWbc86S8",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.WSqWT9ZIshtC5vlV"
+            },
+            "name": "Rage",
+            "system": {
+              "abilityType": "ex",
+              "actions": {
+                "5bvc8dz7vtyunhph": {
+                  "_id": "5bvc8dz7vtyunhph",
+                  "activation": { "type": "free", "unchained": { "type": "free" } },
+                  "duration": { "units": "round" },
+                  "name": "Use",
+                  "range": { "units": "personal" },
+                  "sort": 0,
+                  "target": { "value": "Self" }
+                }
+              },
+              "associations": { "classes": ["Barbarian"] },
+              "links": {
+                "supplements": [{ "uuid": "Compendium.pf1.buffs.Item.UgjpRD8vtiSWRxuL" }],
+                "children": [{ "uuid": ".Item.nJANo2lI4jueLoh2" }]
+              },
+              "sources": [{ "id": "PZO1110", "pages": "32" }],
+              "subType": "classFeat",
+              "tag": "rage",
+              "uses": {
+                "maxFormula": "4 + @abilities.con.mod + (2 * (@class.unlevel - 1))",
+                "per": "day"
+              },
+              "class": "barbarian",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 100000,
+            "_id": "QBL5Oe5Cdz7bxNcy",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.9EX00obqhGHcrOdp"
+            },
+            "name": "Fast Movement",
+            "system": {
+              "abilityType": "ex",
+              "associations": { "classes": ["Barbarian", "Barbarian (Unchained)", "Bloodrager"] },
+              "changes": {
+                "cu5r7fnq": {
+                  "_id": "cu5r7fnq",
+                  "formula": "if(and(lte(@armor.type, 2), lt(@attributes.encumbrance.level, 2)), 10)",
+                  "target": "landSpeed",
+                  "type": "base"
+                }
+              },
+              "sources": [
+                { "id": "PZO1110", "pages": "31" },
+                { "id": "PZO1129", "pages": "16" }
+              ],
+              "subType": "classFeat",
+              "class": "barbarian",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 200000,
+            "_id": "sK6pJuT031ZJ44jZ",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.7WaQxnVaaoL4AGr8"
+            },
+            "name": "Uncanny Dodge",
+            "system": {
+              "abilityType": "ex",
+              "associations": {
+                "classes": ["Barbarian", "Bloodrager", "Rogue", "Rogue (Unchained)", "Skald"]
+              },
+              "contextNotes": {
+                "ImkN87j6iTdKqStP": {
+                  "target": "cmd",
+                  "text": "Does not lose Dex bonus to AC if the attacker is invisible."
+                },
+                "leDfptnNLCyIJ57K": {
+                  "target": "ac",
+                  "text": "Does not lose Dex bonus to AC if the attacker is invisible."
+                },
+                "pzUE7ahoDiS0M0ia": { "target": "ac", "text": "Cannot be caught flat-footed." },
+                "uHEAXucUem1Cx6br": { "target": "cmd", "text": "Cannot be caught flat-footed." }
+              },
+              "sources": [
+                { "id": "PZO1110", "pages": "34, 69" },
+                { "id": "PZO1129", "pages": "15" }
+              ],
+              "subType": "classFeat",
+              "class": "barbarian",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 300000,
+            "_id": "LUjHnevt3lgin423",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.HdzsFdoGauXFjU2S"
+            },
+            "name": "Rage Powers",
+            "system": {
+              "abilityType": "ex",
+              "associations": { "classes": ["Barbarian"] },
+              "sources": [{ "id": "PZO1110", "pages": "32" }],
+              "subType": "classFeat",
+              "class": "barbarian",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 400000,
+            "_id": "iA0MIulPaUmJ7bgg",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.BoEkMviJrW0PKmhj"
+            },
+            "name": "Trap Sense",
+            "system": {
+              "abilityType": "ex",
+              "associations": { "classes": ["Rogue", "Barbarian", "Investigator", "Slayer"] },
+              "contextNotes": {
+                "JJ0NsLIk5pxQy7Sa": {
+                  "target": "ac",
+                  "text": "+[[floor(@class.unlevel / 3)]] dodge vs. traps"
+                },
+                "nXRlpKQ385bKsKPa": {
+                  "target": "ref",
+                  "text": "+[[floor(@class.unlevel / 3)]] vs. traps"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "31, 69" }],
+              "subType": "classFeat",
+              "class": "barbarian",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 500000,
+            "_id": "GUq0yQq45flZa9tL",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.ZfnHhhTFQVo0Lj4P"
+            },
+            "name": "Improved Uncanny Dodge",
+            "system": {
+              "abilityType": "ex",
+              "associations": {
+                "classes": ["Barbarian", "Bloodrager", "Rogue", "Rogue (Unchained)", "Skald"]
+              },
+              "contextNotes": {
+                "mJhFn8rbacRQ208b": { "target": "ac", "text": "Cannot be flanked" }
+              },
+              "sources": [
+                { "id": "PZO1110", "pages": "34, 69" },
+                { "id": "PZO1129", "pages": "16" }
+              ],
+              "subType": "classFeat",
+              "class": "barbarian",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 600000,
+            "_id": "dCsiNnOn2juNQNXj",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.RENIeTVjWB7Mq6Mw"
+            },
+            "name": "Damage Reduction",
+            "system": {
+              "abilityType": "ex",
+              "associations": { "classes": ["Barbarian", "Bloodrager"] },
+              "sources": [
+                { "id": "PZO1110", "pages": "34" },
+                { "id": "PZO1129", "pages": "16" }
+              ],
+              "subType": "classFeat",
+              "class": "barbarian",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 700000,
+            "_id": "HxQJjxD9uj2b2Jym",
+            "folder": null
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.class-abilities.Item.IWNz5tJCnpig4UtX"
+            },
+            "name": "Greater Rage",
+            "system": {
+              "abilityType": "ex",
+              "associations": { "classes": ["Barbarian"] },
+              "sources": [{ "id": "PZO1110", "pages": "34" }],
+              "subType": "classFeat",
+              "class": "barbarian",
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "flags": {},
+            "sort": 800000,
+            "_id": "sahwu1ZRun8szIL8",
+            "folder": null
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.buffs.Item.UgjpRD8vtiSWRxuL" },
+            "name": "Rage",
+            "system": {
+              "changes": {
+                "6i7dqnX9": {
+                  "_id": "6i7dqnX9",
+                  "formula": "4 + (floor(max(0, (@classes.barbarian.level - 2)) / 9) * 2)",
+                  "target": "con",
+                  "type": "morale"
+                },
+                "Ffm7Dn9d": {
+                  "_id": "Ffm7Dn9d",
+                  "formula": "-2",
+                  "target": "ac",
+                  "type": "untyped"
+                },
+                "lIgrzIpA": {
+                  "_id": "lIgrzIpA",
+                  "formula": "4 + (floor(max(0, (@classes.barbarian.level - 2)) / 9) * 2)",
+                  "target": "str",
+                  "type": "morale"
+                },
+                "vNiZTayy": {
+                  "_id": "vNiZTayy",
+                  "formula": "2 + floor(max(0, (@classes.barbarian.level - 2)) / 9)",
+                  "target": "will",
+                  "type": "morale"
+                }
+              },
+              "contextNotes": {
+                "2YH1sHf50Cy2h6DR": {
+                  "target": "allChecks",
+                  "text": "A barbarian cannot use any Charisma-, Dexterity-, or Intelligence-based skills (except Acrobatics, Fly, Intimidate, and Ride) or any ability that requires patience or concentration while raging."
+                },
+                "rFg2FtJtA3OKDxWB": {
+                  "target": "skills",
+                  "text": "A barbarian cannot use any Charisma-, Dexterity-, or Intelligence-based skills (except Acrobatics, Fly, Intimidate, and Ride) or any ability that requires patience or concentration while raging."
+                }
+              },
+              "duration": {
+                "end": "initiative",
+                "units": "round",
+                "value": "2 + @classes.barbarian.level * 2 + @abilities.con.mod"
+              },
+              "level": null,
+              "sources": [{ "id": "PZO1110", "pages": "32" }],
+              "subType": "feat"
+            },
+            "type": "buff",
+            "effects": [],
+            "flags": { "pf1": { "source": "Compendium.pf1.buffs.Item.UgjpRD8vtiSWRxuL" } },
+            "sort": 0,
+            "_id": "nJANo2lI4jueLoh2",
+            "folder": null
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.FUW5mIXHNBBIQ1Sq" },
+            "name": "Power Attack",
+            "system": {
+              "changeFlags": ["powerAttack"],
+              "sources": [{ "id": "PZO1110", "pages": "116, 131" }],
+              "subType": "feat",
+              "tags": ["Combat", "Offensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "RFMGAOfUOpBs7BhE",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.8snLqsJN4LLL00Nq" },
+            "name": "Toughness",
+            "system": {
+              "changes": {
+                "bl5pemy2": {
+                  "_id": "bl5pemy2",
+                  "formula": "max(3, @attributes.hd.total)",
+                  "target": "mhp",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "116, 135" }],
+              "subType": "feat",
+              "tags": ["General", "Defensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "qHmbIPYh0ZIoHslM",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.iAbIGhm7T2OK9Brt" },
+            "name": "Iron Will",
+            "system": {
+              "changes": {
+                "vafl2kz4": {
+                  "_id": "vafl2kz4",
+                  "formula": "2",
+                  "target": "will",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "115, 129" }],
+              "subType": "feat",
+              "tags": ["General", "Saving Throw"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "AJA456eTS84dhA12",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.Zeq6RWYv5otvg8q7" },
+            "name": "Cleave",
+            "system": {
+              "actions": {
+                "YKPDCAoDrghiYAzi": {
+                  "_id": "YKPDCAoDrghiYAzi",
+                  "activation": {
+                    "type": "standard",
+                    "unchained": { "cost": 2, "type": "action" }
+                  },
+                  "name": "Use",
+                  "notes": {
+                    "effect": ["[[-2]] penalty to your Armor Class until your next turn."]
+                  },
+                  "sort": 0
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "116, 119" }],
+              "subType": "feat",
+              "tags": ["Combat", "Combat Trick"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "2RBL43al0ycSQL7u",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.6HSMdwX1VS6nZ6Zf" },
+            "name": "Great Cleave",
+            "system": {
+              "actions": {
+                "9qJAoXcYkvy8E6Mf": {
+                  "_id": "9qJAoXcYkvy8E6Mf",
+                  "activation": {
+                    "type": "standard",
+                    "unchained": { "cost": 2, "type": "action" }
+                  },
+                  "name": "Use",
+                  "notes": {
+                    "effect": ["[[-2]] penalty to your Armor Class until your next turn."]
+                  },
+                  "sort": 0
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "116, 124" }],
+              "subType": "feat",
+              "tags": ["Combat", "Offensive"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "x93I28dCWhK962CP",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.feats.Item.Uuiu3p982omhMEPj" },
+            "name": "Improved Initiative",
+            "system": {
+              "changes": {
+                "ign7okhi": {
+                  "_id": "ign7okhi",
+                  "formula": "4",
+                  "target": "init",
+                  "type": "untyped"
+                }
+              },
+              "sources": [{ "id": "PZO1110", "pages": "115, 127" }],
+              "subType": "feat",
+              "tags": ["Combat"],
+              "alignments": {}
+            },
+            "type": "feat",
+            "effects": [],
+            "folder": null,
+            "flags": {},
+            "_id": "ABleuoGOFFPVfVtC",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.armors-and-shields.Item.aI6gSI7gnCLCucw0"
+            },
+            "folder": "33jGfHlDL34jvwnX",
+            "name": "Hide Armor",
+            "system": {
+              "armor": {
+                "acp": 3,
+                "dex": 4,
+                "material": { "base": { "value": "leather" }, "addon": [] },
+                "value": 4,
+                "alignments": {}
+              },
+              "baseTypes": ["Hide Armor"],
+              "equipmentSubtype": "mediumArmor",
+              "equipped": true,
+              "hardness": 2,
+              "hp": { "base": 20 },
+              "price": { "base": 15, "unit": "gp" },
+              "quantity": 1,
+              "slot": "armor",
+              "sources": [{ "id": "PZO1110", "pages": "151" }],
+              "spellFailure": 20,
+              "subType": "armor",
+              "weight": { "value": 25 },
+              "mods": {}
+            },
+            "type": "equipment",
+            "effects": [],
+            "flags": {},
+            "_id": "02rTR9gK573zEhVN",
+            "sort": 0
+          },
+          {
+            "_stats": {
+              "compendiumSource": "Compendium.pf1.armors-and-shields.Item.6zjwZeZmhqmAFC82"
+            },
+            "folder": "DtVJVwL87ELQxk7u",
+            "name": "Heavy Wooden Shield",
+            "system": {
+              "actions": {
+                "zK6ZJX8WI56bdMNn": {
+                  "_id": "zK6ZJX8WI56bdMNn",
+                  "ability": { "attack": "str", "critMult": 2, "critRange": 20, "damage": "str" },
+                  "actionType": "mwak",
+                  "activation": { "type": "attack", "unchained": { "type": "attack" } },
+                  "damage": {
+                    "parts": [{ "formula": "sizeRoll(1, 4, @size)", "types": ["bludgeoning"] }]
+                  },
+                  "duration": { "units": "inst" },
+                  "extraAttacks": { "type": "standard" },
+                  "name": "Bash",
+                  "range": { "units": "melee" },
+                  "sort": 0
+                }
+              },
+              "armor": {
+                "acp": 2,
+                "material": { "base": { "value": "wood" }, "addon": [] },
+                "value": 2,
+                "alignments": {}
+              },
+              "equipmentSubtype": "heavyShield",
+              "equipped": true,
+              "hardness": 5,
+              "hp": { "base": 15 },
+              "price": { "base": 7, "unit": "gp" },
+              "quantity": 1,
+              "slot": "shield",
+              "sources": [{ "id": "PZO1110", "pages": "151-152" }],
+              "spellFailure": 15,
+              "subType": "shield",
+              "weight": { "value": 10 },
+              "mods": {}
+            },
+            "type": "equipment",
+            "effects": [],
+            "flags": {},
+            "_id": "BLwBMArKupVyBzOH",
+            "sort": 0
+          },
+          {
+            "_stats": { "compendiumSource": "Compendium.pf1.items.Item.MrxwYWWezbJTZLog" },
+            "folder": "TQir6rREbQbhFUtK",
+            "name": "Cloak of Resistance +1",
+            "system": {
+              "armor": {
+                "material": {
+                  "base": { "value": "leather" },
+                  "normal": { "value": "leather" },
+                  "addon": []
+                },
+                "alignments": {}
+              },
+              "aura": { "school": "abj" },
+              "changes": {
+                "7okw4xq4": {
+                  "_id": "7okw4xq4",
+                  "formula": "1",
+                  "target": "allSavingThrows",
+                  "type": "resist"
+                }
+              },
+              "cl": 5,
+              "creation": {
+                "cost": { "unit": "gp", "value": 500 },
+                "description": "<p>@UUID[Compendium.pf1.feats.Item.tD76K8QGco9scT0r]{Craft Wondrous Item}, @UUID[Compendium.pf1.spells.Item.g8j278xcu2s1zlwy]{resistance}, creator's caster level must be at least three times the cloak's bonus</p>"
+              },
+              "equipmentSubtype": "lightArmor",
+              "equipped": true,
+              "hp": { "base": 10 },
+              "price": { "base": 1000, "unit": "gp" },
+              "quantity": 1,
+              "resizing": true,
+              "slot": "shoulders",
+              "sources": [
+                { "id": "PZO1123", "pages": "264" },
+                { "id": "PZO1110", "pages": "507" }
+              ],
+              "subType": "wondrous",
+              "unidentified": { "name": "Cloak", "price": { "base": 0, "unit": "gp" } },
+              "weight": { "value": 1 },
+              "mods": {}
+            },
+            "type": "equipment",
+            "effects": [],
+            "flags": {},
+            "_id": "wXdpzDkQ5SrYQK16",
+            "sort": 0
+          }
+        ],
+        "effects": [
+          {
+            "name": "Fatigued",
+            "img": "icons/svg/unconscious.svg",
+            "statuses": ["fatigued"],
+            "showIcon": 2,
+            "_id": "3I7lEse6MFuU7DII",
+            "type": "base",
+            "system": { "changes": [] },
+            "disabled": false,
+            "start": {
+              "time": 0,
+              "combat": null,
+              "combatant": null,
+              "initiative": null,
+              "round": null,
+              "turn": null
+            },
+            "duration": { "value": null, "units": "seconds", "expiry": null, "expired": false },
+            "description": "",
+            "origin": null,
+            "tint": "#ffffff",
+            "transfer": false,
+            "folder": null,
+            "sort": 0,
+            "flags": { "pf1": { "autoDelete": true } },
+            "_stats": {
+              "coreVersion": "14.370",
+              "systemId": "pf1",
+              "systemVersion": "11.11",
+              "createdTime": 1795403249718,
+              "modifiedTime": 1795403249718,
+              "lastModifiedBy": "uwWDnh8N1IHSXHMc",
+              "compendiumSource": null,
+              "duplicateSource": null,
+              "exportSource": null
+            }
+          }
+        ],
+        "sort": 0,
+        "flags": {}
+      },
+      "derived": {
+        "abilities": {
+          "str": { "total": 18, "mod": 3 },
+          "dex": { "total": 14, "mod": 1 },
+          "con": { "total": 14, "mod": 2 },
+          "int": { "total": 10, "mod": 0 },
+          "wis": { "total": 12, "mod": 1 },
+          "cha": { "total": 8, "mod": -1 }
+        },
+        "ac": { "normal": 17, "touch": 11, "flatFooted": 16 },
+        "cmb": 15,
+        "cmd": { "total": 26, "flatFooted": 25 },
+        "saves": { "fort": 11, "ref": 6, "will": 8 },
+        "init": 5,
+        "bab": 12,
+        "attack": { "melee": 15, "ranged": 13 },
+        "hp": { "max": 125 },
+        "speed": { "land": 20 },
+        "sr": 0,
+        "acp": 5,
+        "skills": {
+          "perception": 16,
+          "knowledge": 0,
+          "knowledge.geography": 0,
+          "knowledge.nobility": 0,
+          "knowledge.local": 0,
+          "knowledge.dungeoneering": 0,
+          "knowledge.religion": 0,
+          "knowledge.nature": 0,
+          "knowledge.arcana": 0,
+          "knowledge.history": 0,
+          "knowledge.planes": 0,
+          "knowledge.engineering": 0,
+          "intimidate": 16,
+          "appraise": 0,
+          "profession": 1,
+          "fly": -4,
+          "disableDevice": -4,
+          "swim": 13,
+          "escapeArtist": -4,
+          "linguistics": 0,
+          "acrobatics": -4,
+          "useMagicDevice": -1,
+          "climb": 13,
+          "sleightOfHand": -4,
+          "handleAnimal": -1,
+          "heal": 1,
+          "spellcraft": 0,
+          "ride": -4,
+          "stealth": -4,
+          "survival": 1,
+          "craft": 0,
+          "disguise": -1,
+          "diplomacy": -1,
+          "senseMotive": -1,
+          "perform": -1,
+          "bluff": -1
+        }
+      }
+    }
+  }
+}
