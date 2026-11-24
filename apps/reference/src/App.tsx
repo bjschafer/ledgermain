@@ -23,6 +23,8 @@ export function App() {
     };
   }, []);
 
+  const inRules = route.kind === "detail" && route.collection === "rules";
+
   return (
     <div className="app">
       <header className="app-header">
@@ -36,10 +38,20 @@ export function App() {
           <a
             href="#/"
             aria-current={
-              route.kind === "summon" ? undefined : route.kind === "search" ? "page" : "location"
+              route.kind === "search"
+                ? "page"
+                : route.kind === "detail" && !inRules
+                  ? "location"
+                  : undefined
             }
           >
             Search
+          </a>
+          <a
+            href="#/rules"
+            aria-current={route.kind === "rules" ? "page" : inRules ? "location" : undefined}
+          >
+            Rules
           </a>
           <a href="#/summon" aria-current={route.kind === "summon" ? "page" : undefined}>
             Summons
@@ -57,7 +69,14 @@ export function App() {
         {!error && !index && <p className="notice">Loading the reference index…</p>}
         {index &&
           (route.kind === "detail" ? (
-            <DetailPage index={index} collection={route.collection} id={route.id} />
+            <DetailPage
+              index={index}
+              collection={route.collection}
+              id={route.id}
+              section={route.section}
+            />
+          ) : route.kind === "rules" ? (
+            <DetailPage index={index} collection="rules" id={index.rulesRoot} />
           ) : route.kind === "summon" ? (
             <SummonPage index={index} route={route} />
           ) : (

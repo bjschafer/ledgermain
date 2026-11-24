@@ -37,7 +37,7 @@ export function SearchPage({ index }: { index: RefIndex }) {
         className="search-box"
         type="search"
         autoFocus
-        placeholder="Search spells, feats, gear, monsters…"
+        placeholder="Search rules, spells, feats, gear, monsters…"
         value={filter.query}
         onChange={(e) => setFilter((f) => ({ ...f, query: e.target.value }))}
         aria-label="Search the reference"
@@ -101,8 +101,8 @@ function ResultList({ entries, total }: { entries: IndexEntry[]; total: number }
     <>
       <ul className="result-list">
         {entries.map((entry) => (
-          <li key={`${entry.collection}/${entry.id}`}>
-            <a className="result" href={detailHref(entry.collection, entry.id)}>
+          <li key={`${entry.collection}/${entry.id}/${entry.anchor ?? ""}`}>
+            <a className="result" href={detailHref(entry.collection, entry.id, entry.anchor)}>
               <span className="result-name">{entry.name}</span>
               <span className={`badge is-${entry.collection}`}>
                 {COLLECTION_BADGE[entry.collection]}

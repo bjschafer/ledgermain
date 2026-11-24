@@ -62,6 +62,13 @@ describe("matchRank", () => {
   it("returns -1 for a miss", () => {
     expect(matchRank("Fireball", "acid")).toBe(-1);
   });
+
+  it("ignores hyphens and apostrophes, so a player needn't type them", () => {
+    expect(matchRank("Take 5-Foot Step", "5 foot step")).toBe(2);
+    expect(matchRank("Take 5-Foot Step", "5-foot")).toBe(2);
+    expect(matchRank("Summon Nature's Ally I", "natures ally")).toBe(2);
+    expect(matchRank("Combat Actions (AoO)", "aoo")).toBe(2);
+  });
 });
 
 describe("searchIndex", () => {
@@ -118,11 +125,34 @@ describe("searchIndex", () => {
     const { total } = searchIndex(ENTRIES, filter({ query: "  FIREBALL " }), 50);
     expect(total).toBe(3);
   });
+
+  it("puts a rules page first among equals and a section inside one last", () => {
+    const charge: IndexEntry[] = [
+      {
+        id: "s",
+        name: "Holding the Charge",
+        collection: "rules",
+        facet: "",
+        level: -1,
+        anchor: "h",
+      },
+      { id: "f", name: "Spirited Charge", collection: "feats", facet: "", level: -1 },
+      { id: "r", name: "Charge", collection: "rules", facet: "", level: -1 },
+      { id: "i", name: "Charge", collection: "items", facet: "", level: -1 },
+      { id: "t", name: "The Charge", collection: "rules", facet: "", level: -1 },
+    ];
+    const { entries } = searchIndex(charge, filter({ query: "charge" }), 50);
+    expect(entries.map((e) => e.id)).toEqual(["r", "i", "t", "f", "s"]);
+  });
 });
 
 describe("countByCollection / spellLevels", () => {
-  it("counts per collection", () => {
+  it("counts per collection, leaving sections out of their page's count", () => {
     expect(countByCollection(ENTRIES)).toEqual({ spells: 6, feats: 1, conditions: 1 });
+    const page: IndexEntry = { id: "r", name: "Charge", collection: "rules", facet: "", level: -1 };
+    expect(countByCollection([page, { ...page, name: "Holding", anchor: "h" }])).toEqual({
+      rules: 1,
+    });
   });
 
   it("lists the spell levels present, ascending", () => {

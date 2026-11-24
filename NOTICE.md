@@ -74,7 +74,9 @@ This is derivative Open Game Content drawn from four pinned, upstream sources:
 - The upstream ships an `OGL.txt` whose Section 15 covers Wizards of the Coast
   (System Reference Document) and Foundry Gaming LLC. The compendium packs
   (`packs/**/*.yaml`) are themselves derivative OGC from Paizo's PRD/Open
-  Game Content.
+  Game Content. Besides the item packs, we vendor the per-skill pages of the
+  rules journal (`packs/rules/skills.*.yaml`) into the reference site's rules
+  section (`rules.json`).
 
 ### b. pf1e-archetypes dataset
 
@@ -98,20 +100,24 @@ This is derivative Open Game Content drawn from four pinned, upstream sources:
   prestige-class catalog, `packages/data-pipeline/src/transform/prestigeClasses.ts`)
   -- same module, same pinned commit, no separate attribution needed.
 
-### c. PF1 Content module (community feats + traits + racial traits packs)
+### c. PF1 Content module (community feats + traits + racial traits + rules packs)
 
 - Repo: `https://gitlab.com/foundryvtt_pathfinder1e/pf1-content`
 - Pinned commit: `c66bf333cafc451d817ead660473dd01d9846fb3`
 - Same GitLab org as the pinned system repo (Sec.2a). Ships under GPL-3.0 for
   its module _code_ (never copied in, per Sec.1's clean-room discipline) and
-  OGL-covered compendium _data_ under `src/pf-feats/`, `src/pf-traits/`, and
-  `src/pf-racial-traits/`, from which we vendor: every feat not already
+  OGL-covered compendium _data_ under `src/pf-feats/`, `src/pf-traits/`,
+  `src/pf-racial-traits/`, `src/pf-rules/`, and `src/gm-quick-reference/`,
+  from which we vendor: every feat not already
   present in the system pack (name collisions keep the system pack's richer
   record), the full character-trait catalog (the Foundry system pack ships no
-  traits at all), and the alternate racial traits -- entries carrying either a
+  traits at all), the alternate racial traits -- entries carrying either a
   structured "Replaced Trait(s)" description header or a heritage tag (the
   pack's standard-trait entries are skipped, since the system pack's own race
-  docs already carry them).
+  docs already carry them) -- and the rules journals and quick-reference
+  tables that make up the reference site's rules section (`rules.json`;
+  journals the module left empty, and the quick-reference pages about Foundry
+  itself or linking off-site, are skipped).
 
 ### d. Pf Data 1e dataset (rage-power / hex / magus-arcana / rogue-family talent / arcanist-exploit / investigator-talent / kineticist-wild-talent / occult-class / caster-class / martial-class subsystem catalogs)
 

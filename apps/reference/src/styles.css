@@ -533,6 +533,129 @@ code {
   color: var(--faint);
 }
 
+/* ------------------------------------------------------------------ rules -- */
+
+.rule-trail a {
+  color: var(--faint);
+}
+
+.rule-trail a:hover {
+  color: var(--gold-2);
+}
+
+/* Headings on this page, one tap from the top: the answer is usually one
+   paragraph of a long page. */
+.rule-jump {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+  margin: 10px 0 0;
+  padding: 8px 0;
+  border-block: 1px solid var(--line);
+  font-size: 0.8125rem;
+}
+
+.rule-prose h2,
+.rule-prose h3,
+.rule-prose h4 {
+  margin: 20px 0 8px;
+  font-size: 1.0625rem;
+  color: var(--ink);
+}
+
+.rule-prose h3,
+.rule-prose h4 {
+  font-size: 0.9375rem;
+}
+
+.rule-prose strong {
+  color: var(--ink);
+}
+
+.rule-prose ul,
+.rule-prose ol {
+  margin: 0 0 10px;
+  padding-left: 22px;
+}
+
+/* Wide tables scroll inside the column instead of widening the page. */
+.rule-prose table {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+  margin: 0 0 12px;
+}
+
+.rule-prose thead td,
+.rule-prose th {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.rule-prose [data-section] {
+  scroll-margin-top: 12px;
+}
+
+/* The heading or paragraph a search hit or jump link named. */
+.rule-prose .is-target {
+  margin-inline: -8px;
+  padding-inline: 8px;
+  border-left: 2px solid var(--gold);
+  background: var(--surface);
+}
+
+.rule-children {
+  margin-top: 18px;
+}
+
+.rule-children-title {
+  margin: 0 0 4px;
+  font: 600 0.8125rem var(--body);
+  color: var(--ink);
+}
+
+.rule-children > ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.rule-children > ul > li {
+  padding: 8px 4px;
+  border-top: 1px solid var(--line);
+}
+
+.rule-child {
+  font-weight: 600;
+}
+
+.rule-grandchildren {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 14px;
+  list-style: none;
+  margin: 4px 0 0;
+  padding: 0;
+  font-size: 0.8125rem;
+}
+
+.rule-grandchildren a {
+  color: var(--muted);
+}
+
+.rule-grandchildren a:hover {
+  color: var(--gold-2);
+}
+
+@media (max-width: 640px) {
+  .rule-jump a,
+  .rule-grandchildren a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 32px;
+  }
+}
+
 /* ------------------------------------------------------------- conditions -- */
 
 .condition-summary {

@@ -21,10 +21,11 @@ const src = join(repoRoot, "packages/data-pipeline/data");
 const dest = join(here, "../public/data");
 const publicDir = join(here, "../public");
 
-// The bestiary is 13.8 MB the sheet never asks for: only the reference site
-// reads it, and that builds its own index straight from the package. Shipping
-// it here would cost every player a download for content they can't reach.
-const REFERENCE_ONLY = ["monsters.json", "monster-templates.json"];
+// The bestiary (13.8 MB) and the rules text are content the sheet never asks
+// for: only the reference site reads them, and that builds its own index
+// straight from the package. Shipping them here would cost every player a
+// download for content they can't reach.
+const REFERENCE_ONLY = ["monsters.json", "monster-templates.json", "rules.json"];
 
 mkdirSync(dest, { recursive: true });
 cpSync(src, dest, {

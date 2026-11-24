@@ -49,6 +49,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-11-23-reference-rules",
+    date: "2026-11-23",
+    title: "The game rules on the quick reference, one page per rule",
+    note: "The quick reference at ref.ledgermain.app now carries the game rules, split into one short page per rule instead of one long chapter, so Take 5-Foot Step, Charge, and Scrolls each have a link of their own. Search finds paragraphs inside a page too: searching 'use a scroll' opens Use Magic Device right at that paragraph and highlights it. Every page lists its headings at the top and the pages filed under it at the bottom, and a Rules tab browses the whole book chapter by chapter, starting with quick-reference tables like which actions provoke attacks of opportunity. Search also ignores hyphens and apostrophes, so '5 foot step' and 'natures ally' find what you meant.",
+  },
+  {
     id: "2026-11-23-worn-item-effects",
     date: "2026-11-23",
     title: "Goggles of night, gloves of dueling, and dozens more worn items apply",

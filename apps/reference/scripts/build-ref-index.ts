@@ -27,6 +27,7 @@ import type {
   Monster,
   MonsterTemplate,
   RefDataMeta,
+  RuleEntry,
   Spell,
   WeaponRef,
 } from "@pf1/schema";
@@ -40,6 +41,7 @@ import {
   itemFacet,
   monsterFacet,
   monsterTemplateFacet,
+  ruleFacet,
   spellFacet,
   weaponFacet,
 } from "../src/shared/facets.js";
@@ -109,13 +111,51 @@ emit<Item>("items", readCollection("items.json"), itemFacet);
 // Conditions have no vendored JSON: they are the engine's hand-authored
 // clean-room table, emitted here as an ordinary collection.
 emit("conditions", CONDITIONS, conditionFacet);
-// The two sidecar collections (emitted beside RefData, never RefData keys).
+// The sidecar collections (emitted beside RefData, never RefData keys).
 emit<Monster>("monsters", readCollection("monsters.json"), monsterFacet);
 emit<MonsterTemplate>(
   "monster-templates",
   readCollection("monster-templates.json"),
   monsterTemplateFacet,
 );
+
+const rules = readCollection<RuleEntry>("rules.json");
+emit<RuleEntry>("rules", rules, ruleFacet);
+
+// The contents page is the one entry no other page lists as a child.
+const childIds = new Set(Object.values(rules).flatMap((rule) => rule.children.map((c) => c.id)));
+const rulesRoots = Object.keys(rules).filter((id) => !childIds.has(id));
+if (rulesRoots.length !== 1) throw new Error(`expected one rules root, found ${rulesRoots.length}`);
+
+/**
+ * Section titles found on more pages than this ("Check", "Action", "Try
+ * Again" on every skill) name a kind of paragraph, not a rule, and would bury
+ * the specific ones in results. They stay linked from their own page.
+ */
+const GENERIC_SECTION_PAGES = 3;
+const pagesWithTitle = new Map<string, number>();
+for (const rule of Object.values(rules)) {
+  for (const title of new Set(rule.sections.map((s) => s.title.toLowerCase()))) {
+    pagesWithTitle.set(title, (pagesWithTitle.get(title) ?? 0) + 1);
+  }
+}
+// Section rows share their page's id (and so its shard), after every page row.
+for (const id of Object.keys(rules).sort()) {
+  const rule = rules[id]!;
+  for (const section of rule.sections) {
+    const title = section.title.toLowerCase();
+    if ((pagesWithTitle.get(title) ?? 0) > GENERIC_SECTION_PAGES) continue;
+    if (title === rule.name.toLowerCase()) continue;
+    indexEntries.push({
+      id,
+      name: section.title,
+      collection: "rules",
+      facet: `in ${rule.name}`,
+      level: -1,
+      anchor: section.id,
+    });
+  }
+}
 
 const index: RefIndex = {
   meta: {
@@ -126,6 +166,7 @@ const index: RefIndex = {
   entries: indexEntries,
   buckets,
   ladders: CONDITION_LADDERS.map((ladder) => [...ladder]),
+  rulesRoot: rulesRoots[0]!,
 };
 
 const indexJson = JSON.stringify(encodeIndex(index));

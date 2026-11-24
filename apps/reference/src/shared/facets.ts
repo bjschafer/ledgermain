@@ -8,7 +8,16 @@
  */
 
 import type { ConditionDef } from "@pf1/engine";
-import type { ArmorRef, Feat, Item, Monster, MonsterTemplate, Spell, WeaponRef } from "@pf1/schema";
+import type {
+  ArmorRef,
+  Feat,
+  Item,
+  Monster,
+  MonsterTemplate,
+  RuleEntry,
+  Spell,
+  WeaponRef,
+} from "@pf1/schema";
 
 import {
   formatCrit,
@@ -95,4 +104,11 @@ export function monsterTemplateFacet(template: MonsterTemplate): string {
     template.cr ? `CR ${template.cr}` : null,
     kind ? `${kind} template` : "template",
   ]);
+}
+
+/** e.g. `Combat Rules · Miscellaneous Actions`: the chapter, then the section it sits in. */
+export function ruleFacet(rule: RuleEntry): string {
+  const chapter = rule.path[0]?.name;
+  const parent = rule.path.length > 1 ? rule.path[rule.path.length - 1]?.name : null;
+  return joinDot([chapter ?? "Rules", parent]);
 }

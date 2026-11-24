@@ -1,5 +1,5 @@
 /**
- * Hash routing, hand-rolled. Three routes and no history state to keep, so a
+ * Hash routing, hand-rolled. Four routes and no history state to keep, so a
  * router library would be more bytes than the whole feature.
  *
  * The summon route is a stable deep-link contract for external callers (the
@@ -8,6 +8,10 @@
  * Every piece of helper state lives in the URL, unknown query params and
  * unknown slugs are ignored, and existing param names never change meaning —
  * additions only.
+ *
+ * A detail route may carry `?s=<section>`, the `data-section` id of a rules
+ * page's heading or paragraph to scroll to: the deep link a search hit on
+ * "Use a Scroll" opens. An unknown section just opens the page at the top.
  */
 
 import { useEffect, useRef, useState } from "react";
@@ -29,7 +33,8 @@ export interface SummonRouteParams {
 
 export type Route =
   | { kind: "search" }
-  | { kind: "detail"; collection: CollectionId; id: string }
+  | { kind: "rules" }
+  | { kind: "detail"; collection: CollectionId; id: string; section?: string }
   | { kind: "summon"; spell?: "sm" | "sna"; level?: number; params: SummonRouteParams };
 
 const SEARCH: Route = { kind: "search" };
@@ -65,14 +70,17 @@ export function parseHash(hash: string): Route {
       params: parseSummonParams(query),
     };
   }
+  if (head === "rules" && !second) return { kind: "rules" };
   if (head && second && isCollectionId(head)) {
-    return { kind: "detail", collection: head, id: decodeURIComponent(second) };
+    const section = new URLSearchParams(query).get("s") || undefined;
+    return { kind: "detail", collection: head, id: decodeURIComponent(second), section };
   }
   return SEARCH;
 }
 
-export function detailHref(collection: CollectionId, id: string): string {
-  return `#/${collection}/${encodeURIComponent(id)}`;
+export function detailHref(collection: CollectionId, id: string, section?: string): string {
+  const path = `#/${collection}/${encodeURIComponent(id)}`;
+  return section ? `${path}?s=${encodeURIComponent(section)}` : path;
 }
 
 export function summonHref(

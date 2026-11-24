@@ -13,6 +13,7 @@ export const COLLECTIONS = [
   "conditions",
   "monsters",
   "monster-templates",
+  "rules",
 ] as const;
 
 export type CollectionId = (typeof COLLECTIONS)[number];
@@ -26,6 +27,7 @@ export const COLLECTION_LABEL: Record<CollectionId, string> = {
   conditions: "Conditions",
   monsters: "Monsters",
   "monster-templates": "Templates",
+  rules: "Rules",
 };
 
 /** Singular label for a badge on a single result row. */
@@ -38,6 +40,7 @@ export const COLLECTION_BADGE: Record<CollectionId, string> = {
   conditions: "Condition",
   monsters: "Monster",
   "monster-templates": "Template",
+  rules: "Rule",
 };
 
 export function isCollectionId(value: string): value is CollectionId {

@@ -2143,4 +2143,48 @@ export interface MonsterTemplate extends RefEntity {
   maybeSummonable?: boolean;
 }
 
+/* ---------------------------------------------------- rules (sidecar) -- */
+
+/** A link to another rules page. */
+export interface RuleLink {
+  id: string;
+  name: string;
+}
+
+/** A child page, carrying its own children's names so one fetch can render two levels of contents. */
+export interface RuleNode extends RuleLink {
+  children?: RuleLink[];
+}
+
+/**
+ * A heading or run-in head ("Use a Scroll:") inside a rules page. `id` matches
+ * the `data-section` attribute stamped on that element in `RuleEntry.html`.
+ */
+export interface RuleSection {
+  id: string;
+  title: string;
+}
+
+/**
+ * One page of the published game rules, sourced from the PF1 Content module's
+ * `pf-rules` journal pack plus the system's per-skill journal pages. Same
+ * sidecar posture as `Monster`: emitted as `rules.json`, read only by the
+ * reference site, never part of `RefData`.
+ *
+ * `html` is restricted HTML like `RefEntity.description`, except that links to
+ * other rules pages survive as `<a data-rule="<id>">`, every one of which
+ * names an id present in the collection. Pure navigation pages (the chapter
+ * indexes) carry `html: ""` and are rendered from `children` alone.
+ */
+export interface RuleEntry {
+  id: string;
+  name: string;
+  /** Ancestors below the root contents page, outermost (the chapter) first. Empty for the root and chapters. */
+  path: RuleLink[];
+  children: RuleNode[];
+  html: string;
+  sections: RuleSection[];
+  sources?: SourceRef[];
+}
+
 export type { SourceRef };

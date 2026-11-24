@@ -2,13 +2,13 @@
  * Ranking and filtering for the one search box. Pure and DOM-free: the page
  * holds the filter state and renders whatever `searchIndex` hands back.
  *
- * Deliberately not a search library — the index is a flat array of ~8,000 short
+ * Deliberately not a search library — the index is a flat array of ~17,000 short
  * names, and a single linear scan per keystroke is faster than the fetch that
  * would be needed to load anything cleverer.
  */
 
 import type { CollectionId } from "../shared/collections.js";
-import { collectionCode } from "../shared/collections.js";
+import { COLLECTIONS, collectionCode } from "../shared/collections.js";
 import type { IndexEntry } from "../shared/indexCodec.js";
 
 /** `null` means "no restriction" for both facets. */
@@ -29,41 +29,74 @@ export interface SearchResult {
 }
 
 /**
+ * The form both sides of a match are compared in: lowercased, apostrophes
+ * dropped, and every other run of punctuation a single space, so "5 foot step"
+ * finds Take 5-Foot Step and "natures ally" finds Summon Nature's Ally.
+ */
+function searchKey(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/['’]/g, "")
+    .replace(/[^\p{L}\p{N}]+/gu, " ")
+    .trim();
+}
+
+/** Names never change once decoded, so each is keyed once rather than per keystroke. */
+const nameKeys = new WeakMap<IndexEntry, string>();
+
+function nameKey(entry: IndexEntry): string {
+  let key = nameKeys.get(entry);
+  if (key === undefined) {
+    key = searchKey(entry.name);
+    nameKeys.set(entry, key);
+  }
+  return key;
+}
+
+function rankKeys(name: string, query: string): number {
+  const at = name.indexOf(query);
+  if (at < 0) return -1;
+  if (at === 0) return name.length === query.length ? 0 : 1;
+  return name[at - 1] === " " ? 2 : 3;
+}
+
+/**
  * Rank buckets for a name against a query. Lower sorts first. A player typing
  * "mirror" wants Mirror Image before Wall of Mirrors, and "fire" should put
  * Fireball above Delayed Blast Fireball — so a match at a word boundary beats
  * one buried mid-word.
  */
 export function matchRank(name: string, query: string): number {
-  const lower = name.toLowerCase();
-  const at = lower.indexOf(query);
-  if (at < 0) return -1;
-  if (at === 0) return lower.length === query.length ? 0 : 1;
-  return isBoundary(lower[at - 1]) ? 2 : 3;
-}
-
-/** Names carry commas, parentheses, and hyphens ("Cure Light Wounds, Mass"). */
-function isBoundary(char: string | undefined): boolean {
-  return char !== undefined && !/[a-z0-9]/.test(char);
+  return rankKeys(searchKey(name), searchKey(query));
 }
 
 /**
- * Filter by query/collection/level, then order: best match rank, then collection
- * order, then spell level, then name. Without a query every rank is 0, which
- * reduces this to the plain browse ordering the empty-query view wants.
+ * Tie-break order between equally ranked rows. A rules page names a whole
+ * concept ("Charge", "Scrolls"), so it leads; a section inside one ("Holding
+ * the Charge") is the narrowest hit, so it trails everything else.
+ */
+function tieOrder(entry: IndexEntry): number {
+  if (entry.collection !== "rules") return collectionCode(entry.collection);
+  return entry.anchor === undefined ? -1 : COLLECTIONS.length;
+}
+
+/**
+ * Filter by query/collection/level, then order: best match rank, then
+ * `tieOrder`, then spell level, then name. Without a query every rank is 0,
+ * which reduces this to the plain browse ordering the empty-query view wants.
  */
 export function searchIndex(
   entries: readonly IndexEntry[],
   filter: SearchFilter,
   limit: number,
 ): SearchResult {
-  const query = filter.query.trim().toLowerCase();
+  const query = searchKey(filter.query);
   const matches: { entry: IndexEntry; rank: number }[] = [];
 
   for (const entry of entries) {
     if (filter.collection !== null && entry.collection !== filter.collection) continue;
     if (filter.level !== null && entry.level !== filter.level) continue;
-    const rank = query ? matchRank(entry.name, query) : 0;
+    const rank = query ? rankKeys(nameKey(entry), query) : 0;
     if (rank < 0) continue;
     matches.push({ entry, rank });
   }
@@ -71,7 +104,7 @@ export function searchIndex(
   matches.sort(
     (a, b) =>
       a.rank - b.rank ||
-      collectionCode(a.entry.collection) - collectionCode(b.entry.collection) ||
+      tieOrder(a.entry) - tieOrder(b.entry) ||
       a.entry.level - b.entry.level ||
       a.entry.name.localeCompare(b.entry.name),
   );
@@ -79,12 +112,14 @@ export function searchIndex(
   return { entries: matches.slice(0, limit).map((m) => m.entry), total: matches.length };
 }
 
-/** How many entries each collection holds, for the empty-query overview. */
+/** How many entries each collection holds, for the empty-query overview. Sections aren't entries. */
 export function countByCollection(
   entries: readonly IndexEntry[],
 ): Record<string, number | undefined> {
   const counts: Record<string, number | undefined> = {};
-  for (const entry of entries) counts[entry.collection] = (counts[entry.collection] ?? 0) + 1;
+  for (const entry of entries) {
+    if (entry.anchor === undefined) counts[entry.collection] = (counts[entry.collection] ?? 0) + 1;
+  }
   return counts;
 }
 

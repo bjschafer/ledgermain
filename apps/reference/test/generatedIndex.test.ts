@@ -3,7 +3,7 @@
  * proves the index covers every in-scope entry, and that an id picked out of the
  * index actually lands in the shard the client would fetch for it.
  */
-import type { RefDataMeta } from "@pf1/schema";
+import type { RefDataMeta, RuleEntry } from "@pf1/schema";
 import { beforeAll, describe, expect, it } from "bun:test";
 import { execFileSync } from "node:child_process";
 import { readFileSync } from "node:fs";
@@ -29,6 +29,7 @@ const FROM_DATA = [
   "items",
   "monsters",
   "monster-templates",
+  "rules",
 ] as const;
 
 let index: RefIndex;
@@ -42,21 +43,44 @@ beforeAll(() => {
   meta = JSON.parse(readFileSync(join(dataDir, "meta.json"), "utf8")) as RefDataMeta;
 });
 
+/** Section rows ("Use a Scroll" inside Use Magic Device) point into a page; they aren't entries. */
+const pages = () => index.entries.filter((e) => e.anchor === undefined);
+
 describe("generated index", () => {
   it("indexes every in-scope entry", () => {
     const expected =
       FROM_DATA.reduce((n, c) => n + (meta.counts[c] ?? 0), 0) + CONDITION_IDS.length;
-    expect(index.entries).toHaveLength(expected);
+    expect(pages()).toHaveLength(expected);
   });
 
   it("matches the per-collection counts from meta.json", () => {
     for (const collection of FROM_DATA) {
-      const got = index.entries.filter((e) => e.collection === collection).length;
+      const got = pages().filter((e) => e.collection === collection).length;
       expect(got).toBe(meta.counts[collection] ?? 0);
     }
-    expect(index.entries.filter((e) => e.collection === "conditions")).toHaveLength(
-      CONDITION_IDS.length,
-    );
+    expect(pages().filter((e) => e.collection === "conditions")).toHaveLength(CONDITION_IDS.length);
+  });
+
+  it("points every section row at a section its page really has", () => {
+    const sections = index.entries.filter((e) => e.anchor !== undefined);
+    expect(sections.length).toBeGreaterThan(0);
+    const numBuckets = index.buckets.rules ?? 1;
+    for (const entry of sections) {
+      expect(entry.collection).toBe("rules");
+      const path = shardPath("rules", bucketForId(entry.id, numBuckets));
+      const shard = JSON.parse(readFileSync(join(refDir, path), "utf8")) as Record<
+        string,
+        RuleEntry
+      >;
+      expect(shard[entry.id]?.sections).toContainEqual({
+        id: entry.anchor ?? "",
+        title: entry.name,
+      });
+    }
+  });
+
+  it("names a rules contents page that exists", () => {
+    expect(pages().some((e) => e.collection === "rules" && e.id === index.rulesRoot)).toBe(true);
   });
 
   it("carries the pinned dataset versions", () => {
@@ -74,7 +98,7 @@ describe("generated index", () => {
     // One entry per (collection, bucket) pair is enough to cover every shard file
     // without re-reading 250 of them per assertion.
     const seen = new Set<string>();
-    for (const entry of index.entries) {
+    for (const entry of pages()) {
       const numBuckets = index.buckets[entry.collection] ?? 1;
       const path = shardPath(entry.collection, bucketForId(entry.id, numBuckets));
       if (seen.has(path)) continue;

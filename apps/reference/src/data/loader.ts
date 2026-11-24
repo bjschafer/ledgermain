@@ -6,7 +6,16 @@
  */
 
 import type { ConditionDef } from "@pf1/engine";
-import type { ArmorRef, Feat, Item, Monster, MonsterTemplate, Spell, WeaponRef } from "@pf1/schema";
+import type {
+  ArmorRef,
+  Feat,
+  Item,
+  Monster,
+  MonsterTemplate,
+  RuleEntry,
+  Spell,
+  WeaponRef,
+} from "@pf1/schema";
 
 import { bucketForId, shardPath } from "../shared/bucketing.js";
 import type { CollectionId } from "../shared/collections.js";
@@ -40,6 +49,7 @@ export interface EntryByCollection {
   conditions: ConditionDef;
   monsters: Monster;
   "monster-templates": MonsterTemplate;
+  rules: RuleEntry;
 }
 
 export type AnyEntry = EntryByCollection[CollectionId];

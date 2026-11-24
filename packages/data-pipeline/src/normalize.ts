@@ -41,6 +41,7 @@ import type {
   RefData,
   RefDataMeta,
   RogueTalent,
+  RuleEntry,
   ShamanHex,
   ShamanSpirit,
   ShifterAspect,
@@ -147,6 +148,7 @@ import { transformPhrenicAmplifications } from "./transform/phrenicAmplification
 import { transformPsychicDisciplines } from "./transform/psychicDisciplines.js";
 import { transformRagePowers } from "./transform/ragePowers.js";
 import { transformRogueTalents } from "./transform/rogueTalents.js";
+import { transformRules } from "./transform/rules.js";
 import { transformShamanHexes } from "./transform/shamanHexes.js";
 import { transformShamanSpirits } from "./transform/shamanSpirits.js";
 import { transformShifterAspects } from "./transform/shifterAspects.js";
@@ -199,6 +201,10 @@ export interface NormalizeOptions {
   pfContentTraitsDir: string;
   /** `src/pf-racial-traits` directory from the pinned PF1 Content module clone. */
   pfContentRacialTraitsDir: string;
+  /** `src/pf-rules` directory from the pinned PF1 Content module clone. */
+  pfContentRulesDir: string;
+  /** `src/gm-quick-reference` directory from the pinned PF1 Content module clone. */
+  pfContentQuickReferenceDir: string;
   /** `json` directory from the pinned Pf Data 1e clone. */
   pfDataJsonDir: string;
   sourceRepo: string;
@@ -239,12 +245,13 @@ function buildUuidIndex(packsDir: string): Map<string, string> {
   return index;
 }
 
-/** Build the normalized RefData slice (plus the monster sidecar collections) from the source packs. */
+/** Build the normalized RefData slice (plus the reference-site sidecar collections) from the source packs. */
 export function normalize(opts: NormalizeOptions): {
   refData: RefData;
   contentVersion: string;
   monsters: Monster[];
   monsterTemplates: MonsterTemplate[];
+  rules: RuleEntry[];
 } {
   const { packsDir } = opts;
 
@@ -1153,6 +1160,11 @@ export function normalize(opts: NormalizeOptions): {
     opts.pfDataJsonDir,
     SLICE.monsterTemplateFiles,
   );
+  const { rules, sectionCount: ruleSectionCount } = transformRules(
+    opts.pfContentRulesDir,
+    opts.pfContentQuickReferenceDir,
+    join(packsDir, "rules"),
+  );
   const monsterUnknownKeyCount = [...monsterStats.unknownKeys.values()].reduce(
     (total, perDirective) => [...perDirective.values()].reduce((t, n) => t + n, total),
     0,
@@ -1229,6 +1241,8 @@ export function normalize(opts: NormalizeOptions): {
     monsterParseUnknownKeys: monsterUnknownKeyCount,
     monsterParseNumericFailures: monsterStats.numericFailures.length,
     monsterParseStrayProseLines: monsterStats.strayBlockLines,
+    rules: rules.length,
+    ruleSections: ruleSectionCount,
   };
 
   const meta: RefDataMeta = {
@@ -1311,7 +1325,7 @@ export function normalize(opts: NormalizeOptions): {
     blessings: byId(blessings),
   };
 
-  return { refData, contentVersion, monsters, monsterTemplates };
+  return { refData, contentVersion, monsters, monsterTemplates, rules };
 }
 
 function asTag(doc: RawDoc): string {

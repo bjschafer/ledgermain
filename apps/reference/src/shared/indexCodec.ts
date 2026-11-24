@@ -19,6 +19,12 @@ export interface IndexEntry {
   facet: string;
   /** Spell level for spells; `-1` for every other collection. */
   level: number;
+  /**
+   * Set on a row that names a section inside its entry rather than the entry
+   * itself (a rules page's "Use a Scroll" paragraph): the `data-section` id
+   * the detail page scrolls to.
+   */
+  anchor?: string;
 }
 
 export interface IndexMeta {
@@ -37,6 +43,8 @@ export interface RefIndex {
   buckets: Record<string, number>;
   /** Condition ladders (mildest → severest), mirrored so the client skips the engine. */
   ladders: string[][];
+  /** Id of the rules contents page, which `#/rules` opens. */
+  rulesRoot: string;
 }
 
 /** The on-disk shape. Field names are short because they ship uncompressed keys. */
@@ -45,6 +53,7 @@ export interface EncodedIndex {
   meta: IndexMeta;
   buckets: Record<string, number>;
   ladders: string[][];
+  rulesRoot: string;
   ids: string[];
   names: string[];
   facets: string[];
@@ -52,6 +61,13 @@ export interface EncodedIndex {
   coll: number[];
   /** Run-length encoded spell levels, `-1` outside `spells`. */
   levels: number[];
+  /**
+   * Which rows carry an `anchor`, as gaps from the previous such row (the
+   * first from -1), paired index-for-index with `anchors`. Gaps, because the
+   * anchored rows sit together and absolute row numbers cost five digits each.
+   */
+  anchorGaps: number[];
+  anchors: string[];
 }
 
 /** `[value, runLength, …]`. Values repeat far more often than they vary here. */
@@ -79,35 +95,62 @@ export function rleDecode(encoded: readonly number[]): number[] {
 }
 
 export function encodeIndex(index: RefIndex): EncodedIndex {
+  const anchorGaps: number[] = [];
+  const anchors: string[] = [];
+  let previous = -1;
+  index.entries.forEach((e, row) => {
+    if (e.anchor === undefined) return;
+    anchorGaps.push(row - previous);
+    anchors.push(e.anchor);
+    previous = row;
+  });
   return {
     v: 1,
     meta: index.meta,
     buckets: index.buckets,
     ladders: index.ladders,
+    rulesRoot: index.rulesRoot,
     ids: index.entries.map((e) => e.id),
     names: index.entries.map((e) => e.name),
     facets: index.entries.map((e) => e.facet),
     coll: rleEncode(index.entries.map((e) => collectionCode(e.collection))),
     levels: rleEncode(index.entries.map((e) => e.level)),
+    anchorGaps,
+    anchors,
   };
 }
 
 export function decodeIndex(encoded: EncodedIndex): RefIndex {
   const coll = rleDecode(encoded.coll);
   const levels = rleDecode(encoded.levels);
+  const anchorAt = new Map<number, string>();
+  let row = -1;
+  encoded.anchorGaps.forEach((gap, i) => {
+    row += gap;
+    anchorAt.set(row, encoded.anchors[i] ?? "");
+  });
   const entries: IndexEntry[] = [];
   for (let i = 0; i < encoded.ids.length; i++) {
     const collection = collectionAt(coll[i] ?? -1);
     // An unknown collection code means the index outran this build of the client;
     // dropping the row keeps the rest of the site usable.
     if (!collection) continue;
-    entries.push({
+    const entry: IndexEntry = {
       id: encoded.ids[i] ?? "",
       name: encoded.names[i] ?? "",
       collection,
       facet: encoded.facets[i] ?? "",
       level: levels[i] ?? -1,
-    });
+    };
+    const anchor = anchorAt.get(i);
+    if (anchor !== undefined) entry.anchor = anchor;
+    entries.push(entry);
   }
-  return { meta: encoded.meta, entries, buckets: encoded.buckets, ladders: encoded.ladders };
+  return {
+    meta: encoded.meta,
+    entries,
+    buckets: encoded.buckets,
+    ladders: encoded.ladders,
+    rulesRoot: encoded.rulesRoot,
+  };
 }

@@ -5,7 +5,7 @@
  */
 import { describe, expect, it } from "bun:test";
 
-import { parseHash, summonHref, type Route } from "../src/hooks/useHashRoute.js";
+import { detailHref, parseHash, summonHref, type Route } from "../src/hooks/useHashRoute.js";
 
 function summonRoute(hash: string): Extract<Route, { kind: "summon" }> {
   const route = parseHash(hash);
@@ -23,6 +23,22 @@ describe("parseHash", () => {
       id: "fireball",
     });
     expect(parseHash("#/not-a-collection/x")).toEqual({ kind: "search" });
+  });
+
+  it("parses the rules contents page and a section deep link", () => {
+    expect(parseHash("#/rules")).toEqual({ kind: "rules" });
+    expect(parseHash("#/rules/o0Ufwyu65bmusBhM?s=movement-during-a-charge")).toEqual({
+      kind: "detail",
+      collection: "rules",
+      id: "o0Ufwyu65bmusBhM",
+      section: "movement-during-a-charge",
+    });
+    expect(parseHash(detailHref("rules", "abc", "use-a-scroll"))).toEqual({
+      kind: "detail",
+      collection: "rules",
+      id: "abc",
+      section: "use-a-scroll",
+    });
   });
 
   it("parses the summon route at every depth", () => {

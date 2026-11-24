@@ -1,5 +1,14 @@
 import type { ConditionDef } from "@pf1/engine";
-import type { ArmorRef, Feat, Item, Monster, MonsterTemplate, Spell, WeaponRef } from "@pf1/schema";
+import type {
+  ArmorRef,
+  Feat,
+  Item,
+  Monster,
+  MonsterTemplate,
+  RuleEntry,
+  Spell,
+  WeaponRef,
+} from "@pf1/schema";
 import { useEffect, useMemo, useState } from "react";
 
 import { loadEntry, type AnyEntry } from "../data/loader.js";
@@ -9,6 +18,7 @@ import { conditionNames, ConditionView } from "./ConditionView.js";
 import { FeatView } from "./FeatView.js";
 import { ArmorView, ItemView, WeaponView } from "./GearView.js";
 import { MonsterDetail, MonsterTemplateView } from "./MonsterView.js";
+import { RuleTrail, RuleView } from "./RuleView.js";
 import { SpellView } from "./SpellView.js";
 
 type State =
@@ -21,10 +31,12 @@ export function DetailPage({
   index,
   collection,
   id,
+  section,
 }: {
   index: RefIndex;
   collection: CollectionId;
   id: string;
+  section?: string;
 }) {
   const route = `${collection}/${id}`;
   const [loaded, setLoaded] = useState<State>({ status: "loading" });
@@ -72,20 +84,30 @@ export function DetailPage({
     return <p className="notice is-error">Could not load that entry: {state.message}</p>;
   }
 
+  // A rules page carries its own place in the book; the trail replaces the back link.
+  const rule = collection === "rules" && id !== index.rulesRoot ? (state.entry as RuleEntry) : null;
+
   return (
     <article className="detail">
-      <a className="back-link" href="#/">
-        ← Search
-      </a>
+      {rule ? (
+        <RuleTrail path={rule.path} />
+      ) : (
+        <a className="back-link" href="#/">
+          ← Search
+        </a>
+      )}
       <h1 className="detail-title">
         {state.entry.name}
-        <span className={`badge is-${collection}`}>{COLLECTION_BADGE[collection]}</span>
+        {collection !== "rules" && (
+          <span className={`badge is-${collection}`}>{COLLECTION_BADGE[collection]}</span>
+        )}
       </h1>
       <DetailBody
         collection={collection}
         entry={state.entry}
         ladders={index.ladders}
         names={names}
+        section={section}
       />
     </article>
   );
@@ -101,11 +123,13 @@ function DetailBody({
   entry,
   ladders,
   names,
+  section,
 }: {
   collection: CollectionId;
   entry: AnyEntry;
   ladders: string[][];
   names: Map<string, string>;
+  section?: string;
 }) {
   switch (collection) {
     case "spells":
@@ -126,5 +150,7 @@ function DetailBody({
       return <MonsterDetail key={entry.id} monster={entry as Monster} />;
     case "monster-templates":
       return <MonsterTemplateView template={entry as MonsterTemplate} />;
+    case "rules":
+      return <RuleView rule={entry as RuleEntry} section={section} />;
   }
 }

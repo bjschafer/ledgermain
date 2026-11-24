@@ -29,6 +29,8 @@ const PRESTIGE_FEATURES_DIR = join(ARCHETYPE_CLONE_DIR, "src", "pf-prestige-feat
 const PF_CONTENT_FEATS_DIR = join(PF_CONTENT_CLONE_DIR, "src", "pf-feats");
 const PF_CONTENT_TRAITS_DIR = join(PF_CONTENT_CLONE_DIR, "src", "pf-traits");
 const PF_CONTENT_RACIAL_TRAITS_DIR = join(PF_CONTENT_CLONE_DIR, "src", "pf-racial-traits");
+const PF_CONTENT_RULES_DIR = join(PF_CONTENT_CLONE_DIR, "src", "pf-rules");
+const PF_CONTENT_QUICK_REFERENCE_DIR = join(PF_CONTENT_CLONE_DIR, "src", "gm-quick-reference");
 const PFDATA_JSON_DIR = join(PFDATA_CLONE_DIR, "json");
 
 /** Committer date of the pinned commit (ISO 8601) — deterministic per SHA. */
@@ -51,7 +53,7 @@ function main(): void {
   }
 
   console.log(`[generate] normalizing from ${PACKS_DIR}`);
-  const { refData, monsters, monsterTemplates } = normalize({
+  const { refData, monsters, monsterTemplates, rules } = normalize({
     packsDir: PACKS_DIR,
     archetypesDir: ARCHETYPES_DIR,
     archFeaturesDir: ARCH_FEATURES_DIR,
@@ -62,6 +64,8 @@ function main(): void {
     pfContentFeatsDir: PF_CONTENT_FEATS_DIR,
     pfContentTraitsDir: PF_CONTENT_TRAITS_DIR,
     pfContentRacialTraitsDir: PF_CONTENT_RACIAL_TRAITS_DIR,
+    pfContentRulesDir: PF_CONTENT_RULES_DIR,
+    pfContentQuickReferenceDir: PF_CONTENT_QUICK_REFERENCE_DIR,
     pfDataJsonDir: PFDATA_JSON_DIR,
     sourceRepo: FOUNDRY_REPO,
     sourceSha: FOUNDRY_SHA,
@@ -75,7 +79,7 @@ function main(): void {
     generatedAt: sourceCommitDate(),
   });
 
-  emit(refData, OUTPUT_DIR, { monsters, monsterTemplates });
+  emit(refData, OUTPUT_DIR, { monsters, monsterTemplates, rules });
 
   const c = refData.meta.counts;
   console.log(`[generate] wrote ${OUTPUT_DIR}`);

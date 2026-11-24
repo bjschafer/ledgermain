@@ -95,11 +95,13 @@ const FILES: { key: keyof RefData; file: string }[] = [
 export interface SidecarCollections {
   monsters: { id: string }[];
   monsterTemplates: { id: string }[];
+  rules: { id: string }[];
 }
 
 const SIDECAR_FILES: { key: keyof SidecarCollections; file: string }[] = [
   { key: "monsters", file: "monsters.json" },
   { key: "monsterTemplates", file: "monster-templates.json" },
+  { key: "rules", file: "rules.json" },
 ];
 
 /**
