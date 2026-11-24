@@ -120,7 +120,7 @@ function FeedbackModal({ onClose }: { onClose: () => void }) {
         </div>
 
         {state.kind === "done" ? (
-          <div className="feedback-done">
+          <div>
             <p>Thanks, your feedback was sent.</p>
             {state.url && (
               <p>
@@ -139,7 +139,7 @@ function FeedbackModal({ onClose }: { onClose: () => void }) {
           </div>
         ) : (
           <>
-            <p className="feedback-intro">
+            <p>
               Missing a spell or monster? Text or numbers look wrong? Tell me here: it opens a
               report I can track. No account needed.
             </p>

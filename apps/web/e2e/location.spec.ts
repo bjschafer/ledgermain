@@ -20,10 +20,14 @@ function guard(page: Page) {
   return { consoleErrors, pageErrors };
 }
 
+// The seal renders before the active mode's lazy chunk lands. Navigating while
+// that chunk is in flight makes Firefox reject the aborted module load, which
+// the error boundary logs as a crash.
 async function waitForSheet(page: Page) {
   await expect(
     page.locator(".seal", { hasText: "Armor Class" }).locator(".seal-value"),
   ).toBeVisible({ timeout: 15_000 });
+  await expect(page.locator(".state-screen")).toHaveCount(0, { timeout: 15_000 });
 }
 
 async function bootApp(page: Page, path = "/") {
