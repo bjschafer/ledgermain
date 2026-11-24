@@ -433,6 +433,12 @@ export const CHANGELOG: readonly ChangelogEntry[] = [
     note: "A cleric putting ranks into any Craft skill now gets the +3 class skill bonus. Craft was missing from the cleric's class skill list, so a rank in Craft (weapons) or Craft (armor) was reading three points low.",
   },
   {
+    id: "2026-08-22-monster-tracking-copies",
+    date: "2026-08-22",
+    title: "Track several of the same monster in one tab",
+    note: "When a summon brings in three wolves, use + in the Track panel to add copies. Each wolf has its own hit points and conditions. The row of copies shows everyone's hit points at a glance, and picking a wolf switches the controls and statblock to that wolf. This works on bestiary pages and in the summoning helper.",
+  },
+  {
     id: "2026-08-22-summon-feats-and-lists",
     date: "2026-08-22",
     title: "The summoning helper knows your other summoning feats",
@@ -466,7 +472,7 @@ export const CHANGELOG: readonly ChangelogEntry[] = [
     id: "2026-08-21-monster-tracking",
     date: "2026-08-21",
     title: "Run a monster from its reference page",
-    note: "Every bestiary page, and the summoning helper, now carries a tracker for running that creature in a fight. Tick damage and healing against the printed hit points, with any template you applied already folded into the total, and mark conditions from the full list, each one showing its rules text right on the page. At 0 and below the tracker reads the statblock for you: disabled at exactly 0, dying until the creature's own Constitution says dead, destroyed outright for undead and constructs, and a reminder when regeneration means it cannot die. Each browser tab tracks its own copy, so an encounter is one tab per monster; everything survives a reload and clears when the tab closes.",
+    note: "Every bestiary page, and the summoning helper, now carries a tracker for running that creature in a fight. Tick damage and healing against the printed hit points, with any template you applied already folded into the total, and mark conditions from the full list, each one showing its rules text right on the page. At 0 and below the tracker reads the statblock for you: disabled at exactly 0, dying until the creature's own Constitution says dead, destroyed outright for undead and constructs, and a reminder when regeneration means it cannot die. Tracking stays in the current browser tab and survives a reload.",
   },
   {
     id: "2026-08-21-template-diff",
