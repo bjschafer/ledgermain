@@ -445,7 +445,7 @@ code {
   color: var(--ink);
 }
 
-.condition-grid {
+.board-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
   gap: 0 12px;
@@ -454,7 +454,7 @@ code {
   padding: 0;
 }
 
-.condition-tile {
+.board-tile {
   display: block;
   padding: 8px 4px;
   border-top: 1px solid var(--line);
@@ -462,24 +462,18 @@ code {
   font-size: 0.875rem;
 }
 
-.condition-tile:hover {
+.board-tile:hover {
   background: var(--surface);
   color: var(--gold-2);
   text-decoration: none;
 }
 
 @media (max-width: 640px) {
-  .condition-tile {
+  .board-tile {
     display: flex;
     align-items: center;
     min-height: 44px;
   }
-}
-
-.board-hint {
-  margin-top: 14px;
-  font-size: 0.75rem;
-  color: var(--faint);
 }
 
 /* ------------------------------------------------------------------ detail -- */

@@ -126,6 +126,7 @@ emit<RuleEntry>("rules", rules, ruleFacet);
 const childIds = new Set(Object.values(rules).flatMap((rule) => rule.children.map((c) => c.id)));
 const rulesRoots = Object.keys(rules).filter((id) => !childIds.has(id));
 if (rulesRoots.length !== 1) throw new Error(`expected one rules root, found ${rulesRoots.length}`);
+const rulesRoot = rulesRoots[0]!;
 
 /**
  * Section titles found on more pages than this ("Check", "Action", "Try
@@ -166,7 +167,8 @@ const index: RefIndex = {
   entries: indexEntries,
   buckets,
   ladders: CONDITION_LADDERS.map((ladder) => [...ladder]),
-  rulesRoot: rulesRoots[0]!,
+  rulesRoot,
+  rulesChapters: rules[rulesRoot]!.children.map((c) => c.id),
 };
 
 const indexJson = JSON.stringify(encodeIndex(index));

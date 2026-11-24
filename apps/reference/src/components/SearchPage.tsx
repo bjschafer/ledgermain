@@ -87,7 +87,7 @@ export function SearchPage({ index }: { index: RefIndex }) {
       )}
 
       {browsing ? (
-        <ConditionBoard index={index} />
+        <BrowseBoards index={index} />
       ) : (
         <ResultList entries={results.entries} total={results.total} />
       )}
@@ -120,10 +120,11 @@ function ResultList({ entries, total }: { entries: IndexEntry[]; total: number }
 }
 
 /**
- * The zero-keystroke view. Conditions are the table's most-asked lookup, so an
- * empty box browses them rather than showing nothing.
+ * The zero-keystroke view: the two collections small enough to browse.
+ * Conditions are the table's most-asked lookup; the rules chapters are where
+ * to start when you don't know a name to search for.
  */
-function ConditionBoard({ index }: { index: RefIndex }) {
+function BrowseBoards({ index }: { index: RefIndex }) {
   const conditions = useMemo(
     () =>
       index.entries
@@ -131,26 +132,49 @@ function ConditionBoard({ index }: { index: RefIndex }) {
         .sort((a, b) => a.name.localeCompare(b.name)),
     [index],
   );
+  const chapters = useMemo(() => {
+    const names = new Map(
+      index.entries
+        .filter((e) => e.collection === "rules" && e.anchor === undefined)
+        .map((e) => [e.id, e.name]),
+    );
+    return index.rulesChapters.flatMap((id) => {
+      const name = names.get(id);
+      return name === undefined ? [] : [{ id, name }];
+    });
+  }, [index]);
 
   return (
-    <section className="board">
-      <h2 className="board-title">Conditions</h2>
-      <ul className="condition-grid">
+    <>
+      <Board title="Conditions">
         {conditions.map((entry) => (
-          <li key={entry.id}>
-            <a className="condition-tile" href={detailHref("conditions", entry.id)}>
-              {entry.name}
-            </a>
-          </li>
+          <BoardTile key={entry.id} href={detailHref("conditions", entry.id)} name={entry.name} />
         ))}
-      </ul>
-      <p className="board-hint">
-        Or search{" "}
-        {COLLECTIONS.filter((c) => c !== "conditions")
-          .map((c) => COLLECTION_LABEL[c].toLowerCase())
-          .join(", ")}
-        .
-      </p>
+      </Board>
+      <Board title="Rules">
+        {chapters.map((chapter) => (
+          <BoardTile key={chapter.id} href={detailHref("rules", chapter.id)} name={chapter.name} />
+        ))}
+      </Board>
+    </>
+  );
+}
+
+function Board({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <section className="board">
+      <h2 className="board-title">{title}</h2>
+      <ul className="board-grid">{children}</ul>
     </section>
+  );
+}
+
+function BoardTile({ href, name }: { href: string; name: string }) {
+  return (
+    <li>
+      <a className="board-tile" href={href}>
+        {name}
+      </a>
+    </li>
   );
 }

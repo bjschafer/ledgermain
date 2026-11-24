@@ -22,6 +22,7 @@ function index(entries: IndexEntry[]): RefIndex {
     buckets: { spells: 95, feats: 112, conditions: 1 },
     ladders: [["shaken", "frightened", "panicked"]],
     rulesRoot: "root",
+    rulesChapters: ["rrr"],
   };
 }
 

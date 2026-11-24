@@ -45,6 +45,8 @@ export interface RefIndex {
   ladders: string[][];
   /** Id of the rules contents page, which `#/rules` opens. */
   rulesRoot: string;
+  /** The contents page's direct children, in book order: the front page's chapter list. */
+  rulesChapters: string[];
 }
 
 /** The on-disk shape. Field names are short because they ship uncompressed keys. */
@@ -54,6 +56,7 @@ export interface EncodedIndex {
   buckets: Record<string, number>;
   ladders: string[][];
   rulesRoot: string;
+  rulesChapters: string[];
   ids: string[];
   names: string[];
   facets: string[];
@@ -110,6 +113,7 @@ export function encodeIndex(index: RefIndex): EncodedIndex {
     buckets: index.buckets,
     ladders: index.ladders,
     rulesRoot: index.rulesRoot,
+    rulesChapters: index.rulesChapters,
     ids: index.entries.map((e) => e.id),
     names: index.entries.map((e) => e.name),
     facets: index.entries.map((e) => e.facet),
@@ -152,5 +156,6 @@ export function decodeIndex(encoded: EncodedIndex): RefIndex {
     buckets: encoded.buckets,
     ladders: encoded.ladders,
     rulesRoot: encoded.rulesRoot,
+    rulesChapters: encoded.rulesChapters,
   };
 }
