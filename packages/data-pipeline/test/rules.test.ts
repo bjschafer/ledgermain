@@ -51,6 +51,13 @@ describe("rules.json (sidecar)", () => {
     }
   });
 
+  it("addresses pages by name slug, parent-prefixed only when names clash", () => {
+    expect(byName("Use Magic Device").map((rule) => rule.id)).toEqual(["use-magic-device"]);
+    expect(byName("Bluff").map((rule) => rule.id)).toEqual(
+      expect.arrayContaining(["skill-descriptions-bluff", "skills-in-conflict-bluff"]),
+    );
+  });
+
   it("leaves no Foundry enricher syntax and no empty placeholder pages", () => {
     for (const rule of all) {
       expect(rule.html).not.toMatch(/@[A-Z][A-Za-z]*\[|\[\[/);

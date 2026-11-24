@@ -400,14 +400,36 @@ export function transformRules(
     });
   }
 
-  const link = (d: Draft): RuleLink => ({ id: d.id, name: d.name });
+  // URL ids: the page name's slug, prefixed with its parent's when names clash.
+  // Every page in a clash is prefixed, so no URL depends on which one sorts first.
+  const kept = drafts.filter((d) => included.has(d.id));
+  const nameCount = new Map<string, number>();
+  for (const d of kept) nameCount.set(slug(d.name), (nameCount.get(slug(d.name)) ?? 0) + 1);
+  const urlIds = new Map<string, string>();
+  const taken = new Set<string>();
+  for (const d of kept) {
+    const base = slug(d.name);
+    const parent = parentOf.get(d.id);
+    const id =
+      nameCount.get(base)! > 1 && parent ? `${slug(byId.get(parent)!.name)}-${base}` : base;
+    if (!base || taken.has(id)) {
+      throw new Error(`[rules] no unique URL id for "${d.name}" (got "${id}")`);
+    }
+    taken.add(id);
+    urlIds.set(d.id, id);
+  }
+  const urlId = (id: string) => urlIds.get(id)!;
+
+  const link = (d: Draft): RuleLink => ({ id: urlId(d.id), name: d.name });
   const nameOf = (id: string) => (included.has(id) ? byId.get(id)?.name : undefined);
 
   const resolveLinks = (html: string): string =>
     html.replace(LINK_RE, (match, kind: string, args: string, display?: string) => {
       const target = linkTarget(kind, args);
       const text = display !== undefined ? displayName(display) : target && nameOf(target);
-      if (target && included.has(target)) return `<a data-rule="${target}">${text ?? ""}</a>`;
+      if (target && included.has(target)) {
+        return `<a data-rule="${urlId(target)}">${text ?? ""}</a>`;
+      }
       // Not a page here: leave it for the generic resolver, which keeps the display text.
       return display !== undefined ? display : match;
     });
@@ -447,7 +469,7 @@ export function transformRules(
     }
 
     rules.push({
-      id: d.id,
+      id: urlId(d.id),
       name: d.name,
       path,
       children,
@@ -457,5 +479,5 @@ export function transformRules(
     });
   }
 
-  return { rules, rootId: root.id, sectionCount };
+  return { rules, rootId: urlId(root.id), sectionCount };
 }

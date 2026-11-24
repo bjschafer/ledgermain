@@ -27,10 +27,10 @@ describe("parseHash", () => {
 
   it("parses the rules contents page and a section deep link", () => {
     expect(parseHash("#/rules")).toEqual({ kind: "rules" });
-    expect(parseHash("#/rules/o0Ufwyu65bmusBhM?s=movement-during-a-charge")).toEqual({
+    expect(parseHash("#/rules/charge?s=movement-during-a-charge")).toEqual({
       kind: "detail",
       collection: "rules",
-      id: "o0Ufwyu65bmusBhM",
+      id: "charge",
       section: "movement-during-a-charge",
     });
     expect(parseHash(detailHref("rules", "abc", "use-a-scroll"))).toEqual({
