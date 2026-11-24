@@ -49,6 +49,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-11-23-reference-feedback",
+    date: "2026-11-23",
+    title: "Send feedback from the quick reference",
+    note: "The quick reference at ref.ledgermain.app has a Send feedback button at the bottom of every page. Report a missing spell, a garbled stat block, or a rule that reads wrong without leaving the page you're on: the report notes which page that was, so there's no need to paste a link.",
+  },
+  {
     id: "2026-11-23-reference-rules",
     date: "2026-11-23",
     title: "The game rules on the quick reference, one page per rule",

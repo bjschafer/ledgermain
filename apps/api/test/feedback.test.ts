@@ -225,17 +225,20 @@ describe("POST /api/feedback — Turnstile hostname assertion", () => {
     expect(res.status).toBe(403);
   });
 
-  it("gets past the assertion for one of our own hostnames", async () => {
-    siteverify({ success: true, hostname: "ledgermain.app" });
-    // The GitHub App call past the gate fails on the unset private key; mute
-    // the resulting unhandled_exception log so it doesn't read as a failure.
-    const errorLog = vi.spyOn(console, "error").mockImplementation(() => {});
-    const res = await post({ message: "hi", turnstileToken: "t" });
-    errorLog.mockRestore();
-    // Past the gate; the same stub then feeds the GitHub App call nonsense, so
-    // anything but a 403 proves the hostname check let this through.
-    expect(res.status).not.toBe(403);
-  });
+  it.each(["ledgermain.app", "ref.ledgermain.app"])(
+    "gets past the assertion for our own hostname %s",
+    async (hostname) => {
+      siteverify({ success: true, hostname });
+      // The GitHub App call past the gate fails on the unset private key; mute
+      // the resulting unhandled_exception log so it doesn't read as a failure.
+      const errorLog = vi.spyOn(console, "error").mockImplementation(() => {});
+      const res = await post({ message: "hi", turnstileToken: "t" });
+      errorLog.mockRestore();
+      // Past the gate; the same stub then feeds the GitHub App call nonsense, so
+      // anything but a 403 proves the hostname check let this through.
+      expect(res.status).not.toBe(403);
+    },
+  );
 });
 
 describe("CORS for /api/feedback", () => {
@@ -247,5 +250,20 @@ describe("CORS for /api/feedback", () => {
     expect(res.status).toBe(204);
     expect(res.headers.get("access-control-allow-methods")).toContain("POST");
     expect(res.headers.get("access-control-allow-origin")).toBe(ORIGIN);
+  });
+
+  it("lets a feedback-only origin call the feedback route and nothing else", async () => {
+    const ref = "https://ref.ledgermain.app";
+    const feedback = await request("https://api.test/api/feedback", {
+      method: "OPTIONS",
+      headers: { origin: ref },
+    });
+    expect(feedback.headers.get("access-control-allow-origin")).toBe(ref);
+
+    const characters = await request("https://api.test/api/characters", {
+      method: "OPTIONS",
+      headers: { origin: ref },
+    });
+    expect(characters.headers.get("access-control-allow-origin")).toBeNull();
   });
 });

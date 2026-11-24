@@ -90,12 +90,17 @@ CORS: `ALLOWED_APP_ORIGINS` (comma-separated, exact origin match — never
 reflected on every response — and, via the bare hostnames, the Turnstile
 "solved on our site" assertion.
 
-Because that one list carries all three jobs, it holds **production origins
+`FEEDBACK_ONLY_ORIGINS` (same format) lists sites that only send feedback, today
+the reference site at `ref.ledgermain.app`. They get CORS on `POST /api/feedback`
+alone and count for the Turnstile assertion, but are never a valid OAuth
+`redirect_uri`, so no session token is ever delivered to them.
+
+Because these lists carry those jobs, they hold **production origins
 only**: a `localhost` entry would let anyone host a page on their own machine
 with our public sitekey, solve the challenge, and pass the feedback endpoint's
 hostname check — and would make a plain-HTTP origin a valid delivery target for
-a real session token. Local dev supplies its own value in `.dev.vars`, which
-replaces (not merges with) the deployed one; the test suite pins its own in
+a real session token. Local dev supplies its own values in `.dev.vars`, which
+replace (not merge with) the deployed ones; the test suite pins its own in
 `vitest.config.ts`.
 
 ## Account operations
@@ -222,7 +227,7 @@ Defense in depth for the one public, unauthenticated write:
 
 - **Cloudflare Turnstile** — the primary gate. The client mints a token from the
   widget; the Worker verifies it server-side (`src/turnstile.ts`) and asserts the
-  solving `hostname` is one of `ALLOWED_APP_ORIGINS`. This is the strongest
+  solving `hostname` is one of `ALLOWED_APP_ORIGINS` or `FEEDBACK_ONLY_ORIGINS`. This is the strongest
   practical "came from our app" signal — a public browser endpoint can't _prove_
   its caller (anything the client holds is visible in devtools), but this makes
   scripted abuse defeat a CAPTCHA per submit rather than curl a URL.
@@ -235,21 +240,22 @@ Defense in depth for the one public, unauthenticated write:
   unclosable by its own content.
 
 Until configured the endpoint fails closed (verification/issue creation error).
-The web app hides the feedback button unless both `VITE_API_URL` **and**
-`VITE_TURNSTILE_SITEKEY` are set at build time.
+The web app and the reference site each hide their feedback button unless both
+`VITE_API_URL` **and** `VITE_TURNSTILE_SITEKEY` are set at build time.
 
 ### One-time owner setup
 
 1. **Create a Turnstile widget** (Cloudflare dashboard → Turnstile → Add):
-   - Add `ledgermain.app`, and **only** that. Listing `localhost` would
+   - Add `ledgermain.app` and `ref.ledgermain.app`, and **only** those. Listing `localhost` would
      let anyone serve a page from their own machine under this sitekey, solve
      the challenge there, and produce a token whose reported hostname the Worker
      can't distinguish from a real one — which is the whole basis of the
      endpoint's "came from our app" check. Local dev normally leaves
      `VITE_TURNSTILE_SITEKEY` unset, so the feedback button is hidden.
-   - Copy the **Site Key** → set it as the web build var `VITE_TURNSTILE_SITEKEY`
-     (same place as `VITE_API_URL`: Workers Builds → the `ledgermain` Worker →
-     Settings → Build → Build variables). The site key is public.
+   - Copy the **Site Key** → set it as the build var `VITE_TURNSTILE_SITEKEY`
+     (same place as `VITE_API_URL`: Workers Builds → Settings → Build → Build
+     variables) on **both** the `ledgermain` and `ledgermain-reference` Workers,
+     each with `VITE_API_URL` too. The site key is public.
    - Copy the **Secret Key** → `wrangler secret put TURNSTILE_SECRET` (from
      `apps/api/`), interactively, from a terminal you trust.
 2. **Register a GitHub App** (github.com/settings/apps → New GitHub App):

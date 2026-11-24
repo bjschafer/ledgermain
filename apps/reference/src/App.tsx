@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
 import { DetailPage } from "./components/DetailPage.js";
+import { FeedbackButton } from "./components/FeedbackButton.js";
 import { SearchPage } from "./components/SearchPage.js";
 import { SummonPage } from "./components/SummonPage.js";
 import { loadIndex } from "./data/loader.js";
@@ -96,9 +97,12 @@ export function App() {
           </a>
           .
         </span>
-        <a href="https://ledgermain.app" target="_blank" rel="noreferrer">
-          Ledgermain tracker →
-        </a>
+        <span className="app-footer-actions">
+          <FeedbackButton />
+          <a href="https://ledgermain.app" target="_blank" rel="noreferrer">
+            Ledgermain tracker →
+          </a>
+        </span>
       </footer>
     </div>
   );

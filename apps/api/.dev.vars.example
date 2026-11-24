@@ -3,6 +3,8 @@
 # `wrangler dev`, so localhost stays out of the deployed config (it would
 # otherwise weaken the Turnstile hostname assertion — see wrangler.jsonc).
 ALLOWED_APP_ORIGINS=http://localhost:5173
+# The reference site's dev server, same reasoning (feedback route only).
+FEEDBACK_ONLY_ORIGINS=http://localhost:5174
 
 DISCORD_CLIENT_SECRET=paste-a-real-discord-oauth-app-client-secret-here
 

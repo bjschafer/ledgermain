@@ -17,6 +17,13 @@ describe("GET /auth/discord/start", () => {
     expect(res.status).toBe(400);
   });
 
+  it("400s a feedback-only origin: it never receives a session token", async () => {
+    const res = await request(
+      "https://api.test/auth/discord/start?redirect_uri=https://ref.ledgermain.app/",
+    );
+    expect(res.status).toBe(400);
+  });
+
   it("redirects to Discord's authorize endpoint for an allowed redirect_uri", async () => {
     const res = await request(
       "https://api.test/auth/discord/start?redirect_uri=http://localhost:5173/",
