@@ -83,6 +83,16 @@ describe("generated index", () => {
     expect(pages().some((e) => e.collection === "rules" && e.id === index.rulesRoot)).toBe(true);
   });
 
+  it("lists rules chapters that each name a rules page", () => {
+    const rulePages = new Set(
+      pages()
+        .filter((e) => e.collection === "rules")
+        .map((e) => e.id),
+    );
+    expect(index.rulesChapters.length).toBeGreaterThan(0);
+    for (const id of index.rulesChapters) expect(rulePages.has(id)).toBe(true);
+  });
+
   it("carries the pinned dataset versions", () => {
     expect(index.meta.dataVersion).toBe(meta.dataVersion);
     expect(index.meta.contentVersion).toBe(meta.contentVersion);
