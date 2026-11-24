@@ -53,6 +53,8 @@ _The builder. Every choice updates the same sheet the same engine drives at the 
 
 The hosted instance is at **[ledgermain.app](https://ledgermain.app)**. No account needed. Start building, and your character autosaves locally in the browser.
 
+Use **[Ledgermain Reference](https://ref.ledgermain.app)** to look up Pathfinder rules, spells, and creatures. Press Enter in the search box to focus the first result. Returning from an entry keeps your query and filters for the rest of the visit.
+
 ## Run it locally
 
 Toolchain is [**Bun**](https://bun.sh) (workspaces). No other runtime needed.

@@ -1,13 +1,7 @@
-import { useMemo, useState } from "react";
+import { useMemo, useRef, type Dispatch, type Ref, type SetStateAction } from "react";
 
 import { detailHref } from "../hooks/useHashRoute.js";
-import {
-  countByCollection,
-  EMPTY_FILTER,
-  searchIndex,
-  spellLevels,
-  type SearchFilter,
-} from "../model/search.js";
+import { countByCollection, searchIndex, spellLevels, type SearchFilter } from "../model/search.js";
 import {
   COLLECTION_BADGE,
   COLLECTION_LABEL,
@@ -19,8 +13,16 @@ import type { IndexEntry, RefIndex } from "../shared/indexCodec.js";
 /** Enough rows to scroll through, few enough to stay instant on every keystroke. */
 const RESULT_CAP = 50;
 
-export function SearchPage({ index }: { index: RefIndex }) {
-  const [filter, setFilter] = useState<SearchFilter>(EMPTY_FILTER);
+export function SearchPage({
+  index,
+  filter,
+  setFilter,
+}: {
+  index: RefIndex;
+  filter: SearchFilter;
+  setFilter: Dispatch<SetStateAction<SearchFilter>>;
+}) {
+  const firstResultRef = useRef<HTMLAnchorElement>(null);
 
   const counts = useMemo(() => countByCollection(index.entries), [index]);
   const levels = useMemo(() => spellLevels(index.entries), [index]);
@@ -40,13 +42,20 @@ export function SearchPage({ index }: { index: RefIndex }) {
         placeholder="Search rules, spells, feats, gear, monsters…"
         value={filter.query}
         onChange={(e) => setFilter((f) => ({ ...f, query: e.target.value }))}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" && !e.nativeEvent.isComposing && firstResultRef.current) {
+            e.preventDefault();
+            firstResultRef.current.focus();
+          }
+        }}
         aria-label="Search the reference"
       />
 
       <div className="chip-row" role="group" aria-label="Filter by collection">
         <button
           type="button"
-          className={`chip${filter.collection === null ? " is-on" : ""}`}
+          className="chip"
+          aria-pressed={filter.collection === null}
           onClick={() => setCollection(null)}
         >
           All
@@ -55,7 +64,8 @@ export function SearchPage({ index }: { index: RefIndex }) {
           <button
             key={collection}
             type="button"
-            className={`chip${filter.collection === collection ? " is-on" : ""}`}
+            className="chip"
+            aria-pressed={filter.collection === collection}
             onClick={() => setCollection(collection)}
           >
             {COLLECTION_LABEL[collection]}
@@ -68,7 +78,8 @@ export function SearchPage({ index }: { index: RefIndex }) {
         <div className="chip-row" role="group" aria-label="Filter by spell level">
           <button
             type="button"
-            className={`chip is-small${filter.level === null ? " is-on" : ""}`}
+            className="chip is-small"
+            aria-pressed={filter.level === null}
             onClick={() => setFilter((f) => ({ ...f, level: null }))}
           >
             Any level
@@ -77,7 +88,8 @@ export function SearchPage({ index }: { index: RefIndex }) {
             <button
               key={level}
               type="button"
-              className={`chip is-small${filter.level === level ? " is-on" : ""}`}
+              className="chip is-small"
+              aria-pressed={filter.level === level}
               onClick={() => setFilter((f) => ({ ...f, level }))}
             >
               {level}
@@ -89,20 +101,36 @@ export function SearchPage({ index }: { index: RefIndex }) {
       {browsing ? (
         <BrowseBoards index={index} />
       ) : (
-        <ResultList entries={results.entries} total={results.total} />
+        <ResultList
+          entries={results.entries}
+          total={results.total}
+          firstResultRef={firstResultRef}
+        />
       )}
     </div>
   );
 }
 
-function ResultList({ entries, total }: { entries: IndexEntry[]; total: number }) {
+function ResultList({
+  entries,
+  total,
+  firstResultRef,
+}: {
+  entries: IndexEntry[];
+  total: number;
+  firstResultRef: Ref<HTMLAnchorElement>;
+}) {
   if (entries.length === 0) return <p className="notice">No matches.</p>;
   return (
     <>
       <ul className="result-list">
-        {entries.map((entry) => (
+        {entries.map((entry, i) => (
           <li key={`${entry.collection}/${entry.id}/${entry.anchor ?? ""}`}>
-            <a className="result" href={detailHref(entry.collection, entry.id, entry.anchor)}>
+            <a
+              className="result"
+              href={detailHref(entry.collection, entry.id, entry.anchor)}
+              ref={i === 0 ? firstResultRef : undefined}
+            >
               <span className="result-name">{entry.name}</span>
               <span className={`badge is-${entry.collection}`}>
                 {COLLECTION_BADGE[entry.collection]}

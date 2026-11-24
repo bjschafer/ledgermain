@@ -6,12 +6,14 @@ import { SearchPage } from "./components/SearchPage.js";
 import { SummonPage } from "./components/SummonPage.js";
 import { loadIndex } from "./data/loader.js";
 import { useHashRoute } from "./hooks/useHashRoute.js";
+import { EMPTY_FILTER } from "./model/search.js";
 import type { RefIndex } from "./shared/indexCodec.js";
 
 export function App() {
   const route = useHashRoute();
   const [index, setIndex] = useState<RefIndex | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [searchFilter, setSearchFilter] = useState(EMPTY_FILTER);
 
   useEffect(() => {
     let live = true;
@@ -81,7 +83,7 @@ export function App() {
           ) : route.kind === "summon" ? (
             <SummonPage index={index} route={route} />
           ) : (
-            <SearchPage index={index} />
+            <SearchPage index={index} filter={searchFilter} setFilter={setSearchFilter} />
           ))}
       </main>
 

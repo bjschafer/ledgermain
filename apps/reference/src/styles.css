@@ -363,7 +363,7 @@ code {
   border-color: var(--line-soft);
 }
 
-.chip.is-on {
+.chip[aria-pressed="true"] {
   border-color: var(--gold-dim);
   background: var(--surface-2);
   color: var(--gold-2);
@@ -377,6 +377,14 @@ code {
 .chip-count {
   color: var(--faint);
   font-size: 0.6875rem;
+}
+
+@media (max-width: 640px), (pointer: coarse) {
+  .chip {
+    justify-content: center;
+    min-width: 44px;
+    min-height: 44px;
+  }
 }
 
 .result-list {
