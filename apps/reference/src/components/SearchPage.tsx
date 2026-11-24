@@ -146,14 +146,14 @@ function BrowseBoards({ index }: { index: RefIndex }) {
 
   return (
     <>
-      <Board title="Conditions">
-        {conditions.map((entry) => (
-          <BoardTile key={entry.id} href={detailHref("conditions", entry.id)} name={entry.name} />
-        ))}
-      </Board>
       <Board title="Rules">
         {chapters.map((chapter) => (
           <BoardTile key={chapter.id} href={detailHref("rules", chapter.id)} name={chapter.name} />
+        ))}
+      </Board>
+      <Board title="Conditions">
+        {conditions.map((entry) => (
+          <BoardTile key={entry.id} href={detailHref("conditions", entry.id)} name={entry.name} />
         ))}
       </Board>
     </>

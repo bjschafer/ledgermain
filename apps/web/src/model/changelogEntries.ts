@@ -49,6 +49,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-11-23-reference-rules-first",
+    date: "2026-11-23",
+    title: "Find rules first on the quick reference",
+    note: "Rules chapters are now above Conditions on the quick reference homepage, so you can get to Combat Rules without scrolling past the conditions list.",
+  },
+  {
     id: "2026-11-23-reference-feedback",
     date: "2026-11-23",
     title: "Send feedback from the quick reference",
