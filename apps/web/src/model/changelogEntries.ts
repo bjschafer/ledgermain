@@ -1,7 +1,6 @@
 /**
- * Player-facing "What's new" — a hand-curated list of notable changes, newest
- * first, rendered in Settings as the counterpart to `coverageNotes.ts` ("what
- * we added" next to "what we still don't do").
+ * The character app's "What's New" list in Settings, newest first. Changes
+ * that only affect the companion Reference site do not belong here.
  *
  * Deliberately hand-written rather than generated from commits: the audience
  * is a player, not a contributor, and one player-visible change routinely
@@ -48,24 +47,6 @@ export interface ChangelogEntry {
 
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
-  {
-    id: "2026-11-23-reference-rules-first",
-    date: "2026-11-23",
-    title: "Find rules first on the quick reference",
-    note: "Rules chapters are now above Conditions on the quick reference homepage, so you can get to Combat Rules without scrolling past the conditions list.",
-  },
-  {
-    id: "2026-11-23-reference-feedback",
-    date: "2026-11-23",
-    title: "Send feedback from the quick reference",
-    note: "The quick reference at ref.ledgermain.app has a Send feedback button at the bottom of every page. Report a missing spell, a garbled stat block, or a rule that reads wrong without leaving the page you're on: the report notes which page that was, so there's no need to paste a link.",
-  },
-  {
-    id: "2026-11-23-reference-rules",
-    date: "2026-11-23",
-    title: "The game rules on the quick reference, one page per rule",
-    note: "The quick reference at ref.ledgermain.app now carries the game rules, split into one short page per rule instead of one long chapter, so Take 5-Foot Step, Charge, and Scrolls each have a link of their own. Search finds paragraphs inside a page too: searching 'use a scroll' opens Use Magic Device right at that paragraph and highlights it. Every page lists its headings at the top and the pages filed under it at the bottom, and a Rules tab browses the whole book chapter by chapter, starting with quick-reference tables like which actions provoke attacks of opportunity. Search also ignores hyphens and apostrophes, so '5 foot step' and 'natures ally' find what you meant.",
-  },
   {
     id: "2026-11-23-worn-item-effects",
     date: "2026-11-23",
@@ -124,7 +105,7 @@ export const CHANGELOG: readonly ChangelogEntry[] = [
     id: "2026-11-21-sheet-at-a-glance",
     date: "2026-11-21",
     title: "A sheet that's easier to scan at the table",
-    note: "Buffs now sit just below Hit Points in Play, with a search field and a clearly labeled Advance round button. The side sheet gives attack sequences more room and puts saves and initiative next to Armor Class. Build, Play, and Settings are centered on wide screens and work with arrow keys and Enter. The character picker stays on the right when you're signed in, and long names wrap in its menu. The reference site uses the same header style, with Search and Summons up front.",
+    note: "Buffs now sit just below Hit Points in Play, with a search field and a clearly labeled Advance round button. The side sheet gives attack sequences more room and puts saves and initiative next to Armor Class. Build, Play, and Settings are centered on wide screens and work with arrow keys and Enter. The character picker stays on the right when you're signed in, and long names wrap in its menu.",
   },
   {
     id: "2026-11-21-special-material-prices",
@@ -136,7 +117,7 @@ export const CHANGELOG: readonly ChangelogEntry[] = [
     id: "2026-11-21-ledgermain-app",
     date: "2026-11-21",
     title: "Ledgermain has its own address",
-    note: "Ledgermain now lives at ledgermain.app, and the quick reference at ref.ledgermain.app. The old address offers to carry over every character saved in that browser, session logs included, and asks before anything is added here. If you sync, sign in again at the new address. If you added Ledgermain to your home screen, add it again from ledgermain.app.",
+    note: "Ledgermain now lives at ledgermain.app. The old address offers to carry over every character saved in that browser, session logs included, and asks before anything is added here. If you sync, sign in again at the new address. If you added Ledgermain to your home screen, add it again from ledgermain.app.",
   },
   {
     id: "2026-11-21-compare-sync-conflicts",
@@ -196,7 +177,7 @@ export const CHANGELOG: readonly ChangelogEntry[] = [
     id: "2026-09-25-spell-targets",
     date: "2026-09-25",
     title: "Spells say what they target",
-    note: "A spell's details now show its Target, Effect, and Area lines the way the rulebook prints them, so Web tells you it fills a 20-ft.-radius spread and Hold Person names the humanoid it holds. Most spells were missing the line entirely before. Widen Spell doubles an effect's spread too, not just an area's. The quick-reference site and the spellbook export show the same lines.",
+    note: "A spell's details now show its Target, Effect, and Area lines the way the rulebook prints them, so Web tells you it fills a 20-ft.-radius spread and Hold Person names the humanoid it holds. Most spells were missing the line entirely before. Widen Spell doubles an effect's spread too, not just an area's. The spellbook export shows the same lines.",
   },
   {
     id: "2026-09-25-safer-sync",
@@ -339,8 +320,8 @@ export const CHANGELOG: readonly ChangelogEntry[] = [
   {
     id: "2026-09-03-discovery-prerequisites",
     date: "2026-09-03",
-    title: "Reference text stops printing its own markup",
-    note: "Around a hundred alchemist discoveries were printing a line of raw markup where their prerequisite should have been. They now read as the book prints them, so Dread Bomb says it wants alchemist 6 and the anguish bomb discovery instead of a string of punctuation. On the bestiary, a hundred and twenty creatures were missing their whole statistics line: no ability scores, no feats, no skills, no CMB or CMD. Those are back. Traps and haunts print their notice DC, trigger and effect, and section headings render as headings.",
+    title: "Alchemist discovery prerequisites read like the book",
+    note: "Around a hundred alchemist discoveries were printing a line of raw markup where their prerequisite should have been. They now read as the book prints them, so Dread Bomb says it wants alchemist 6 and the anguish bomb discovery instead of a string of punctuation.",
   },
   {
     id: "2026-09-03-foundry-data-refresh",
@@ -433,22 +414,10 @@ export const CHANGELOG: readonly ChangelogEntry[] = [
     note: "A cleric putting ranks into any Craft skill now gets the +3 class skill bonus. Craft was missing from the cleric's class skill list, so a rank in Craft (weapons) or Craft (armor) was reading three points low.",
   },
   {
-    id: "2026-08-22-monster-tracking-copies",
-    date: "2026-08-22",
-    title: "Track several of the same monster in one tab",
-    note: "When a summon brings in three wolves, use + in the Track panel to add copies. Each wolf has its own hit points and conditions. The row of copies shows everyone's hit points at a glance, and picking a wolf switches the controls and statblock to that wolf. This works on bestiary pages and in the summoning helper.",
-  },
-  {
-    id: "2026-08-22-summon-feats-and-lists",
-    date: "2026-08-22",
-    title: "The summoning helper knows your other summoning feats",
-    note: "Summon Good, Neutral, and Evil Monster add their alternate creature lists under the standard table, with the Diehard feat, the Will bonus and counterpoised template, or the standard-action casting note that comes with each. Versatile Summon Monster and Versatile Summon Nature's Ally offer the aerial, aqueous, chthonic, fiery, primordial, and dark templates, greyed out where a creature can't take them. Moonlight and Starlight Summons, Sacred Summons, and Evolved Summoned Monster (pick your evolutions) are there too, and the sheet's summon link carries all of them over. An Alternative Summoning Options switch adds the creatures individual Adventure Paths opened to summoners, for both spells, each tagged with its AP number. Giant and young creatures now get their space, reach, Fly, and Stealth recomputed, and an advanced animal keeps its Int 2.",
-  },
-  {
     id: "2026-08-22-summon-deep-link",
     date: "2026-08-22",
-    title: "Summon spells link straight into the summoning helper",
-    note: "A Summon Monster or Summon Nature's Ally spell on your sheet now carries a summon helper link. It opens the reference site's summoning helper at the right list and level, with your Augment Summoning or Superior Summoning and your caster level already set.",
+    title: "Open summon lists from your spells",
+    note: "Summon Monster and Summon Nature's Ally now have a link on your sheet that opens the right creature list. The link carries your caster level and any summoning feats you've picked, so you don't have to set them again.",
   },
   {
     id: "2026-08-21-craft-consumables",
@@ -461,36 +430,6 @@ export const CHANGELOG: readonly ChangelogEntry[] = [
     date: "2026-08-21",
     title: "Brawlers, warpriests, and swashbucklers had a feat too many",
     note: "Some classes hand you a specific feat rather than a free pick, and three of them were being counted as a free pick as well. A brawler's Improved Unarmed Strike, a warpriest's Weapon Focus, and a swashbuckler's Improved Critical at 5th level now show up as granted feats on the sheet, and the feat budget is one lower to match. If you had already spent a slot buying one of those yourself, you have it back.",
-  },
-  {
-    id: "2026-08-21-reference-redesign",
-    date: "2026-08-21",
-    title: "Monster pages read like the book, fight like the sheet",
-    note: "Monster statblocks on the reference site now read like the printed page: Defense, Offense, Statistics, and Ecology sections, the headline numbers as the tracker's stat tiles, and ability scores as pips. Marked conditions move the numbers too: shaken drops the attack line, saves, and every skill, entangled sinks Dexterity and everything downstream of it, prone hits melee attacks and AC, and the fear, fatigue, sickness, and grapple ladders upgrade to the worse condition instead of stacking. Templates and conditions change the stats in place, with one quiet line naming what is applied. Hit points stay gold while a creature is healthy and only turn red once it is truly hurting, and the whole reference site now shares the tracker's typefaces and panel styling, so the two feel like one product.",
-  },
-  {
-    id: "2026-08-21-monster-tracking",
-    date: "2026-08-21",
-    title: "Run a monster from its reference page",
-    note: "Every bestiary page, and the summoning helper, now carries a tracker for running that creature in a fight. Tick damage and healing against the printed hit points, with any template you applied already folded into the total, and mark conditions from the full list, each one showing its rules text right on the page. At 0 and below the tracker reads the statblock for you: disabled at exactly 0, dying until the creature's own Constitution says dead, destroyed outright for undead and constructs, and a reminder when regeneration means it cannot die. Tracking stays in the current browser tab and survives a reload.",
-  },
-  {
-    id: "2026-08-21-template-diff",
-    date: "2026-08-21",
-    title: "Templates show their work",
-    note: "Applying a template on the reference site now shows the move, not just the result. Every line and chip a template touches keeps the printed value beside the adjusted one, so you can watch CR, hit points, saves, and attack lines shift. Text a template adds is highlighted where it lands, brand new lines are tagged, and the statblock holds its place instead of reflowing under you, labeled printed or adjusted at the top. The pickers are proper toggle tiles now, split into templates and feats, with one reset to get back to the printed creature.",
-  },
-  {
-    id: "2026-08-21-summoning-helper",
-    date: "2026-08-21",
-    title: "A summoning helper on the reference site",
-    note: "The reference site gained a Summons section: pick Summon Monster or Summon Nature's Ally at any level and get the full creature list, with the lower lists and their 1d3 and 1d4+1 counts alongside. Choose a creature and its statblock arrives already adjusted: celestial, fiendish, entropic, or resolute applied on the spot, Augment Summoning folded into every number, and anything that cannot be recomputed flagged for you to adjust by hand. Every monster page can also try on the simple templates now, advanced, giant, and young included.",
-  },
-  {
-    id: "2026-08-21-bestiary",
-    date: "2026-08-21",
-    title: "The reference site has the whole bestiary",
-    note: "The quick-reference site now carries nearly 3,000 monster statblocks and about 170 monster templates, searchable by name next to spells, feats, and gear. Each monster page shows the full printed statblock: AC, hit points, saves, attacks, special abilities, spell-like abilities, and ecology.",
   },
   {
     id: "2026-08-20-rasugen",
@@ -994,7 +933,7 @@ export const CHANGELOG: readonly ChangelogEntry[] = [
     id: "2026-08-01-disabled-condition",
     date: "2026-08-01",
     title: "Disabled joins the condition list",
-    note: "The Disabled condition, at exactly 0 hit points or stable and conscious in the negatives, can now be toggled on the sheet like any other condition and looked up on the reference site: a single move or standard action each round, half speed, and a strenuous action costs 1 hit point. The HP bar already called it out when your hit points hit 0; now the condition stands on its own too.",
+    note: "The Disabled condition, at exactly 0 hit points or stable and conscious in the negatives, can now be toggled on the sheet like any other condition: a single move or standard action each round, half speed, and a strenuous action costs 1 hit point. The HP bar already called it out when your hit points hit 0; now the condition stands on its own too.",
   },
   {
     id: "2026-08-01-situational-saves",
@@ -1245,8 +1184,8 @@ export const CHANGELOG: readonly ChangelogEntry[] = [
   {
     id: "2026-07-27-reference-site-link",
     date: "2026-07-27",
-    title: "The reference library is one click away",
-    note: "A Reference link now sits in the top bar and opens the companion lookup site in a new tab, for reading a spell, feat, weapon, armor, item, or condition you don't have on your sheet. Your sheet stays exactly as you left it, buffs and all.",
+    title: "Open the reference library from your sheet",
+    note: "The header now has a Reference link. It opens in a new tab, so you can look something up without leaving your character or losing your place in Play.",
   },
   {
     id: "2026-07-27-odd-weapon-dice-scale",
