@@ -2428,6 +2428,77 @@ a:focus-visible,
   font-size: 0.5625rem;
 }
 
+/* --------------------------------------------------- situational notes -- */
+/* The `ⓘ N` marker a seal, skill row, or the skills header shows when an
+   active source has a hand-apply reminder for that stat. Deliberately the same
+   glyph as `RulesNote`'s source-row copy: this is the same note, reachable
+   where the stat is consulted. */
+.situational {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  width: 100%;
+}
+
+.seal-cell > .situational {
+  align-items: flex-end;
+  margin-top: 2px;
+}
+
+.situational-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  background: none;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  padding: 2px 7px;
+  font-family: var(--mono);
+  font-size: 0.625rem;
+  line-height: 1.4;
+  color: var(--faint);
+  cursor: pointer;
+}
+
+.situational-badge:hover,
+.situational-badge:focus-visible {
+  color: var(--ink);
+  border-color: var(--line);
+}
+
+.situational-badge[aria-expanded="true"] {
+  color: var(--gold);
+  border-color: var(--gold-dim);
+}
+
+.situational-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+  padding: 6px 8px;
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+  text-align: left;
+}
+
+.situational-note .hint {
+  margin-top: 0;
+}
+
+.situational-source {
+  margin-top: 1px;
+  font-family: var(--mono);
+  font-size: 0.6875rem;
+  color: var(--faint);
+}
+
+.stat-group > .situational-panel {
+  margin: -2px 0 8px;
+}
+
 /* compact (de-emphasised) seal variant — used for BAB, Init, Speed */
 .seal.seal--compact {
   min-height: 64px;
@@ -2837,7 +2908,7 @@ a:focus-visible,
 
 .sheet-skill-head {
   display: grid;
-  grid-template-columns: 1fr auto auto;
+  grid-template-columns: 1fr auto auto auto;
   align-items: center;
   gap: 6px;
 }
@@ -7090,6 +7161,12 @@ input[type="text"].saved-roll-name:focus {
     justify-content: center;
     padding-top: 10px;
     padding-bottom: 10px;
+  }
+
+  .situational-badge {
+    min-height: var(--tap-min);
+    min-width: var(--tap-min);
+    justify-content: center;
   }
 
   .field-toggle,

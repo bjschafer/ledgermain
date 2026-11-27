@@ -154,15 +154,19 @@ describe("summoning feats with a contextNote-only effect (no PC-sheet Change)", 
     }
   });
 
-  it("adding Augment Summoning to a doc changes nothing on the derived sheet (changes:[] is a true no-op)", () => {
+  it("adding Augment Summoning changes no derived number (changes:[] is a true no-op), only its reminder reaches the sheet", () => {
     const base = makeDoc({ classes: [{ tag: "wizard", level: 5 }] });
     const withFeat = makeDoc({
       classes: [{ tag: "wizard", level: 5 }],
       feats: [featId("Augment Summoning")],
     });
-    const baseSheet = compute(base, ref);
-    const featSheet = compute(withFeat, ref);
+    const { situationalNotes, ...featSheet } = compute(withFeat, ref);
+    const { situationalNotes: baseNotes, ...baseSheet } = compute(base, ref);
     expect(featSheet).toEqual(baseSheet);
+    expect(baseNotes).toBeUndefined();
+    expect(situationalNotes).toContainEqual(
+      expect.objectContaining({ target: "allChecks", source: "Augment Summoning" }),
+    );
   });
 
   it("Augment Summoning (Mythic) is flagged as mythic-not-modeled in its contextNote", () => {

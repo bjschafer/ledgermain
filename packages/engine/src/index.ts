@@ -1252,6 +1252,7 @@ export {
   type NoteCatalog,
   type NoteCoverage,
 } from "./note-coverage.js";
+export { collectSituationalNotes } from "./situational-notes.js";
 export {
   RAGE_POWERS,
   RAGE_POWER_IDS,

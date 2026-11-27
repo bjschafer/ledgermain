@@ -50,8 +50,8 @@ export const CHANGELOG: readonly ChangelogEntry[] = [
   {
     id: "2026-11-26-touch-ac-lines",
     date: "2026-11-26",
-    title: "Touch AC against rays and incorporeal attacks",
-    note: "Mage armor and shield now show your touch AC against incorporeal touch attacks under the Touch seal, and a scatterlight suit or hard light shield shows your touch AC against rays. Rules reminders you apply by hand are marked with an info circle instead of a warning triangle, so they no longer look like something is broken.",
+    title: "Rules reminders on the stats they change, and touch AC against rays",
+    note: 'A reminder you apply by hand, like Freedom of Movement\'s "cannot be grappled", now also shows as an info marker on the stat it affects: your CMD, a save, a skill row. Tap it to read the note and where it comes from. Mage armor and shield show your touch AC against incorporeal touch attacks under the Touch seal, and a scatterlight suit or hard light shield your touch AC against rays. Reminders use an info circle instead of a warning triangle.',
   },
   {
     id: "2026-11-23-worn-item-effects",

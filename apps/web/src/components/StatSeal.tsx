@@ -1,11 +1,12 @@
 import { Fragment, useId, useState } from "react";
 
-import type { ConditionalTotal, ModifierComponent } from "@pf1/schema";
+import type { ConditionalTotal, ModifierComponent, SituationalNote } from "@pf1/schema";
 
 import { signed } from "../model/names.js";
 import { useFlashKey } from "../hooks/useFlashKey.js";
 import { Provenance, type ProvenanceCopy } from "./Provenance.js";
 import { Caret } from "./Caret.js";
+import { SituationalNotes } from "./SituationalNotes.js";
 
 /**
  * A gilded stat "seal" — the big tabular total for one derived value. When given
@@ -43,6 +44,7 @@ export function StatSeal({
   baseline,
   numericValue,
   copy,
+  situationalNotes,
 }: {
   label: string;
   value: string | number;
@@ -70,6 +72,8 @@ export function StatSeal({
   baseline?: number;
   /** Raw numeric total to compare against `baseline`, for string-valued seals (attack sequences). */
   numericValue?: number;
+  /** Hand-apply reminders from active sources that modify this stat. */
+  situationalNotes?: SituationalNote[];
 }) {
   const [open, setOpen] = useState(false);
   const panelId = useId();
@@ -122,23 +126,30 @@ export function StatSeal({
     </>
   );
 
-  if (!expandable) {
+  if (!expandable && !situationalNotes?.length) {
     return <div className={sealClass}>{inner}</div>;
   }
 
   return (
     <div className="seal-cell">
-      <button
-        type="button"
-        className={sealClass}
-        data-expandable="true"
-        aria-expanded={open}
-        aria-controls={panelId}
-        onClick={() => setOpen((o) => !o)}
-      >
-        {inner}
-      </button>
-      {open ? (
+      {expandable ? (
+        <button
+          type="button"
+          className={sealClass}
+          data-expandable="true"
+          aria-expanded={open}
+          aria-controls={panelId}
+          onClick={() => setOpen((o) => !o)}
+        >
+          {inner}
+        </button>
+      ) : (
+        <div className={sealClass}>{inner}</div>
+      )}
+      {situationalNotes?.length ? (
+        <SituationalNotes notes={situationalNotes} label={label} />
+      ) : null}
+      {expandable && open ? (
         <div id={panelId}>
           <Provenance
             title={provTitle ?? `${label} breakdown`}

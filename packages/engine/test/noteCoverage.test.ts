@@ -118,6 +118,21 @@ describe("saveNoteCoverage — buffs (name-keyed)", () => {
     ).toBe("full");
   });
 
+  it("Remove Fear's and Burst of Glory's fear notes report full (both promoted onto Will)", () => {
+    expect(
+      noteCoverage(
+        { catalog: "buff", buffName: "Remove Fear" },
+        note("+4 Morale vs Fear effects.", "will"),
+      ),
+    ).toBe("full");
+    expect(
+      noteCoverage(
+        { catalog: "buff", buffName: "Burst of Glory" },
+        note("+1 Sacred bonus vs Fear effects.", "will"),
+      ),
+    ).toBe("full");
+  });
+
   it("Death Ward's note reports partial ('even if a save is not normally allowed' has no Change form)", () => {
     expect(
       noteCoverage(

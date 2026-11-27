@@ -3172,6 +3172,31 @@ export interface WeaponInstance {
 /* ----------------------------------------------------------- derived sheet -- */
 
 /**
+ * One "apply this by hand" reminder from an ACTIVE source, carried on the
+ * derived sheet so the stat it modifies can show it too — the source row keeps
+ * its own copy. Only notes whose benefit is not already a number on the sheet
+ * appear here (see `@pf1/engine`'s `noteCoverage`).
+ */
+export interface SituationalNote {
+  /** Raw `ContextNote.target` the source filed the note under. */
+  target: string;
+  /**
+   * The note text as authored. May still carry Foundry inline-roll syntax;
+   * the UI resolves it against the character's roll data, the same way it
+   * resolves the source row's copy.
+   */
+  text: string;
+  /** Display name of the active source (buff, feat, trait, item, feature, race). */
+  source: string;
+  /**
+   * The active buff's caster level, when the note came from one — the UI
+   * scopes `@item.level`/`@cl` to it so the stat's copy agrees with the buff
+   * row's copy. Absent for every non-buff source.
+   */
+  casterLevel?: number;
+}
+
+/**
  * The output of `compute(doc, refData)` — every displayed number. Derived values
  * are never persisted; they are recomputed from the document on demand.
  */
@@ -3402,6 +3427,16 @@ export interface DerivedSheet {
    * spells. Omitted when the character has none.
    */
   bonusKnownSpells?: DerivedBonusKnownSpells;
+  /**
+   * Hand-apply reminders from every active source that carries `contextNotes`
+   * (live buffs, taken feats, traits, race and chosen racial traits, equipped
+   * items, granted class-feature entries), minus notes whose whole benefit is
+   * already a structured number on the sheet. Deduped by target/text/source.
+   * Omitted (rather than empty) when nothing qualifies, same posture as
+   * `cmbConditionals`. The web groups them by `target` onto the seal or skill
+   * row they modify; unmapped targets stay on their source row only.
+   */
+  situationalNotes?: SituationalNote[];
 }
 
 /** See `DerivedSheet.bonusKnownSpells`. */

@@ -9,7 +9,13 @@ import {
   effectiveCasterClassLevel,
   isCasterTag,
 } from "@pf1/engine";
-import type { CharacterDoc, DerivedSheet, DerivedSkill, RefData } from "@pf1/schema";
+import type {
+  CharacterDoc,
+  DerivedSheet,
+  DerivedSkill,
+  RefData,
+  SituationalNote,
+} from "@pf1/schema";
 
 import { useFlashKey } from "../hooks/useFlashKey.js";
 import { baselineSheet } from "../model/baseline.js";
@@ -38,6 +44,7 @@ import { portraitSrc } from "../model/portrait.js";
 import { d20Formula, d20FormulaFor, damageFormula } from "../model/rollFormula.js";
 import { senseChipLabel, senseTip } from "../model/sensesDisplay.js";
 import { skillBreakdownComponents } from "../model/skillBreakdown.js";
+import { groupSituationalNotes } from "../model/situationalNotes.js";
 import { sheetSkillView } from "../model/sheetSkills.js";
 import { weaponAttackSubLine } from "../model/weaponAttackDisplay.js";
 import { AbilityDcList } from "./AbilityDcList.js";
@@ -47,6 +54,7 @@ import { InfoTip } from "./InfoTip.js";
 import { Provenance } from "./Provenance.js";
 import { StatSeal } from "./StatSeal.js";
 import { Caret } from "./Caret.js";
+import { SituationalNoteButton, SituationalNoteList } from "./SituationalNotes.js";
 
 /**
  * One skill row — split out from `Sheet` so it can own its own `useFlashKey`
@@ -62,9 +70,19 @@ import { Caret } from "./Caret.js";
  * numbers). `skillBreakdownComponents` stitches ranks/ability/class
  * skill/ACP onto the engine's own misc-modifier `components`.
  */
-function SkillRow({ s, resetKey }: { s: DerivedSkill; resetKey: string | number }) {
+function SkillRow({
+  s,
+  resetKey,
+  situationalNotes,
+}: {
+  s: DerivedSkill;
+  resetKey: string | number;
+  situationalNotes?: SituationalNote[];
+}) {
   const [open, setOpen] = useState(false);
+  const [notesOpen, setNotesOpen] = useState(false);
   const panelId = useId();
+  const notesPanelId = useId();
   const total = signed(s.total);
   const flashKey = useFlashKey(total, resetKey);
   const components = useMemo(() => skillBreakdownComponents(s), [s]);
@@ -101,7 +119,19 @@ function SkillRow({ s, resetKey }: { s: DerivedSkill; resetKey: string | number 
           text={d20Formula([s.total])}
           label={`${skillName(s.id)} check`}
         />
+        {situationalNotes?.length ? (
+          <SituationalNoteButton
+            count={situationalNotes.length}
+            label={skillName(s.id)}
+            open={notesOpen}
+            onToggle={() => setNotesOpen((o) => !o)}
+            panelId={notesPanelId}
+          />
+        ) : null}
       </div>
+      {situationalNotes?.length && notesOpen ? (
+        <SituationalNoteList id={notesPanelId} notes={situationalNotes} label={skillName(s.id)} />
+      ) : null}
       {open ? (
         <div id={panelId} className="sheet-skill-detail">
           <Provenance title={`${skillName(s.id)} breakdown`} components={components} />
@@ -132,6 +162,13 @@ export function Sheet({
   // compute() itself; memoized on [doc, refData] since it's a second full
   // compute() pass, just not on every render for free.
   const baseline = useMemo(() => baselineSheet(doc, refData), [doc, refData]);
+  const notesBySurface = useMemo(
+    () => groupSituationalNotes(sheet.situationalNotes ?? []),
+    [sheet.situationalNotes],
+  );
+  const skillHeaderNotes = notesBySurface.get("skills") ?? [];
+  const [skillNotesOpen, setSkillNotesOpen] = useState(false);
+  const skillNotesPanelId = useId();
   const [skillQuery, setSkillQuery] = useState("");
   const [showUntrained, setShowUntrained] = useState(false);
   const skillsHeadingId = useId();
@@ -270,6 +307,7 @@ export function Sheet({
             provTitle="AC components"
             conditionals={sheet.ac.conditionals}
             unsignedConditionals
+            situationalNotes={notesBySurface.get("ac")}
             resetKey={doc.id}
             baseline={baseline.ac.normal}
           />
@@ -292,6 +330,7 @@ export function Sheet({
             value={sheet.cmd}
             foot={`flat-footed ${sheet.cmdFlatFooted}`}
             conditionals={sheet.cmdConditionals}
+            situationalNotes={notesBySurface.get("cmd")}
             resetKey={doc.id}
             baseline={baseline.cmd}
           />
@@ -313,6 +352,7 @@ export function Sheet({
               components={sheet.saves[save].components}
               conditionals={sheet.saves[save].conditionals}
               provTitle={`${SAVE_NAMES[save]} save`}
+              situationalNotes={notesBySurface.get(save)}
               resetKey={doc.id}
               baseline={baseline.saves[save].total}
               numericValue={sheet.saves[save].total}
@@ -326,6 +366,7 @@ export function Sheet({
             label="Init"
             value={signed(sheet.initiative.total)}
             components={sheet.initiative.components}
+            situationalNotes={notesBySurface.get("init")}
             resetKey={doc.id}
             baseline={baseline.initiative.total}
             numericValue={sheet.initiative.total}
@@ -435,6 +476,7 @@ export function Sheet({
             className="seal--sequence"
             components={sheet.attack.melee.components}
             provTitle="Melee attack"
+            situationalNotes={notesBySurface.get("melee")}
             resetKey={doc.id}
             baseline={baseline.attack.melee.total}
             numericValue={sheet.attack.melee.total}
@@ -449,6 +491,7 @@ export function Sheet({
             className="seal--sequence"
             components={sheet.attack.ranged.components}
             provTitle="Ranged attack"
+            situationalNotes={notesBySurface.get("ranged")}
             resetKey={doc.id}
             baseline={baseline.attack.ranged.total}
             numericValue={sheet.attack.ranged.total}
@@ -469,6 +512,7 @@ export function Sheet({
             label="CMB"
             value={signed(sheet.cmb)}
             conditionals={sheet.cmbConditionals}
+            situationalNotes={notesBySurface.get("cmb")}
             resetKey={doc.id}
             baseline={baseline.cmb}
             numericValue={sheet.cmb}
@@ -890,8 +934,20 @@ export function Sheet({
           <span className="stat-group-legend" id={skillsHeadingId}>
             Skills
           </span>
+          {skillHeaderNotes.length > 0 ? (
+            <SituationalNoteButton
+              count={skillHeaderNotes.length}
+              label="skills"
+              open={skillNotesOpen}
+              onToggle={() => setSkillNotesOpen((open) => !open)}
+              panelId={skillNotesPanelId}
+            />
+          ) : null}
           <div className="stat-group-rule" />
         </div>
+        {skillHeaderNotes.length > 0 && skillNotesOpen ? (
+          <SituationalNoteList id={skillNotesPanelId} notes={skillHeaderNotes} label="skills" />
+        ) : null}
         <div className="sheet-skill-list" aria-labelledby={skillsHeadingId}>
           <div className="sheet-skill-filter-row">
             <input
@@ -915,7 +971,12 @@ export function Sheet({
             </div>
           ) : null}
           {skillView.shown.map((s) => (
-            <SkillRow key={s.id} s={s} resetKey={doc.id} />
+            <SkillRow
+              key={s.id}
+              s={s}
+              resetKey={doc.id}
+              situationalNotes={notesBySurface.get(`skill:${s.id}`)}
+            />
           ))}
           {skillView.foldedCount > 0 || (foldUntrained && showUntrained && !skillQuery.trim()) ? (
             <button

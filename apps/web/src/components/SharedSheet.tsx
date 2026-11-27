@@ -7,6 +7,7 @@ import { resolveRefData } from "../model/homebrew.js";
 import { migrateDoc } from "../model/migrations.js";
 import { LIVE_SHARE_POLL_MS } from "../model/shareLink.js";
 import { loadRefData } from "../refdata/loader.js";
+import { RollDataProvider } from "../state/rollData.js";
 import { fetchShared, type SharedCharacter } from "../sync/client.js";
 import { apiBaseUrl } from "../sync/config.js";
 
@@ -136,7 +137,9 @@ export function SharedSheet({ token }: { token: string }) {
       )}
       {derived && (
         <main className="shared-sheet">
-          <Sheet doc={derived.doc} sheet={derived.sheet} refData={derived.refData} />
+          <RollDataProvider doc={derived.doc} sheet={derived.sheet} refData={derived.refData}>
+            <Sheet doc={derived.doc} sheet={derived.sheet} refData={derived.refData} />
+          </RollDataProvider>
         </main>
       )}
     </div>

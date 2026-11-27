@@ -63,6 +63,7 @@ import { traitGrantedClassSkills } from "./traits.js";
 import { featGrantedClassSkills } from "./feat-effects-resolve.js";
 import { ARMOR_TRAINING_GRANT_UUID } from "./archetype-tier-replacements.js";
 import { resolveClassFeatures } from "./archetypes.js";
+import { collectSituationalNotes } from "./situational-notes.js";
 import { withGrantedFeats } from "./granted-feats.js";
 import { PIERCING_LIGHT_OR_ONE_HANDED_KEY } from "./grit-panache-spends.js";
 import { computeRanger } from "./ranger.js";
@@ -2402,6 +2403,7 @@ export function compute(inputDoc: CharacterDoc, refData: RefData): DerivedSheet 
     abilities,
     familyDCs,
   );
+  const situationalNotes = collectSituationalNotes(doc, refData, classFeatures);
   const sheet = {
     schemaVersion: SCHEMA_VERSION,
     level,
@@ -2440,6 +2442,7 @@ export function compute(inputDoc: CharacterDoc, refData: RefData): DerivedSheet 
     ...(spellLikeAbilities.length > 0 ? { spellLikeAbilities } : {}),
     ...(castingAdjustments.length > 0 ? { castingAdjustments } : {}),
     ...(bonusKnownSpells !== undefined ? { bonusKnownSpells } : {}),
+    ...(situationalNotes.length > 0 ? { situationalNotes } : {}),
   };
 
   for (const [key, val] of Object.entries(overrides)) {
