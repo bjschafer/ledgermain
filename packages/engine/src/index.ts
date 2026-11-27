@@ -1247,7 +1247,6 @@ export {
   VENDORED_RACIAL_TRAIT_CL_CHECK_NOTES,
 } from "./vendored-trait-cl-check-notes.js";
 export {
-  noteAppliedSurface,
   noteCoverage,
   type NoteCatalog,
   type NoteCoverage,

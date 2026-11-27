@@ -48,6 +48,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-11-26-applied-reminders-hidden",
+    date: "2026-11-26",
+    title: "Reminders the sheet already counts are gone",
+    note: "A rules reminder whose whole bonus the sheet already adds, like mage armor's +4 against incorporeal touch attacks or a trait's save bonus against fear, no longer prints under the buff, trait, or race. The stat it changes shows the number. Reminders with anything left to apply by hand still show.",
+  },
+  {
     id: "2026-11-26-touch-ac-lines",
     date: "2026-11-26",
     title: "Rules reminders on the stats they change, and touch AC against rays",

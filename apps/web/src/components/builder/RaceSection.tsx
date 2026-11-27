@@ -3,7 +3,7 @@ import { useMemo, useState } from "react";
 
 import {
   FLEXIBLE_ABILITY_SUPPRESS_TARGET,
-  noteAppliedSurface,
+  noteCoverage,
   raceGrantsFlexibleAbility,
 } from "@pf1/engine";
 import { ABILITY_IDS } from "@pf1/schema";
@@ -243,18 +243,16 @@ export function RaceSection({ doc, sheet, refData, update }: BuilderProps) {
           Choose a race to apply its racial modifiers.
         </p>
       )}
-      {standardTraitNotes.map((note, i) => (
-        <RulesNote
-          key={i}
-          text={note.text}
-          retiredBy={note.retiredBy}
-          appliedTo={
-            selected
-              ? noteAppliedSurface({ catalog: "race", raceName: selected.name }, note)
-              : undefined
-          }
-        />
-      ))}
+      {standardTraitNotes
+        .filter(
+          (note) =>
+            note.retiredBy ||
+            !selected ||
+            noteCoverage({ catalog: "race", raceName: selected.name }, note) !== "full",
+        )
+        .map((note, i) => (
+          <RulesNote key={i} text={note.text} retiredBy={note.retiredBy} />
+        ))}
       {flexible && (
         <div style={{ marginTop: 12 }}>
           <p className="hint">

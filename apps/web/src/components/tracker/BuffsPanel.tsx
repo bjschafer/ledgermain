@@ -6,7 +6,7 @@ import {
   buildRollData,
   evaluateBuffChange,
   needsElementChoice,
-  noteAppliedSurface,
+  noteCoverage,
   unappliedChanges,
 } from "@pf1/engine";
 import type { RollData } from "@pf1/engine";

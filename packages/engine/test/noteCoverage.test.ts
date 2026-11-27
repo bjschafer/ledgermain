@@ -1,5 +1,5 @@
 /**
- * Fixture tests for `noteCoverage` / `noteAppliedSurface`: the single
+ * Fixture tests for `noteCoverage`: the single
  * question the UI asks of a note — is its bonus already fully expressed as a
  * `Change` ("full"), only partly ("partial", a documented remainder still
  * needs hand-applying), or not promoted at all ("none")? Mirrors the doc
@@ -12,7 +12,6 @@ import { loadRefData } from "@pf1/data-pipeline";
 import {
   BUFF_AC_NOTE_COVERAGE,
   BUFF_SAVE_NOTE_COVERAGE,
-  noteAppliedSurface,
   noteCoverage,
   PARTIALLY_PROMOTED_CHARACTER_TRAIT_SAVE_NOTES,
   PARTIALLY_PROMOTED_RACIAL_TRAIT_SAVE_NOTES,
@@ -150,38 +149,25 @@ describe("saveNoteCoverage — buffs (name-keyed)", () => {
 });
 
 describe("noteCoverage — buff AC notes (name then text keyed)", () => {
-  it("Mage Armor's incorporeal-touch note is fully promoted, and lands on touch AC", () => {
+  it("Mage Armor's incorporeal-touch note is fully promoted", () => {
     const n = note("+4 against incorporeal touch attacks.", "ac");
     expect(noteCoverage({ catalog: "buff", buffName: "Mage Armor" }, n)).toBe("full");
-    expect(noteAppliedSurface({ catalog: "buff", buffName: "Mage Armor" }, n)).toBe("touch AC");
   });
 
-  it("Angelic Aspect promotes its deflection line onto normal AC but not its bodily-contact line", () => {
+  it("Angelic Aspect promotes its deflection line but not its bodily-contact line", () => {
     const src = { catalog: "buff", buffName: "Angelic Aspect" } as const;
-    expect(noteAppliedSurface(src, note("+2 Deflection vs Evil creatures.", "ac"))).toBe("AC");
+    expect(noteCoverage(src, note("+2 Deflection vs Evil creatures.", "ac"))).toBe("full");
     expect(
       noteCoverage(src, note("Bodily contact prevented by Evil summoned creatures.", "ac")),
     ).toBe("none");
   });
-
-  it("a partial or unpromoted note has no applied surface", () => {
-    expect(
-      noteAppliedSurface(
-        { catalog: "buff", buffName: "Death Ward" },
-        note(
-          "+4 Morale vs death spells and magical death effects, even if a save is not normally allowed.",
-        ),
-      ),
-    ).toBeUndefined();
-  });
 });
 
 describe("noteCoverage — trait and race maneuver/AC notes", () => {
-  it("reads a fully-promoted character trait maneuver note as full, on CMB", () => {
+  it("reads a fully-promoted character trait maneuver note as full", () => {
     // Rovagug's Zealot promotes whole via VENDORED_CHARACTER_TRAIT_MANEUVER_NOTES.
     const n = note("+2 Trait bonus on checks made to sunder.", "cmb");
     expect(noteCoverage({ catalog: "characterTrait" }, n)).toBe("full");
-    expect(noteAppliedSurface({ catalog: "characterTrait" }, n)).toBe("CMB");
   });
 
   it("reads a partially-promoted character trait maneuver note as partial", () => {
@@ -207,13 +193,13 @@ describe("noteCoverage — trait and race maneuver/AC notes", () => {
     ).toBe("partial");
   });
 
-  it("reads a fully-promoted standard race maneuver note as full, on CMD", () => {
+  it("reads a fully-promoted standard race maneuver note as full", () => {
     // Dwarf Stability, recovered by STANDARD_RACE_MANEUVER_BONUSES's match.
     const n = note(
       "+4 Racial bonus to CMD when resisting a Bull Rush and Trip while on ground.",
       "cmd",
     );
-    expect(noteAppliedSurface({ catalog: "race", raceName: "Dwarf" }, n)).toBe("CMD");
+    expect(noteCoverage({ catalog: "race", raceName: "Dwarf" }, n)).toBe("full");
   });
 
   it("reads an unpromoted maneuver or AC note as none", () => {

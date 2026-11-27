@@ -17,17 +17,12 @@
  * the modelled part is real, but a caveat, rider, or narrower-than-vocabulary
  * clause named in the SAME note has no `Change` form and stays prose. A
  * partial note still needs its "apply by hand" reminder; only a "full" one
- * is safe to mark as already applied.
+ * is safe to hide, since the stat it modifies already shows the bonus.
  */
 
 import type { ContextNote } from "@pf1/schema";
 
-import { AC_CATEGORIES } from "./ac-categories.js";
-import {
-  BUFF_AC_NOTE_COVERAGE,
-  BUFF_CHANGE_PATCHES,
-  BUFF_SAVE_NOTE_COVERAGE,
-} from "./buff-effects.js";
+import { BUFF_AC_NOTE_COVERAGE, BUFF_SAVE_NOTE_COVERAGE } from "./buff-effects.js";
 import { STANDARD_RACE_AC_BONUSES } from "./race-ac-notes.js";
 import { STANDARD_RACE_MANEUVER_BONUSES } from "./race-maneuver-notes.js";
 import { STANDARD_RACE_SAVE_BONUSES } from "./race-save-notes.js";
@@ -156,38 +151,5 @@ export function noteCoverage(
       return standardRaceCoverage(STANDARD_RACE_TABLES[family], source.raceName, text);
     case "buff":
       return buffCoverage(source.buffName, family, text);
-  }
-}
-
-/**
- * Only buff patches carry touch-scoped AC categories, so only a buff's
- * promoted `ac` note can land on touch AC instead of normal AC.
- */
-function buffAcIsTouchOnly(buffName: string): boolean {
-  const scoped = (BUFF_CHANGE_PATCHES[buffName] ?? []).flatMap((c) =>
-    c.target === "ac" ? (c.acCategories ?? []) : [],
-  );
-  return scoped.length > 0 && scoped.every((k) => AC_CATEGORIES[k]?.against === "touch");
-}
-
-/**
- * The sheet surface a fully-promoted note's bonus now lives on ("saves",
- * "touch AC", ...), for the UI's "applied" cue; undefined when the note still
- * needs applying by hand.
- */
-export function noteAppliedSurface(
-  source: NoteCatalog,
-  note: Pick<ContextNote, "target" | "text">,
-): string | undefined {
-  if (noteCoverage(source, note) !== "full") return undefined;
-  switch (familyOf(note.target)) {
-    case "save":
-      return "saves";
-    case "maneuver":
-      return note.target === "cmd" ? "CMD" : "CMB";
-    case "ac":
-      return source.catalog === "buff" && buffAcIsTouchOnly(source.buffName) ? "touch AC" : "AC";
-    case undefined:
-      return undefined;
   }
 }

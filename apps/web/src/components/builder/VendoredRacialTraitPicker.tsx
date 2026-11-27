@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { useMemo, useState } from "react";
 
 import type { CharacterDoc, RacialTrait, RefData } from "@pf1/schema";
-import { noteAppliedSurface, vendoredTraitFullyHandled } from "@pf1/engine";
+import { noteCoverage, vendoredTraitFullyHandled } from "@pf1/engine";
 
 import {
   racialTraitChoice,
@@ -187,13 +187,9 @@ export function VendoredRacialTraitPicker({
           </div>
           {reason ? <div className="preq">{reason}</div> : null}
           {isSel
-            ? t.contextNotes.map((note, i) => (
-                <RulesNote
-                  key={i}
-                  text={note.text}
-                  appliedTo={noteAppliedSurface({ catalog: "racialTrait" }, note)}
-                />
-              ))
+            ? t.contextNotes
+                .filter((note) => noteCoverage({ catalog: "racialTrait" }, note) !== "full")
+                .map((note, i) => <RulesNote key={i} text={note.text} />)
             : null}
           {isSel && openChanges.length > 0 ? (
             <div style={{ marginTop: 4 }}>

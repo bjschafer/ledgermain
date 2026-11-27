@@ -1,4 +1,4 @@
-import { noteAppliedSurface, unappliedChanges } from "@pf1/engine";
+import { noteCoverage, unappliedChanges } from "@pf1/engine";
 import type { CharacterDoc, RefData } from "@pf1/schema";
 import type { TraitDef } from "@pf1/engine";
 
