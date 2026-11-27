@@ -48,6 +48,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-11-27-prestige-own-spells",
+    date: "2026-11-27",
+    title: "Prophet of Kalistrade and Red Mantis Assassin spellcasting",
+    note: "Both prestige classes cast their own spells: Charisma based, spontaneous, up to 4th level. Each gets spell slots, spells known, and a spell list drawn from sorcerer/wizard spells of two schools plus the extra spells it learns at even levels. Both count as arcane casters for prestige class and feat requirements, and a Red Mantis assassin ignores arcane spell failure in light armor.",
+  },
+  {
     id: "2026-11-26-cleaner-condition-chips",
     date: "2026-11-26",
     title: "Cleaner condition and stance chips",

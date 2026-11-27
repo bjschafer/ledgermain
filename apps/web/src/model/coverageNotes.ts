@@ -51,7 +51,7 @@ export const COVERAGE_NOTES: readonly CoverageNote[] = [
   },
   {
     category: "Prestige class spellcasting",
-    note: "The Prophet of Kalistrade and the Red Mantis Assassin cast from a short spell list of their own, which the sheet does not give them.",
+    note: "A prestige class that advances spellcasting only through an option it picks, like a Pathfinder field agent's Greater Casting or a living monolith's ib stone, adds no spells per day or caster level: apply them yourself.",
   },
   {
     category: "Familiars",

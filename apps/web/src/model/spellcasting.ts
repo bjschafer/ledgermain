@@ -661,6 +661,30 @@ const CASTER_MODEL_DEFS: Record<string, Omit<CasterModel, "ability">> = {
     grantsAllCantrips: false,
     preparesFromClassList: false,
   },
+  prophetOfKalistrade: {
+    preparation: "spontaneous",
+    progression: "prophetOfKalistrade",
+    knownProgression: "prophetOfKalistrade",
+    knownLabel: "Spells Known",
+    learnGuidance:
+      "Prophets of Kalistrade learn a fixed set of spells known at each level (see spells-known table), drawn from the sorcerer/wizard list but limited to divination and enchantment, up to 4th level. Two more spells join the list at each even prophet level (divine favor and floating disk at 2nd, through discern lies and divination at 10th); they appear on the list from the start, so wait for that level before taking one. No cantrips.",
+    blurb:
+      "Spontaneous arcane caster, Charisma based: cast any known spell by spending a slot of the appropriate level, no daily preparation needed. Purchase Spells (casting a known spell by sacrificing gold) is not tracked here.",
+    grantsAllCantrips: false,
+    preparesFromClassList: false,
+  },
+  redMantisAssassin: {
+    preparation: "spontaneous",
+    progression: "redMantisAssassin",
+    knownProgression: "redMantisAssassin",
+    knownLabel: "Spells Known",
+    learnGuidance:
+      "Red Mantis assassins learn a fixed set of spells known at each level (see spells-known table), drawn from the sorcerer/wizard list but limited to illusion and transmutation, up to 4th level. Two more spells join the list at each even assassin level (obscuring mist and true strike at 2nd, through dimension door and modify memory at 10th); they appear on the list from the start, so wait for that level before taking one. No cantrips.",
+    blurb:
+      "Spontaneous arcane caster, Charisma based: cast any known spell by spending a slot of the appropriate level, no daily preparation needed. No arcane spell failure in light armor.",
+    grantsAllCantrips: false,
+    preparesFromClassList: false,
+  },
 };
 
 export const CASTER_MODELS: Record<string, CasterModel> = Object.fromEntries(

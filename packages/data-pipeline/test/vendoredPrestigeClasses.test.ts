@@ -115,6 +115,29 @@ describe("vendored prestige catalog size", () => {
     expect(classByName("Red Mantis Assassin").castingAdvancement).toBeUndefined();
   });
 
+  it("builds their spell lists from two sorcerer/wizard schools plus the named additions", () => {
+    const spellByName = (name: string) => {
+      const spell = Object.values(ref.spells).find((s) => s.name === name);
+      if (!spell) throw new Error(`spell not found: ${name}`);
+      return spell.id;
+    };
+    const rma = ref.spellLists.redMantisAssassin!;
+    const pok = ref.spellLists.prophetOfKalistrade!;
+    expect(Object.keys(rma).sort()).toEqual(["1", "2", "3", "4"]);
+    expect(Object.keys(pok).sort()).toEqual(["1", "2", "3", "4"]);
+    // School members at their sorcerer/wizard level.
+    expect(rma[2]).toContain(spellByName("Invisibility"));
+    expect(pok[1]).toContain(spellByName("Charm Person"));
+    // Outside the schools and not named: absent.
+    expect(Object.values(rma).flat()).not.toContain(spellByName("Magic Missile"));
+    expect(Object.values(pok).flat()).not.toContain(spellByName("Invisibility"));
+    // Named additions: off-list spells at the level they arrive with, on-list
+    // ones at their sorcerer/wizard level.
+    expect(rma[4]).toContain(spellByName("Modify Memory"));
+    expect(pok[1]).toContain(spellByName("Divine Favor"));
+    expect(pok[2]).toContain(spellByName("Obscure Object"));
+  });
+
   it("advances at contiguous, in-range prestige levels", () => {
     for (const c of allPrestige()) {
       for (const slot of c.castingAdvancement ?? []) {

@@ -120,6 +120,7 @@ import {
   applyRacialTraitAliasSupplements,
   applyRacialTraitChangesSupplements,
   applySpellProjectileSupplements,
+  buildPrestigeSpellLists,
   resolveBloodlineSupplements,
   SUPPLEMENTAL_PRESTIGE_CLASSES,
 } from "./supplements.js";
@@ -712,6 +713,7 @@ export function normalize(opts: NormalizeOptions): {
     }
     spellLists[tag] = list;
   }
+  Object.assign(spellLists, buildPrestigeSpellLists(spells));
 
   // --- per-domain spell lists (invert learnedAt.domain) ----------------------
   // Domain tags appear across all spells whose `learnedAt.domain` is populated.

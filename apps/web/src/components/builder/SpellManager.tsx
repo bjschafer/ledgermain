@@ -97,8 +97,8 @@ export function SpellManager({
       title={`${casterName} ${knownLabel.toLowerCase()}`}
       subtitle={
         editable
-          ? `${known.size} known · ${entries.length} on the ${casterTag} list`
-          : `${entries.length} spells on the ${casterTag} list`
+          ? `${known.size} known · ${entries.length} on the ${casterName} list`
+          : `${entries.length} spells on the ${casterName} list`
       }
       onClose={onClose}
       right={<span className="dialog-esc-hint">esc to close</span>}
@@ -108,7 +108,7 @@ export function SpellManager({
           <input
             className="search"
             type="text"
-            placeholder={`Search the ${casterTag} spell list…`}
+            placeholder={`Search the ${casterName} spell list…`}
             value={filter.query}
             onChange={(e) => set({ query: e.target.value })}
             aria-label="Search spells"
@@ -194,7 +194,7 @@ export function SpellManager({
                           locked={locked}
                           lockedHint={
                             locked
-                              ? lockedHint(casterTag, unlockClassLevelByLevel.get(sp.level))
+                              ? lockedHint(casterName, unlockClassLevelByLevel.get(sp.level))
                               : undefined
                           }
                           overLimit={
@@ -329,10 +329,10 @@ function limitNote(level: number, count: number, limit: number | undefined): str
 }
 
 /** Tooltip for a locked (not-yet-castable) spell level's disabled Add button. */
-function lockedHint(casterTag: string, unlockClassLevel: number | undefined): string {
+function lockedHint(casterName: string, unlockClassLevel: number | undefined): string {
   return unlockClassLevel === undefined
-    ? `Not yet castable at your ${casterTag} level.`
-    : `Unlocks at ${casterTag} level ${unlockClassLevel}.`;
+    ? `Not yet castable at your ${casterName} level.`
+    : `Unlocks at ${casterName} level ${unlockClassLevel}.`;
 }
 
 function SpellRow({

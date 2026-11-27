@@ -372,7 +372,9 @@ export type SpellProgression =
   | "occultist"
   | "spiritualist"
   | "psychic"
-  | "medium";
+  | "medium"
+  | "prophetOfKalistrade"
+  | "redMantisAssassin";
 
 /**
  * Wizard base spells per day, indexed `[classLevel - 1][spellLevel]`.
@@ -478,7 +480,9 @@ export type SpellKnownProgression =
   | "summonerUnchained"
   | "mesmerist"
   | "spiritualist"
-  | "medium";
+  | "medium"
+  | "prophetOfKalistrade"
+  | "redMantisAssassin";
 
 /**
  * Cleric base spells per day, indexed `[classLevel - 1][spellLevel]`. Clerics
@@ -1034,6 +1038,40 @@ const MEDIUM_SPELLS_KNOWN: readonly (readonly (number | null)[])[] = [
   /* L20 */ [6, 6, 6, 6, 5, null, null, null, null, null],
 ];
 
+/**
+ * The one spells-per-day table printed by both prestige classes that cast on
+ * their own rather than advancing an existing class: Prophet of Kalistrade
+ * (PZO9249) and Red Mantis Assassin (PZO1138). Ten rows, spell levels 1-4,
+ * no 0-level column: neither class gets cantrips. Typed from each class's
+ * own level table; the two print identical numbers.
+ */
+const PRESTIGE_SPONTANEOUS_SPELLS_PER_DAY: readonly (readonly (number | null)[])[] = [
+  /* L1  */ [null, 1, null, null, null, null, null, null, null, null],
+  /* L2  */ [null, 2, null, null, null, null, null, null, null, null],
+  /* L3  */ [null, 3, null, null, null, null, null, null, null, null],
+  /* L4  */ [null, 3, 1, null, null, null, null, null, null, null],
+  /* L5  */ [null, 4, 2, null, null, null, null, null, null, null],
+  /* L6  */ [null, 4, 3, null, null, null, null, null, null, null],
+  /* L7  */ [null, 4, 3, 1, null, null, null, null, null, null],
+  /* L8  */ [null, 4, 4, 2, null, null, null, null, null, null],
+  /* L9  */ [null, 5, 4, 3, null, null, null, null, null, null],
+  /* L10 */ [null, 5, 4, 3, 1, null, null, null, null, null],
+];
+
+/** The matching Spells Known table, also identical across the two classes. */
+const PRESTIGE_SPONTANEOUS_SPELLS_KNOWN: readonly (readonly (number | null)[])[] = [
+  /* L1  */ [null, 2, null, null, null, null, null, null, null, null],
+  /* L2  */ [null, 3, null, null, null, null, null, null, null, null],
+  /* L3  */ [null, 4, null, null, null, null, null, null, null, null],
+  /* L4  */ [null, 4, 2, null, null, null, null, null, null, null],
+  /* L5  */ [null, 4, 3, null, null, null, null, null, null, null],
+  /* L6  */ [null, 4, 4, null, null, null, null, null, null, null],
+  /* L7  */ [null, 5, 4, 2, null, null, null, null, null, null],
+  /* L8  */ [null, 5, 4, 3, null, null, null, null, null, null],
+  /* L9  */ [null, 5, 4, 4, null, null, null, null, null, null],
+  /* L10 */ [null, 5, 5, 4, 2, null, null, null, null, null],
+];
+
 const PROGRESSIONS: Record<SpellProgression, readonly (readonly (number | null)[])[]> = {
   wizard: WIZARD_SPELLS_PER_DAY,
   sorcerer: SORCERER_SPELLS_PER_DAY,
@@ -1066,6 +1104,8 @@ const PROGRESSIONS: Record<SpellProgression, readonly (readonly (number | null)[
   spiritualist: SPIRITUALIST_SPELLS_PER_DAY,
   psychic: PSYCHIC_SPELLS_PER_DAY,
   medium: MEDIUM_SPELLS_PER_DAY,
+  prophetOfKalistrade: PRESTIGE_SPONTANEOUS_SPELLS_PER_DAY,
+  redMantisAssassin: PRESTIGE_SPONTANEOUS_SPELLS_PER_DAY,
 };
 
 const KNOWN_PROGRESSIONS: Record<SpellKnownProgression, readonly (readonly (number | null)[])[]> = {
@@ -1079,7 +1119,24 @@ const KNOWN_PROGRESSIONS: Record<SpellKnownProgression, readonly (readonly (numb
   mesmerist: MESMERIST_SPELLS_KNOWN,
   spiritualist: SPIRITUALIST_SPELLS_KNOWN,
   medium: MEDIUM_SPELLS_KNOWN,
+  prophetOfKalistrade: PRESTIGE_SPONTANEOUS_SPELLS_KNOWN,
+  redMantisAssassin: PRESTIGE_SPONTANEOUS_SPELLS_KNOWN,
 };
+
+/**
+ * One row of a progression table. Levels 11-20 of a ten-row prestige table
+ * read its last row: casting advancement from another prestige class can
+ * push the effective level beyond 10, and the published table has nothing
+ * further to give.
+ */
+function progressionRow(
+  table: readonly (readonly (number | null)[])[],
+  classLevel: number,
+  spellLevel: number,
+): number | null {
+  if (classLevel < 1 || classLevel > 20 || spellLevel < 0 || spellLevel > 9) return null;
+  return table[Math.min(classLevel, table.length) - 1]![spellLevel] ?? null;
+}
 
 /**
  * Base spells per day (before ability bonus) for `progression` at `classLevel`
@@ -1092,10 +1149,7 @@ export function baseSpellsPerDay(
   classLevel: number,
   spellLevel: number,
 ): number | null {
-  const table = PROGRESSIONS[progression];
-  if (classLevel < 1 || classLevel > table.length) return null;
-  if (spellLevel < 0 || spellLevel > 9) return null;
-  return table[classLevel - 1]![spellLevel] ?? null;
+  return progressionRow(PROGRESSIONS[progression], classLevel, spellLevel);
 }
 
 /**
@@ -1137,10 +1191,7 @@ export function baseSpellsKnown(
   classLevel: number,
   spellLevel: number,
 ): number | null {
-  const table = KNOWN_PROGRESSIONS[progression];
-  if (classLevel < 1 || classLevel > table.length) return null;
-  if (spellLevel < 0 || spellLevel > 9) return null;
-  return table[classLevel - 1]![spellLevel] ?? null;
+  return progressionRow(KNOWN_PROGRESSIONS[progression], classLevel, spellLevel);
 }
 
 /**

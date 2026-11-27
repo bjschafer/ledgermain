@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 
 import type { RefData } from "@pf1/schema";
 
-import { casterLevelForClass, effectiveCasterClassLevel } from "@pf1/engine";
+import { casterLevelForClass, classByTag, effectiveCasterClassLevel } from "@pf1/engine";
 import { parentBloodlineTagOf, toggleKnownSpell } from "../../model/doc.js";
 import {
   bloodlineSpellsKnown,
@@ -352,12 +352,14 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
     .filter((lvl) => !(grantsCantrips && lvl === 0))
     .sort((a, b) => a - b);
 
+  // Lowercased so it reads as prose ("on the wizard list").
+  const casterName = (classByTag(refData, casterTag)?.name ?? casterTag).toLowerCase();
+
   // Header badge: "sorcerer · spontaneous (Cha)" etc.
   const headerBadge = model
-    ? `${casterTag} · ${model.preparation} (${abilityLabel})`
-    : `${casterTag} list`;
+    ? `${casterName} · ${model.preparation} (${abilityLabel})`
+    : `${casterName} list`;
 
-  const casterName = refData.classes[casterTag]?.name ?? casterTag;
   const accessibleCount = accessibleEntries.length;
 
   return (
@@ -369,7 +371,7 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
       right={
         <span className="hint">
           {preparesFromClassList
-            ? `${headerBadge} · ${accessibleCount} accessible on the ${casterTag} list`
+            ? `${headerBadge} · ${accessibleCount} accessible on the ${casterName} list`
             : `${headerBadge} · ${knownCount} known`}
         </span>
       }
@@ -388,7 +390,7 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
               aria-pressed={casterTag === c.tag}
               onClick={() => setSelectedTag(c.tag)}
             >
-              {refData.classes[c.tag]?.name ?? c.tag} {c.level}
+              {classByTag(refData, c.tag)?.name ?? c.tag} {c.level}
             </button>
           ))}
         </div>
@@ -398,7 +400,7 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
       {model && (
         <SpellHints
           model={{ blurb: model.blurb, learnGuidance: model.learnGuidance }}
-          casterTag={casterTag}
+          casterName={casterName}
           cantrips={cantrips}
           grantsCantrips={grantsCantrips}
           knownLabel={knownLabel}
@@ -611,7 +613,7 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
  */
 function SpellHints({
   model,
-  casterTag,
+  casterName,
   cantrips,
   grantsCantrips,
   knownLabel,
@@ -619,7 +621,7 @@ function SpellHints({
   preparesFromClassList,
 }: {
   model: { blurb: string; learnGuidance: string };
-  casterTag: string;
+  casterName: string;
   cantrips: SpellEntry[];
   grantsCantrips: boolean;
   knownLabel: string;
@@ -627,12 +629,12 @@ function SpellHints({
   preparesFromClassList: boolean;
 }) {
   return (
-    <Explainer title={`How ${casterTag} spellcasting works`}>
+    <Explainer title={`How ${casterName} spellcasting works`}>
       <p className="hint spell-hint-line">{model.blurb}</p>
       <p className="hint spell-hint-line">{model.learnGuidance}</p>
       {grantsCantrips && (
         <p className="hint spell-hint-line">
-          You know <strong>all {cantrips.length} cantrips</strong> on the {casterTag} list. They're
+          You know <strong>all {cantrips.length} cantrips</strong> on the {casterName} list. They're
           listed below and cost no spellbook slot.
         </p>
       )}

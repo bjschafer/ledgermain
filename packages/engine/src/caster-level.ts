@@ -69,6 +69,10 @@ const FULL_CASTER_TAGS = new Set([
   // paladin/ranger/antipaladin below, which DO diverge — see
   // `OFFSET_CASTER_TAGS`.)
   "bard",
+  // Prophet of Kalistrade and Red Mantis Assassin cast from their own
+  // ten-level tables, CL = prestige class level.
+  "prophetOfKalistrade",
+  "redMantisAssassin",
 ]);
 
 /**
@@ -189,6 +193,8 @@ export const CASTING_ABILITY: Readonly<Record<string, AbilityId>> = {
   spiritualist: "wis",
   psychic: "int",
   medium: "cha",
+  prophetOfKalistrade: "cha",
+  redMantisAssassin: "cha",
 };
 
 /**
@@ -243,6 +249,8 @@ export const CASTER_KIND: Readonly<Record<string, "arcane" | "divine" | "psychic
   summoner: "arcane",
   summonerUnchained: "arcane",
   skald: "arcane",
+  prophetOfKalistrade: "arcane",
+  redMantisAssassin: "arcane",
   // Divine
   cleric: "divine",
   druid: "divine",
@@ -335,9 +343,9 @@ export function castingAdvancementBonus(
 
 /**
  * `tag`'s effective class level: its own level from `identity.classes` plus
- * `castingAdvancementBonus`, clamped to 20 (every progression table in
- * `packages/engine/src/tables.ts` has exactly 20 rows — a level above that
- * has nowhere to read from). This is an EFFECTIVE CLASS LEVEL, not a caster
+ * `castingAdvancementBonus`, clamped to 20 (the longest progression table;
+ * a ten-row prestige table reads its last row past 10). This is an
+ * EFFECTIVE CLASS LEVEL, not a caster
  * level — feed it through `casterLevelForClass(tag, ...)` for a class whose
  * CL diverges from class level, or straight into a spells-per-day/known/
  * prepared table (those already encode a class's own late-start gate, e.g.

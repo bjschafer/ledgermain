@@ -2282,6 +2282,106 @@ export function applySpellProjectileSupplements(spells: Spell[]): void {
   }
 }
 
+/* ---------------------------------------------- prestige-class own spell lists -- */
+
+/**
+ * Spell lists for the two prestige classes that cast from a spells-per-day
+ * table of their own instead of advancing an existing class. No vendored
+ * spell carries a `learnedAt.class` entry for either tag, so each list is
+ * built from its published "Spells" feature: sorcerer/wizard spells of
+ * levels 1-4 in two schools, plus two named spells added at each even
+ * prestige level.
+ *
+ * The prose gives only the prestige level an added spell arrives at, never
+ * its spell level. An added spell that is on the sorcerer/wizard list keeps
+ * that level (Obscure Object stays 2nd though it arrives at 8th, where 3rd
+ * opens). Every other one takes the highest spell level open at the
+ * prestige level that adds it, which matches its cleric or bard level in
+ * every case. Added spells sit on the list from 1st level; the "arrives at"
+ * gate is not modeled, the same plan-ahead posture as every known-spell
+ * picker.
+ *
+ * Prophet of Kalistrade: PZO9249 p. 42. Red Mantis Assassin: PZO1138 p. 154.
+ */
+export const PRESTIGE_SPELL_LISTS: Record<
+  string,
+  { schools: readonly string[]; added: Readonly<Record<string, number>> }
+> = {
+  prophetOfKalistrade: {
+    schools: ["div", "enc"],
+    added: {
+      "Divine Favor": 1,
+      "Floating Disk": 1,
+      Augury: 2,
+      "Zone of Truth": 2,
+      "Arcane Lock": 2,
+      "Make Whole": 2,
+      Glibness: 3,
+      "Obscure Object": 2,
+      "Discern Lies": 4,
+      Divination: 4,
+    },
+  },
+  redMantisAssassin: {
+    schools: ["ill", "trs"],
+    added: {
+      "Obscuring Mist": 1,
+      "True Strike": 1,
+      Darkness: 2,
+      "Summon Swarm": 2,
+      "Fog Cloud": 2,
+      "See Invisibility": 2,
+      "Clairaudience/Clairvoyance": 3,
+      "Hold Person": 3,
+      "Dimension Door": 4,
+      "Modify Memory": 4,
+    },
+  },
+};
+
+/** Both prestige tables stop at 4th-level spells. */
+const PRESTIGE_SPELL_LIST_MAX_LEVEL = 4;
+
+/**
+ * Build `PRESTIGE_SPELL_LISTS` into per-tag spell lists from the vendored
+ * spells. Throws when a named spell is missing, when an added spell already
+ * falls inside the school filter (the entry would be dead), or when upstream
+ * starts tagging spells with one of these classes.
+ */
+export function buildPrestigeSpellLists(spells: readonly Spell[]): Record<string, SpellList> {
+  const byName = new Map(spells.map((s) => [s.name, s]));
+  const out: Record<string, SpellList> = {};
+  for (const [tag, def] of Object.entries(PRESTIGE_SPELL_LISTS)) {
+    if (spells.some((s) => s.learnedAt.class[tag] !== undefined)) {
+      redundant(`prestige spell list "${tag}"`);
+    }
+    const levelOf = new Map<string, number>();
+    for (const spell of spells) {
+      if (!spell.school || !def.schools.includes(spell.school)) continue;
+      const { sorcerer, wizard } = spell.learnedAt.class;
+      const level = Math.min(sorcerer ?? Infinity, wizard ?? Infinity);
+      if (level >= 1 && level <= PRESTIGE_SPELL_LIST_MAX_LEVEL) levelOf.set(spell.id, level);
+    }
+    for (const [name, level] of Object.entries(def.added)) {
+      const spell = byName.get(name);
+      if (spell === undefined) {
+        throw new Error(`[supplements] prestige spell list "${tag}": spell "${name}" not found`);
+      }
+      if (levelOf.has(spell.id)) {
+        throw new Error(
+          `[supplements] prestige spell list "${tag}": "${name}" is already in its schools — drop the added entry`,
+        );
+      }
+      levelOf.set(spell.id, level);
+    }
+    const list: SpellList = {};
+    for (const [id, level] of levelOf) (list[level] ??= []).push(id);
+    for (const ids of Object.values(list)) ids.sort();
+    out[tag] = list;
+  }
+  return out;
+}
+
 /* ---------------------------------------------------------- prestige classes -- */
 
 /**

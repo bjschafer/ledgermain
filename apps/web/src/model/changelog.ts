@@ -18,7 +18,7 @@ const LAST_SEEN_KEY = "pf1-tracker:changelogLastSeen";
  * The id of the newest entry in `changelogEntries.ts`. Update it with every new
  * entry; `test/changelog.test.ts` fails, naming the value, if the two differ.
  */
-export const LATEST_ENTRY_ID = "2026-11-26-cleaner-condition-chips";
+export const LATEST_ENTRY_ID = "2026-11-27-prestige-own-spells";
 
 const MONTH_NAMES = [
   "Jan",

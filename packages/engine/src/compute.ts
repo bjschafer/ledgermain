@@ -818,6 +818,8 @@ const ARCANE_CASTER_TAGS: ReadonlySet<string> = new Set([
   // Summoner (Unchained) is the same Cha-based arcane spontaneous caster as
   // the base summoner (see `CASTER_MODELS.summonerUnchained`'s doc comment).
   "summonerUnchained",
+  "prophetOfKalistrade",
+  "redMantisAssassin",
 ]);
 
 /**
@@ -848,6 +850,9 @@ const ARCANE_CASTER_TAGS: ReadonlySet<string> = new Set([
  *   13th ("Heavy Armor" class feature); "a magus wearing [medium/heavy]
  *   armor or using a shield incurs a chance of arcane spell failure" — a
  *   shield always incurs ASF regardless of level.
+ * - Red Mantis Assassin: "...can cast Red Mantis assassin spells while
+ *   wearing light armor without incurring the normal arcane spell failure."
+ *   Light armor only; the class has no shield proficiency.
  *
  * `maxArmorType` mirrors `heaviestWornArmorType`'s weight scale (0 none/1
  * light/2 medium/3 heavy) and is a function of the class's own level so the
@@ -877,6 +882,7 @@ const ARMOR_EXEMPTIONS: Readonly<Record<string, ArcaneArmorExemption>> = {
     maxArmorType: (classLevel) => (classLevel >= 13 ? 3 : classLevel >= 7 ? 2 : 1),
     shieldOk: false,
   },
+  redMantisAssassin: { label: "Red Mantis Assassin", maxArmorType: () => 1, shieldOk: false },
 };
 
 /** "light armor" / "light or medium armor" / "light, medium, or heavy armor". */
