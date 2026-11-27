@@ -3871,6 +3871,13 @@ a:focus-visible,
   margin: 0;
 }
 
+/* The lookup list stands in for a hover tooltip, so only touch needs it. */
+@media (hover: hover) {
+  .cond-glossary-explainer {
+    display: none;
+  }
+}
+
 .cond-notes {
   list-style: none;
   padding: 0;

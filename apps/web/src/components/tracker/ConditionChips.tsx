@@ -21,7 +21,8 @@ function conditionCaveats(cond: ConditionDef, immuneTo: string | undefined): str
  * creature: chips, a note row per active condition, and a lookup list of all
  * of them. The lookup list is what keeps an inactive condition readable on
  * touch, since toggling one to read it isn't free (a stricter ladder member
- * removes the milder one, and turning it off doesn't restore it).
+ * removes the milder one, and turning it off doesn't restore it). Devices that
+ * can hover read the chip's `title` instead, so CSS hides the list there.
  */
 export function ConditionChips({
   isActive,
@@ -121,7 +122,7 @@ export function ConditionChips({
       ) : emptyText ? (
         <div className="empty">{emptyText}</div>
       ) : null}
-      <Explainer title="What each condition does">
+      <Explainer className="cond-glossary-explainer" title="What each condition does">
         <ul className="cond-notes cond-glossary">
           {CONDITION_IDS.map((id) => {
             const cond = CONDITIONS[id]!;
