@@ -28,7 +28,14 @@ describe("spellFacet", () => {
   };
 
   it("leads with the full school name and level, then per-class levels", () => {
-    expect(spellFacet(fireball)).toBe("Evocation 3 · sorcerer 3, wizard 3");
+    expect(spellFacet(fireball, {})).toBe("Evocation 3 · sorcerer 3, wizard 3");
+  });
+
+  it("names classes rather than printing their tags", () => {
+    const summon: Spell = { ...fireball, learnedAt: { class: { summonerUnchained: 3 } } };
+    expect(spellFacet(summon, { summonerUnchained: "Summoner (Unchained)" })).toBe(
+      "Evocation 3 · summoner (unchained) 3",
+    );
   });
 
   it("elides a long class list rather than wrapping a result row", () => {
@@ -36,11 +43,11 @@ describe("spellFacet", () => {
       ...fireball,
       learnedAt: { class: { bard: 1, cleric: 1, druid: 1, ranger: 1, wizard: 1 } },
     };
-    expect(spellFacet(wide)).toBe("Evocation 3 · bard 1, cleric 1, druid 1, ranger 1, …");
+    expect(spellFacet(wide, {})).toBe("Evocation 3 · bard 1, cleric 1, druid 1, ranger 1, …");
   });
 
   it("falls back to a bare level when the school is missing", () => {
-    expect(spellFacet({ ...fireball, school: undefined, learnedAt: { class: {} } })).toBe(
+    expect(spellFacet({ ...fireball, school: undefined, learnedAt: { class: {} } }, {})).toBe(
       "Level 3",
     );
   });

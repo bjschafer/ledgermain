@@ -23,6 +23,21 @@ export function schoolName(abbrev: string | undefined): string | null {
 }
 
 /**
+ * A spell's per-class levels as printed (`summoner (unchained) 1`), lowest
+ * level first. `classNames` maps a vendored class tag to its name; a tag no
+ * class entry covers (the NPC adept) shows as itself.
+ */
+export function classLevels(
+  levels: Record<string, number>,
+  classNames: Record<string, string>,
+): string[] {
+  return Object.entries(levels)
+    .map(([tag, level]) => [(classNames[tag] ?? tag).toLowerCase(), level] as const)
+    .sort((a, b) => a[1] - b[1] || a[0].localeCompare(b[0]))
+    .map(([name, level]) => `${name} ${level}`);
+}
+
+/**
  * PF1 crit notation: a natural-20-only threat range is written as the multiplier
  * alone (`×2`), a widened one spells the range out (`19–20/×2`). Defaults match
  * the schema's (20 / ×2).

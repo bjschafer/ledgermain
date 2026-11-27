@@ -20,6 +20,7 @@ import type {
 } from "@pf1/schema";
 
 import {
+  classLevels,
   formatCrit,
   formatPrice,
   joinDot,
@@ -31,14 +32,12 @@ import {
 /** How many per-class levels a spell facet lists before giving up on room. */
 const MAX_CLASS_LEVELS = 4;
 
-/** e.g. `Evocation 3 · wiz 3, clr 4`. */
-export function spellFacet(spell: Spell): string {
+/** e.g. `Evocation 3 · sorcerer 3, wizard 3`. */
+export function spellFacet(spell: Spell, classNames: Record<string, string>): string {
   const school = schoolName(spell.school);
   const head = school ? `${school} ${spell.level}` : `Level ${spell.level}`;
-  const classes = Object.entries(spell.learnedAt.class).sort(
-    (a, b) => a[1] - b[1] || a[0].localeCompare(b[0]),
-  );
-  const shown = classes.slice(0, MAX_CLASS_LEVELS).map(([tag, level]) => `${tag} ${level}`);
+  const classes = classLevels(spell.learnedAt.class, classNames);
+  const shown = classes.slice(0, MAX_CLASS_LEVELS);
   if (classes.length > MAX_CLASS_LEVELS) shown.push("…");
   return joinDot([head, shown.length > 0 ? shown.join(", ") : null]);
 }

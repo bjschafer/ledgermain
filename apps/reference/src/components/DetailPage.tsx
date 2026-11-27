@@ -107,6 +107,7 @@ export function DetailPage({
         entry={state.entry}
         ladders={index.ladders}
         names={names}
+        classNames={index.classNames}
         section={section}
       />
     </article>
@@ -123,17 +124,19 @@ function DetailBody({
   entry,
   ladders,
   names,
+  classNames,
   section,
 }: {
   collection: CollectionId;
   entry: AnyEntry;
   ladders: string[][];
   names: Map<string, string>;
+  classNames: Record<string, string>;
   section?: string;
 }) {
   switch (collection) {
     case "spells":
-      return <SpellView spell={entry as Spell} />;
+      return <SpellView spell={entry as Spell} classNames={classNames} />;
     case "feats":
       return <FeatView feat={entry as Feat} />;
     case "weapons":

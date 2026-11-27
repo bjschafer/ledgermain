@@ -23,6 +23,7 @@ function index(entries: IndexEntry[]): RefIndex {
     ladders: [["shaken", "frightened", "panicked"]],
     rulesRoot: "root",
     rulesChapters: ["rrr"],
+    classNames: { summonerUnchained: "Summoner (Unchained)" },
   };
 }
 
@@ -61,6 +62,7 @@ describe("encodeIndex / decodeIndex", () => {
     expect(decoded.meta).toEqual(META);
     expect(decoded.buckets).toEqual({ spells: 95, feats: 112, conditions: 1 });
     expect(decoded.ladders).toEqual([["shaken", "frightened", "panicked"]]);
+    expect(decoded.classNames).toEqual({ summonerUnchained: "Summoner (Unchained)" });
   });
 
   it("survives a JSON round-trip (the actual wire path)", () => {

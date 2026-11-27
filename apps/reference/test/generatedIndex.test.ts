@@ -3,7 +3,7 @@
  * proves the index covers every in-scope entry, and that an id picked out of the
  * index actually lands in the shard the client would fetch for it.
  */
-import type { RefDataMeta, RuleEntry } from "@pf1/schema";
+import type { Feat, RefDataMeta, RuleEntry } from "@pf1/schema";
 import { beforeAll, describe, expect, it } from "bun:test";
 import { execFileSync } from "node:child_process";
 import { readFileSync } from "node:fs";
@@ -91,6 +91,29 @@ describe("generated index", () => {
     );
     expect(index.rulesChapters.length).toBeGreaterThan(0);
     for (const id of index.rulesChapters) expect(rulePages.has(id)).toBe(true);
+  });
+
+  it("addresses entries by name slug, never by Foundry id", () => {
+    const idOf = (collection: string, name: string) =>
+      pages().find((e) => e.collection === collection && e.name === name)?.id;
+    expect(idOf("spells", "Mage Armor")).toBe("mage-armor");
+    expect(idOf("feats", "Power Attack")).toBe("power-attack");
+    expect(idOf("items", "Ring of Protection +2")).toBe("ring-of-protection-2");
+    // A name-slug clash suffixes every entry in it with its source.
+    expect(idOf("items", "Bag of Tricks (Gray)")).toBe("bag-of-tricks-gray-aquatic-adventures");
+  });
+
+  it("links feat prerequisites to the prerequisite's own URL id", () => {
+    const numBuckets = index.buckets.feats ?? 1;
+    const shard = JSON.parse(
+      readFileSync(join(refDir, shardPath("feats", bucketForId("cleave", numBuckets))), "utf8"),
+    ) as Record<string, Feat>;
+    expect(shard.cleave?.prerequisites.feats.map((ref) => ref.id)).toContain("power-attack");
+  });
+
+  it("names every spellcasting class tag a spell lists", () => {
+    expect(index.classNames.summonerUnchained).toBe("Summoner (Unchained)");
+    expect(index.classNames.wizard).toBe("Wizard");
   });
 
   it("carries the pinned dataset versions", () => {

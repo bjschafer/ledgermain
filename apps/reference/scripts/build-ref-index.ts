@@ -10,6 +10,11 @@
  * the id in the URL, which is why `src/shared/bucketing.ts` is imported here
  * rather than reimplemented.
  *
+ * Collections whose vendored ids are opaque Foundry ids (spells, feats, gear)
+ * are re-keyed here by name slug, so their URLs read `#/spells/mage-armor`.
+ * The engine and saved characters keep the Foundry ids; only this payload
+ * uses the slugs.
+ *
  * Also copies the repo-root `OGL.txt` and `NOTICE.md` into `public/` so the
  * deployed site can serve the Open Game License and the mixed-license notice at
  * runtime (REQUIRED by OGL Sec. 10 whenever Open Game Content is distributed,
@@ -23,11 +28,13 @@ import { CONDITIONS, CONDITION_LADDERS } from "../../../packages/engine/src/cond
 import type {
   ArmorRef,
   Feat,
+  FeatRef,
   Item,
   Monster,
   MonsterTemplate,
   RefDataMeta,
   RuleEntry,
+  SourceRef,
   Spell,
   WeaponRef,
 } from "@pf1/schema";
@@ -55,6 +62,41 @@ const refDir = join(publicDir, "ref");
 
 function readCollection<T>(file: string): Record<string, T> {
   return JSON.parse(readFileSync(join(dataDir, file), "utf8")) as Record<string, T>;
+}
+
+function slug(value: string): string {
+  return value
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
+/**
+ * Re-key a collection by name slug, mapping each Foundry id to its URL id.
+ * Every entry in a name clash gets its first source's id appended, so no URL
+ * depends on which of them sorts first.
+ */
+function readBySlug<T extends { id: string; name: string; sources?: SourceRef[] }>(
+  file: string,
+): { entries: Record<string, T>; urlIds: Map<string, string> } {
+  const vendored = Object.values(readCollection<T>(file));
+  const nameCount = new Map<string, number>();
+  for (const e of vendored) nameCount.set(slug(e.name), (nameCount.get(slug(e.name)) ?? 0) + 1);
+  const entries: Record<string, T> = {};
+  const urlIds = new Map<string, string>();
+  for (const e of vendored) {
+    const base = slug(e.name);
+    const source = e.sources?.[0]?.id;
+    const id = nameCount.get(base)! > 1 && source ? `${base}-${slug(source)}` : base;
+    if (!base || id in entries) {
+      throw new Error(
+        `[build-ref-index] no unique URL id in ${file} for "${e.name}" (got "${id}")`,
+      );
+    }
+    entries[id] = { ...e, id };
+    urlIds.set(e.id, id);
+  }
+  return { entries, urlIds };
 }
 
 const meta = JSON.parse(readFileSync(join(dataDir, "meta.json"), "utf8")) as RefDataMeta;
@@ -103,11 +145,39 @@ function emit<T extends { id: string; name: string }>(
   });
 }
 
-emit<Spell>("spells", readCollection("spells.json"), spellFacet, (spell) => spell.level);
-emit<Feat>("feats", readCollection("feats.json"), featFacet);
-emit<WeaponRef>("weapons", readCollection("weapons.json"), weaponFacet);
-emit<ArmorRef>("armors", readCollection("armors.json"), armorFacet);
-emit<Item>("items", readCollection("items.json"), itemFacet);
+const spells = readBySlug<Spell>("spells.json").entries;
+
+// Only the tags some spell lists: the index ships this map to every visitor.
+const spellClassTags = new Set(
+  Object.values(spells).flatMap((s) => Object.keys(s.learnedAt.class)),
+);
+const classNames: Record<string, string> = {};
+for (const cls of Object.values(readCollection<{ tag: string; name: string }>("classes.json"))) {
+  if (spellClassTags.has(cls.tag)) classNames[cls.tag] = cls.name;
+}
+
+const feats = readBySlug<Feat>("feats.json");
+const featLink = (ref: FeatRef): FeatRef => {
+  const id = feats.urlIds.get(ref.id);
+  if (!id) throw new Error(`[build-ref-index] feat prerequisite "${ref.name}" names no feat`);
+  return { ...ref, id };
+};
+for (const feat of Object.values(feats.entries)) {
+  const p = feat.prerequisites;
+  p.feats = p.feats.map(featLink);
+  if (p.featsAnyOf) p.featsAnyOf = p.featsAnyOf.map((group) => group.map(featLink));
+}
+
+emit<Spell>(
+  "spells",
+  spells,
+  (spell) => spellFacet(spell, classNames),
+  (spell) => spell.level,
+);
+emit<Feat>("feats", feats.entries, featFacet);
+emit<WeaponRef>("weapons", readBySlug<WeaponRef>("weapons.json").entries, weaponFacet);
+emit<ArmorRef>("armors", readBySlug<ArmorRef>("armors.json").entries, armorFacet);
+emit<Item>("items", readBySlug<Item>("items.json").entries, itemFacet);
 // Conditions have no vendored JSON: they are the engine's hand-authored
 // clean-room table, emitted here as an ordinary collection.
 emit("conditions", CONDITIONS, conditionFacet);
@@ -169,6 +239,7 @@ const index: RefIndex = {
   ladders: CONDITION_LADDERS.map((ladder) => [...ladder]),
   rulesRoot,
   rulesChapters: rules[rulesRoot]!.children.map((c) => c.id),
+  classNames,
 };
 
 const indexJson = JSON.stringify(encodeIndex(index));

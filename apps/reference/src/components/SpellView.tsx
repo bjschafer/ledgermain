@@ -9,7 +9,7 @@ import {
   formatSpellRange,
   spellDamageParts,
 } from "../model/spellStats.js";
-import { joinDot, schoolName } from "../shared/format.js";
+import { classLevels, joinDot, schoolName } from "../shared/format.js";
 import { Chip, Description, Row, Sources } from "./parts.js";
 
 const SAVE_LABEL: Record<string, string> = { fort: "Fortitude", ref: "Reflex", will: "Will" };
@@ -39,14 +39,18 @@ function capitalize(text: string): string {
   return text.charAt(0).toUpperCase() + text.slice(1);
 }
 
-export function SpellView({ spell }: { spell: Spell }) {
+export function SpellView({
+  spell,
+  classNames,
+}: {
+  spell: Spell;
+  classNames: Record<string, string>;
+}) {
   const [cl, setCl] = useState(() => defaultCasterLevel(spell));
 
   const damage = spellDamageParts(spell, cl);
   const save = saveText(spell);
-  const classLevels = Object.entries(spell.learnedAt.class).sort(
-    (a, b) => a[1] - b[1] || a[0].localeCompare(b[0]),
-  );
+  const levels = classLevels(spell.learnedAt.class, classNames);
 
   return (
     <>
@@ -91,11 +95,7 @@ export function SpellView({ spell }: { spell: Spell }) {
           </Row>
         ))}
         <Row label="Spell Resistance">{spell.sr ? capitalize(spell.sr) : null}</Row>
-        <Row label="Class levels">
-          {classLevels.length > 0
-            ? classLevels.map(([tag, level]) => `${tag} ${level}`).join(", ")
-            : null}
-        </Row>
+        <Row label="Class levels">{levels.length > 0 ? levels.join(", ") : null}</Row>
       </div>
 
       <Description html={spell.description} />
