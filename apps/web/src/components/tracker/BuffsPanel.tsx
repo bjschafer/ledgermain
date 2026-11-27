@@ -208,13 +208,13 @@ export function BuffsPanel({ doc, sheet, refData, update }: BuilderProps) {
                     ))}
                   </div>
                   <BuffRollDataScope casterLevel={casterLevel}>
-                    {buff.contextNotes?.map((n, i) => (
-                      <RulesNote
-                        key={i}
-                        text={n.text}
-                        appliedTo={noteAppliedSurface({ catalog: "buff", buffName: buff.name }, n)}
-                      />
-                    ))}
+                    {buff.contextNotes
+                      ?.filter(
+                        (n) => noteCoverage({ catalog: "buff", buffName: buff.name }, n) !== "full",
+                      )
+                      .map((n, i) => (
+                        <RulesNote key={i} text={n.text} />
+                      ))}
                   </BuffRollDataScope>
                 </div>
                 {isActive ? (
@@ -427,13 +427,11 @@ function BuffRow({
           ))}
         </div>
         <BuffRollDataScope casterLevel={buff.casterLevel}>
-          {buff.contextNotes?.map((n, i) => (
-            <RulesNote
-              key={i}
-              text={n.text}
-              appliedTo={noteAppliedSurface({ catalog: "buff", buffName: buff.name }, n)}
-            />
-          ))}
+          {buff.contextNotes
+            ?.filter((n) => noteCoverage({ catalog: "buff", buffName: buff.name }, n) !== "full")
+            .map((n, i) => (
+              <RulesNote key={i} text={n.text} />
+            ))}
         </BuffRollDataScope>
       </div>
       {canPauseBuff(buff) ? (

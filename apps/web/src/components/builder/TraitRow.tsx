@@ -92,13 +92,11 @@ export function TraitRow({
             <span className="soft">{trait.summary}</span>
           </div>
         ) : null}
-        {trait.contextNotes?.map((note, i) => (
-          <RulesNote
-            key={i}
-            text={note.text}
-            appliedTo={noteAppliedSurface({ catalog: "characterTrait" }, note)}
-          />
-        ))}
+        {trait.contextNotes
+          ?.filter((note) => noteCoverage({ catalog: "characterTrait" }, note) !== "full")
+          .map((note, i) => (
+            <RulesNote key={i} text={note.text} />
+          ))}
         {selected && doc && choiceDescriptor && choiceOptions.length > 0 ? (
           <label className="hint" style={{ marginTop: 2, display: "block" }}>
             {choiceDescriptor.label}:{" "}

@@ -1246,11 +1246,7 @@ export {
   CL_CHECK_NOTE_TARGETS,
   VENDORED_RACIAL_TRAIT_CL_CHECK_NOTES,
 } from "./vendored-trait-cl-check-notes.js";
-export {
-  noteCoverage,
-  type NoteCatalog,
-  type NoteCoverage,
-} from "./note-coverage.js";
+export { noteCoverage, type NoteCatalog, type NoteCoverage } from "./note-coverage.js";
 export { collectSituationalNotes } from "./situational-notes.js";
 export {
   RAGE_POWERS,
