@@ -131,6 +131,50 @@ const ANGELIC_ASPECT_EVIL_SAVE: Change = {
 };
 
 /**
+ * Touch-AC slices the vendored buffs carry only as `ac` notes. Each targets a
+ * touch-only `AC_CATEGORIES` key, so it feeds `ArmorClass.touchConditionals`
+ * and never moves normal or flat-footed AC (the buff's own unscoped
+ * armor/shield Change already does that).
+ *
+ * - Mage Armor and Shield: incorporeal touch attacks ignore armor and shield
+ *   bonuses, but force effects such as mage armor still apply (Bestiary,
+ *   Incorporeal universal monster rule), and both spells' bonuses are force
+ *   (CRB spell text). The type matches the bonus the spell grants, so the two
+ *   stack with each other and an armor-typed force bonus doesn't stack with a
+ *   second one.
+ * - Hard Light Shield: its shield bonus "applies to the wielder's touch AC
+ *   against beam and ray attacks (but not other touch attacks)" (Technology
+ *   Guide), so it stays out of the incorporeal slice despite being force.
+ * - Scatterlight Suit: an armor bonus to touch AC against beam weapons and rays
+ *   only, varying by suit color (Technology Guide); the vendored note's
+ *   `@item.level` carries the color's amount.
+ */
+const MAGE_ARMOR_INCORPOREAL_AC: Change = {
+  formula: "4",
+  target: "ac",
+  type: "armor",
+  acCategories: ["incorporeal"],
+};
+const SHIELD_INCORPOREAL_AC: Change = {
+  formula: "4",
+  target: "ac",
+  type: "shield",
+  acCategories: ["incorporeal"],
+};
+const HARD_LIGHT_SHIELD_RAY_AC: Change = {
+  formula: "2",
+  target: "ac",
+  type: "shield",
+  acCategories: ["rays"],
+};
+const SCATTERLIGHT_SUIT_RAY_AC: Change = {
+  formula: "@item.level",
+  target: "ac",
+  type: "armor",
+  acCategories: ["rays"],
+};
+
+/**
  * The other shape of vendored gap this table fills: a buff whose save bonus
  * applies only against a CATEGORY of effects. The pack has no way to say
  * "against fear", so bless arrives with its +1 morale to attack rolls as a
@@ -246,6 +290,10 @@ export const BUFF_CHANGE_PATCHES: Readonly<Record<string, readonly Change[]>> = 
   "Angelic Aspect, Lesser": [ANGELIC_ASPECT_EVIL_AC, ANGELIC_ASPECT_EVIL_SAVE],
   "Angelic Aspect": [ANGELIC_ASPECT_EVIL_AC, ANGELIC_ASPECT_EVIL_SAVE],
   "Angelic Aspect, Greater": [ANGELIC_ASPECT_EVIL_AC, ANGELIC_ASPECT_EVIL_SAVE],
+  "Mage Armor": [MAGE_ARMOR_INCORPOREAL_AC],
+  Shield: [SHIELD_INCORPOREAL_AC],
+  "Hard Light Shield": [HARD_LIGHT_SHIELD_RAY_AC],
+  "Scatterlight suit": [SCATTERLIGHT_SUIT_RAY_AC],
   ...SAVE_CATEGORY_PATCHES,
 };
 
@@ -275,6 +323,27 @@ export const BUFF_SAVE_NOTE_COVERAGE: Readonly<Record<string, "full" | "partial"
   "Angelic Aspect, Lesser": "partial",
   "Angelic Aspect": "partial",
   "Angelic Aspect, Greater": "partial",
+};
+
+/**
+ * The `ac`-note counterpart of {@link BUFF_SAVE_NOTE_COVERAGE}, keyed by buff
+ * name then the note's exact (trimmed) text: a buff can carry several `ac`
+ * notes of which only one promotes. Angelic Aspect, Greater is absent because
+ * its deflection line shares one note with an ally-facing aura no `Change`
+ * covers.
+ */
+export const BUFF_AC_NOTE_COVERAGE: Readonly<
+  Record<string, Readonly<Record<string, "full" | "partial">>>
+> = {
+  "Animal Focus (Snake)": {
+    "+[[2 + floor((@item.level - 1) / 7) * 2]] against attacks of opportunity": "full",
+  },
+  "Angelic Aspect, Lesser": { "+2 Deflection vs Evil creatures.": "full" },
+  "Angelic Aspect": { "+2 Deflection vs Evil creatures.": "full" },
+  "Mage Armor": { "+4 against incorporeal touch attacks.": "full" },
+  Shield: { "+4 against incorporeal touch attacks.": "full" },
+  "Hard Light Shield": { "+2 against touch AC from beam and ray attacks": "full" },
+  "Scatterlight suit": { "+[[@item.level]] to touch AC against beam weapons and rays.": "full" },
 };
 
 /**

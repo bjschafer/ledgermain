@@ -9,6 +9,7 @@ import {
   grantedFeats,
 } from "../../model/feats.js";
 import { HomebrewBadge } from "../HomebrewBadge.js";
+import { RulesNote } from "../RulesNote.js";
 import { RulesProse } from "../RulesProse.js";
 import { StarIcon } from "../icons.js";
 import { Panel } from "../builder/Panel.js";
@@ -109,9 +110,7 @@ export function FeatsPanel({ doc, refData }: BuilderProps) {
                     )}
                   </div>
                   {featContextNotes(row.feat.name).map((n, i) => (
-                    <div key={i} className="hint" style={{ marginTop: 2 }}>
-                      ⚠ {n.text}
-                    </div>
+                    <RulesNote key={i} text={n.text} />
                   ))}
                   <FeatDetail feat={row.feat} />
                 </div>

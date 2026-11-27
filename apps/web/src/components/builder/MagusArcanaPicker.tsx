@@ -12,6 +12,7 @@ import {
 } from "../../model/magusArcana.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
 import { Caret } from "../Caret.js";
+import { RulesNote } from "../RulesNote.js";
 import { FeatureDescription } from "./ClassFeaturesList.js";
 import { PickFold } from "./PickFold.js";
 
@@ -148,9 +149,7 @@ export function MagusArcanaPicker({ doc, refData, update }: MagusArcanaPickerPro
                         </div>
                       )}
                       {a.contextNotes?.map((note, i) => (
-                        <div key={i} className="hint" style={{ marginTop: 2 }}>
-                          ⚠ {note.text}
-                        </div>
+                        <RulesNote key={i} text={note.text} />
                       ))}
                       {a.description ? <FeatureDescription html={a.description} /> : null}
                     </div>

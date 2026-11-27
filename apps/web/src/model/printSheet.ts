@@ -192,6 +192,8 @@ export interface PrintSheetData {
     cmdFlatFooted: number;
     /** Same shape/reasoning as {@link PrintSave.conditionals}, for normal AC. */
     conditionals: string[];
+    /** Same, for touch AC (rays, incorporeal touch). */
+    touchConditionals: string[];
     /** Same shape/reasoning as {@link PrintSave.conditionals}, for CMD. */
     cmdConditionals: string[];
   };
@@ -460,6 +462,9 @@ export function buildPrintSheet(
       // AC is not a signed modifier, so its conditional line prints the bare
       // total ("19 vs. traps"), unlike the save/CMB/CMD lines.
       conditionals: (sheet.ac.conditionals ?? []).map(
+        (c) => `${c.total} vs. ${c.labels.join("/")}`,
+      ),
+      touchConditionals: (sheet.ac.touchConditionals ?? []).map(
         (c) => `${c.total} vs. ${c.labels.join("/")}`,
       ),
       cmdConditionals: (sheet.cmdConditionals ?? []).map(

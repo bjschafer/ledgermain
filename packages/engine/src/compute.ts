@@ -719,20 +719,25 @@ function computeAc(
   );
 
   const normal = sumWhere(() => true);
-  // Conditional lines hang off normal AC only — see ArmorClass.conditionals
-  // for why touch/flat-footed stay bare numbers.
-  const conditionals = acConditionalTotals(
-    normal,
-    cands.map((c) => ({ ...c, stackCategory: c.category })),
+  const touch = sumWhere((c) => TOUCH_CATEGORIES.has(c.category));
+  // Each scoped category hangs its line off normal or touch AC (see
+  // `AcCategory.against`); flat-footed takes none.
+  const scopedCands = cands.map((c) => ({ ...c, stackCategory: c.category }));
+  const conditionals = acConditionalTotals("normal", normal, scopedCands, acScoped);
+  const touchConditionals = acConditionalTotals(
+    "touch",
+    touch,
+    scopedCands.filter((c) => TOUCH_CATEGORIES.has(c.category)),
     acScoped,
   );
 
   return {
     normal,
-    touch: sumWhere((c) => TOUCH_CATEGORIES.has(c.category)),
+    touch,
     flatFooted,
     components,
     ...(conditionals.length > 0 ? { conditionals } : {}),
+    ...(touchConditionals.length > 0 ? { touchConditionals } : {}),
   };
 }
 

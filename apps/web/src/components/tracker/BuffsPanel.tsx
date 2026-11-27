@@ -6,7 +6,7 @@ import {
   buildRollData,
   evaluateBuffChange,
   needsElementChoice,
-  saveNoteCoverage,
+  noteAppliedSurface,
   unappliedChanges,
 } from "@pf1/engine";
 import type { RollData } from "@pf1/engine";
@@ -212,9 +212,7 @@ export function BuffsPanel({ doc, sheet, refData, update }: BuilderProps) {
                       <RulesNote
                         key={i}
                         text={n.text}
-                        appliedAutomatically={
-                          saveNoteCoverage({ catalog: "buff", buffName: buff.name }, n) === "full"
-                        }
+                        appliedTo={noteAppliedSurface({ catalog: "buff", buffName: buff.name }, n)}
                       />
                     ))}
                   </BuffRollDataScope>
@@ -433,9 +431,7 @@ function BuffRow({
             <RulesNote
               key={i}
               text={n.text}
-              appliedAutomatically={
-                saveNoteCoverage({ catalog: "buff", buffName: buff.name }, n) === "full"
-              }
+              appliedTo={noteAppliedSurface({ catalog: "buff", buffName: buff.name }, n)}
             />
           ))}
         </BuffRollDataScope>

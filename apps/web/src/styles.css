@@ -723,10 +723,10 @@ a {
   color: var(--faint);
 }
 
-/* A rules reminder whose whole bonus is already a structured Change (issue:
-   situational saves double-counting) — sage-tinted like `.buff-already-active`
-   rather than the default muted hint color, so "already applied" reads as a
-   distinct affordance from the `⚠` manual-apply reminder. */
+/* A rules reminder whose whole bonus is already a structured Change —
+   sage-tinted like `.buff-already-active` rather than the default muted hint
+   color, so "already applied" reads as a distinct affordance from the `ⓘ`
+   manual-apply reminder. */
 .hint.applied {
   color: var(--sage);
 }
@@ -8966,8 +8966,8 @@ input[type="text"].saved-roll-name:focus {
 }
 
 /* A class feature's contextNotes are informational rules reminders (DC,
-   duration, activation shape), not warnings — no `⚠`, just indented from the
-   summary line. A line that IS a warning (a hex below its level minimum)
+   duration, activation shape), not warnings — no glyph, just indented from
+   the summary line. A line that IS a warning (a hex below its level minimum)
    keeps its own `⚠`. */
 .feature-note {
   margin-top: 2px;

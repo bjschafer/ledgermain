@@ -94,6 +94,15 @@ export function PrintView({
                     </td>
                   </tr>
                 ) : null}
+                {data.ac.touchConditionals.length > 0 ? (
+                  <tr>
+                    <td colSpan={4}>
+                      <span className="print-save-conditionals">
+                        Touch {data.ac.touchConditionals.join("; ")}
+                      </span>
+                    </td>
+                  </tr>
+                ) : null}
                 <tr>
                   <td>Flat-Footed</td>
                   <td className="num">{data.ac.flatFooted}</td>

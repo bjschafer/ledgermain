@@ -276,6 +276,8 @@ export function Sheet({
           <StatSeal
             label="Touch"
             value={sheet.ac.touch}
+            conditionals={sheet.ac.touchConditionals}
+            unsignedConditionals
             resetKey={doc.id}
             baseline={baseline.ac.touch}
           />

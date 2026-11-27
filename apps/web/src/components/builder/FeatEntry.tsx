@@ -28,6 +28,7 @@ import {
 import { isRepeatableFeat } from "../../model/repeatableFeats.js";
 import { HomebrewBadge } from "../HomebrewBadge.js";
 import { InfoTip } from "../InfoTip.js";
+import { RulesNote } from "../RulesNote.js";
 import { FeatureDescription } from "./ClassFeaturesList.js";
 
 type Feat = RefData["feats"][string];
@@ -432,11 +433,7 @@ export function FeatEntry({
                 )}
                 {idx === 0 ? prereqBlock : null}
                 {idx === 0 &&
-                  featContextNotes(feat.name).map((n, i) => (
-                    <div key={i} className="hint" style={{ marginTop: 2 }}>
-                      ⚠ {n.text}
-                    </div>
-                  ))}
+                  featContextNotes(feat.name).map((n, i) => <RulesNote key={i} text={n.text} />)}
                 {idx === 0 && description ? <FeatureDescription html={description} /> : null}
               </div>
               <button
@@ -559,9 +556,7 @@ export function FeatEntry({
         )}
         {prereqBlock}
         {featContextNotes(feat.name).map((n, i) => (
-          <div key={i} className="hint" style={{ marginTop: 2 }}>
-            ⚠ {n.text}
-          </div>
+          <RulesNote key={i} text={n.text} />
         ))}
         {description ? <FeatureDescription html={description} /> : null}
       </div>

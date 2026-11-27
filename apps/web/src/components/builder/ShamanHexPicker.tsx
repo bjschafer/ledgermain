@@ -13,6 +13,7 @@ import {
 } from "../../model/shamanHexes.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
 import { Caret } from "../Caret.js";
+import { RulesNote } from "../RulesNote.js";
 import { FeatureDescription } from "./ClassFeaturesList.js";
 import { PickFold } from "./PickFold.js";
 
@@ -217,9 +218,7 @@ export function ShamanHexPicker({ doc, refData, update }: ShamanHexPickerProps) 
                             <span className="desc-text">{h.summary}</span>
                           </div>
                           {h.contextNotes?.map((noteEntry, i) => (
-                            <div key={i} className="hint" style={{ marginTop: 2 }}>
-                              ⚠ {noteEntry.text}
-                            </div>
+                            <RulesNote key={i} text={noteEntry.text} />
                           ))}
                           {h.description ? <FeatureDescription html={h.description} /> : null}
                         </div>

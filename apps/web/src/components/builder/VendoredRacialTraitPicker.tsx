@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { useMemo, useState } from "react";
 
 import type { CharacterDoc, RacialTrait, RefData } from "@pf1/schema";
-import { vendoredTraitFullyHandled } from "@pf1/engine";
+import { noteAppliedSurface, vendoredTraitFullyHandled } from "@pf1/engine";
 
 import {
   racialTraitChoice,
@@ -25,7 +25,6 @@ import {
   vendoredRacialTraitPoints,
   vendoredRacialTraitTarget,
 } from "../../model/racialTraits.js";
-import { contextNoteCoverage } from "../../model/rulesNotes.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
 import { Caret } from "../Caret.js";
 import { RulesNote } from "../RulesNote.js";
@@ -192,9 +191,7 @@ export function VendoredRacialTraitPicker({
                 <RulesNote
                   key={i}
                   text={note.text}
-                  appliedAutomatically={
-                    contextNoteCoverage({ catalog: "racialTrait" }, note) === "full"
-                  }
+                  appliedTo={noteAppliedSurface({ catalog: "racialTrait" }, note)}
                 />
               ))
             : null}

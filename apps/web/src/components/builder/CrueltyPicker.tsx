@@ -12,6 +12,7 @@ import {
 } from "../../model/antipaladinCruelties.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
 import { Caret } from "../Caret.js";
+import { RulesNote } from "../RulesNote.js";
 import { PickFold } from "./PickFold.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
@@ -142,9 +143,7 @@ export function CrueltyPicker({ doc, sheet, update }: CrueltyPickerProps) {
                         </div>
                       )}
                       {c.contextNotes?.map((n, i) => (
-                        <div key={i} className="hint" style={{ marginTop: 2 }}>
-                          ⚠ {n.text}
-                        </div>
+                        <RulesNote key={i} text={n.text} />
                       ))}
                     </div>
                     <button

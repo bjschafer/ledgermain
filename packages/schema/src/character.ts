@@ -4312,13 +4312,18 @@ export interface ArmorClass {
    * against a category of attacks (Trap Sense's "+1 dodge bonus to AC against
    * attacks made by traps") rather than to AC in general. Same
    * `ConditionalTotal` shape the saves and CMB/CMD use, and same posture:
-   * omitted (rather than empty) when nothing AC-scoped applies. Each total is
-   * computed against `normal` only — `touch` and `flatFooted` stay bare
-   * numbers, the same call `cmdFlatFooted` makes (a conditional line per AC
-   * variant would triple the lines under the seal, and nearly every scoped
-   * bonus is dodge-typed, which flat-footed drops anyway).
+   * omitted (rather than empty) when nothing AC-scoped applies. Computed
+   * against `normal`; flat-footed stays a bare number, the same call
+   * `cmdFlatFooted` makes (nearly every scoped bonus is dodge-typed, which
+   * flat-footed drops anyway).
    */
   conditionals?: ConditionalTotal[];
+  /**
+   * {@link conditionals} for the attack shapes that target touch AC: rays and
+   * incorporeal touch attacks (mage armor's force bonus still counts against
+   * the latter). Computed against `touch`; omitted when nothing applies.
+   */
+  touchConditionals?: ConditionalTotal[];
 }
 
 export interface AcComponent extends ModifierComponent {

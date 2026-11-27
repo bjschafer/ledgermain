@@ -2,9 +2,9 @@
  * The vocabulary for `Change.acCategories` — a bonus scoped to a category of
  * attacks rather than to AC as a whole. Mirrors `maneuver-categories.ts`'s
  * flat shape: no parent graph (no key here is a special case of another), and
- * no equivalent of `SaveCategory.saves` (there is only one AC for a line to
- * hang off — see `ArmorClass.conditionals` for why touch/flat-footed take no
- * lines).
+ * no equivalent of `SaveCategory.saves`. Each key hangs its line off exactly
+ * one AC: normal by default, touch for a key marked `against: "touch"` (see
+ * `ArmorClass.conditionals`/`touchConditionals`). Flat-footed takes no lines.
  *
  * Unlike the save/maneuver vocabularies, several keys here name a property of
  * the ATTACKER (giants, aberrations) rather than of the roll. The save-note
@@ -26,6 +26,11 @@ import { resolveStack, type TypedModifier } from "./stacking.js";
 export interface AcCategory {
   /** Player-facing label. Terse — it renders under a stat seal. */
   label: string;
+  /**
+   * Set for an attack shape that targets touch AC (rays, incorporeal touch),
+   * whose line hangs off touch AC instead of normal AC.
+   */
+  against?: "touch";
 }
 
 export const AC_CATEGORIES: Readonly<Record<string, AcCategory>> = {
@@ -33,6 +38,11 @@ export const AC_CATEGORIES: Readonly<Record<string, AcCategory>> = {
   traps: { label: "traps" },
   aoo: { label: "AoOs" },
   charge: { label: "charging foes" },
+
+  // Touch-attack shapes: the bonus only ever applies against a touch attack,
+  // so its line hangs off touch AC.
+  incorporeal: { label: "incorporeal", against: "touch" },
+  rays: { label: "rays", against: "touch" },
 
   // Attacker-type categories: a property of who is attacking. See the module
   // doc comment for why AC carries this axis when saves/maneuvers don't.
@@ -83,7 +93,7 @@ export interface ScopedAcModifier extends TypedModifier {
  * Situational AC totals, one per distinct value — the AC counterpart of
  * `maneuverConditionalTotals`, with one structural difference: AC's headline
  * is not one flat stack but a sum of per-(stackCategory|type) stacks (see
- * `computeAc`), so each conditional total is `normal` plus the DELTA each
+ * `computeAc`), so each conditional total is `headline` plus the DELTA each
  * affected stacking group gains when the scoped modifiers join it. That keeps
  * typed collision exact — a scoped +2 insight bonus over an unconditional +1
  * insight bonus moves the line by +1, not +2 — without re-running the parts
@@ -91,12 +101,14 @@ export interface ScopedAcModifier extends TypedModifier {
  * bare-`ac` scoped modifier can never touch: scoped modifiers only ever land
  * in the dodge/deflection/generic buckets, never armor/shield/natural.
  *
- * `unconditional` is the full headline candidate list (any bucket — members
- * of unaffected groups are simply never consulted); `scoped` is the
- * category-scoped modifiers held out of that headline.
+ * `against` picks which AC's categories to total, and `headline` is that AC.
+ * `unconditional` is that AC's own candidate list (members of unaffected
+ * groups are simply never consulted); `scoped` is every category-scoped
+ * modifier held out of the headlines.
  */
 export function acConditionalTotals(
-  normal: number,
+  against: "normal" | "touch",
+  headline: number,
   unconditional: readonly ScopedAcModifier[],
   scoped: readonly ScopedAcModifier[],
 ): ConditionalTotal[] {
@@ -108,6 +120,7 @@ export function acConditionalTotals(
   const byTotal = new Map<number, string[]>();
   for (const key of AC_CATEGORY_ORDER) {
     if (!named.has(key)) continue;
+    if ((AC_CATEGORIES[key]!.against ?? "normal") !== against) continue;
     const forCategory = scoped.filter((m) => m.acCategories?.includes(key));
     if (forCategory.length === 0) continue;
 
@@ -127,9 +140,9 @@ export function acConditionalTotals(
       delta += after - before;
     }
 
-    const conditionalTotal = normal + delta;
+    const conditionalTotal = headline + delta;
     // A category that resolves to the headline total says nothing.
-    if (conditionalTotal === normal) continue;
+    if (conditionalTotal === headline) continue;
     const bucket = byTotal.get(conditionalTotal);
     if (bucket) bucket.push(key);
     else byTotal.set(conditionalTotal, [key]);

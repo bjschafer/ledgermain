@@ -1,10 +1,9 @@
-import { unappliedChanges } from "@pf1/engine";
+import { noteAppliedSurface, unappliedChanges } from "@pf1/engine";
 import type { CharacterDoc, RefData } from "@pf1/schema";
 import type { TraitDef } from "@pf1/engine";
 
 import { metamagicDiscountSpellOptions, metamagicDiscountTrait } from "../../model/metamagic.js";
 import { changeTargetLabel } from "../../model/names.js";
-import { contextNoteCoverage } from "../../model/rulesNotes.js";
 import {
   setTraitChoice,
   toggleTrait,
@@ -97,9 +96,7 @@ export function TraitRow({
           <RulesNote
             key={i}
             text={note.text}
-            appliedAutomatically={
-              contextNoteCoverage({ catalog: "characterTrait" }, note) === "full"
-            }
+            appliedTo={noteAppliedSurface({ catalog: "characterTrait" }, note)}
           />
         ))}
         {selected && doc && choiceDescriptor && choiceOptions.length > 0 ? (

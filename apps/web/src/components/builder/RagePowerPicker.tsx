@@ -14,6 +14,7 @@ import {
 } from "../../model/ragePowers.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
 import { Caret } from "../Caret.js";
+import { RulesNote } from "../RulesNote.js";
 import { FeatureDescription } from "./ClassFeaturesList.js";
 import { PickFold } from "./PickFold.js";
 
@@ -159,9 +160,7 @@ export function RagePowerPicker({ doc, refData, update }: RagePowerPickerProps) 
                         </div>
                       )}
                       {p.contextNotes?.map((noteEntry, i) => (
-                        <div key={i} className="hint" style={{ marginTop: 2 }}>
-                          ⚠ {noteEntry.text}
-                        </div>
+                        <RulesNote key={i} text={noteEntry.text} />
                       ))}
                       {isSel && p.choice ? (
                         // Choose-one selection (RAW locks it in when the power

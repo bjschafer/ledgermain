@@ -184,6 +184,8 @@ describe("ac-category vocabulary", () => {
       "traps",
       "aoo",
       "charge",
+      "incorporeal",
+      "rays",
       "giants",
       "aberrations",
       "animals",

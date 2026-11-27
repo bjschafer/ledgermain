@@ -24,6 +24,7 @@ import {
 } from "../../model/vigilanteTalents.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
 import { Caret } from "../Caret.js";
+import { RulesNote } from "../RulesNote.js";
 import { FeatureDescription } from "./ClassFeaturesList.js";
 import { PickFold } from "./PickFold.js";
 
@@ -213,9 +214,7 @@ function TalentSection({
                         </div>
                       )}
                       {t.contextNotes?.map((n: ContextNote, i: number) => (
-                        <div key={i} className="hint" style={{ marginTop: 2 }}>
-                          ⚠ {n.text}
-                        </div>
+                        <RulesNote key={i} text={n.text} />
                       ))}
                       {t.description ? <FeatureDescription html={t.description} /> : null}
                     </div>

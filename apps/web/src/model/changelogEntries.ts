@@ -48,6 +48,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-11-26-touch-ac-lines",
+    date: "2026-11-26",
+    title: "Touch AC against rays and incorporeal attacks",
+    note: "Mage armor and shield now show your touch AC against incorporeal touch attacks under the Touch seal, and a scatterlight suit or hard light shield shows your touch AC against rays. Rules reminders you apply by hand are marked with an info circle instead of a warning triangle, so they no longer look like something is broken.",
+  },
+  {
     id: "2026-11-23-worn-item-effects",
     date: "2026-11-23",
     title: "Goggles of night, gloves of dueling, and dozens more worn items apply",

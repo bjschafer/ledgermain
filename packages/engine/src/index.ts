@@ -1197,6 +1197,7 @@ export {
   isShieldTierProficient,
 } from "./proficiency.js";
 export {
+  BUFF_AC_NOTE_COVERAGE,
   BUFF_CHANGE_PATCHES,
   BUFF_SAVE_NOTE_COVERAGE,
   SAVE_CATEGORY_PATCHES,
@@ -1246,10 +1247,11 @@ export {
   VENDORED_RACIAL_TRAIT_CL_CHECK_NOTES,
 } from "./vendored-trait-cl-check-notes.js";
 export {
-  saveNoteCoverage,
-  type SaveNoteCatalog,
-  type SaveNoteCoverage,
-} from "./save-note-coverage.js";
+  noteAppliedSurface,
+  noteCoverage,
+  type NoteCatalog,
+  type NoteCoverage,
+} from "./note-coverage.js";
 export {
   RAGE_POWERS,
   RAGE_POWER_IDS,

@@ -1,7 +1,11 @@
 import type { ReactNode } from "react";
 import { useMemo, useState } from "react";
 
-import { FLEXIBLE_ABILITY_SUPPRESS_TARGET, raceGrantsFlexibleAbility } from "@pf1/engine";
+import {
+  FLEXIBLE_ABILITY_SUPPRESS_TARGET,
+  noteAppliedSurface,
+  raceGrantsFlexibleAbility,
+} from "@pf1/engine";
 import { ABILITY_IDS } from "@pf1/schema";
 
 import { setBonusLanguages, setFlexibleAbility, setRace } from "../../model/doc.js";
@@ -29,7 +33,6 @@ import {
   toggleRacialTrait,
 } from "../../model/racialTraits.js";
 import { groupRacesByRarity, type Rarity } from "../../model/rarity.js";
-import { contextNoteCoverage } from "../../model/rulesNotes.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
 import { Caret } from "../Caret.js";
 import { ConfirmDialog } from "../ConfirmDialog.js";
@@ -245,9 +248,10 @@ export function RaceSection({ doc, sheet, refData, update }: BuilderProps) {
           key={i}
           text={note.text}
           retiredBy={note.retiredBy}
-          appliedAutomatically={
-            selected != null &&
-            contextNoteCoverage({ catalog: "race", raceName: selected.name }, note) === "full"
+          appliedTo={
+            selected
+              ? noteAppliedSurface({ catalog: "race", raceName: selected.name }, note)
+              : undefined
           }
         />
       ))}

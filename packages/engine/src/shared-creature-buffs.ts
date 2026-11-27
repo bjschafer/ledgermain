@@ -194,6 +194,12 @@ export function routeSharedBuffs(
         sourceId: buff.instanceId,
       };
       const speedMode = SPEED_TARGET_MODE[ch.target];
+      if (ch.target === "ac" && (ch.acCategories?.length ?? 0) > 0) {
+        // A category-scoped AC bonus (vs. traps, vs. incorporeal touch) never
+        // reaches a headline AC, and these creatures print no AC conditional
+        // lines, so it has nowhere to land.
+        continue;
+      }
       if (ch.target === "ac" || ch.target === "aac" || ch.target === "sac" || ch.target === "nac") {
         // Same highest-wins normalization the master's own sheet applies.
         mod.type = acBonusType(ch.target, mod.type);

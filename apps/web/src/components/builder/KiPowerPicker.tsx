@@ -12,6 +12,7 @@ import {
 } from "../../model/monkKiPowers.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
 import { Caret } from "../Caret.js";
+import { RulesNote } from "../RulesNote.js";
 import { FeatureDescription } from "./ClassFeaturesList.js";
 import { PickFold } from "./PickFold.js";
 
@@ -136,9 +137,7 @@ export function KiPowerPicker({ doc, refData, update }: KiPowerPickerProps) {
                         </div>
                       )}
                       {p.contextNotes?.map((n, i) => (
-                        <div key={i} className="hint" style={{ marginTop: 2 }}>
-                          ⚠ {n.text}
-                        </div>
+                        <RulesNote key={i} text={n.text} />
                       ))}
                       {p.description ? <FeatureDescription html={p.description} /> : null}
                     </div>

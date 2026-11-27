@@ -18,6 +18,7 @@ import {
 } from "../../model/oracleRevelations.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
 import { Caret } from "../Caret.js";
+import { RulesNote } from "../RulesNote.js";
 import { PickFold } from "./PickFold.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
@@ -172,9 +173,7 @@ export function RevelationPicker({ doc, refData, update }: RevelationPickerProps
                             </div>
                           )}
                           {r.contextNotes?.map((note, i) => (
-                            <div key={i} className="hint" style={{ marginTop: 2 }}>
-                              ⚠ {note.text}
-                            </div>
+                            <RulesNote key={i} text={note.text} />
                           ))}
                           {isSel && r.choice ? (
                             // Choose-one selection (RAW locks it in when the
