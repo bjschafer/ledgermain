@@ -1,188 +1,76 @@
 /**
- * "What's not covered" content for Settings (issue #88) — a short, honest,
- * player-language summary of deliberate content-scope exclusions, so a
- * player who hits a gap can tell "not covered yet" from "the app is
- * broken" without filing a report. Maintained by hand as a static array
- * (no runtime fetch — nothing in the UI should ever imply a GitHub round
- * trip is happening for something this small).
+ * "What's not covered" content for Settings: a short, honest, player-language
+ * summary of known gaps, so a player who hits one can tell "not built yet"
+ * from "the app is broken" without filing a report. Maintained by hand as a
+ * static array (no runtime fetch: nothing in the UI should imply a GitHub
+ * round trip for something this small).
  *
- * THIS IS THE SINGLE SOURCE OF TRUTH for known content gaps, including
- * issue #74's inventory: `bun run coverage:issue` (scripts/coverage-issue.ts)
- * renders #74's body from this file, so any edit here — a filled gap, a new
- * one, or only reworded copy — leaves that issue stale until it's
- * regenerated. Never hand-edit the issue.
- *
- * `COVERAGE_NOTES` is also what the Settings panel renders directly, so keep
- * its `note` copy player-facing; `issueDetail` is extra specificity (counts,
- * vendored-entry names) that's useful in the issue but too dense for the
- * panel. `INTERNAL_GAPS` holds gaps with no player-facing surface at all
- * (pure data-pipeline facts) that belong in the issue but have nowhere to
- * render in Settings.
+ * This is panel copy, not the engineering inventory. Closeable gaps are
+ * tracked as GitHub issues labeled `gap`; an entry here is the player's view
+ * of one a player would actually notice, and goes when that issue closes.
  *
  * ## This file only ever describes what is MISSING
  *
- * The failure mode this file drifts into, repeatedly, is growing instead of
- * shrinking as gaps get closed: an entry gets rewritten to narrate the work
- * that just landed, and the actual gap ends up as its last sentence. Closing
- * a gap means DELETING its entry, or cutting the entry back to the smaller
- * gap that remains. It never means appending what now works.
+ * The failure mode this file drifts into is growing instead of shrinking as
+ * gaps get closed: an entry gets rewritten to narrate the work that just
+ * landed, and the actual gap ends up as its last sentence. Closing a gap means
+ * DELETING its entry, or cutting it back to the smaller gap that remains. It
+ * never means appending what now works; shipped work is announced in
+ * `changelog.ts`, and the two must not converge.
  *
- * So: no "used to", no "no longer", no "now also", no counts of what got
- * fixed, no enumerating the races or lists that do work. The changelog
- * (`changelog.ts`) is where shipped work is announced; this is the
- * complement, and the two must not converge. `issueDetail` carries inventory
- * facts (how many entries exist, how many are modeled, what blocks the rest)
- * and not implementation history: no issue numbers, no commit provenance, no
- * "audited in the sweep". `test/coverageNotes.test.ts` enforces the length
- * budgets and the banned constructions, so a growing entry fails the build
- * rather than shipping.
+ * ## No per-catalog entries
+ *
+ * A catalog where some entries move numbers and the rest are rules text
+ * (archetypes, magic items, traits, talent lists, feats) is covered by the
+ * first entry below. Don't add an entry per catalog counting how many are
+ * modeled: that long tail never closes, and listing it is what makes this
+ * panel long without telling a player anything.
  *
  * ## An entry has to be closeable
  *
- * A gap belongs here only if some future version of Ledgermain could close
- * it. Where the sheet stops because it would have to know something only the
- * GM knows, that's the product's boundary and not a gap: the app never models
+ * Where the sheet stops because it would have to know something only the GM
+ * knows, that's the product's boundary and not a gap: the app never models
  * the attacker's side, so it can't rule on whether a hit bypassed your DR or
- * whether an incoming effect lands. Listing those implies a future that isn't
- * coming. Document them as affordances where the player uses them instead.
+ * whether an incoming effect lands. Document those as affordances where the
+ * player uses them instead.
  *
- * House style applies to every string here: no em or en dashes in copy that
- * renders in the app. Restructure the sentence instead.
+ * `test/coverageNotes.test.ts` enforces the length budget and the banned
+ * constructions. House style applies to every string here: no em or en
+ * dashes. Restructure the sentence instead.
  */
 
 export interface CoverageNote {
   category: string;
   note: string;
-  /**
-   * Extra technical detail (counts, vendored-entry names) for the generated
-   * issue #74 mirror only — never rendered by `CoverageNotesPanel`.
-   */
-  issueDetail?: string;
 }
 
 export const COVERAGE_NOTES: readonly CoverageNote[] = [
   {
-    category: "Prestige classes",
-    note: "All of them are in the class picker, showing their full rules text. Outside the core rulebook ones, a class's entry requirements read as advice rather than something the sheet enforces. The Prophet of Kalistrade and the Red Mantis Assassin cast from a short spell list of their own, which the sheet does not give them.",
-    issueDetail:
-      "108 vendored splatbook prestige classes carry prereqText only, with no structured prereqs. Two print their own spells-per-day table rather than advancing an existing class, a shape Class.castingAdvancement cannot represent.",
+    category: "Rules text you apply yourself",
+    note: 'Every published class option, archetype, feat, trait, magic item, and eidolon evolution is in its picker with its full rules text, but most of them do not move numbers on your sheet. Most pickers mark the ones that do with an "M"; the rest are yours to apply at the table. Requirements written only as prose show a warning rather than blocking the pick.',
   },
   {
-    category:
-      "Class picker lists (rage powers, hexes, arcana, talents, exploits, tricks, discoveries, ki powers, style strikes, bold stares, phrenic amplifications, revelations, spirits, disciplines, implements, orders, patrons, aspects, wild talents)",
-    note: 'Every published entry in these lists is browsable, searchable, and written up with its level requirement flagged. Entries that move numbers on your sheet automatically are marked with an "M". Most entries are not: they show their rules text for you to apply at the table.',
-    issueDetail:
-      "Every list, the class-subsystem tables included, sits at full vendored parity (rage powers 243, rogue talents 234, alchemist discoveries 168, witch hexes 104, down to monk style strikes 15), so the gap is promotion rather than coverage: only 32 rage powers and a scattering of talents and discoveries carry live changes[]. Candidates blocked on a missing mechanism are recorded inline in their table files.",
-  },
-  {
-    category: "Archetypes",
-    note: "Every published archetype is in the picker, and picking one swaps your class features and strikes through what it trades away. Only some archetype features move numbers on your sheet automatically: the rest show their rules text for you to apply at the table.",
-    issueDetail:
-      "1,425 vendored archetypes; 396 carry at least one structured feature effect. The remaining features are structural or prose-only, so the gap is promotion rather than coverage.",
+    category: "Prestige class spellcasting",
+    note: "The Prophet of Kalistrade and the Red Mantis Assassin cast from a short spell list of their own, which the sheet does not give them.",
   },
   {
     category: "Familiars",
-    note: "The improved familiar catalog covers the common picks, not the whole published list: a species missing from the picker has no stat block to track, and a familiar archetype (a sage, a mascot, an emissary) is not modeled at all.",
-    issueDetail:
-      "47 species and 4 templates modeled. The published expanded Improved Familiar table exceeds 90 rows; the remainder lack authored stat blocks, the kami familiars the ninja's spiritual companion trick names among them. Familiar archetypes are a separate absent subsystem.",
-  },
-  {
-    category: "Eidolon evolutions",
-    note: "Every evolution is pickable and point-costed on your eidolon, but only the structured kinds (extra attacks, armor, ability increases, size, speed, energy resistance and immunity, damage reduction) change its derived stat block. The rest, like Grab, Poison, or Fast Healing, show as picked abilities with rules text for you to apply at the table.",
-    issueDetail:
-      "81 evolutions are pickable against the pool; 21 move numbers in the eidolon derivation. The other 60 are display kind: event- and action-shaped effects (Poison, Grab, Trample, the spell-like Magic chain), per-attack riders (Improved Damage), and effects with no field on the eidolon block (Fast Healing, Spell Resistance, Skilled's per-skill bonus).",
+    note: "The improved familiar catalog covers the common picks, not the whole published list: a species missing from the picker has no stat block to track, and familiar archetypes (a sage, a mascot, an emissary) are not modeled.",
   },
   {
     category: "Witch patrons",
-    note: 'The published patrons are all in the picker with their bonus spells. The nine "unique" patrons are shown but not applied: the hex one grants, the theme you pick under it, and the spells it swaps in are all yours to apply by hand.',
-    issueDetail:
-      "52 of 61 patrons carry a parsed 9-spell progression. The 9 unique patrons are templates over a chosen theme, and the doc has no field for that sub-choice, so their granted hex, drawback, theme restriction and per-level spell overrides stay display-only.",
-  },
-  {
-    category: "Magic items",
-    note: 'The full published catalog is in the gear picker: wondrous items, rings, rods, staves, artifacts, and named magic weapons and armor. Entries whose effect the sheet applies while equipped are marked with an "M". Most are not: they carry their rules text for you to apply at the table, and equipping one moves no numbers.',
-    issueDetail:
-      "249 of 4,904 catalog entries carry structured changes[]; 3,701 imported entries are prose only. Worn items blocked on a missing mechanism (effective class levels, creation-time choices, miss chance, item-granted feats or natural attacks) are inventoried in the data pipeline's item blocker table. Weapon and armor special abilities sit on the same axis: only keen, distance and reliable move numbers.",
+    note: 'The nine "unique" patrons are shown but not applied: the hex one grants, the theme you pick under it, and the spells it swaps in are yours to apply by hand.',
   },
   {
     category: "Weapon training maneuvers",
     note: "A fighter's weapon training bonus on combat maneuvers made with a trained weapon is not added to CMB: apply it at the table. Its CMD bonus against disarm and sunder shows the best trained group's bonus, whatever weapon is in hand.",
-    issueDetail:
-      "The sheet has no per-weapon CMB, and doc state does not record which weapon is wielded, so the CMB rider has no target and the CMD line cannot pick a group.",
-  },
-  {
-    category: "Metamagic",
-    note: "Most metamagic feats change something the sheet has no number for: a bouncing spell's redirect, an elemental spell's swapped damage type, a quickened spell's action. Those stay rules text on the feat.",
-    issueDetail:
-      "20 of the 84 vendored metamagic feats carry a structured spell-line transform; the rest turn on a component, action type, or target eligibility the spell data does not express.",
   },
   {
     category: "Monk flurry weapon lists",
     note: "An archetype that trades what a flurry may be swung with is not reflected in the flurry line: a zen archer's bow, a far strike monk's thrown weapons, and a sacred fist warpriest's fists carry no flurry sequence of their own.",
-    issueDetail:
-      "The flurry line keys off the vendored monk weapon group plus the synthesized unarmed strike, so an archetype that swaps the list, or a non-monk class granted flurry as a monk of its own level, has no way to say so.",
   },
   {
-    category: "Draw and reload actions",
-    note: "Weapon attack sequences show your potential attacks, not the actions needed to draw or reload. Throwing several weapons usually needs Quick Draw; crossbows and slings need reload time. Count only the attacks you can make with the actions available.",
-    issueDetail:
-      "Draw/reload action economy, Rapid Reload and Crossbow Mastery do not constrain iterative attack sequences. Hand state and loaded ammunition are not tracked.",
-  },
-  {
-    category: "Combat stance feats",
-    note: "Most Style feats toggle as a reminder without moving numbers: only a stance whose whole benefit is a flat bonus is applied. Crane Riposte's smaller attack penalty and Crane Wing's dodge bonus against melee stay rules text while Fighting Defensively is on.",
-    issueDetail:
-      "89 vendored feats tagged Combat and Style surface as stance toggles; 78 carry no structured changes, being scoped to one weapon, gated on a pool that must hold points, or shaped as an event. Crane Riposte and Crane Wing are tagged Combat without Style, so they do not surface as toggles at all, and their riders have no entry.",
-  },
-  {
-    category: "Character traits",
-    note: "The full published trait catalog is searchable in the picker, and a trait whose benefit carries structured numbers or a class-skill grant applies to your sheet automatically; a trait that asks you to choose a skill offers that choice on the trait itself. The rest show their benefit as text to apply at the table. Anything still missing can be added as a homebrew trait.",
-    issueDetail:
-      "1,981 vendored and searchable; 628 apply live effects, 71 more once their choose-one pick is made, plus the 28 hand-authored core entries. The remaining ~1,280 are situational prose; 58 hold an unconditional number blocked on an axis the sheet lacks (multi-select or any-skill picks, caster-level and per-day-pool numbers), inventoried in the engine's trait table.",
-  },
-];
-
-/**
- * Gaps with no player-facing surface — pure data-pipeline facts that belong
- * in the generated issue #74 mirror but have nowhere to render in the
- * Settings panel, which only reads `COVERAGE_NOTES`.
- *
- * Same discipline as `COVERAGE_NOTES`: what's missing, not what got fixed.
- */
-export interface InternalGap {
-  category: string;
-  detail: string;
-}
-
-export const INTERNAL_GAPS: readonly InternalGap[] = [
-  {
-    category: "Timed conditions",
-    detail:
-      "No condition in the catalog except the rage/bloodrage fatigue aftermath states its duration in rounds structurally, so every other countdown starts from a number typed at the table rather than from data.",
-  },
-  {
-    category: "Immunity grants",
-    detail:
-      "Item, trait, and feat immunities narrower than the effect vocabulary (one named poison, inhaled poisons, confusion, pain) or that depend on an activation, a set bonus, or a choice stay prose.",
-  },
-  {
-    category: "Skill substitutions",
-    detail:
-      "Rules letting one skill or ability score stand in for another on specific checks have no engine route, so the substituted check keeps its default basis.",
-  },
-  {
-    category: "Precision and nonlethal damage kinds",
-    detail:
-      "Damage lines carry no precision or lethality axis, so effects keyed to those kinds (precision riders, precision-immunity interactions, lethal-to-nonlethal conversions) have no target.",
-  },
-  {
-    category: "Casting-time metamagic waivers",
-    detail:
-      "Abilities whose whole benefit is removing the full-round action a spontaneous caster pays for metamagic have no target: a cast carries no action-economy line to move.",
-  },
-  {
-    category: "Virtual feat prerequisites",
-    detail:
-      "Abilities that count as a feat or as another class's levels for prerequisite purposes never reach the prerequisite checker, which reads only feats actually owned or granted.",
+    category: "Crane Riposte and Crane Wing",
+    note: "Neither shows up as a stance toggle, so Crane Riposte's smaller attack penalty and Crane Wing's dodge bonus against melee while Fighting Defensively stay rules text.",
   },
 ];

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "bun:test";
 
-import { COVERAGE_NOTES, INTERNAL_GAPS } from "../src/model/coverageNotes.js";
+import { COVERAGE_NOTES } from "../src/model/coverageNotes.js";
 import { expectNoDashes, expectWithinBudget } from "./houseStyle.js";
 
 /**
@@ -9,8 +9,6 @@ import { expectNoDashes, expectWithinBudget } from "./houseStyle.js";
  * should be argued for rather than done reflexively to land a sentence.
  */
 const NOTE_BUDGET = 65;
-const ISSUE_DETAIL_BUDGET = 65;
-const INTERNAL_DETAIL_BUDGET = 35;
 
 /**
  * Constructions that only appear when an entry is narrating work that landed
@@ -81,36 +79,28 @@ describe("COVERAGE_NOTES", () => {
     expect(new Set(categories).size).toBe(categories.length);
   });
 
-  it("never leaks an internal issue-tracker reference, in either field", () => {
+  it("never leaks an internal issue-tracker reference", () => {
     for (const n of COVERAGE_NOTES) {
       expect(n.category).not.toMatch(/#\d+/);
       expect(n.note).not.toMatch(/#\d+/);
-      // issueDetail feeds a generated issue body, where a cross-reference
-      // reads as commit provenance rather than inventory.
-      expect(n.issueDetail ?? "").not.toMatch(/#\d+/);
     }
   });
 
   it("keeps every entry inside its length budget", () => {
     for (const n of COVERAGE_NOTES) {
       expectWithinBudget(`${n.category} (note)`, n.note, NOTE_BUDGET);
-      if (n.issueDetail) {
-        expectWithinBudget(`${n.category} (issueDetail)`, n.issueDetail, ISSUE_DETAIL_BUDGET);
-      }
     }
   });
 
   it("describes what's missing, never what got fixed", () => {
     for (const n of COVERAGE_NOTES) {
       expectDescribesTheGap(`${n.category} (note)`, n.note);
-      expectDescribesTheGap(`${n.category} (issueDetail)`, n.issueDetail ?? "");
     }
   });
 
   it("lists only gaps a future version could close, not table rulings", () => {
     for (const n of COVERAGE_NOTES) {
       expectCloseable(`${n.category} (note)`, n.note);
-      expectCloseable(`${n.category} (issueDetail)`, n.issueDetail ?? "");
     }
   });
 
@@ -118,34 +108,6 @@ describe("COVERAGE_NOTES", () => {
     for (const n of COVERAGE_NOTES) {
       expectNoDashes(`${n.category} (category)`, n.category);
       expectNoDashes(`${n.category} (note)`, n.note);
-    }
-  });
-});
-
-describe("INTERNAL_GAPS", () => {
-  it("is non-empty, with a non-blank category and detail per entry", () => {
-    expect(INTERNAL_GAPS.length).toBeGreaterThan(0);
-    for (const g of INTERNAL_GAPS) {
-      expect(g.category.trim().length).toBeGreaterThan(0);
-      expect(g.detail.trim().length).toBeGreaterThan(0);
-    }
-  });
-
-  it("has unique categories, distinct from COVERAGE_NOTES' (feeds one generated list)", () => {
-    const internalCategories = INTERNAL_GAPS.map((g) => g.category);
-    expect(new Set(internalCategories).size).toBe(internalCategories.length);
-    const playerCategories = new Set(COVERAGE_NOTES.map((n) => n.category));
-    for (const category of internalCategories) {
-      expect(playerCategories.has(category)).toBe(false);
-    }
-  });
-
-  it("holds to the same budget and gap-only discipline", () => {
-    for (const g of INTERNAL_GAPS) {
-      expectWithinBudget(`${g.category} (detail)`, g.detail, INTERNAL_DETAIL_BUDGET);
-      expectDescribesTheGap(`${g.category} (detail)`, g.detail);
-      expectCloseable(`${g.category} (detail)`, g.detail);
-      expect(g.detail).not.toMatch(/#\d+/);
     }
   });
 });

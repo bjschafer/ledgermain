@@ -101,20 +101,11 @@ Two ledgers track what players see, and both are easy to forget:
   panel in Settings, and the Settings tab's notification dot keys off the top
   entry's id, so **never rewrite a shipped id**. Notable changes only: refactors,
   data regens, and internal fixes don't earn a line.
-- The coverage notes. `apps/web/src/model/coverageNotes.ts` is the single source
-  of truth for content Ledgermain doesn't cover; it renders as the "What's Not
-  Covered" panel in Settings. Filling a gap means deleting its entry; finding one
-  means adding it.
-
-  The GitHub inventory issue (#74) is a generated mirror of that file, so any
-  edit -- a filled gap, a new gap, or a reworded sentence -- leaves it stale.
-  Run `bun run coverage:issue --write`, which rewrites the issue body for you.
-  Never hand-edit the issue.
-
-  Editing #74 needs write access to the repo, which you won't have on a fork.
-  That's fine and expected: `--write` detects it, skips the write, and prints
-  the body instead. Just mention in your PR that `coverageNotes.ts` changed,
-  and a maintainer syncs the issue when the PR lands.
+- The coverage notes. `apps/web/src/model/coverageNotes.ts` renders as the
+  "What's Not Covered" panel in Settings: a short, player-facing list of gaps a
+  player would notice. The full inventory is GitHub issues labeled `gap`.
+  Filling a gap means closing its issue and deleting (or cutting back) its
+  panel entry; the file only ever shrinks.
 
 ## Reference data
 
