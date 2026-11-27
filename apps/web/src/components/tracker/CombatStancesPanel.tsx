@@ -3,7 +3,6 @@ import { useMemo } from "react";
 import { COMBAT_STANCES } from "@pf1/engine";
 
 import { Explainer } from "../Explainer.js";
-import { InfoTip } from "../InfoTip.js";
 import { RulesProse } from "../RulesProse.js";
 import { SwordIcon } from "../icons.js";
 import { Panel } from "../builder/Panel.js";
@@ -39,21 +38,19 @@ export function CombatStancesPanel({ doc, refData, update }: BuilderProps) {
           </div>
           <div className="chips stance-chips">
             {COMBAT_STANCES.map((stance) => (
-              <span key={stance.id} className="chip-wrap">
-                <button
-                  type="button"
-                  className="chip"
-                  aria-pressed={stance.id === activeId}
-                  onClick={() => update((d) => toggleCombatStance(d, stance))}
-                >
-                  {stance.name}
-                </button>
-                <InfoTip className="chip-info" content={stance.summary}>
-                  ⓘ
-                </InfoTip>
-              </span>
+              <button
+                key={stance.id}
+                type="button"
+                className="chip"
+                aria-pressed={stance.id === activeId}
+                title={stance.summary}
+                onClick={() => update((d) => toggleCombatStance(d, stance))}
+              >
+                {stance.name}
+              </button>
             ))}
           </div>
+          {active ? <p className="hint stance-summary">{active.summary}</p> : null}
         </section>
 
         <section>
@@ -71,27 +68,25 @@ export function CombatStancesPanel({ doc, refData, update }: BuilderProps) {
                 {styles.map((style) => (
                   <button
                     type="button"
-                    className={`chip stance-style${style.movesNumbers ? "" : " display-only"}`}
+                    className="chip"
                     key={style.effectTag}
                     aria-pressed={activeStyleTags.has(style.effectTag)}
                     title={
                       style.movesNumbers
                         ? undefined
-                        : "Reference only: switching this on shows its rules and changes no numbers."
+                        : "Reminder only: switching this on shows its rules and changes no numbers."
                     }
                     onClick={() => update((d) => toggleCombatStyle(d, style))}
                   >
                     {style.name}
-                    {style.movesNumbers ? null : (
-                      <span className="dot" aria-hidden="true">
-                        °
-                      </span>
-                    )}
                   </button>
                 ))}
               </div>
               {activeStyles.map((style) => (
                 <Explainer key={style.effectTag} title={`${style.name} rules`}>
+                  {style.movesNumbers ? null : (
+                    <p className="hint">Reminder only: the sheet's numbers don't change.</p>
+                  )}
                   <RulesProse className="stance-style-description" html={style.description} />
                 </Explainer>
               ))}
@@ -103,15 +98,22 @@ export function CombatStancesPanel({ doc, refData, update }: BuilderProps) {
       </div>
       <Explainer title="How combat stances work">
         <p className="hint">
-          Pick the combat action you are taking this round. Choosing another replaces it, and
-          choosing the active one turns it off. Three Acrobatics ranks improve both defensive
-          actions, and Total Defense prevents attacks even though the sheet keeps their reference
-          numbers visible. Style feats are a separate layer that stays on until you change it.
-          Entering one is a swift action and you hold a single style, so picking another replaces
-          it. A monk's Master of Many Styles holds more as levels rise, and the count above tracks
-          the limit. Dashed + ° = reference only, the same marker a condition uses: the style shows
-          its rules and changes no numbers. Attack and Armor Class breakdowns name every applied
-          source.
+          Pick the combat action you take this round; picking another replaces it, and picking the
+          active one turns it off.
+        </p>
+        <ul className="cond-notes cond-glossary">
+          {COMBAT_STANCES.map((stance) => (
+            <li key={stance.id}>
+              <div className="cond-note-text">
+                <b>{stance.name}.</b> {stance.summary}
+              </div>
+            </li>
+          ))}
+        </ul>
+        <p className="hint">
+          Style feats are a separate layer that stays on until you change it. Entering one is a
+          swift action and you hold a single style, so picking another replaces it. A monk's Master
+          of Many Styles holds more as levels rise, and the count above tracks the limit.
         </p>
       </Explainer>
     </Panel>

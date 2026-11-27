@@ -1,4 +1,4 @@
-import { CONDITIONS, CONDITION_IDS, EFFECT_IMMUNITY_LABELS } from "@pf1/engine";
+import { CONDITIONS, CONDITION_IDS, EFFECT_IMMUNITY_LABELS, type ConditionDef } from "@pf1/engine";
 
 import { NumberField } from "../builder/NumberField.js";
 import { Panel } from "../builder/Panel.js";
@@ -10,18 +10,38 @@ import {
   toggleCondition,
 } from "../../model/conditions.js";
 import { Explainer } from "../Explainer.js";
-import { InfoTip } from "../InfoTip.js";
+import { TipButton } from "../InfoTip.js";
 import { AlertTriangleIcon } from "../icons.js";
 import type { BuilderProps } from "../builder/types.js";
+
+/** What a player has to apply by hand, or should question, beyond the summary. */
+function conditionCaveats(cond: ConditionDef, immuneTo: string | undefined): string {
+  const parts: string[] = [];
+  if (immuneTo) {
+    parts.push(
+      `You're immune to ${EFFECT_IMMUNITY_LABELS[immuneTo]}, so it shouldn't normally apply.`,
+    );
+  }
+  if (cond.displayOnly) parts.push("Reminder only: the sheet's numbers don't change.");
+  return parts.join(" ");
+}
+
+function withCaveats(text: string, caveats: string): string {
+  return caveats ? `${text} ${caveats}` : text;
+}
 
 /** Toggle the core PF1 conditions; the sheet's numbers update live via compute(). */
 export function ConditionsPanel({ doc, sheet, update }: BuilderProps) {
   const active = new Set(doc.live.conditions);
+  const impliedBy = new Map<string, string>();
+  for (const id of CONDITION_IDS) {
+    const by = supersedingCondition(doc, id);
+    if (by) impliedBy.set(id, by);
+  }
 
   return (
     <Panel
       title="Conditions"
-
       icon={<AlertTriangleIcon />}
       storageKey="panel:Conditions"
       right={<span className="hint">{active.size} active</span>}
@@ -29,79 +49,49 @@ export function ConditionsPanel({ doc, sheet, update }: BuilderProps) {
       <div className="chips">
         {CONDITION_IDS.map((id) => {
           const cond = CONDITIONS[id]!;
-          const on = active.has(id);
-          const supersededBy = supersedingCondition(doc, id);
-          const implied = supersededBy !== undefined;
+          const supersededBy = impliedBy.get(id);
           const impliedName = supersededBy ? CONDITIONS[supersededBy]?.name : undefined;
-          // Full explanation of the chip's state — the only place this text
-          // lives, so it needs a tap-reachable form too, not just the button's
-          // `title=` (invisible on touch).
           const roundsLeft = conditionRoundsLeft(doc, id);
           const immuneTo = conditionImmunityFor(sheet, id);
-          const tipContent = immuneTo
-            ? `You're immune to ${EFFECT_IMMUNITY_LABELS[immuneTo]}, so this shouldn't normally apply. Toggling it anyway is still allowed, since your GM may have a reason.`
-            : implied
-              ? `Implied by ${impliedName}, the stricter condition on this ladder. Turn ${impliedName} off to control ${cond.name} directly.`
-              : cond.displayOnly
-                ? `${cond.summary} (reference only; no numeric modifier applied)`
-                : roundsLeft !== undefined
-                  ? `${cond.summary} Ends in ${roundsLeft} round${roundsLeft === 1 ? "" : "s"}; the round clock clears it.`
-                  : cond.summary;
           return (
-            <span key={id} className="chip-wrap">
-              <button
-                type="button"
-                className={`chip cond${cond.displayOnly ? " display-only" : ""}${implied ? " implied" : ""}${immuneTo ? " immune" : ""}`}
-                aria-pressed={on}
-                disabled={implied}
-                title={tipContent}
-                onClick={() => update((d) => toggleCondition(d, id))}
-              >
-                {cond.name}
-                {roundsLeft !== undefined ? (
-                  <span className="cond-rounds"> {roundsLeft}r</span>
-                ) : null}
-                {immuneTo ? (
-                  <span className="dot" aria-hidden="true">
-                    ⊘
-                  </span>
-                ) : implied ? (
-                  <span className="dot" aria-hidden="true">
-                    ▲
-                  </span>
-                ) : cond.displayOnly ? (
-                  <span className="dot" aria-hidden="true">
-                    °
-                  </span>
-                ) : null}
-              </button>
-              <InfoTip className="chip-info" content={tipContent}>
-                ⓘ
-              </InfoTip>
-            </span>
+            <TipButton
+              key={id}
+              className={`chip cond${impliedName ? " implied" : ""}${immuneTo ? " immune" : ""}`}
+              // An implied condition is in effect through its stricter sibling.
+              aria-pressed={active.has(id) || impliedName !== undefined}
+              disabled={impliedName !== undefined}
+              disabledReason={`Included in ${impliedName}. Turn ${impliedName} off to set ${cond.name} on its own.`}
+              title={withCaveats(cond.summary, conditionCaveats(cond, immuneTo))}
+              onClick={() => update((d) => toggleCondition(d, id))}
+            >
+              {cond.name}
+              {roundsLeft !== undefined ? (
+                <span className="cond-rounds"> {roundsLeft}r</span>
+              ) : null}
+              {immuneTo ? (
+                <span className="cond-immune" aria-hidden="true">
+                  ⊘
+                </span>
+              ) : null}
+            </TipButton>
           );
         })}
       </div>
-      <Explainer title="What the chip markers mean">
-        <p className="hint">
-          Dashed + ° = reference only (doesn't change numbers yet). ▲ = implied by a stricter
-          condition on the same ladder (e.g. frightened implies shaken); turn the stricter one off
-          to toggle this directly. ⊘ = something you're immune to; you can still toggle it, since
-          only your table knows why. A round count (e.g. "10r") means the condition has a known
-          duration, and advancing the round clock counts it down and clears it. Set the "Rounds
-          left" field below to give an active condition a duration, or clear it to leave the
-          condition on indefinitely.
-        </p>
-      </Explainer>
       {active.size > 0 ? (
         <ul className="cond-notes">
           {[...active].map((id) => {
             const cond = CONDITIONS[id];
             if (!cond) return null;
+            const included = CONDITION_IDS.filter((other) => impliedBy.get(other) === id).map(
+              (other) => CONDITIONS[other]?.name,
+            );
+            const caveats = conditionCaveats(cond, conditionImmunityFor(sheet, id));
             return (
               <li key={id}>
                 <div className="cond-note-text">
                   <b>{cond.name}.</b> {cond.summary}
+                  {included.length > 0 ? ` Includes ${included.join(" and ")}.` : null}
+                  {caveats ? <span className="cond-caveat"> {caveats}</span> : null}
                 </div>
                 <label className="cond-rounds-edit">
                   <span className="hint">Rounds left</span>
@@ -123,6 +113,22 @@ export function ConditionsPanel({ doc, sheet, update }: BuilderProps) {
       ) : (
         <div className="empty">No conditions. Toggle one to see the sheet recompute.</div>
       )}
+      <Explainer title="What each condition does">
+        <ul className="cond-notes cond-glossary">
+          {CONDITION_IDS.map((id) => {
+            const cond = CONDITIONS[id]!;
+            const caveats = conditionCaveats(cond, conditionImmunityFor(sheet, id));
+            return (
+              <li key={id}>
+                <div className="cond-note-text">
+                  <b>{cond.name}.</b> {cond.summary}
+                  {caveats ? <span className="cond-caveat"> {caveats}</span> : null}
+                </div>
+              </li>
+            );
+          })}
+        </ul>
+      </Explainer>
     </Panel>
   );
 }

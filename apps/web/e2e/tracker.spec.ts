@@ -123,17 +123,17 @@ test("an owned combat Style feat toggles beside the actions and shows its rules"
   });
   const style = stances.getByRole("button", { name: "Stick-Fighting Style" });
   await expect(style).toHaveAttribute("aria-pressed", "false");
-  // Dashed + degree marker: switching this style on surfaces its rules and
-  // moves no numbers. Crane Style, the one that does, is prereq-blocked from a
-  // bare character, so its plain chip and its math are pinned in the model and
-  // engine fixtures instead.
-  await expect(style).toHaveClass(/display-only/);
+  // Crane Style, the one that moves numbers, is prereq-blocked from a bare
+  // character, so its math is pinned in the model and engine fixtures instead.
   await style.click();
   await expect(style).toHaveAttribute("aria-pressed", "true");
   // A character holds one style at a time, so the group head names it.
-  await expect(stances.getByText("Stick-Fighting Style", { exact: true })).toBeVisible();
+  await expect(stances.locator(".stance-group-head .hint").nth(1)).toHaveText(
+    "Stick-Fighting Style",
+  );
 
   await stances.getByText("Stick-Fighting Style rules").click();
+  await expect(stances.getByText("Reminder only: the sheet's numbers don't change.")).toBeVisible();
   await expect(stances.getByText(/You know how to use batons/)).toBeVisible();
 
   expect(pageErrors, pageErrors.join("\n")).toEqual([]);

@@ -3543,6 +3543,11 @@ a:focus-visible,
   row-gap: 8px;
 }
 
+.stance-summary {
+  margin: 8px 0 0;
+  font-size: 0.75rem;
+}
+
 .stance-empty {
   margin: 0;
 }
@@ -3835,39 +3840,23 @@ a:focus-visible,
   border-style: dashed;
 }
 
-/* Same reference-only look on a style-feat chip in the Stances panel, which
-   asks the same question of the player: this one is toggleable, it just moves
-   no numbers. Kept on one rule so the two panels cannot drift apart. */
-.chip.stance-style.display-only {
-  opacity: 0.82;
-  border-style: dashed;
-}
-
-/* A ladder member currently superseded by a stricter active sibling (e.g.
-   shaken while frightened is on) — covered, not independently toggleable.
-   `.chip:disabled` already handles opacity/cursor; this just adjusts it. */
+/* A ladder member covered by a stricter active sibling (e.g. shaken while
+   frightened is on): pressed, since it is in effect, but dimmed because it
+   can't be toggled on its own. Overrides `.chip[aria-disabled]`'s opacity. */
 .chip.cond.implied {
-  opacity: 0.55;
-}
-
-/* Superscript "°" marks a display-only chip (no numeric modifier applied) —
-   a plain "·" here read as a stray typo (issue: "Staggered ·"); the raised,
-   dimmer glyph reads as an intentional footnote mark instead. Kept small and
-   quiet since the dashed border already carries the same signal. */
-.chip.cond .dot {
-  color: var(--faint);
-  margin-left: 1px;
-  font-size: 0.7em;
-  vertical-align: super;
+  opacity: 0.6;
 }
 
 /* A condition the character is immune to. Still toggleable (only the table
-   knows why it might apply anyway), so this is a hint, not a disabled state —
-   dimmer than normal but not as dim as `.implied`, which genuinely can't be
-   clicked. */
+   knows why it might apply anyway), so this is a hint, not a disabled state. */
 .chip.cond.immune {
   opacity: 0.7;
   border-style: dotted;
+}
+
+.chip.cond .cond-immune {
+  margin-left: 4px;
+  color: var(--faint);
 }
 
 /* Rounds left on a timed condition (a rage's fatigue aftermath) — a quiet
@@ -3878,8 +3867,13 @@ a:focus-visible,
   font-size: 0.85em;
 }
 
-.cond-legend {
-  margin-top: 8px;
+.cond-caveat {
+  color: var(--faint);
+  font-style: italic;
+}
+
+.explainer-body .cond-glossary {
+  margin: 0;
 }
 
 .cond-notes {
