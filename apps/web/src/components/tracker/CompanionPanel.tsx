@@ -1,7 +1,5 @@
 import { useState } from "react";
 
-import { CONDITIONS, CONDITION_IDS } from "@pf1/engine";
-
 import { NumberField } from "../builder/NumberField.js";
 import { Panel } from "../builder/Panel.js";
 import { PawIcon } from "../icons.js";
@@ -32,6 +30,7 @@ import { effectiveHp, isHpLow } from "../../model/hp.js";
 import { signed } from "../../model/names.js";
 import { InfoTip } from "../InfoTip.js";
 import { StatSeal } from "../StatSeal.js";
+import { ConditionChips } from "./ConditionChips.js";
 import type { BuilderProps } from "../builder/types.js";
 
 /**
@@ -160,33 +159,11 @@ export function CompanionPanel({ doc, refData, update }: BuilderProps) {
 
       <div className="animal-companion-conditions">
         <h4 className="tracker-sub">Conditions</h4>
-        <div className="chips">
-          {CONDITION_IDS.map((id) => {
-            const cond = CONDITIONS[id]!;
-            const on = hasCompanionCondition(doc, id);
-            const supersededBy = companionSupersedingCondition(doc, id);
-            const implied = supersededBy !== undefined;
-            const impliedName = supersededBy ? CONDITIONS[supersededBy]?.name : undefined;
-            const tipContent = implied
-              ? `Implied by ${impliedName}: turn ${impliedName} off to control ${cond.name} directly.`
-              : cond.displayOnly
-                ? `${cond.summary} (reference only, no numeric modifier applied)`
-                : cond.summary;
-            return (
-              <button
-                key={id}
-                type="button"
-                className={`chip cond${cond.displayOnly ? " display-only" : ""}${implied ? " implied" : ""}`}
-                aria-pressed={on}
-                disabled={implied}
-                title={tipContent}
-                onClick={() => update((d) => toggleCompanionCondition(d, id))}
-              >
-                {cond.name}
-              </button>
-            );
-          })}
-        </div>
+        <ConditionChips
+          isActive={(id) => hasCompanionCondition(doc, id)}
+          supersededBy={(id) => companionSupersedingCondition(doc, id)}
+          onToggle={(id) => update((d) => toggleCompanionCondition(d, id))}
+        />
       </div>
 
       <div className="stat-group familiar-stat-group">

@@ -1,7 +1,5 @@
 import { useState } from "react";
 
-import { CONDITIONS, CONDITION_IDS } from "@pf1/engine";
-
 import { NumberField } from "../builder/NumberField.js";
 import { Panel } from "../builder/Panel.js";
 import { EyeIcon } from "../icons.js";
@@ -37,6 +35,7 @@ import {
 import { signed } from "../../model/names.js";
 import { InfoTip } from "../InfoTip.js";
 import { StatSeal } from "../StatSeal.js";
+import { ConditionChips } from "./ConditionChips.js";
 import type { BuilderProps } from "../builder/types.js";
 
 /**
@@ -150,33 +149,11 @@ export function EidolonPanel({ doc, refData, update }: BuilderProps) {
 
       <div className="eidolon-conditions">
         <h4 className="tracker-sub">Conditions</h4>
-        <div className="chips">
-          {CONDITION_IDS.map((id) => {
-            const cond = CONDITIONS[id]!;
-            const on = hasEidolonCondition(doc, id);
-            const supersededBy = eidolonSupersedingCondition(doc, id);
-            const implied = supersededBy !== undefined;
-            const impliedName = supersededBy ? CONDITIONS[supersededBy]?.name : undefined;
-            const tipContent = implied
-              ? `Implied by ${impliedName}: turn ${impliedName} off to control ${cond.name} directly.`
-              : cond.displayOnly
-                ? `${cond.summary} (reference only, no numeric modifier applied)`
-                : cond.summary;
-            return (
-              <button
-                key={id}
-                type="button"
-                className={`chip cond${cond.displayOnly ? " display-only" : ""}${implied ? " implied" : ""}`}
-                aria-pressed={on}
-                disabled={implied}
-                title={tipContent}
-                onClick={() => update((d) => toggleEidolonCondition(d, id))}
-              >
-                {cond.name}
-              </button>
-            );
-          })}
-        </div>
+        <ConditionChips
+          isActive={(id) => hasEidolonCondition(doc, id)}
+          supersededBy={(id) => eidolonSupersedingCondition(doc, id)}
+          onToggle={(id) => update((d) => toggleEidolonCondition(d, id))}
+        />
       </div>
 
       <p

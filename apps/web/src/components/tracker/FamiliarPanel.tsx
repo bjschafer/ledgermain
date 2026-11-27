@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { CONDITIONS, CONDITION_IDS, effectiveSpellLevel, spellIdByName } from "@pf1/engine";
+import { effectiveSpellLevel, spellIdByName } from "@pf1/engine";
 
 import { NumberField } from "../builder/NumberField.js";
 import { Panel } from "../builder/Panel.js";
@@ -37,6 +37,7 @@ import { SpellBonusesExclusion } from "../../state/spellBonuses.js";
 import { InfoTip } from "../InfoTip.js";
 import { SpellDetail } from "../SpellDetail.js";
 import { StatSeal } from "../StatSeal.js";
+import { ConditionChips } from "./ConditionChips.js";
 import type { BuilderProps } from "../builder/types.js";
 
 /**
@@ -163,33 +164,11 @@ export function FamiliarPanel({ doc, sheet, refData, update }: BuilderProps) {
 
       <div className="familiar-conditions">
         <h4 className="tracker-sub">Conditions</h4>
-        <div className="chips">
-          {CONDITION_IDS.map((id) => {
-            const cond = CONDITIONS[id]!;
-            const on = hasFamiliarCondition(doc, id);
-            const supersededBy = familiarSupersedingCondition(doc, id);
-            const implied = supersededBy !== undefined;
-            const impliedName = supersededBy ? CONDITIONS[supersededBy]?.name : undefined;
-            const tipContent = implied
-              ? `Implied by ${impliedName}. Turn ${impliedName} off to control ${cond.name} directly.`
-              : cond.displayOnly
-                ? `${cond.summary} (reference only, no numeric modifier applied)`
-                : cond.summary;
-            return (
-              <button
-                key={id}
-                type="button"
-                className={`chip cond${cond.displayOnly ? " display-only" : ""}${implied ? " implied" : ""}`}
-                aria-pressed={on}
-                disabled={implied}
-                title={tipContent}
-                onClick={() => update((d) => toggleFamiliarCondition(d, id))}
-              >
-                {cond.name}
-              </button>
-            );
-          })}
-        </div>
+        <ConditionChips
+          isActive={(id) => hasFamiliarCondition(doc, id)}
+          supersededBy={(id) => familiarSupersedingCondition(doc, id)}
+          onToggle={(id) => update((d) => toggleFamiliarCondition(d, id))}
+        />
       </div>
 
       <div className="stat-group familiar-stat-group">

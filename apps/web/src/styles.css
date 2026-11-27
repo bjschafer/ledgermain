@@ -3835,11 +3835,6 @@ a:focus-visible,
 }
 
 /* conditions */
-.chip.cond.display-only {
-  opacity: 0.82;
-  border-style: dashed;
-}
-
 /* A ladder member covered by a stricter active sibling (e.g. shaken while
    frightened is on): pressed, since it is in effect, but dimmed because it
    can't be toggled on its own. Overrides `.chip[aria-disabled]`'s opacity. */

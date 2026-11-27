@@ -51,7 +51,7 @@ export const CHANGELOG: readonly ChangelogEntry[] = [
     id: "2026-11-26-cleaner-condition-chips",
     date: "2026-11-26",
     title: "Cleaner condition and stance chips",
-    note: 'The info circles and footnote marks beside condition and stance chips are gone. Turn one on and its effect shows right below, including whether you apply it yourself. To read them all without toggling anything, open "What each condition does" or "How combat stances work". A condition included in a stricter one, like shaken under frightened, now lights up dimmed.',
+    note: 'The info circles and footnote marks beside condition and stance chips are gone. Turn one on and its effect shows right below, including whether you apply it yourself. Companions, eidolons, familiars, and phantoms work the same way. To read them all without toggling anything, open "What each condition does" or "How combat stances work". A condition included in a stricter one, like shaken under frightened, now lights up dimmed.',
   },
   {
     id: "2026-11-26-applied-reminders-hidden",
