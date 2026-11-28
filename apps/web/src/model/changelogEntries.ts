@@ -48,6 +48,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-11-27-improved-familiar-catalog",
+    date: "2026-11-27",
+    title: "Every published improved familiar",
+    note: "The improved familiar picker now holds the whole published list: the five wysps, the aether elemental, the shikigami kami, spirit oni, pipefox, and calligraphy wyrm a ninja's spiritual companion trick names, and dozens more from the sootwing bat to the zoog, plus a fey-touched template for any standard animal. A species that asks for an alignment like \"any evil\" now checks your alignment against that rule instead of a step away from the creature's own.",
+  },
+  {
     id: "2026-11-27-prestige-own-spells",
     date: "2026-11-27",
     title: "Prophet of Kalistrade and Red Mantis Assassin spellcasting",

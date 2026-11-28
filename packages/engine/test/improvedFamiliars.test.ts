@@ -103,6 +103,13 @@ describe("improved-familiar tables (drift guards)", () => {
     }
   });
 
+  it("no prereq names both a familiar alignment and a master alignment rule", () => {
+    for (const [id, species] of Object.entries(IMPROVED_FAMILIARS)) {
+      const { alignment, masterAlignment } = species.prereq;
+      expect(alignment !== undefined && masterAlignment !== undefined, id).toBe(false);
+    }
+  });
+
   it("every template resolves a 1-HD defenses tier", () => {
     for (const [id, template] of Object.entries(FAMILIAR_TEMPLATES)) {
       expect(Object.keys(template.defensesForHd(1)).length, `${id}`).toBeGreaterThan(0);

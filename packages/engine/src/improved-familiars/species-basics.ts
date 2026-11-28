@@ -1,9 +1,10 @@
 /**
  * The CRB Improved Familiar table's non-templated CL 3/CL 5 rows: dire rat,
- * stirge, and the four Small elementals (air/earth/fire/water). Hand-authored
- * clean-room from the published Bestiary stat blocks (aonprd.com /
- * d20pfsrd.com) — see `types.ts` for the modeling rules (reverse-derived
- * `baseSaves`/`ownSkillRanks`, printed prereqs, defenses as display strings).
+ * stirge, and the Small elementals (air/earth/fire/water, plus Bestiary 5's
+ * aether under the table's "any type" row). Hand-authored clean-room from
+ * the published Bestiary stat blocks (aonprd.com / d20pfsrd.com) — see
+ * `types.ts` for the modeling rules (reverse-derived `baseSaves`/
+ * `ownSkillRanks`, printed prereqs, defenses as display strings).
  */
 
 import type { ImprovedFamiliar } from "./types.js";
@@ -215,5 +216,39 @@ export const IMPROVED_FAMILIARS_BASICS: Readonly<Record<string, ImprovedFamiliar
     ],
     prereq: { casterLevel: 5, alignment: "N" },
     source: "Bestiary (Small Water Elemental); CRB Improved Familiar table",
+  },
+  // Small Aether Elemental (Bestiary 5 p.106). AC 14 = 10 + Dex 2 + size 1 +
+  // a +1 deflection from telekinetic deflection (Con mod), which has no AC
+  // field here: no natural armor, deflection noted instead. baseSaves 3/3/0
+  // (Fort 4-1, Ref 5-2, Will 0-0). Skills reconcile with class +3 at 1 rank
+  // (Acrobatics, Fly: Dex 2 + size 2 + good 4) and 2 ranks (Perception,
+  // Stealth: Dex 2 + size 4).
+  "aether-elemental": {
+    name: "Small Aether Elemental",
+    size: "sm",
+    typeKind: "elemental",
+    creatureType: "Outsider (aether, elemental, extraplanar)",
+    hd: 2,
+    abilities: { str: 12, dex: 15, con: 12, wis: 11, cha: 11 },
+    ownInt: 4,
+    baseSaves: { fort: 3, ref: 3, will: 0 },
+    naturalArmor: 0,
+    attacks: [{ name: "Slam", count: 1, damageDice: "1d4" }],
+    speeds: { fly: 60 },
+    senses: ["blindsense 60 ft.", "darkvision 60 ft."],
+    flyManeuverability: "good",
+    classSkills: ["acr", "esc", "fly", "kpl", "per", "ste"],
+    ownSkillRanks: { acr: 1, fly: 1, per: 2, ste: 2 },
+    defenses: { immune: ["elemental traits", "force"] },
+    languages: ["Aquan", "Auran", "Ignan", "Terran"],
+    specialNotes: [
+      "Telekinetic deflection: deflection bonus to AC equal to its Con modifier (+1 as printed), not folded into the derived AC",
+      "Telekinetic invisibility: constant, and does not end when it attacks",
+      "Telekinetic throw (ranged, 1d8+2, Fort DC 12 to resist being thrown): flings up to 50 lbs. per Hit Die, damaging both the thrown thing and the target",
+      "Telekinetic maneuver: ranged combat maneuver as telekinesis, CMB equal to its Hit Dice + Dex modifier",
+      "Own feats: Improved Initiative, Point-Blank Shot",
+    ],
+    prereq: { casterLevel: 5, alignment: "N" },
+    source: "Bestiary 5 p.106 (Small Aether Elemental); CRB Improved Familiar table",
   },
 };

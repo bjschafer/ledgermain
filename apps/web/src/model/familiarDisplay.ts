@@ -272,6 +272,7 @@ export function familiarSlaDc(sla: DerivedFamiliarSla, refData: RefData): number
 export function formatImprovedFamiliarPrereq(prereq: ImprovedFamiliarPrereq): string {
   const parts = ["Improved Familiar feat", `caster level ${prereq.casterLevel}`];
   if (prereq.alignment) parts.push(`alignment within one step of ${prereq.alignment}`);
+  if (prereq.masterAlignment) parts.push(`${prereq.masterAlignment.label} alignment`);
   return parts.join(", ");
 }
 

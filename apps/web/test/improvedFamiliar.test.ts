@@ -226,6 +226,29 @@ describe("improvedFamiliarPrereqWarnings — imp's prereq (CL 7, LE)", () => {
   });
 });
 
+describe("improvedFamiliarPrereqWarnings — a row naming the master's alignment (sootwing bat: any evil)", () => {
+  const batPrereq = IMPROVED_FAMILIARS["sootwing-bat"]!.prereq;
+  const masterAligned = (alignment: string) => {
+    let d = wizard7();
+    d = toggleFeat(d, improvedFamiliarFeatId);
+    return improvedFamiliarPrereqWarnings(setAlignment(d, alignment), ref, batPrereq);
+  };
+
+  it("accepts a lawful evil master two law steps from the bat's own CE", () => {
+    expect(masterAligned("LE")).toEqual([]);
+  });
+
+  it("rejects a true neutral master even though N is within one step of CE", () => {
+    expect(masterAligned("N")).toEqual(["Alignment must be any evil"]);
+  });
+
+  it("prints the rule in the picker's prereq line", () => {
+    expect(formatImprovedFamiliarPrereq(batPrereq)).toBe(
+      "Improved Familiar feat, caster level 5, any evil alignment",
+    );
+  });
+});
+
 describe("formatCreatureDefenses / formatSlaFrequency / familiarSlaDc — imp + celestial fixtures", () => {
   it("formatCreatureDefenses formats the imp's printed defenses", () => {
     const text = formatCreatureDefenses(IMPROVED_FAMILIARS.imp!.defenses);

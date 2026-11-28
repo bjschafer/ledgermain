@@ -49,7 +49,7 @@
  *     exactly (verified by hand against all ten rows) — see
  *     {@link familiarNaturalArmorAdj} / {@link familiarIntScore}.
  *
- * Improved Familiars (`improved-familiars/`): non-animal species and the four
+ * Improved Familiars (`improved-familiars/`): non-animal species and the
  * animal templates ride this same derivation — the published feat keeps the
  * normal familiar rules with exactly two exceptions (type unchanged; no Speak
  * with Animals of Its Kind), so HP stays half the master's and attacks stay
@@ -926,19 +926,22 @@ export function deriveFamiliar(
   // A shared buff scoped to a category of effects stays out of the headline
   // total here exactly as it does on the master's sheet (see
   // `save-categories.ts`); a familiar has no Devotion of its own.
+  const templateSaves = template?.saveBonus;
   const fortSave = resolveSave(
     "fort",
-    Math.max(species.baseSaves.fort, master.baseSaves.fort) + conMod,
+    Math.max(species.baseSaves.fort, master.baseSaves.fort) +
+      (improved?.fortAbility ? abilities[improved.fortAbility].mod : conMod) +
+      (templateSaves?.fort ?? 0),
     sharedFort,
   );
   const refSave = resolveSave(
     "ref",
-    Math.max(species.baseSaves.ref, master.baseSaves.ref) + dexMod,
+    Math.max(species.baseSaves.ref, master.baseSaves.ref) + dexMod + (templateSaves?.ref ?? 0),
     sharedRef,
   );
   const willSave = resolveSave(
     "will",
-    Math.max(species.baseSaves.will, master.baseSaves.will) + wisMod,
+    Math.max(species.baseSaves.will, master.baseSaves.will) + wisMod + (templateSaves?.will ?? 0),
     sharedWill,
   );
   const saves = { fort: fortSave.total, ref: refSave.total, will: willSave.total };
@@ -986,9 +989,11 @@ export function deriveFamiliar(
     let ability: AbilityId = species.skillAbilityOverrides?.[id] ?? SKILL_ABILITY[id] ?? "int";
     // Universal Monster Rules: a creature with a climb/swim speed uses Dex
     // (not Str) for that specific skill, verified against every relevant
-    // species in BASE_FAMILIARS (see module doc comment).
-    if (id === "clm" && hasClimbSpeed) ability = "dex";
-    if (id === "swm" && hasSwimSpeed) ability = "dex";
+    // species in BASE_FAMILIARS (see module doc comment). A species whose
+    // printed block keeps Str for it says so via `skillAbilityOverrides`.
+    const overridden = species.skillAbilityOverrides?.[id] !== undefined;
+    if (id === "clm" && hasClimbSpeed && !overridden) ability = "dex";
+    if (id === "swm" && hasSwimSpeed && !overridden) ability = "dex";
     const abilityModVal = abilities[ability].mod;
 
     // "Whichever is better" per skill: the master's invested ranks vs the

@@ -21,7 +21,7 @@ import {
 } from "@pf1/engine";
 import type { CharacterDoc, DerivedSheet, FamiliarBuild, RefData, ResolvedStat } from "@pf1/schema";
 
-import { alignmentWithinOneStep } from "./alignment.js";
+import { alignmentMatchesAxes, alignmentWithinOneStep } from "./alignment.js";
 import { toggleConditionIn } from "./conditions.js";
 import { normalizeAlignmentCode } from "./names.js";
 
@@ -147,7 +147,8 @@ export function resetFamiliarSlaUses(doc: CharacterDoc): CharacterDoc {
  * caster level (best single-class caster level, advancement-aware), the
  * Improved Familiar feat itself (also accepts its Improved Familiar Bond
  * follow-up), and alignment (within one step on each axis of the familiar's
- * own alignment, when both the master's alignment and the prereq's parse).
+ * own alignment, or on the allowed axes of a row that names the master's
+ * alignment outright, when the master's alignment parses).
  */
 export function improvedFamiliarPrereqWarnings(
   doc: CharacterDoc,
@@ -169,12 +170,17 @@ export function improvedFamiliarPrereqWarnings(
   });
   if (!hasFeat) warnings.push("Requires the Improved Familiar feat");
 
-  if (prereq.alignment) {
-    const masterCode = doc.identity.alignment
-      ? normalizeAlignmentCode(doc.identity.alignment)
-      : undefined;
-    if (masterCode && alignmentWithinOneStep(masterCode, prereq.alignment) === false) {
+  const masterCode = doc.identity.alignment
+    ? normalizeAlignmentCode(doc.identity.alignment)
+    : undefined;
+  if (masterCode && prereq.alignment) {
+    if (alignmentWithinOneStep(masterCode, prereq.alignment) === false) {
       warnings.push(`Alignment must be within one step of ${prereq.alignment}`);
+    }
+  }
+  if (masterCode && prereq.masterAlignment) {
+    if (!alignmentMatchesAxes(masterCode, prereq.masterAlignment)) {
+      warnings.push(`Alignment must be ${prereq.masterAlignment.label}`);
     }
   }
 

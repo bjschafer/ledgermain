@@ -173,3 +173,15 @@ export function alignmentWithinOneStep(a: string, b: string): boolean | undefine
   const moralDist = Math.abs(MORAL_AXIS_ORDER[axesA.moral]! - MORAL_AXIS_ORDER[axesB.moral]!);
   return lawDist <= 1 && moralDist <= 1;
 }
+
+/**
+ * Whether an alignment code sits on the listed letters of each axis (an
+ * omitted axis is unrestricted), e.g. `{ moral: ["E"] }` for "any evil".
+ */
+export function alignmentMatchesAxes(
+  code: string,
+  axes: { law?: readonly string[]; moral?: readonly string[] },
+): boolean {
+  const { law, moral } = alignmentAxes(code);
+  return (!axes.law || axes.law.includes(law)) && (!axes.moral || axes.moral.includes(moral));
+}

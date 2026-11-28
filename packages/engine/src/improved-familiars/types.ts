@@ -3,11 +3,13 @@
  * Kept separate so an agent adding species to a shard never touches this
  * file — only `index.ts` merges shards.
  *
- * What this table family is: hand-authored stat blocks for the creatures the
+ * What this table family is: authored stat blocks for the creatures the
  * Improved Familiar feat unlocks (CRB p.127's table plus the splatbook
- * expansions), clean-room from the published PF1 rules via aonprd.com /
- * d20pfsrd.com — no vendored creature data exists (the data pipeline ships
- * no bestiary), and Foundry source is never consulted.
+ * expansions), from the published PF1 stat blocks. The vendored
+ * `monsters.json` sidecar (OGL Bestiary data) is the transcription source
+ * for the later shards, but it stays out of `RefData`, so each species is
+ * reduced to this module's shape here rather than read at runtime. Foundry
+ * source is never consulted.
  *
  * Rules posture, pinned during design (verified against the published feat
  * text): improved familiars use the NORMAL familiar rules with exactly two
@@ -112,6 +114,18 @@ export interface ImprovedFamiliarPrereq {
    * here.
    */
   alignment?: string;
+  /**
+   * A row that names the MASTER's alignment outright ("any evil", "any
+   * non-lawful") instead of a familiar alignment to sit within one step of.
+   * Each listed axis restricts the master to those letters; an omitted axis
+   * is unrestricted. Mutually exclusive with `alignment`.
+   */
+  masterAlignment?: {
+    law?: readonly ("L" | "N" | "C")[];
+    moral?: readonly ("G" | "N" | "E")[];
+    /** Warning copy: "any evil". */
+    label: string;
+  };
 }
 
 /**
@@ -121,6 +135,7 @@ export interface ImprovedFamiliarPrereq {
  * Display uses `creatureType` (the full printed line) instead.
  */
 export type FamiliarTypeKind =
+  | "aberration"
   | "animal"
   | "vermin"
   | "outsider"
@@ -147,9 +162,14 @@ export interface ImprovedFamiliar extends BaseFamiliar {
   /**
    * The creature's own printed Intelligence. The familiar's Int is the
    * better of this and the progression table (see the module doc comment's
-   * rules-posture note).
+   * rules-posture note). Omitted for a creature mindless in the wild.
    */
   ownInt?: number;
+  /**
+   * Ability that feeds the Fortitude save when it isn't Constitution: an
+   * undead creature has no Con score and uses Charisma instead.
+   */
+  fortAbility?: AbilityId;
   /**
    * The species' own class skills (skill ids) — replaces the animal set for
    * the +3 trained bonus, since the Universal Monster Rules animal list does
@@ -171,10 +191,11 @@ export interface ImprovedFamiliar extends BaseFamiliar {
 }
 
 /**
- * One of the four Improved Familiar TEMPLATES applicable to any standard
+ * One of the Improved Familiar TEMPLATES applicable to any standard
  * animal species (celestial/fiendish from the CRB table's "celestial hawk" /
  * "fiendish viper" rows, generalized per the expanded published lists;
- * entropic/resolute from Bestiary 2). A templated animal keeps its species
+ * entropic/resolute from Bestiary 2; fey-touched from Heroes from the
+ * Fringe). A templated animal keeps its species
  * stat block and master bonus and adds the template's senses/defenses; its
  * type gains a subtype but stays animal, so the animal class-skill rule
  * still applies.
@@ -192,6 +213,8 @@ export interface FamiliarTemplate {
    * so a future multi-HD base doesn't silently get the wrong tier.
    */
   defensesForHd: (hd: number) => CreatureDefenses;
+  /** Flat untyped save bonus the template grants (fey-touched: +2 Will). */
+  saveBonus?: Partial<Record<"fort" | "ref" | "will", number>>;
   /** Display note for the template's non-numeric ability ("smite evil 1/day..."). */
   note: string;
   /** Published-table prerequisites — soft warnings in the picker. */

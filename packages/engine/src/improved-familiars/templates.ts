@@ -1,11 +1,12 @@
 /**
- * The four Improved Familiar templates (celestial/fiendish from the CRB
- * table, entropic/resolute from Bestiary 2), applicable to any standard
- * `BASE_FAMILIARS` animal — see `types.ts`'s `FamiliarTemplate` doc comment.
- * Clean-room from the published template rules (aonprd.com / d20pfsrd.com);
- * verify every tier number against the published simple-template text before
- * wiring, and keep the smite/aligned-strike ability as `note` prose (it's a
- * once-per-day rider with no always-on number).
+ * The Improved Familiar templates (celestial/fiendish from the CRB table,
+ * entropic/resolute from Bestiary 2, fey-touched from Heroes from the
+ * Fringe), applicable to any standard `BASE_FAMILIARS` animal — see
+ * `types.ts`'s `FamiliarTemplate` doc comment. Clean-room from the published
+ * template rules (aonprd.com / d20pfsrd.com); verify every tier number
+ * against the published simple-template text before wiring, and keep the
+ * smite/aligned-strike ability as `note` prose (it's a once-per-day rider
+ * with no always-on number).
  */
 
 import type { FamiliarTemplate } from "./types.js";
@@ -79,5 +80,20 @@ export const FAMILIAR_TEMPLATES: Readonly<Record<string, FamiliarTemplate>> = {
     note: "Smite chaos 1/day (swift action): adds its Cha bonus to attack rolls and its HD to damage against a chaotic foe, until the target dies or the resolute creature rests.",
     prereq: { casterLevel: 3, alignment: "LN" },
     source: "Bestiary 2 p.294 (resolute creature); CRB Improved Familiar table",
+  },
+  // Heroes from the Fringe's First World template: no energy resistance,
+  // DR /cold iron only from 5 HD, SR CR+5 (same 1-HD rounding as above), and
+  // a flat +2 on Will saves. The table row has no alignment; the template
+  // text suggests fey-tied casters but sets no hard requirement.
+  "fey-touched": {
+    id: "fey-touched",
+    name: "Fey-Touched",
+    senses: ["low-light vision"],
+    defensesForHd: (hd) =>
+      hd >= 11 ? { dr: "10/cold iron" } : hd >= 5 ? { dr: "5/cold iron" } : { sr: 5 },
+    saveBonus: { will: 2 },
+    note: "Change shape into one fixed Small or Medium humanoid form (alter self), and woodland stride as the druid ability.",
+    prereq: { casterLevel: 3 },
+    source: "Heroes from the Fringe p.17 (fey-touched creature); expanded Improved Familiar table",
   },
 };

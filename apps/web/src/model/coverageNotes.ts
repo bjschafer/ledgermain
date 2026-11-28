@@ -55,7 +55,7 @@ export const COVERAGE_NOTES: readonly CoverageNote[] = [
   },
   {
     category: "Familiars",
-    note: "The improved familiar catalog covers the common picks, not the whole published list: a species missing from the picker has no stat block to track, and familiar archetypes (a sage, a mascot, an emissary) are not modeled.",
+    note: "Familiar archetypes (a sage, a mascot, an emissary) are not modeled.",
   },
   {
     category: "Witch patrons",
